@@ -1,0 +1,14 @@
+{
+  "name": "vetfinance-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Сайт сервиса ВетФинанс: лендинг и юридические страницы",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --env-file-if-exists=.env --watch-path=./server.js --watch-path=./public server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
