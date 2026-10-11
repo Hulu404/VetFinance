@@ -1,0 +1,184 @@
+/*
+  VetFinance: дизайн-токены. Источник: :root и литералы прототипа v6
+  (design/vetfinance-prototip-v6.html). Описание и причины правок: design/tokens.md.
+  Тёмной темы нет. Шрифт Onest подключается отдельно (см. tokens.md, раздел «Шрифт»).
+  Медиазапросы не умеют читать переменные: границы адаптива записаны комментарием
+  и в tokens.md, в CSS их пишут числами: 820px, 560px.
+*/
+
+:root {
+  /* ---------- Цвет: акцент (единственный) ---------- */
+  --color-accent: #B8174F;
+  --color-accent-dark: #8A0F3A;       /* текст акцентом, основная кнопка, рамка фокуса */
+  --color-accent-mid: #D6567F;
+  --color-accent-light: #E9A3BB;
+  --color-accent-soft: #F8E1E9;
+  --color-accent-faint: #FCF1F5;      /* в прототипе --accent-soft2: фон при наведении */
+
+  /* ---------- Цвет: текст ---------- */
+  --color-ink: #15141B;
+  --color-ink-soft: #6C6B78;          /* весь второстепенный текст, 5,2:1 на белом */
+  --color-ink-faint: #A7A5B2;         /* НЕ для текста (2,4:1): только значки, разделители, отключённое */
+
+  /* ---------- Цвет: поверхности и линии ---------- */
+  --color-bg: #F7F6F9;                /* фон страницы (--bg-soft) */
+  --color-surface: #FFFFFF;
+  --color-sidebar: #15131C;           /* боковое меню и подсказка */
+  --color-border: #EDEAF2;            /* линии карточек и таблиц (декор) */
+  --color-track: #F0EEF4;             /* дорожка полос, нейтральная плашка */
+  --color-switch-off: #D8D3E2;
+  --color-control-border: #8E8C9A;    /* граница полей ввода, 3,3:1 (новый, WCAG 1.4.11) */
+
+  /* ---------- Цвет: смысл (только хорошо / плохо / внимание) ---------- */
+  --color-ok: #12875E;                /* заливки и текст на белом (4,5:1) */
+  --color-ok-ink: #0E7350;            /* текст на --color-ok-soft (новый, 5,2:1) */
+  --color-ok-soft: #E1F6ED;
+  --color-warn: #A6690A;
+  --color-warn-ink: #8F5A06;          /* текст на --color-warn-soft (новый, 5,1:1) */
+  --color-warn-soft: #FDF0D9;
+  --color-bad: #C23A22;
+  --color-bad-soft: #FCEBE7;
+  --color-bad-soft-hover: #F8DAD3;
+
+  /* ---------- Цвет: источники данных (плашки) ---------- */
+  --color-vm: #2563EB;                /* Ветменеджер */
+  --color-vm-ink: #1D4ED8;            /* текст на --color-vm-soft (новый, 5,7:1) */
+  --color-vm-soft: #E7EFFE;
+  --color-tg: #1B6CA8;                /* бот; появится в очереди 2 */
+  --color-tg-soft: #E4F1FB;
+
+  /* ---------- Цвет: на тёмном (меню, подсказка) ---------- */
+  --color-on-dark: #FFFFFF;
+  --color-on-dark-nav: #BCBAC7;       /* пункт меню */
+  --color-on-dark-sub: #9C99AB;       /* подпункт, подписи в подсказке */
+  --color-on-dark-meta: #8C89A0;      /* мелкие подписи в меню (5,4:1) */
+  --color-on-dark-text: #C9C6D6;      /* сноска подсказки */
+  --color-on-dark-hover: rgba(255, 255, 255, .06);
+  --color-on-dark-active: rgba(255, 255, 255, .11);
+  --color-on-dark-chip: rgba(255, 255, 255, .13);
+  --color-on-dark-line: rgba(255, 255, 255, .12);
+  --color-tip-bad: #FF8F7A;
+  --color-tip-good: #5FD3A3;
+
+  /* ---------- Градиент акцентной карточки ---------- */
+  --gradient-accent: linear-gradient(135deg, var(--color-accent), var(--color-accent-dark));
+  --color-on-accent: #FFFFFF;
+  --color-on-accent-soft: rgba(255, 255, 255, .85);  /* в прототипе .72: давало 3,9:1, стало 4,9:1 */
+
+  /* ---------- Шрифт ---------- */
+  --font-sans: 'Onest', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  --fs-2xs: 11px;      /* подписи капсом, плашки (в прототипе 9,5 / 10 / 10,5) */
+  --fs-xs: 12px;       /* сноски, мета (11,5 / 12 / 12,5) */
+  --fs-sm: 13px;       /* кнопки, подсказка, подпункты (13 / 13,5) */
+  --fs-base: 14px;     /* основной текст компонентов (14 / 14,5) */
+  --fs-md: 15px;       /* основной текст страницы (body) */
+  --fs-lg: 16px;       /* заголовок совета, поля ввода на мобильном */
+  --fs-xl: 19px;
+  --fs-kpi: 22px;      /* число в карточке показателя */
+  --fs-kpi-lg: 23px;   /* число в карточке с подстрокой */
+  --fs-h1: 26px;
+  --fs-display: 32px;
+  --fs-hero: 44px;     /* число баланса над графиком (этап 2) */
+
+  --lh-base: 1.5;
+  --lh-text: 1.55;
+  --lh-tight: 1.1;
+
+  --ls-tight: -.02em;  /* заголовки, числа */
+  --ls-tighter: -.035em;
+  --ls-caps: .08em;    /* подписи заглавными */
+
+  /* ---------- Радиусы ---------- */
+  --radius-card: 20px;
+  --radius-lg: 14px;   /* подсказка (15), плитки, блок «Почему?» */
+  --radius-md: 12px;   /* пункт меню (11), поле вопроса */
+  --radius-sm: 10px;   /* кнопки, поля, сегменты */
+  --radius-xs: 7px;    /* плашка, шкала */
+  --radius-full: 999px;
+
+  /* ---------- Тени ---------- */
+  --shadow-card: 0 1px 2px rgba(20, 10, 25, .04), 0 10px 30px -16px rgba(20, 10, 25, .14);
+  --shadow-tip: 0 20px 48px -14px rgba(10, 4, 16, .55);
+
+  /* ---------- Отступы (шкала для нового; значения компонентов ниже взяты из прототипа) ---------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --card-padding: 22px 24px;
+  --kpi-padding: 18px 20px;
+  --grid-gap: 14px;          /* между карточками показателей */
+  --section-gap: 16px;       /* между блоками страницы */
+
+  /* ---------- Раскладка ---------- */
+  --sidebar-width: 252px;
+  --content-max: 1280px;
+  --content-padding: 24px 34px;
+  --content-padding-mobile: 18px 14px;
+  --auth-card-width: 400px;
+  --tip-max-width: 335px;
+  --control-height: 44px;    /* поля и кнопки форм; цель нажатия на мобильном не меньше 40 */
+  --touch-min: 44px;
+  --z-tip: 99;
+
+  /* ---------- Фокус ---------- */
+  --focus-ring: 2.5px solid var(--color-accent-dark);
+  --focus-ring-on-dark: 2.5px solid #FFFFFF;   /* бордовый на тёмном меню не виден (1,9:1) */
+  --focus-offset: 2px;
+
+  /* ---------- Анимация ---------- */
+  --ease: cubic-bezier(.22, .9, .32, 1);
+  --dur-fast: .15s;    /* наведение (в прототипе .14 / .16) */
+  --dur-base: .18s;    /* подъём карточки, стрелка меню */
+  --dur-slow: .28s;    /* появление экрана и раскрытий (.25 / .28) */
+}
+
+/* ---------- Базовые правила (минимум, без которых токены не работают) ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: var(--lh-base);
+  color: var(--color-ink);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { margin: 0; letter-spacing: var(--ls-tight); }
+p { margin: 0; }
+button, input { font-family: inherit; }
+::selection { background: var(--color-accent-soft); color: var(--color-accent-dark); }
+
+/* Рамка фокуса. Радиус элемента не меняем (в прототипе фокус задавал 8px всем). */
+:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.on-dark :focus-visible { outline: var(--focus-ring-on-dark); }
+
+/* Текст только для скринридеров. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@keyframes vf-view-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes vf-skeleton { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

@@ -1,0 +1,368 @@
+{
+ "rule": "opening_balance + sum(amount) for date<=as_of, status!=duplicate",
+ "cases": [
+  {
+   "clinic_id": "A",
+   "as_of": "2026-08-31",
+   "accounts": {
+    "A-bank": 172345045,
+    "A-bank2": 30000000,
+    "A-cash": 13112430
+   },
+   "total": 215457475,
+   "bank": 202345045,
+   "cash": 13112430,
+   "figures": {
+    "balance.total": {
+     "value": 215457475,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 172345045,
+       "unit": "rub"
+      },
+      {
+       "label": "Резервный счёт",
+       "value": 30000000,
+       "unit": "rub"
+      },
+      {
+       "label": "Касса",
+       "value": 13112430,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank",
+      "vetmanager",
+      "manual"
+     ]
+    },
+    "balance.bank": {
+     "value": 202345045,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 172345045,
+       "unit": "rub"
+      },
+      {
+       "label": "Резервный счёт",
+       "value": 30000000,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank"
+     ]
+    },
+    "balance.cash": {
+     "value": 13112430,
+     "unit": "rub",
+     "source": [
+      "vetmanager",
+      "manual"
+     ]
+    }
+   }
+  },
+  {
+   "clinic_id": "A",
+   "as_of": "2026-09-09",
+   "accounts": {
+    "A-bank": 169959280,
+    "A-bank2": 45012345,
+    "A-cash": 13294230
+   },
+   "total": 228265855,
+   "bank": 214971625,
+   "cash": 13294230,
+   "figures": {
+    "balance.total": {
+     "value": 228265855,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 169959280,
+       "unit": "rub"
+      },
+      {
+       "label": "Резервный счёт",
+       "value": 45012345,
+       "unit": "rub"
+      },
+      {
+       "label": "Касса",
+       "value": 13294230,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank",
+      "vetmanager",
+      "manual"
+     ]
+    },
+    "balance.bank": {
+     "value": 214971625,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 169959280,
+       "unit": "rub"
+      },
+      {
+       "label": "Резервный счёт",
+       "value": 45012345,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank"
+     ]
+    },
+    "balance.cash": {
+     "value": 13294230,
+     "unit": "rub",
+     "source": [
+      "vetmanager",
+      "manual"
+     ]
+    }
+   }
+  },
+  {
+   "clinic_id": "A",
+   "as_of": "2026-09-30",
+   "accounts": {
+    "A-bank": 157806476,
+    "A-bank2": 47012345,
+    "A-cash": 13780083
+   },
+   "total": 218598904,
+   "bank": 204818821,
+   "cash": 13780083,
+   "figures": {
+    "balance.total": {
+     "value": 218598904,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 157806476,
+       "unit": "rub"
+      },
+      {
+       "label": "Резервный счёт",
+       "value": 47012345,
+       "unit": "rub"
+      },
+      {
+       "label": "Касса",
+       "value": 13780083,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank",
+      "vetmanager",
+      "manual"
+     ]
+    },
+    "balance.bank": {
+     "value": 204818821,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 157806476,
+       "unit": "rub"
+      },
+      {
+       "label": "Резервный счёт",
+       "value": 47012345,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank"
+     ]
+    },
+    "balance.cash": {
+     "value": 13780083,
+     "unit": "rub",
+     "source": [
+      "vetmanager",
+      "manual"
+     ]
+    }
+   }
+  },
+  {
+   "clinic_id": "B",
+   "as_of": "2026-08-31",
+   "accounts": {
+    "B-bank": 52622292,
+    "B-cash": 2500099
+   },
+   "total": 55122391,
+   "bank": 52622292,
+   "cash": 2500099,
+   "figures": {
+    "balance.total": {
+     "value": 55122391,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 52622292,
+       "unit": "rub"
+      },
+      {
+       "label": "Касса",
+       "value": 2500099,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank",
+      "manual"
+     ]
+    },
+    "balance.bank": {
+     "value": 52622292,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 52622292,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank"
+     ]
+    },
+    "balance.cash": {
+     "value": 2500099,
+     "unit": "rub",
+     "source": [
+      "manual"
+     ]
+    }
+   }
+  },
+  {
+   "clinic_id": "B",
+   "as_of": "2026-09-09",
+   "accounts": {
+    "B-bank": 67732293,
+    "B-cash": 2468613
+   },
+   "total": 70200906,
+   "bank": 67732293,
+   "cash": 2468613,
+   "figures": {
+    "balance.total": {
+     "value": 70200906,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 67732293,
+       "unit": "rub"
+      },
+      {
+       "label": "Касса",
+       "value": 2468613,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank",
+      "manual"
+     ]
+    },
+    "balance.bank": {
+     "value": 67732293,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 67732293,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank"
+     ]
+    },
+    "balance.cash": {
+     "value": 2468613,
+     "unit": "rub",
+     "source": [
+      "manual"
+     ]
+    }
+   }
+  },
+  {
+   "clinic_id": "B",
+   "as_of": "2026-09-30",
+   "accounts": {
+    "B-bank": 72732293,
+    "B-cash": 2468613
+   },
+   "total": 75200906,
+   "bank": 72732293,
+   "cash": 2468613,
+   "figures": {
+    "balance.total": {
+     "value": 75200906,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 72732293,
+       "unit": "rub"
+      },
+      {
+       "label": "Касса",
+       "value": 2468613,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank",
+      "manual"
+     ]
+    },
+    "balance.bank": {
+     "value": 72732293,
+     "unit": "rub",
+     "breakdown": [
+      {
+       "label": "Расчётный счёт",
+       "value": 72732293,
+       "unit": "rub"
+      }
+     ],
+     "source": [
+      "bank"
+     ]
+    },
+    "balance.cash": {
+     "value": 2468613,
+     "unit": "rub",
+     "source": [
+      "manual"
+     ]
+    }
+   }
+  }
+ ]
+}

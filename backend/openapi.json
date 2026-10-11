@@ -1,0 +1,498 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VetFinance API",
+    "version": "0.1.0",
+    "description": "Stage 0 schema, generated from the code. Contract: docs/api-contract.md"
+  },
+  "paths": {
+    "/v1/clinic": {
+      "get": {
+        "summary": "Get Clinic",
+        "operationId": "get_clinic_v1_clinic_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClinicOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Patch Clinic",
+        "operationId": "patch_clinic_v1_clinic_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClinicPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClinicOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/accounts": {
+      "get": {
+        "summary": "List Accounts",
+        "operationId": "list_accounts_v1_accounts_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountsOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/dashboard": {
+      "get": {
+        "summary": "Dashboard",
+        "operationId": "dashboard_v1_dashboard_get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "bank",
+              "cash"
+            ],
+            "title": "Kind"
+          },
+          "opening_balance": {
+            "type": "integer",
+            "title": "Opening Balance"
+          },
+          "opening_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Opening Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "opening_balance",
+          "opening_date"
+        ],
+        "title": "AccountOut"
+      },
+      "AccountsOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AccountOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "AccountsOut"
+      },
+      "ClinicOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "legal_entity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Entity"
+          },
+          "tax_regime": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Regime"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone"
+          },
+          "safe_balance": {
+            "type": "integer",
+            "title": "Safe Balance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "legal_entity",
+          "tax_regime",
+          "timezone",
+          "safe_balance"
+        ],
+        "title": "ClinicOut"
+      },
+      "ClinicPatch": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "legal_entity": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legal Entity"
+          },
+          "tax_regime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Regime"
+          },
+          "timezone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timezone"
+          },
+          "safe_balance": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Safe Balance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ClinicPatch"
+      },
+      "DashboardBalanceOut": {
+        "properties": {
+          "total": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "bank": {
+            "$ref": "#/components/schemas/FigureOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "bank"
+        ],
+        "title": "DashboardBalanceOut"
+      },
+      "DashboardOut": {
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data As Of"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/DashboardBalanceOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "data_as_of",
+          "balance"
+        ],
+        "title": "DashboardOut"
+      },
+      "FigureItemOut": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "rub",
+              "pct",
+              "count",
+              "days"
+            ],
+            "title": "Unit",
+            "default": "rub"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "value"
+        ],
+        "title": "FigureItemOut"
+      },
+      "FigureOut": {
+        "properties": {
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "rub",
+              "pct",
+              "count",
+              "days"
+            ],
+            "title": "Unit"
+          },
+          "breakdown": {
+            "items": {
+              "$ref": "#/components/schemas/FigureItemOut"
+            },
+            "type": "array",
+            "title": "Breakdown"
+          },
+          "source": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual",
+                "calc"
+              ]
+            },
+            "type": "array",
+            "title": "Source"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "unit",
+          "breakdown",
+          "source",
+          "note"
+        ],
+        "title": "FigureOut"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
