@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+<!--
+  Значки меню из прототипа v6 (24x24). Контур рисуется currentColor, акцентные части берут
+  --color-accent из tokens.css. Вставлять спрайт в разметку один раз (inline), использовать:
+  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-home"/></svg>
+  Размер задаёт CSS: width:1em; height:1em; flex-shrink:0; fill:none.
+-->
+<symbol id="ic-home" viewBox="0 0 24 24">
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M3.6 10.4 12 3.6l8.4 6.8V19a1.6 1.6 0 0 1-1.6 1.6H5.2A1.6 1.6 0 0 1 3.6 19z"/>
+  <path style="fill:var(--color-accent);opacity:.26;stroke:none" d="M3.6 10.4 12 3.6l8.4 6.8v2.2L12 6.2l-8.4 6.4z"/>
+  <path style="fill:var(--color-accent);stroke:none" d="M9.4 20.6v-5.2a1.2 1.2 0 0 1 1.2-1.2h2.8a1.2 1.2 0 0 1 1.2 1.2v5.2z"/>
+</symbol>
+<symbol id="ic-tx" viewBox="0 0 24 24">
+  <rect style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" x="2.8" y="5" width="18.4" height="14" rx="2.8"/>
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M2.8 9.6h18.4"/>
+  <path style="fill:var(--color-accent);opacity:.26;stroke:none" d="M2.8 9.6h18.4v2.2H2.8z"/>
+  <path style="fill:var(--color-accent);stroke:none" d="M6.4 14.6h5v2.2h-5z"/>
+  <circle style="fill:var(--color-accent);stroke:none" cx="17.4" cy="15.7" r="2.1"/>
+</symbol>
+<symbol id="ic-price" viewBox="0 0 24 24">
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M5.6 3.5h8.8l3.6 3.6v6.2M17.8 16.4V19a1.5 1.5 0 0 1-1.5 1.5H5.6A1.5 1.5 0 0 1 4.1 19V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M14.2 3.6v3.6h3.6M7.4 10.6h5.2M7.4 13.6h3"/>
+  <circle style="fill:var(--color-accent);stroke:none" cx="17.2" cy="16.2" r="4.3"/>
+  <path style="fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round" d="M15.6 14.9h3M15.6 16.6h3M17.1 18.4v-4.4"/>
+</symbol>
+<symbol id="ic-report" viewBox="0 0 24 24">
+  <rect style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" x="4" y="3.2" width="16" height="17.6" rx="2.6"/>
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M7.6 7.4h8.8"/>
+  <rect style="fill:var(--color-accent);opacity:.26;stroke:none" x="7.6" y="10.6" width="8.8" height="7.4" rx="1.4"/>
+  <path style="fill:var(--color-accent);stroke:none" d="M9 17.2v-3.4h1.9v3.4zm3.2 0v-5.2h1.9v5.2z"/>
+</symbol>
+<symbol id="ic-plan" viewBox="0 0 24 24">
+  <rect style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" x="3.2" y="5.2" width="17.6" height="15.2" rx="2.6"/>
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M3.2 9.7h17.6M8 3.3v3.6M16 3.3v3.6"/>
+  <rect style="fill:var(--color-accent);opacity:.26;stroke:none" x="6.1" y="11.9" width="3.5" height="3.1" rx="1"/>
+  <rect style="fill:var(--color-accent);stroke:none" x="10.3" y="11.9" width="3.5" height="3.1" rx="1"/>
+  <rect style="fill:var(--color-accent);opacity:.26;stroke:none" x="14.5" y="11.9" width="3.5" height="3.1" rx="1"/>
+</symbol>
+<symbol id="ic-anal" viewBox="0 0 24 24">
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M3.4 3.4v17.2h17.2"/>
+  <path style="fill:var(--color-accent);opacity:.26;stroke:none" d="M6.4 18.6h2.6v-5.2H6.4zm4.6 0h2.6V9.4H11zm4.6 0h2.6V6H15.6z"/>
+  <path style="fill:var(--color-accent);stroke:none" d="M6.4 18.6h2.6v-5.2H6.4z"/>
+  <path style="fill:var(--color-accent);opacity:.65;stroke:none" d="M11 18.6h2.6V9.4H11z"/>
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="m6.2 11.4 3.6-3.8 3 2.4 5.4-5.6"/>
+  <circle style="fill:var(--color-accent);stroke:none" cx="18.6" cy="4.4" r="1.9"/>
+</symbol>
+<symbol id="ic-set" viewBox="0 0 24 24">
+  <path style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round" d="M11 3.2h2l.5 2.3 2 .85 2-1.25 1.4 1.4-1.25 2 .85 2 2.3.5v2l-2.3.5-.85 2 1.25 2-1.4 1.4-2-1.25-2 .85-.5 2.3h-2l-.5-2.3-2-.85-2 1.25-1.4-1.4 1.25-2-.85-2-2.3-.5v-2l2.3-.5.85-2-1.25-2 1.4-1.4 2 1.25 2-.85z"/>
+  <circle style="fill:var(--color-accent);opacity:.26;stroke:none" cx="12" cy="12" r="4.2"/>
+  <circle style="fill:var(--color-accent);stroke:none" cx="12" cy="12" r="2.1"/>
+</symbol>
+<symbol id="ic-logo" viewBox="0 0 24 24">
+  <g fill="currentColor"><circle cx="5" cy="6.6" r="2.35"/><circle cx="12" cy="3.3" r="2.35"/><circle cx="19" cy="5.4" r="2.35"/><rect x="2.75" y="10.4" width="4.5" height="10.6" rx="2.25"/><rect x="9.75" y="7.1" width="4.5" height="13.9" rx="2.25"/><rect x="16.75" y="9.2" width="4.5" height="11.8" rx="2.25"/></g>
+</symbol>
+</svg>

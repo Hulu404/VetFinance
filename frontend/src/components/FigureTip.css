@@ -1,0 +1,96 @@
+.figure-tip {
+  position: fixed;
+  z-index: var(--z-tip);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(var(--tip-max-width), calc(100vw - 24px));
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 15px 17px;
+  background: var(--color-sidebar);
+  color: var(--color-on-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-tip);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  animation: figure-tip-in var(--dur-base) var(--ease);
+}
+
+@keyframes figure-tip-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .figure-tip { animation: none; }
+}
+
+.figure-tip__tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--color-on-dark-chip);
+  color: var(--color-on-dark);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+}
+
+.figure-tip__value {
+  margin-top: 6px;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-bold);
+  color: var(--color-on-dark);
+}
+
+.figure-tip__rows {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.figure-tip__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: 4px 0;
+}
+
+.figure-tip__label { color: var(--color-on-dark-sub); }
+
+.figure-tip__amount {
+  color: var(--color-on-dark);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+
+.figure-tip__amount--neg { color: var(--color-tip-bad); }
+
+.figure-tip__footer {
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px solid var(--color-on-dark-line);
+}
+
+.figure-tip__note {
+  font-size: var(--fs-xs);
+  color: var(--color-on-dark-text);
+}
+
+.figure-tip__sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: var(--fs-xs);
+  color: var(--color-on-dark-text);
+}
+
+.figure-tip__chip {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--color-on-dark-chip);
+  color: var(--color-on-dark);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+}

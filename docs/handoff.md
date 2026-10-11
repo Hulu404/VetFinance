@@ -46,7 +46,8 @@
 Что нужно: верстать этап 0 по `design/tokens.css`, `design/tokens.md`, `design/components.md` (KpiCard, FigureTip, Pill), `design/screens/shell.md`, `login.md`, `dashboard-stage0.md`. Значки меню: `design/icons.svg`. Что отличается от v6 и не копировать из его кода: подсказка привязана к элементу и открывается по фокусу и тапу; рамка фокуса без `border-radius: 8px`; мелкий текст цветом `--color-ink-soft`, а не `faint`; шрифт из `@fontsource/onest`; названия токенов новые (`--color-*`, `--fs-*`), таблица соответствия не нужна, `v6` в спецификациях указывает класс. Разделы «Скоро» в меню описываются данными (поле `status`).
 Зачем: чтобы вёрстка сошлась со спецификациями без догадок.
 Срочность: можно подождать
-Статус: открыто
+Статус: сделано
+Ответ frontend-developer: этап 0 сверстан (вход, оболочка, Рабочий стол, KpiCard, FigureTip, Pill). Расхождения со спецификациями перечислены в `frontend/DEVIATIONS.md`. Designer: проверьте пункты 7 (подпункты на узком экране) и 4 (нет предзагрузки шрифтов).
 
 ## 2026-10-11 · tester → backend-developer
 Что нужно: (1) Реализовать `engine/balance.py` с функцией `compute_balance(accounts, transactions, as_of) -> BalanceResult`. Вход: `accounts` — список счетов ОДНОЙ клиники (dict или объекты с полями `id, name, type: "bank"|"cash", opening_balance (копейки, int), opening_date`), `transactions` — операции той же клиники (`id, account_id, date, amount (копейки со знаком), kind, status`), `as_of: datetime.date`. Выход: объект/словарь с тремя Figure — `total`, `bank`, `cash` (pydantic или dict; `value:int`, `unit:"rub"`, `breakdown:[{label, value, unit}]` по одной строке на счёт, `source:list`, `note`). Чистая функция, входы не мутирует, повтор даёт то же. (2) Правило остатка (зафиксировано в `tests/golden/set01/README.md`): `opening_balance + сумма amount` операций счёта, где `opening_date <= date <= as_of` и `status != duplicate`; `status=check` ВХОДИТ; переводы входят обычными проводками; операции после `as_of` не входят. (3) Тест `tests/golden/test_balance_set01.py` импортирует `engine.balance` с `sys.path += backend/`; пока модуля нет, тесты skip. (4) Для сида: `tests/golden/set01/data.json` (клиники A и B, счета, операции), формат в README. Поля `type`, `opening_balance`, `opening_date` у счёта и `transfer_group` у операции в контракте не описаны: это моё предложение, при другой схеме скажи, подправлю набор. (5) Контракт: опиши в `api-contract.md` схему элемента `GET /v1/accounts` и формат ответа (список `{items}` или массив); тесты терпят оба. (6) Желательно параметр `as_of` в `GET /v1/dashboard` (хотя бы для тестовой среды), иначе сверку с golden на дату 2026-09-09 нельзя сделать без подмены часов; без него тест skip.
@@ -67,7 +68,8 @@
 Что нужно: в e2e smoke (`tests/e2e/smoke.spec.ts`) использованы селекторы `data-testid`: карточка остатка `balance-total`, кнопка/значок подсказки внутри неё `figure-tip-trigger`, содержимое подсказки `figure-tip` (строки со счетами: названия «Расчётный счёт», «Касса», суммы с ₽). Поля входа находятся по label (e-mail/почта, пароль), кнопка по имени «Войти». Подсказка открывается по hover (desktop) или tap (390 px). Если решите иначе, скажите, поправлю.
 Зачем: стабильный smoke на 1280 и 390.
 Срочность: можно подождать
-Статус: открыто
+Статус: сделано
+Ответ frontend-developer (этап 0): `balance-total` стоит на карточке остатка и есть только когда данные загружены (на заглушке загрузки и ошибки его нет, чтобы `toBeVisible` ждал число); внутри неё `figure-tip-trigger` (кнопка на всю карточку); подсказка `figure-tip` рисуется в корне документа, строки счетов с суммами в ₽, плюс `note` и источники. Открытие: наведение (через 80 мс), фокус с клавиатуры, касание. Мышь: клик по уже открытой наведением подсказке её не закрывает, так что ваш сценарий hover, затем click не гасит подсказку. Поля входа по label «Почта» и «Пароль», кнопка «Войти». Дополнительно есть `balance-bank` (карточка «В банке»). Проверено Playwright (Edge) на 1280, 820 и 390 px в mock-режиме: переполнения нет.
 
 ## 2026-10-11 · tester → backend-developer
 Что нужно: golden-тест остатка set01 проходит на `engine/balance.py` (10 passed, включая source по правилу владельца). Замечание: `_figure` добавляет `manual` для КАЖДОГО счёта без операций, а по решению владельца `["manual"]` только когда во всей Figure нет вошедших операций. В set01 у всех счетов есть операции, поэтому тест это не ловит; при счёте без операций рядом со счётом с операциями `source` получит лишний `manual`. Исправить на уровне Figure. Тестовый адаптер строит `AccountInput(kind=type)` и `TransactionInput` из `data.json`.
@@ -78,5 +80,21 @@
 ## 2026-10-11 · backend-developer → tester
 Что нужно: контрактные тесты (`tests/contract`) требуют непустой `breakdown` в каждой Figure. У клиники без счёта нужного вида (например, без кассы) `breakdown` пуст; на этапе 0 в `/v1/dashboard` отдаются `total` и `bank`, при клинике без расчётных счетов `bank.breakdown` будет пустым. Прошу допустить пустой `breakdown` при `value = 0`.
 Зачем: не ломать контрактный тест на корректных данных.
+Срочность: можно подождать
+Статус: открыто
+
+## 2026-10-11 · главный агент → backend-developer
+Что нужно: локальный запуск на Windows падает с 500: `psycopg.InterfaceError: Psycopg cannot use the 'ProactorEventLoop'`. `.venv/Scripts/uvicorn app.main:app` из README не работает. Нужен способ запуска с SelectorEventLoop (например, `backend/scripts/dev.py` с `asyncio.run(server.serve(), loop_factory=...)`), README поправить. На Railway (Linux) проблемы нет.
+Зачем: локальная разработка и отладка багов на машине владельца.
+Срочность: можно подождать
+Статус: открыто
+
+## 2026-10-11 · главный агент → все
+Что нужно: принять к сведению. API этапа 0 задеплоен: https://vetfinance-api-production.up.railway.app (Railway, сервис vetfinance-api, root `/backend`, регион europe-west4). База — Supabase-проект bntjwzyfmiicdygbesab, подключение через Session pooler (`aws-1-eu-central-1.pooler.supabase.com:5432`, пользователь `postgres.<ref>`); прямой хост db.<ref>.supabase.co только IPv6 и не резолвится. Токены Supabase подписаны ES256 (JWKS). Тестовые пользователи test-a@ / test-b@vetfinance.test, пароль в `backend/.env`. Контрактные тесты на проде: 16 passed.
+Статус: сделано
+
+## 2026-10-11 · frontend-developer → backend-developer
+Что нужно: (1) Подтвердить договорённость из записи designer: у клиники без счетов `balance.total.breakdown = []` и `value = 0`; экран по пустому `breakdown` показывает «Счетов пока нет», по нулевому `value` при непустом `breakdown` показывает «0 ₽». (2) В `backend/openapi.json` у эндпоинтов описан только ответ 200 и 422; формат ошибок контракта (`{ "error": { code, message, details } }`, коды 401 и 403) в схему не попал. Добавить, тогда клиент возьмёт тип ошибки из генерации (сейчас `ApiErrorBody` описан в `frontend/src/api/types.ts` вручную по контракту). (3) При деплое статикой на другом домене добавить адрес фронтенда в `CORS_ORIGINS`; заголовок `Authorization` должен быть в `allow_headers`. (4) Поле `note` у `Figure` в схеме обязательное: подсказка корректно переживает пустой `note`/`source`/`breakdown`, но по правилу 4 из `CLAUDE.md` они должны быть непустыми.
+Зачем: сквозной сценарий вход, остаток, подсказка на реальном API.
 Срочность: можно подождать
 Статус: открыто

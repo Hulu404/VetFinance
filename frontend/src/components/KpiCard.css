@@ -1,0 +1,85 @@
+.kpi {
+  display: flex;
+  min-height: 88px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur-base) var(--ease), border-color var(--dur-base) var(--ease);
+}
+
+.kpi--accent {
+  background: var(--gradient-accent);
+  border-color: transparent;
+  color: var(--color-on-accent);
+}
+
+.kpi--ready:hover { transform: translateY(-2px); }
+.kpi--ready:has(.kpi__button[aria-expanded='true']):not(.kpi--accent) { border-color: var(--color-accent-light); }
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi--ready:hover { transform: none; border-color: var(--color-accent-light); }
+}
+
+.kpi__button,
+.kpi--loading,
+.kpi--error,
+.kpi--empty {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: var(--kpi-padding);
+}
+
+.kpi__button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: help;
+  border-radius: inherit;
+}
+
+.kpi__emoji { font-size: 29px; line-height: 1; flex-shrink: 0; }
+
+.kpi__body { display: flex; flex-direction: column; min-width: 0; }
+
+.kpi__label {
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+.kpi--accent .kpi__label { color: var(--color-on-accent-soft); }
+
+.kpi__value {
+  margin-top: 2px;
+  font-size: var(--fs-kpi);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  white-space: nowrap;
+}
+
+.kpi__sub { margin-top: 4px; font-size: var(--fs-xs); font-weight: var(--fw-semibold); }
+.kpi__sub--bad { color: var(--color-bad); }
+.kpi__sub--soft { color: var(--color-ink-soft); }
+/* On the accent card the number and the hint stay white: red on the gradient fails contrast. */
+.kpi--accent .kpi__sub { color: var(--color-on-accent-soft); }
+
+.kpi__skeleton {
+  display: block;
+  border-radius: 6px;
+  background: var(--color-track);
+  animation: vf-skeleton 1.4s ease-in-out infinite;
+}
+.kpi--accent .kpi__skeleton { background: rgba(255, 255, 255, .25); }
+.kpi__skeleton--label { width: 80px; height: 11px; }
+.kpi__skeleton--value { width: 140px; height: 22px; margin-top: 8px; }
+
+@media (max-width: 560px) {
+  .kpi__label { white-space: normal; }
+}

@@ -1,0 +1,16 @@
+.pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: var(--radius-xs);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  line-height: 1.3;
+}
+.pill--warning { background: var(--color-warn-soft); color: var(--color-warn-ink); }
+.pill--danger { background: var(--color-bad-soft); color: var(--color-bad); }
+.pill--success { background: var(--color-ok-soft); color: var(--color-ok-ink); }
+.pill--neutral { background: var(--color-track); color: var(--color-ink-soft); }
+.pill--vetmanager { background: var(--color-vm-soft); color: var(--color-vm-ink); }
+.pill--bot { background: var(--color-tg-soft); color: var(--color-tg); }
+.pill--on-dark { background: var(--color-on-dark-chip); color: var(--color-on-dark); }
