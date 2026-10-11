@@ -133,6 +133,16 @@
   --touch-min: 44px;
   --z-tip: 99;
 
+  /* ---------- Этап 1: диалог, тост, загрузка файла ---------- */
+  --color-backdrop: rgba(21, 19, 28, .5);   /* затемнение под диалогом: --color-sidebar с прозрачностью */
+  --z-dialog: 90;                           /* ниже подсказки (99), чтобы подсказка работала поверх */
+  --z-toast: 100;                           /* выше всего */
+  --dialog-width: 480px;                    /* форма (правка статьи, ручная операция) */
+  --dialog-width-wide: 540px;               /* загрузка выписки */
+  --toast-width: 380px;
+  --color-drop-border: var(--color-control-border);
+  --progress-height: 10px;                  /* как .track в v6 */
+
   /* ---------- Фокус ---------- */
   --focus-ring: 2.5px solid var(--color-accent-dark);
   --focus-ring-on-dark: 2.5px solid #FFFFFF;   /* бордовый на тёмном меню не виден (1,9:1) */

@@ -1,0 +1,359 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "50",
+  "invoiceDocument": [
+   {
+    "id": "500",
+    "invoice_id": "400",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "4340.0000"
+   },
+   {
+    "id": "501",
+    "invoice_id": "400",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "930.0000"
+   },
+   {
+    "id": "502",
+    "invoice_id": "401",
+    "good_id": "2",
+    "quantity": "1.0000",
+    "price": "2205.3500"
+   },
+   {
+    "id": "503",
+    "invoice_id": "401",
+    "good_id": "11",
+    "quantity": "1.0000",
+    "price": "945.1500"
+   },
+   {
+    "id": "504",
+    "invoice_id": "402",
+    "good_id": "3",
+    "quantity": "1.0000",
+    "price": "6020.0000"
+   },
+   {
+    "id": "505",
+    "invoice_id": "402",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "1290.0000"
+   },
+   {
+    "id": "506",
+    "invoice_id": "403",
+    "good_id": "4",
+    "quantity": "1.0000",
+    "price": "8680.0000"
+   },
+   {
+    "id": "507",
+    "invoice_id": "403",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "1860.0000"
+   },
+   {
+    "id": "508",
+    "invoice_id": "404",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "3150.0000"
+   },
+   {
+    "id": "509",
+    "invoice_id": "404",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "675.0000"
+   },
+   {
+    "id": "510",
+    "invoice_id": "405",
+    "good_id": "2",
+    "quantity": "1.0000",
+    "price": "10850.0000"
+   },
+   {
+    "id": "511",
+    "invoice_id": "405",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "2325.0000"
+   },
+   {
+    "id": "512",
+    "invoice_id": "406",
+    "good_id": "3",
+    "quantity": "1.0000",
+    "price": "9450.0000"
+   },
+   {
+    "id": "513",
+    "invoice_id": "406",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "2025.0000"
+   },
+   {
+    "id": "514",
+    "invoice_id": "407",
+    "good_id": "4",
+    "quantity": "1.0000",
+    "price": "3850.0000"
+   },
+   {
+    "id": "515",
+    "invoice_id": "407",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "825.0000"
+   },
+   {
+    "id": "516",
+    "invoice_id": "408",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "2100.0000"
+   },
+   {
+    "id": "517",
+    "invoice_id": "408",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "450.0000"
+   },
+   {
+    "id": "518",
+    "invoice_id": "409",
+    "good_id": "2",
+    "quantity": "1.0000",
+    "price": "6930.0000"
+   },
+   {
+    "id": "519",
+    "invoice_id": "409",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "1485.0000"
+   },
+   {
+    "id": "520",
+    "invoice_id": "410",
+    "good_id": "3",
+    "quantity": "1.0000",
+    "price": "3780.0000"
+   },
+   {
+    "id": "521",
+    "invoice_id": "410",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "810.0000"
+   },
+   {
+    "id": "522",
+    "invoice_id": "411",
+    "good_id": "4",
+    "quantity": "1.0000",
+    "price": "5600.0000"
+   },
+   {
+    "id": "523",
+    "invoice_id": "411",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "1200.0000"
+   },
+   {
+    "id": "524",
+    "invoice_id": "412",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "2100.0000"
+   },
+   {
+    "id": "525",
+    "invoice_id": "412",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "450.0000"
+   },
+   {
+    "id": "526",
+    "invoice_id": "413",
+    "good_id": "2",
+    "quantity": "1.0000",
+    "price": "4200.0000"
+   },
+   {
+    "id": "527",
+    "invoice_id": "413",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "900.0000"
+   },
+   {
+    "id": "528",
+    "invoice_id": "414",
+    "good_id": "3",
+    "quantity": "1.0000",
+    "price": "6300.0000"
+   },
+   {
+    "id": "529",
+    "invoice_id": "414",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "1350.0000"
+   },
+   {
+    "id": "530",
+    "invoice_id": "415",
+    "good_id": "4",
+    "quantity": "1.0000",
+    "price": "2940.0000"
+   },
+   {
+    "id": "531",
+    "invoice_id": "415",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "630.0000"
+   },
+   {
+    "id": "532",
+    "invoice_id": "416",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "8925.0000"
+   },
+   {
+    "id": "533",
+    "invoice_id": "416",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "1912.5000"
+   },
+   {
+    "id": "534",
+    "invoice_id": "417",
+    "good_id": "2",
+    "quantity": "1.0000",
+    "price": "11200.0000"
+   },
+   {
+    "id": "535",
+    "invoice_id": "417",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "2400.0000"
+   },
+   {
+    "id": "536",
+    "invoice_id": "418",
+    "good_id": "3",
+    "quantity": "1.0000",
+    "price": "5145.1700"
+   },
+   {
+    "id": "537",
+    "invoice_id": "418",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "1102.5400"
+   },
+   {
+    "id": "538",
+    "invoice_id": "419",
+    "good_id": "4",
+    "quantity": "1.0000",
+    "price": "2184.0000"
+   },
+   {
+    "id": "539",
+    "invoice_id": "419",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "468.0000"
+   },
+   {
+    "id": "540",
+    "invoice_id": "420",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "7700.0000"
+   },
+   {
+    "id": "541",
+    "invoice_id": "420",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "1650.0000"
+   },
+   {
+    "id": "542",
+    "invoice_id": "421",
+    "good_id": "2",
+    "quantity": "1.0000",
+    "price": "9800.0000"
+   },
+   {
+    "id": "543",
+    "invoice_id": "421",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "2100.0000"
+   },
+   {
+    "id": "544",
+    "invoice_id": "422",
+    "good_id": "3",
+    "quantity": "1.0000",
+    "price": "1960.0000"
+   },
+   {
+    "id": "545",
+    "invoice_id": "422",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "420.0000"
+   },
+   {
+    "id": "546",
+    "invoice_id": "423",
+    "good_id": "4",
+    "quantity": "1.0000",
+    "price": "9800.0000"
+   },
+   {
+    "id": "547",
+    "invoice_id": "423",
+    "good_id": "11",
+    "quantity": "2.0000",
+    "price": "2100.0000"
+   },
+   {
+    "id": "548",
+    "invoice_id": "424",
+    "good_id": "1",
+    "quantity": "1.0000",
+    "price": "6300.0000"
+   },
+   {
+    "id": "549",
+    "invoice_id": "424",
+    "good_id": "12",
+    "quantity": "2.0000",
+    "price": "1350.0000"
+   }
+  ]
+ }
+}

@@ -1,0 +1,1446 @@
+{
+ "_comment": "Computed by tools/compute_expected_set02.py from the generated files; money in kopecks. Do not edit by hand.",
+ "assumptions": {
+  "duplicate_window_days": 3,
+  "dedup_rule": "same account, same signed amount, |date diff| <= 3 days, different source, 1:1; the newly inserted row becomes status=duplicate, duplicate_of = older row; tie -> smallest date distance, then file order (date, number)",
+  "idempotency_key": "account|number|booked_date|signed_amount|counterparty_inn",
+  "rules": "first matching rule in list order; direction-aware; text = casefold substring of purpose; created-by-edit rule is appended and applies to new operations only",
+  "summary": "income/expense: kind in/out, status != duplicate (check included), transfers excluded; balance = income - expense; missing category -> 'Без статьи'"
+ },
+ "pii": {
+  "pii_surnames": [
+   "Белова",
+   "Беляева",
+   "Богданова",
+   "Васильева",
+   "Виноградов",
+   "Волков",
+   "Голубева",
+   "Григорьева",
+   "Ершов",
+   "Зайцев",
+   "Комаров",
+   "Кузнецова",
+   "Лебедев",
+   "Михайлов",
+   "Морозов",
+   "Никитина",
+   "Новикова",
+   "Орлова",
+   "Павлова",
+   "Попов",
+   "Семёнов",
+   "Смирнова",
+   "Соколова",
+   "Тарасов",
+   "Фёдоров"
+  ],
+  "pii_phones": [
+   "+7 (916) 100-00-10",
+   "+7 (916) 100-00-11",
+   "+7 (916) 100-00-12",
+   "+7 (916) 100-00-13",
+   "+7 (916) 100-00-14",
+   "+7 (916) 100-00-15",
+   "+7 (916) 100-00-16",
+   "+7 (916) 100-00-17",
+   "+7 (916) 100-00-18",
+   "+7 (916) 100-00-19",
+   "+7 (916) 100-00-20",
+   "+7 (916) 100-00-21",
+   "+7 (916) 100-00-22",
+   "+7 (916) 100-00-23",
+   "+7 (916) 100-00-24",
+   "+7 (916) 100-00-25",
+   "+7 (916) 100-00-26",
+   "+7 (916) 100-00-27",
+   "+7 (916) 100-00-28",
+   "+7 (916) 100-00-29",
+   "+7 (916) 100-00-30",
+   "+7 (916) 100-00-31",
+   "+7 (916) 100-00-32",
+   "+7 (916) 100-00-33",
+   "+7 (916) 100-00-34"
+  ],
+  "pii_addresses": [
+   "г. Москва, ул. Примерная, д. 1, кв. 10",
+   "г. Москва, ул. Примерная, д. 10, кв. 19",
+   "г. Москва, ул. Примерная, д. 11, кв. 20",
+   "г. Москва, ул. Примерная, д. 12, кв. 21",
+   "г. Москва, ул. Примерная, д. 13, кв. 22",
+   "г. Москва, ул. Примерная, д. 14, кв. 23",
+   "г. Москва, ул. Примерная, д. 15, кв. 24",
+   "г. Москва, ул. Примерная, д. 16, кв. 25",
+   "г. Москва, ул. Примерная, д. 17, кв. 26",
+   "г. Москва, ул. Примерная, д. 18, кв. 27",
+   "г. Москва, ул. Примерная, д. 19, кв. 28",
+   "г. Москва, ул. Примерная, д. 2, кв. 11",
+   "г. Москва, ул. Примерная, д. 20, кв. 29",
+   "г. Москва, ул. Примерная, д. 21, кв. 30",
+   "г. Москва, ул. Примерная, д. 22, кв. 31",
+   "г. Москва, ул. Примерная, д. 23, кв. 32",
+   "г. Москва, ул. Примерная, д. 24, кв. 33",
+   "г. Москва, ул. Примерная, д. 25, кв. 34",
+   "г. Москва, ул. Примерная, д. 3, кв. 12",
+   "г. Москва, ул. Примерная, д. 4, кв. 13",
+   "г. Москва, ул. Примерная, д. 5, кв. 14",
+   "г. Москва, ул. Примерная, д. 6, кв. 15",
+   "г. Москва, ул. Примерная, д. 7, кв. 16",
+   "г. Москва, ул. Примерная, д. 8, кв. 17",
+   "г. Москва, ул. Примерная, д. 9, кв. 18"
+  ],
+  "pii_emails": [
+   "owner10@example.test",
+   "owner11@example.test",
+   "owner12@example.test",
+   "owner13@example.test",
+   "owner14@example.test",
+   "owner15@example.test",
+   "owner16@example.test",
+   "owner17@example.test",
+   "owner18@example.test",
+   "owner19@example.test",
+   "owner1@example.test",
+   "owner20@example.test",
+   "owner21@example.test",
+   "owner22@example.test",
+   "owner23@example.test",
+   "owner24@example.test",
+   "owner25@example.test",
+   "owner2@example.test",
+   "owner3@example.test",
+   "owner4@example.test",
+   "owner5@example.test",
+   "owner6@example.test",
+   "owner7@example.test",
+   "owner8@example.test",
+   "owner9@example.test"
+  ]
+ },
+ "statements": {
+  "bank_statement_1.txt": {
+   "sections": [
+    {
+     "account_number": "40702810500000000101",
+     "date_from": "2026-09-01",
+     "date_to": "2026-09-22",
+     "opening_balance": 125000000,
+     "total_in": 19805270,
+     "total_out": 95693068,
+     "closing_balance": 49112202
+    },
+    {
+     "account_number": "40702810500000000102",
+     "date_from": "2026-09-01",
+     "date_to": "2026-09-22",
+     "opening_balance": 30000000,
+     "total_in": 20000000,
+     "total_out": 5000000,
+     "closing_balance": 45000000
+    }
+   ],
+   "documents": [
+    {
+     "number": "0051",
+     "type": "Платежное поручение",
+     "amount": 18000000,
+     "label": "d06"
+    },
+    {
+     "number": "5101",
+     "type": "Платежное поручение",
+     "amount": 450000,
+     "label": "d13"
+    },
+    {
+     "number": "7003",
+     "type": "Банковский ордер",
+     "amount": 2060100,
+     "label": "acq03"
+    },
+    {
+     "number": "0052",
+     "type": "Платежное поручение",
+     "amount": 9432050,
+     "label": "d07"
+    },
+    {
+     "number": "7004",
+     "type": "Банковский ордер",
+     "amount": 1961970,
+     "label": "acq04"
+    },
+    {
+     "number": "7007",
+     "type": "Банковский ордер",
+     "amount": 2158200,
+     "label": "acq07"
+    },
+    {
+     "number": "7101",
+     "type": "Банковский ордер",
+     "amount": 15000,
+     "label": "d08"
+    },
+    {
+     "number": "0053",
+     "type": "Платежное поручение",
+     "amount": 3890000,
+     "label": "d09"
+    },
+    {
+     "number": "0053",
+     "type": "Платежное поручение",
+     "amount": 3890000,
+     "label": "d09"
+    },
+    {
+     "number": "0065",
+     "type": "Платежное поручение",
+     "amount": 2380000,
+     "label": "d28"
+    },
+    {
+     "number": "0057",
+     "type": "Платежное поручение",
+     "amount": 310000,
+     "label": "d27"
+    },
+    {
+     "number": "5102",
+     "type": "Платежное поручение",
+     "amount": 230000,
+     "label": "d14"
+    },
+    {
+     "number": "0054",
+     "type": "Платежное требование",
+     "amount": 2246018,
+     "label": "d10"
+    },
+    {
+     "number": "5105",
+     "type": "Платежное поручение",
+     "amount": 340000,
+     "label": "d17"
+    },
+    {
+     "number": "0058",
+     "type": "Платежное поручение",
+     "amount": 20000000,
+     "label": "d24"
+    },
+    {
+     "number": "0066",
+     "type": "Платежное поручение",
+     "amount": 1100000,
+     "label": "d29"
+    },
+    {
+     "number": "7301",
+     "type": "Платежное поручение",
+     "amount": 500000,
+     "label": "d22"
+    },
+    {
+     "number": "7302",
+     "type": "Платежное поручение",
+     "amount": 500000,
+     "label": "d23"
+    },
+    {
+     "number": "0056",
+     "type": "Платежное поручение",
+     "amount": 31500000,
+     "label": "d12"
+    },
+    {
+     "number": "5103",
+     "type": "Платежное поручение",
+     "amount": 720000,
+     "label": "d15"
+    },
+    {
+     "number": "0055",
+     "type": "Платежное поручение",
+     "amount": 6700000,
+     "label": "d11"
+    },
+    {
+     "number": "7015",
+     "type": "Банковский ордер",
+     "amount": 1755000,
+     "label": "acq15"
+    },
+    {
+     "number": "5106",
+     "type": "Платежное поручение",
+     "amount": 980000,
+     "label": "d18"
+    },
+    {
+     "number": "0059",
+     "type": "Платежное поручение",
+     "amount": 120000,
+     "label": "d26"
+    },
+    {
+     "number": "218",
+     "type": "Платежное поручение",
+     "amount": 850000,
+     "label": "t1"
+    },
+    {
+     "number": "219",
+     "type": "Платежное поручение",
+     "amount": 850000,
+     "label": "t2"
+    },
+    {
+     "number": "77",
+     "type": "Платежное поручение",
+     "amount": 850000,
+     "label": "t3"
+    },
+    {
+     "number": "5104",
+     "type": "Платежное поручение",
+     "amount": 600000,
+     "label": "d16"
+    },
+    {
+     "number": "0064",
+     "type": "Платежное поручение",
+     "amount": 5000000,
+     "label": "d25"
+    }
+   ],
+   "sections_count": 29,
+   "unique_documents": 28,
+   "repeated_in_file": 1
+  },
+  "bank_statement_2.txt": {
+   "sections": [
+    {
+     "account_number": "40702810500000000101",
+     "date_from": "2026-09-15",
+     "date_to": "2026-09-30",
+     "opening_balance": 45047202,
+     "total_in": 16660500,
+     "total_out": 23478000,
+     "closing_balance": 38229702
+    }
+   ],
+   "documents": [
+    {
+     "number": "0055",
+     "type": "Платежное поручение",
+     "amount": 6700000,
+     "label": "d11"
+    },
+    {
+     "number": "7015",
+     "type": "Банковский ордер",
+     "amount": 1755000,
+     "label": "acq15"
+    },
+    {
+     "number": "5106",
+     "type": "Платежное поручение",
+     "amount": 980000,
+     "label": "d18"
+    },
+    {
+     "number": "0059",
+     "type": "Платежное поручение",
+     "amount": 120000,
+     "label": "d26"
+    },
+    {
+     "number": "218",
+     "type": "Платежное поручение",
+     "amount": 850000,
+     "label": "t1"
+    },
+    {
+     "number": "219",
+     "type": "Платежное поручение",
+     "amount": 850000,
+     "label": "t2"
+    },
+    {
+     "number": "77",
+     "type": "Платежное поручение",
+     "amount": 850000,
+     "label": "t3"
+    },
+    {
+     "number": "5104",
+     "type": "Платежное поручение",
+     "amount": 600000,
+     "label": "d16"
+    },
+    {
+     "number": "0064",
+     "type": "Платежное поручение",
+     "amount": 5000000,
+     "label": "d25"
+    },
+    {
+     "number": "5107",
+     "type": "Платежное поручение",
+     "amount": 380000,
+     "label": "e1"
+    },
+    {
+     "number": "0060",
+     "type": "Платежное поручение",
+     "amount": 6178000,
+     "label": "e2"
+    },
+    {
+     "number": "7024",
+     "type": "Банковский ордер",
+     "amount": 1569600,
+     "label": "acq24"
+    },
+    {
+     "number": "0061",
+     "type": "Платежное поручение",
+     "amount": 1240000,
+     "label": "e4"
+    },
+    {
+     "number": "0062",
+     "type": "Платежное поручение",
+     "amount": 5000000,
+     "label": "e3"
+    },
+    {
+     "number": "0063",
+     "type": "Платежное поручение",
+     "amount": 4120000,
+     "label": "e7"
+    },
+    {
+     "number": "7030",
+     "type": "Банковский ордер",
+     "amount": 3825900,
+     "label": "acq30"
+    },
+    {
+     "number": "7102",
+     "type": "Банковский ордер",
+     "amount": 120000,
+     "label": "e6"
+    }
+   ],
+   "sections_count": 17,
+   "unique_documents": 17,
+   "repeated_in_file": 0
+  }
+ },
+ "bad_format": {
+  "file": "bad_format_kl_to_1c.txt",
+  "error_code": "validation",
+  "created": 0
+ },
+ "steps": {
+  "import_file1": {
+   "parsed_documents": 29,
+   "skipped_in_file": 1,
+   "skipped_existing": 0,
+   "created": 30,
+   "duplicates": 3,
+   "check": 9,
+   "rule_applied": 17,
+   "transfers": 4,
+   "unique_legs": 30,
+   "created_labels": [
+    "d06",
+    "d13",
+    "acq03",
+    "d07",
+    "acq04",
+    "acq07",
+    "d08",
+    "d09",
+    "d28",
+    "d27",
+    "d14",
+    "d10",
+    "d17",
+    "d24/101",
+    "d24/102",
+    "d29",
+    "d22",
+    "d23",
+    "d12",
+    "d15",
+    "d11",
+    "acq15",
+    "d18",
+    "d26",
+    "t1",
+    "t2",
+    "t3",
+    "d16",
+    "d25/102",
+    "d25/101"
+   ]
+  },
+  "reimport_file1": {
+   "parsed_documents": 29,
+   "skipped_in_file": 1,
+   "skipped_existing": 30,
+   "created": 0,
+   "duplicates": 0,
+   "check": 0,
+   "rule_applied": 0,
+   "transfers": 0,
+   "unique_legs": 30
+  },
+  "import_file2": {
+   "parsed_documents": 17,
+   "skipped_in_file": 0,
+   "skipped_existing": 9,
+   "created": 8,
+   "duplicates": 0,
+   "check": 1,
+   "rule_applied": 7,
+   "transfers": 0,
+   "unique_legs": 17,
+   "created_labels": [
+    "e1",
+    "e2",
+    "acq24",
+    "e4",
+    "e3",
+    "e7",
+    "acq30",
+    "e6"
+   ]
+  },
+  "reimport_file2": {
+   "parsed_documents": 17,
+   "skipped_in_file": 0,
+   "skipped_existing": 17,
+   "created": 0,
+   "duplicates": 0,
+   "check": 0,
+   "rule_applied": 0,
+   "transfers": 0,
+   "unique_legs": 17
+  },
+  "manual_after_import": {
+   "status": "duplicate",
+   "duplicate_of": "d14"
+  },
+  "rule_created": {
+   "retro_applied": [
+    "d28"
+   ]
+  }
+ },
+ "duplicate_pairs": [
+  {
+   "duplicate": "d13",
+   "original": "b1"
+  },
+  {
+   "duplicate": "d15",
+   "original": "b2"
+  },
+  {
+   "duplicate": "d22",
+   "original": "b4"
+  },
+  {
+   "duplicate": "m_post",
+   "original": "d14"
+  }
+ ],
+ "not_duplicates": [
+  "b3",
+  "d16",
+  "m1",
+  "d17",
+  "d23",
+  "t1",
+  "t2",
+  "t3",
+  "d24/101",
+  "d24/102",
+  "d25/101",
+  "d25/102"
+ ],
+ "check_after_import_file1": [
+  "d07",
+  "d18",
+  "d26",
+  "d27",
+  "d28",
+  "d29",
+  "t1",
+  "t2",
+  "t3"
+ ],
+ "check_final": [
+  "d18",
+  "d26",
+  "d27",
+  "e4",
+  "t1",
+  "t2",
+  "t3"
+ ],
+ "rows_final": {
+  "b1": {
+   "date": "2026-09-03",
+   "amount": 450000,
+   "source": "bot",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "b2": {
+   "date": "2026-09-12",
+   "amount": 720000,
+   "source": "bot",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "b3": {
+   "date": "2026-09-14",
+   "amount": 600000,
+   "source": "bot",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "b4": {
+   "date": "2026-09-11",
+   "amount": 500000,
+   "source": "bot",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "m1": {
+   "date": "2026-09-10",
+   "amount": -340000,
+   "source": "manual",
+   "kind": "out",
+   "status": "ok",
+   "category": "Прочие расходы",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "vetmanager:payment:600": {
+   "date": "2026-09-01",
+   "amount": 620000,
+   "source": "vetmanager",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "cash"
+  },
+  "vetmanager:payment:601": {
+   "date": "2026-09-02",
+   "amount": 315050,
+   "source": "vetmanager",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "cash"
+  },
+  "vetmanager:payment:609": {
+   "date": "2026-09-08",
+   "amount": 990000,
+   "source": "vetmanager",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "cash"
+  },
+  "vetmanager:payment:615": {
+   "date": "2026-09-15",
+   "amount": 420000,
+   "source": "vetmanager",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "cash"
+  },
+  "vetmanager:payment:618": {
+   "date": "2026-09-22",
+   "amount": 735025,
+   "source": "vetmanager",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "cash"
+  },
+  "vetmanager:payment:622": {
+   "date": "2026-09-29",
+   "amount": 280000,
+   "source": "vetmanager",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "cash"
+  },
+  "d06": {
+   "date": "2026-09-02",
+   "amount": -18000000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Аренда",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d13": {
+   "date": "2026-09-03",
+   "amount": 450000,
+   "source": "bank",
+   "kind": "in",
+   "status": "duplicate",
+   "category": "Выручка",
+   "duplicate_of": "b1",
+   "account": "40702810500000000101"
+  },
+  "acq03": {
+   "date": "2026-09-03",
+   "amount": 2060100,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка (эквайринг)",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d07": {
+   "date": "2026-09-04",
+   "amount": -9432050,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Препараты",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "acq04": {
+   "date": "2026-09-04",
+   "amount": 1961970,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка (эквайринг)",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "acq07": {
+   "date": "2026-09-07",
+   "amount": 2158200,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка (эквайринг)",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d08": {
+   "date": "2026-09-07",
+   "amount": -15000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Банковские комиссии",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d09": {
+   "date": "2026-09-08",
+   "amount": -3890000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Лаборатория",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d28": {
+   "date": "2026-09-08",
+   "amount": -2380000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Препараты",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d27": {
+   "date": "2026-09-09",
+   "amount": -310000,
+   "source": "bank",
+   "kind": "out",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d14": {
+   "date": "2026-09-09",
+   "amount": 230000,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d10": {
+   "date": "2026-09-10",
+   "amount": -2246018,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Коммунальные услуги",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d17": {
+   "date": "2026-09-10",
+   "amount": 340000,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d24/101": {
+   "date": "2026-09-11",
+   "amount": -20000000,
+   "source": "bank",
+   "kind": "transfer",
+   "status": "ok",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d24/102": {
+   "date": "2026-09-11",
+   "amount": 20000000,
+   "source": "bank",
+   "kind": "transfer",
+   "status": "ok",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000102"
+  },
+  "d29": {
+   "date": "2026-09-11",
+   "amount": -1100000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Прочие расходы",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d22": {
+   "date": "2026-09-11",
+   "amount": 500000,
+   "source": "bank",
+   "kind": "in",
+   "status": "duplicate",
+   "category": "Выручка",
+   "duplicate_of": "b4",
+   "account": "40702810500000000101"
+  },
+  "d23": {
+   "date": "2026-09-11",
+   "amount": 500000,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d12": {
+   "date": "2026-09-14",
+   "amount": -31500000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Зарплата",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d15": {
+   "date": "2026-09-14",
+   "amount": 720000,
+   "source": "bank",
+   "kind": "in",
+   "status": "duplicate",
+   "category": "Выручка",
+   "duplicate_of": "b2",
+   "account": "40702810500000000101"
+  },
+  "d11": {
+   "date": "2026-09-15",
+   "amount": -6700000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Налоги и взносы",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "acq15": {
+   "date": "2026-09-15",
+   "amount": 1755000,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка (эквайринг)",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d18": {
+   "date": "2026-09-16",
+   "amount": 980000,
+   "source": "bank",
+   "kind": "in",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d26": {
+   "date": "2026-09-17",
+   "amount": -120000,
+   "source": "bank",
+   "kind": "out",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "t1": {
+   "date": "2026-09-18",
+   "amount": 850000,
+   "source": "bank",
+   "kind": "in",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "t2": {
+   "date": "2026-09-18",
+   "amount": 850000,
+   "source": "bank",
+   "kind": "in",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "t3": {
+   "date": "2026-09-18",
+   "amount": 850000,
+   "source": "bank",
+   "kind": "in",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d16": {
+   "date": "2026-09-20",
+   "amount": 600000,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "d25/102": {
+   "date": "2026-09-21",
+   "amount": -5000000,
+   "source": "bank",
+   "kind": "transfer",
+   "status": "ok",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000102"
+  },
+  "d25/101": {
+   "date": "2026-09-21",
+   "amount": 5000000,
+   "source": "bank",
+   "kind": "transfer",
+   "status": "ok",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "m_post": {
+   "date": "2026-09-09",
+   "amount": 230000,
+   "source": "manual",
+   "kind": "in",
+   "status": "duplicate",
+   "category": "Выручка",
+   "duplicate_of": "d14",
+   "account": "40702810500000000101"
+  },
+  "e1": {
+   "date": "2026-09-21",
+   "amount": 380000,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "e2": {
+   "date": "2026-09-24",
+   "amount": -6178000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Препараты",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "acq24": {
+   "date": "2026-09-24",
+   "amount": 1569600,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка (эквайринг)",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "e4": {
+   "date": "2026-09-25",
+   "amount": -1240000,
+   "source": "bank",
+   "kind": "out",
+   "status": "check",
+   "category": null,
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "e3": {
+   "date": "2026-09-28",
+   "amount": -5000000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Препараты",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "e7": {
+   "date": "2026-09-28",
+   "amount": -4120000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Налоги и взносы",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "acq30": {
+   "date": "2026-09-30",
+   "amount": 3825900,
+   "source": "bank",
+   "kind": "in",
+   "status": "ok",
+   "category": "Выручка (эквайринг)",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  },
+  "e6": {
+   "date": "2026-09-30",
+   "amount": -120000,
+   "source": "bank",
+   "kind": "out",
+   "status": "ok",
+   "category": "Банковские комиссии",
+   "duplicate_of": null,
+   "account": "40702810500000000101"
+  }
+ },
+ "summary_after_file1": {
+  "income": 18765345,
+  "expense": 76033068,
+  "balance": -57267723,
+  "income_breakdown": {
+   "Без статьи": 3530000,
+   "Выручка": 7300075,
+   "Выручка (эквайринг)": 7935270
+  },
+  "expense_breakdown": {
+   "Аренда": 18000000,
+   "Банковские комиссии": 15000,
+   "Без статьи": 13342050,
+   "Зарплата": 31500000,
+   "Коммунальные услуги": 2246018,
+   "Лаборатория": 3890000,
+   "Налоги и взносы": 6700000,
+   "Прочие расходы": 340000
+  }
+ },
+ "summary_final": {
+  "income": 24540845,
+  "expense": 92691068,
+  "balance": -68150223,
+  "income_breakdown": {
+   "Без статьи": 3530000,
+   "Выручка": 7680075,
+   "Выручка (эквайринг)": 13330770
+  },
+  "expense_breakdown": {
+   "Аренда": 18000000,
+   "Банковские комиссии": 135000,
+   "Без статьи": 1670000,
+   "Зарплата": 31500000,
+   "Коммунальные услуги": 2246018,
+   "Лаборатория": 3890000,
+   "Налоги и взносы": 10820000,
+   "Препараты": 22990050,
+   "Прочие расходы": 1440000
+  }
+ },
+ "summary_final_after_reupload": {
+  "income": 24540845,
+  "expense": 92691068,
+  "balance": -68150223,
+  "income_breakdown": {
+   "Без статьи": 3530000,
+   "Выручка": 7680075,
+   "Выручка (эквайринг)": 13330770
+  },
+  "expense_breakdown": {
+   "Аренда": 18000000,
+   "Банковские комиссии": 135000,
+   "Без статьи": 1670000,
+   "Зарплата": 31500000,
+   "Коммунальные услуги": 2246018,
+   "Лаборатория": 3890000,
+   "Налоги и взносы": 10820000,
+   "Препараты": 22990050,
+   "Прочие расходы": 1440000
+  }
+ },
+ "vetmanager": {
+  "visits": 24,
+  "visits_by_doctor": {
+   "D1": 9,
+   "D2": 8,
+   "D3": 7
+  },
+  "invoices_exec": 21,
+  "invoices_draft": 3,
+  "invoices_deleted": 1,
+  "sales_exec": 17860075,
+  "drafts_total": 2127000,
+  "lines_service": 12502052,
+  "lines_good": 5358023,
+  "payments": {
+   "cash": {
+    "count": 6,
+    "total": 3360075
+   },
+   "card": {
+    "count": 15,
+    "total": 14500000
+   }
+  },
+  "cash_transactions": [
+   {
+    "external_id": "vetmanager:payment:600",
+    "date": "2026-09-01",
+    "amount": 620000
+   },
+   {
+    "external_id": "vetmanager:payment:601",
+    "date": "2026-09-02",
+    "amount": 315050
+   },
+   {
+    "external_id": "vetmanager:payment:609",
+    "date": "2026-09-08",
+    "amount": 990000
+   },
+   {
+    "external_id": "vetmanager:payment:615",
+    "date": "2026-09-15",
+    "amount": 420000
+   },
+   {
+    "external_id": "vetmanager:payment:618",
+    "date": "2026-09-22",
+    "amount": 735025
+   },
+   {
+    "external_id": "vetmanager:payment:622",
+    "date": "2026-09-29",
+    "amount": 280000
+   }
+  ],
+  "card_payments_total": 14500000
+ },
+ "acquiring_params": {
+  "rate_bp": 190,
+  "max_delay_business_days": 3,
+  "tolerance_kop": 100,
+  "max_group_days": 3,
+  "mismatch_search_pct": 10
+ },
+ "acquiring_context": {
+  "as_of": "2026-09-30",
+  "bank_covered_to": "2026-09-30"
+ },
+ "acquiring": [
+  {
+   "sale_date": "2026-09-02",
+   "card_total": 2100000,
+   "expected_commission": 39900,
+   "expected_credit": 2060100,
+   "group_days": [
+    "2026-09-02"
+   ],
+   "credit_id": "acq03",
+   "credit_date": "2026-09-03",
+   "credit_amount": 2060100,
+   "group_gross": 2100000,
+   "group_expected_credit": 2060100,
+   "diff": 0,
+   "actual_commission": 39900,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-09-07",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-03",
+   "card_total": 2000000,
+   "expected_commission": 38000,
+   "expected_credit": 1962000,
+   "group_days": [
+    "2026-09-03"
+   ],
+   "credit_id": "acq04",
+   "credit_date": "2026-09-04",
+   "credit_amount": 1961970,
+   "group_gross": 2000000,
+   "group_expected_credit": 1962000,
+   "diff": -30,
+   "actual_commission": 38030,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-09-08",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-04",
+   "card_total": 1350000,
+   "expected_commission": 25650,
+   "expected_credit": 1324350,
+   "group_days": [
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06"
+   ],
+   "credit_id": "acq07",
+   "credit_date": "2026-09-07",
+   "credit_amount": 2158200,
+   "group_gross": 2200000,
+   "group_expected_credit": 2158200,
+   "diff": 0,
+   "actual_commission": 41800,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-09-09",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-05",
+   "card_total": 550000,
+   "expected_commission": 10450,
+   "expected_credit": 539550,
+   "group_days": [
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06"
+   ],
+   "credit_id": "acq07",
+   "credit_date": "2026-09-07",
+   "credit_amount": 2158200,
+   "group_gross": 2200000,
+   "group_expected_credit": 2158200,
+   "diff": 0,
+   "actual_commission": 41800,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-09-09",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-06",
+   "card_total": 300000,
+   "expected_commission": 5700,
+   "expected_credit": 294300,
+   "group_days": [
+    "2026-09-04",
+    "2026-09-05",
+    "2026-09-06"
+   ],
+   "credit_id": "acq07",
+   "credit_date": "2026-09-07",
+   "credit_amount": 2158200,
+   "group_gross": 2200000,
+   "group_expected_credit": 2158200,
+   "diff": 0,
+   "actual_commission": 41800,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-09-09",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-14",
+   "card_total": 1800000,
+   "expected_commission": 34200,
+   "expected_credit": 1765800,
+   "group_days": [
+    "2026-09-14"
+   ],
+   "credit_id": "acq15",
+   "credit_date": "2026-09-15",
+   "credit_amount": 1755000,
+   "group_gross": 1800000,
+   "group_expected_credit": 1765800,
+   "diff": -10800,
+   "actual_commission": 45000,
+   "actual_rate_bp": 250,
+   "delay_business_days": 1,
+   "expected_by": "2026-09-17",
+   "status": "mismatch"
+  },
+  {
+   "sale_date": "2026-09-21",
+   "card_total": 1600000,
+   "expected_commission": 30400,
+   "expected_credit": 1569600,
+   "group_days": [
+    "2026-09-21"
+   ],
+   "credit_id": "acq24",
+   "credit_date": "2026-09-24",
+   "credit_amount": 1569600,
+   "group_gross": 1600000,
+   "group_expected_credit": 1569600,
+   "diff": 0,
+   "actual_commission": 30400,
+   "actual_rate_bp": 190,
+   "delay_business_days": 3,
+   "expected_by": "2026-09-24",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-28",
+   "card_total": 2500000,
+   "expected_commission": 47500,
+   "expected_credit": 2452500,
+   "group_days": [
+    "2026-09-28",
+    "2026-09-29"
+   ],
+   "credit_id": "acq30",
+   "credit_date": "2026-09-30",
+   "credit_amount": 3825900,
+   "group_gross": 3900000,
+   "group_expected_credit": 3825900,
+   "diff": 0,
+   "actual_commission": 74100,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-10-01",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-29",
+   "card_total": 1400000,
+   "expected_commission": 26600,
+   "expected_credit": 1373400,
+   "group_days": [
+    "2026-09-28",
+    "2026-09-29"
+   ],
+   "credit_id": "acq30",
+   "credit_date": "2026-09-30",
+   "credit_amount": 3825900,
+   "group_gross": 3900000,
+   "group_expected_credit": 3825900,
+   "diff": 0,
+   "actual_commission": 74100,
+   "actual_rate_bp": 190,
+   "delay_business_days": 1,
+   "expected_by": "2026-10-02",
+   "status": "matched"
+  },
+  {
+   "sale_date": "2026-09-30",
+   "card_total": 900000,
+   "expected_commission": 17100,
+   "expected_credit": 882900,
+   "group_days": [
+    "2026-09-30"
+   ],
+   "credit_id": null,
+   "credit_date": null,
+   "credit_amount": null,
+   "group_gross": 900000,
+   "group_expected_credit": 882900,
+   "diff": null,
+   "actual_commission": null,
+   "actual_rate_bp": null,
+   "delay_business_days": null,
+   "expected_by": "2026-10-05",
+   "status": "waiting"
+  }
+ ],
+ "total_rows_final": 50,
+ "row_counts_by_status_final": {
+  "ok": 39,
+  "check": 7,
+  "duplicate": 4
+ }
+}

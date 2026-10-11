@@ -1,0 +1,184 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "25",
+  "pet": [
+   {
+    "id": "200",
+    "owner_id": "100",
+    "alias": "Бусинка",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "201",
+    "owner_id": "101",
+    "alias": "Рекс",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "202",
+    "owner_id": "102",
+    "alias": "Мурка",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "203",
+    "owner_id": "103",
+    "alias": "Барсик",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "204",
+    "owner_id": "104",
+    "alias": "Шарик",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "205",
+    "owner_id": "105",
+    "alias": "Бусинка",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "206",
+    "owner_id": "106",
+    "alias": "Рекс",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "207",
+    "owner_id": "107",
+    "alias": "Мурка",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "208",
+    "owner_id": "108",
+    "alias": "Барсик",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "209",
+    "owner_id": "109",
+    "alias": "Шарик",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "210",
+    "owner_id": "110",
+    "alias": "Бусинка",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "211",
+    "owner_id": "111",
+    "alias": "Рекс",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "212",
+    "owner_id": "112",
+    "alias": "Мурка",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "213",
+    "owner_id": "113",
+    "alias": "Барсик",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "214",
+    "owner_id": "114",
+    "alias": "Шарик",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "215",
+    "owner_id": "115",
+    "alias": "Бусинка",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "216",
+    "owner_id": "116",
+    "alias": "Рекс",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "217",
+    "owner_id": "117",
+    "alias": "Мурка",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "218",
+    "owner_id": "118",
+    "alias": "Барсик",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "219",
+    "owner_id": "119",
+    "alias": "Шарик",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "220",
+    "owner_id": "120",
+    "alias": "Бусинка",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "221",
+    "owner_id": "121",
+    "alias": "Рекс",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "222",
+    "owner_id": "122",
+    "alias": "Мурка",
+    "type_id": "2",
+    "sex": "female"
+   },
+   {
+    "id": "223",
+    "owner_id": "123",
+    "alias": "Барсик",
+    "type_id": "1",
+    "sex": "male"
+   },
+   {
+    "id": "224",
+    "owner_id": "124",
+    "alias": "Шарик",
+    "type_id": "2",
+    "sex": "female"
+   }
+  ]
+ }
+}

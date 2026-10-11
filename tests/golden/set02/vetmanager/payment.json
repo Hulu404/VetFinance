@@ -1,0 +1,219 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "21",
+  "payment": [
+   {
+    "id": "600",
+    "client_id": "100",
+    "invoice_id": "400",
+    "cassa_id": "1",
+    "amount": "6200.0000",
+    "status": "exec",
+    "create_date": "2026-09-01 10:00:00",
+    "description": ""
+   },
+   {
+    "id": "601",
+    "client_id": "101",
+    "invoice_id": "401",
+    "cassa_id": "1",
+    "amount": "3150.5000",
+    "status": "exec",
+    "create_date": "2026-09-02 11:11:00",
+    "description": ""
+   },
+   {
+    "id": "602",
+    "client_id": "102",
+    "invoice_id": "402",
+    "cassa_id": "2",
+    "amount": "8600.0000",
+    "status": "exec",
+    "create_date": "2026-09-02 12:22:00",
+    "description": ""
+   },
+   {
+    "id": "603",
+    "client_id": "103",
+    "invoice_id": "403",
+    "cassa_id": "2",
+    "amount": "12400.0000",
+    "status": "exec",
+    "create_date": "2026-09-02 13:33:00",
+    "description": ""
+   },
+   {
+    "id": "604",
+    "client_id": "104",
+    "invoice_id": "404",
+    "cassa_id": "2",
+    "amount": "4500.0000",
+    "status": "exec",
+    "create_date": "2026-09-03 14:44:00",
+    "description": ""
+   },
+   {
+    "id": "605",
+    "client_id": "105",
+    "invoice_id": "405",
+    "cassa_id": "2",
+    "amount": "15500.0000",
+    "status": "exec",
+    "create_date": "2026-09-03 15:55:00",
+    "description": ""
+   },
+   {
+    "id": "606",
+    "client_id": "106",
+    "invoice_id": "406",
+    "cassa_id": "2",
+    "amount": "13500.0000",
+    "status": "exec",
+    "create_date": "2026-09-04 16:06:00",
+    "description": ""
+   },
+   {
+    "id": "607",
+    "client_id": "107",
+    "invoice_id": "407",
+    "cassa_id": "2",
+    "amount": "5500.0000",
+    "status": "exec",
+    "create_date": "2026-09-05 17:17:00",
+    "description": ""
+   },
+   {
+    "id": "608",
+    "client_id": "108",
+    "invoice_id": "408",
+    "cassa_id": "2",
+    "amount": "3000.0000",
+    "status": "exec",
+    "create_date": "2026-09-06 10:28:00",
+    "description": ""
+   },
+   {
+    "id": "609",
+    "client_id": "109",
+    "invoice_id": "409",
+    "cassa_id": "1",
+    "amount": "9900.0000",
+    "status": "exec",
+    "create_date": "2026-09-08 11:39:00",
+    "description": ""
+   },
+   {
+    "id": "612",
+    "client_id": "112",
+    "invoice_id": "412",
+    "cassa_id": "2",
+    "amount": "3000.0000",
+    "status": "exec",
+    "create_date": "2026-09-14 14:12:00",
+    "description": ""
+   },
+   {
+    "id": "613",
+    "client_id": "113",
+    "invoice_id": "413",
+    "cassa_id": "2",
+    "amount": "6000.0000",
+    "status": "exec",
+    "create_date": "2026-09-14 15:23:00",
+    "description": ""
+   },
+   {
+    "id": "614",
+    "client_id": "114",
+    "invoice_id": "414",
+    "cassa_id": "2",
+    "amount": "9000.0000",
+    "status": "exec",
+    "create_date": "2026-09-14 16:34:00",
+    "description": ""
+   },
+   {
+    "id": "615",
+    "client_id": "115",
+    "invoice_id": "415",
+    "cassa_id": "1",
+    "amount": "4200.0000",
+    "status": "exec",
+    "create_date": "2026-09-15 17:45:00",
+    "description": ""
+   },
+   {
+    "id": "617",
+    "client_id": "117",
+    "invoice_id": "417",
+    "cassa_id": "2",
+    "amount": "16000.0000",
+    "status": "exec",
+    "create_date": "2026-09-21 11:07:00",
+    "description": ""
+   },
+   {
+    "id": "618",
+    "client_id": "118",
+    "invoice_id": "418",
+    "cassa_id": "1",
+    "amount": "7350.2500",
+    "status": "exec",
+    "create_date": "2026-09-22 12:18:00",
+    "description": ""
+   },
+   {
+    "id": "620",
+    "client_id": "120",
+    "invoice_id": "420",
+    "cassa_id": "2",
+    "amount": "11000.0000",
+    "status": "exec",
+    "create_date": "2026-09-28 14:40:00",
+    "description": ""
+   },
+   {
+    "id": "621",
+    "client_id": "121",
+    "invoice_id": "421",
+    "cassa_id": "2",
+    "amount": "14000.0000",
+    "status": "exec",
+    "create_date": "2026-09-28 15:51:00",
+    "description": ""
+   },
+   {
+    "id": "622",
+    "client_id": "122",
+    "invoice_id": "422",
+    "cassa_id": "1",
+    "amount": "2800.0000",
+    "status": "exec",
+    "create_date": "2026-09-29 16:02:00",
+    "description": ""
+   },
+   {
+    "id": "623",
+    "client_id": "123",
+    "invoice_id": "423",
+    "cassa_id": "2",
+    "amount": "14000.0000",
+    "status": "exec",
+    "create_date": "2026-09-29 17:13:00",
+    "description": ""
+   },
+   {
+    "id": "624",
+    "client_id": "124",
+    "invoice_id": "424",
+    "cassa_id": "2",
+    "amount": "9000.0000",
+    "status": "exec",
+    "create_date": "2026-09-30 10:24:00",
+    "description": ""
+   }
+  ]
+ }
+}

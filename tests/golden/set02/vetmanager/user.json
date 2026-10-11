@@ -1,0 +1,33 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "3",
+  "user": [
+   {
+    "id": "10",
+    "last_name": "Андреев",
+    "first_name": "Павел",
+    "middle_name": "Игоревич",
+    "is_active": "1",
+    "position_id": "1"
+   },
+   {
+    "id": "11",
+    "last_name": "Левина",
+    "first_name": "Ирина",
+    "middle_name": "Сергеевна",
+    "is_active": "1",
+    "position_id": "1"
+   },
+   {
+    "id": "12",
+    "last_name": "Сорокин",
+    "first_name": "Артём",
+    "middle_name": "Денисович",
+    "is_active": "1",
+    "position_id": "1"
+   }
+  ]
+ }
+}

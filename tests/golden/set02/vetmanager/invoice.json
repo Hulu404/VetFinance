@@ -1,0 +1,259 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "25",
+  "invoice": [
+   {
+    "id": "400",
+    "client_id": "100",
+    "pet_id": "200",
+    "user_id": "10",
+    "invoice_date": "2026-09-01 09:00:00",
+    "amount": "6200.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "401",
+    "client_id": "101",
+    "pet_id": "201",
+    "user_id": "11",
+    "invoice_date": "2026-09-02 10:07:00",
+    "amount": "3150.5000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "402",
+    "client_id": "102",
+    "pet_id": "202",
+    "user_id": "12",
+    "invoice_date": "2026-09-02 11:14:00",
+    "amount": "8600.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "403",
+    "client_id": "103",
+    "pet_id": "203",
+    "user_id": "10",
+    "invoice_date": "2026-09-02 12:21:00",
+    "amount": "12400.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "404",
+    "client_id": "104",
+    "pet_id": "204",
+    "user_id": "11",
+    "invoice_date": "2026-09-03 13:28:00",
+    "amount": "4500.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "405",
+    "client_id": "105",
+    "pet_id": "205",
+    "user_id": "12",
+    "invoice_date": "2026-09-03 14:35:00",
+    "amount": "15500.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "406",
+    "client_id": "106",
+    "pet_id": "206",
+    "user_id": "10",
+    "invoice_date": "2026-09-04 15:42:00",
+    "amount": "13500.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "407",
+    "client_id": "107",
+    "pet_id": "207",
+    "user_id": "11",
+    "invoice_date": "2026-09-05 16:49:00",
+    "amount": "5500.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "408",
+    "client_id": "108",
+    "pet_id": "208",
+    "user_id": "12",
+    "invoice_date": "2026-09-06 09:56:00",
+    "amount": "3000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "409",
+    "client_id": "109",
+    "pet_id": "209",
+    "user_id": "10",
+    "invoice_date": "2026-09-08 10:03:00",
+    "amount": "9900.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "410",
+    "client_id": "110",
+    "pet_id": "210",
+    "user_id": "11",
+    "invoice_date": "2026-09-09 11:10:00",
+    "amount": "5400.0000",
+    "status": "save",
+    "description": ""
+   },
+   {
+    "id": "411",
+    "client_id": "111",
+    "pet_id": "211",
+    "user_id": "12",
+    "invoice_date": "2026-09-10 12:17:00",
+    "amount": "8000.0000",
+    "status": "deleted",
+    "description": ""
+   },
+   {
+    "id": "412",
+    "client_id": "112",
+    "pet_id": "212",
+    "user_id": "10",
+    "invoice_date": "2026-09-14 13:24:00",
+    "amount": "3000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "413",
+    "client_id": "113",
+    "pet_id": "213",
+    "user_id": "11",
+    "invoice_date": "2026-09-14 14:31:00",
+    "amount": "6000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "414",
+    "client_id": "114",
+    "pet_id": "214",
+    "user_id": "12",
+    "invoice_date": "2026-09-14 15:38:00",
+    "amount": "9000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "415",
+    "client_id": "115",
+    "pet_id": "215",
+    "user_id": "10",
+    "invoice_date": "2026-09-15 16:45:00",
+    "amount": "4200.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "416",
+    "client_id": "116",
+    "pet_id": "216",
+    "user_id": "11",
+    "invoice_date": "2026-09-16 09:52:00",
+    "amount": "12750.0000",
+    "status": "save",
+    "description": ""
+   },
+   {
+    "id": "417",
+    "client_id": "117",
+    "pet_id": "217",
+    "user_id": "12",
+    "invoice_date": "2026-09-21 10:59:00",
+    "amount": "16000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "418",
+    "client_id": "118",
+    "pet_id": "218",
+    "user_id": "10",
+    "invoice_date": "2026-09-22 11:06:00",
+    "amount": "7350.2500",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "419",
+    "client_id": "119",
+    "pet_id": "219",
+    "user_id": "11",
+    "invoice_date": "2026-09-23 12:13:00",
+    "amount": "3120.0000",
+    "status": "save",
+    "description": ""
+   },
+   {
+    "id": "420",
+    "client_id": "120",
+    "pet_id": "220",
+    "user_id": "12",
+    "invoice_date": "2026-09-28 13:20:00",
+    "amount": "11000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "421",
+    "client_id": "121",
+    "pet_id": "221",
+    "user_id": "10",
+    "invoice_date": "2026-09-28 14:27:00",
+    "amount": "14000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "422",
+    "client_id": "122",
+    "pet_id": "222",
+    "user_id": "11",
+    "invoice_date": "2026-09-29 15:34:00",
+    "amount": "2800.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "423",
+    "client_id": "123",
+    "pet_id": "223",
+    "user_id": "12",
+    "invoice_date": "2026-09-29 16:41:00",
+    "amount": "14000.0000",
+    "status": "exec",
+    "description": ""
+   },
+   {
+    "id": "424",
+    "client_id": "124",
+    "pet_id": "224",
+    "user_id": "10",
+    "invoice_date": "2026-09-30 09:48:00",
+    "amount": "9000.0000",
+    "status": "exec",
+    "description": ""
+   }
+  ]
+ }
+}

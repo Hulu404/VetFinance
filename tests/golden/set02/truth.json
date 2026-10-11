@@ -1,0 +1,453 @@
+{
+ "legs": {
+  "acq03": {
+   "category": "Выручка (эквайринг)",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "acq04": {
+   "category": "Выручка (эквайринг)",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "acq07": {
+   "category": "Выручка (эквайринг)",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "acq15": {
+   "category": "Выручка (эквайринг)",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "acq24": {
+   "category": "Выручка (эквайринг)",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "acq30": {
+   "category": "Выручка (эквайринг)",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "d06": {
+   "category": "Аренда",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d07": {
+   "category": "Препараты",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d28": {
+   "category": "Препараты",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d29": {
+   "category": "Прочие расходы",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d08": {
+   "category": "Банковские комиссии",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d09": {
+   "category": "Лаборатория",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d10": {
+   "category": "Коммунальные услуги",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d11": {
+   "category": "Налоги и взносы",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d12": {
+   "category": "Зарплата",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d27": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d26": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "e6": {
+   "category": "Банковские комиссии",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "e7": {
+   "category": "Налоги и взносы",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "e2": {
+   "category": "Препараты",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "e3": {
+   "category": "Препараты",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "e4": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  },
+  "d13": {
+   "category": "Выручка",
+   "status": "duplicate",
+   "dup_of": "b1",
+   "kind": "in",
+   "transfer": false
+  },
+  "d14": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "d15": {
+   "category": "Выручка",
+   "status": "duplicate",
+   "dup_of": "b2",
+   "kind": "in",
+   "transfer": false
+  },
+  "d16": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "d17": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "d18": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "d22": {
+   "category": "Выручка",
+   "status": "duplicate",
+   "dup_of": "b4",
+   "kind": "in",
+   "transfer": false
+  },
+  "d23": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "e1": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "t1": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "t2": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "t3": {
+   "category": null,
+   "status": "check",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "d24": {
+   "category": null,
+   "status": "ok",
+   "dup_of": null,
+   "kind": "transfer",
+   "transfer": true
+  },
+  "d25": {
+   "category": null,
+   "status": "ok",
+   "dup_of": null,
+   "kind": "transfer",
+   "transfer": true
+  },
+  "m_post": {
+   "category": "Выручка",
+   "status": "duplicate",
+   "dup_of": "d14",
+   "kind": "in",
+   "transfer": false
+  },
+  "b1": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "b2": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "b3": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "b4": {
+   "category": "Выручка",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "in",
+   "transfer": false
+  },
+  "m1": {
+   "category": "Прочие расходы",
+   "status": "ok",
+   "dup_of": null,
+   "kind": "out",
+   "transfer": false
+  }
+ },
+ "numbers": {
+  "acq03": "7003",
+  "acq04": "7004",
+  "acq07": "7007",
+  "acq15": "7015",
+  "acq24": "7024",
+  "acq30": "7030",
+  "d06": "0051",
+  "d07": "0052",
+  "d28": "0065",
+  "d29": "0066",
+  "d08": "7101",
+  "d09": "0053",
+  "d10": "0054",
+  "d11": "0055",
+  "d12": "0056",
+  "d27": "0057",
+  "d26": "0059",
+  "e6": "7102",
+  "e7": "0063",
+  "e2": "0060",
+  "e3": "0062",
+  "e4": "0061",
+  "d13": "5101",
+  "d14": "5102",
+  "d15": "5103",
+  "d16": "5104",
+  "d17": "5105",
+  "d18": "5106",
+  "d22": "7301",
+  "d23": "7302",
+  "e1": "5107",
+  "t1": "218",
+  "t2": "219",
+  "t3": "77",
+  "d24": "0058",
+  "d25": "0064"
+ },
+ "pii_surnames": [
+  "Белова",
+  "Беляева",
+  "Богданова",
+  "Васильева",
+  "Виноградов",
+  "Волков",
+  "Голубева",
+  "Григорьева",
+  "Ершов",
+  "Зайцев",
+  "Комаров",
+  "Кузнецова",
+  "Лебедев",
+  "Михайлов",
+  "Морозов",
+  "Никитина",
+  "Новикова",
+  "Орлова",
+  "Павлова",
+  "Попов",
+  "Семёнов",
+  "Смирнова",
+  "Соколова",
+  "Тарасов",
+  "Фёдоров"
+ ],
+ "pii_phones": [
+  "+7 (916) 100-00-10",
+  "+7 (916) 100-00-11",
+  "+7 (916) 100-00-12",
+  "+7 (916) 100-00-13",
+  "+7 (916) 100-00-14",
+  "+7 (916) 100-00-15",
+  "+7 (916) 100-00-16",
+  "+7 (916) 100-00-17",
+  "+7 (916) 100-00-18",
+  "+7 (916) 100-00-19",
+  "+7 (916) 100-00-20",
+  "+7 (916) 100-00-21",
+  "+7 (916) 100-00-22",
+  "+7 (916) 100-00-23",
+  "+7 (916) 100-00-24",
+  "+7 (916) 100-00-25",
+  "+7 (916) 100-00-26",
+  "+7 (916) 100-00-27",
+  "+7 (916) 100-00-28",
+  "+7 (916) 100-00-29",
+  "+7 (916) 100-00-30",
+  "+7 (916) 100-00-31",
+  "+7 (916) 100-00-32",
+  "+7 (916) 100-00-33",
+  "+7 (916) 100-00-34"
+ ],
+ "pii_addresses": [
+  "г. Москва, ул. Примерная, д. 1, кв. 10",
+  "г. Москва, ул. Примерная, д. 10, кв. 19",
+  "г. Москва, ул. Примерная, д. 11, кв. 20",
+  "г. Москва, ул. Примерная, д. 12, кв. 21",
+  "г. Москва, ул. Примерная, д. 13, кв. 22",
+  "г. Москва, ул. Примерная, д. 14, кв. 23",
+  "г. Москва, ул. Примерная, д. 15, кв. 24",
+  "г. Москва, ул. Примерная, д. 16, кв. 25",
+  "г. Москва, ул. Примерная, д. 17, кв. 26",
+  "г. Москва, ул. Примерная, д. 18, кв. 27",
+  "г. Москва, ул. Примерная, д. 19, кв. 28",
+  "г. Москва, ул. Примерная, д. 2, кв. 11",
+  "г. Москва, ул. Примерная, д. 20, кв. 29",
+  "г. Москва, ул. Примерная, д. 21, кв. 30",
+  "г. Москва, ул. Примерная, д. 22, кв. 31",
+  "г. Москва, ул. Примерная, д. 23, кв. 32",
+  "г. Москва, ул. Примерная, д. 24, кв. 33",
+  "г. Москва, ул. Примерная, д. 25, кв. 34",
+  "г. Москва, ул. Примерная, д. 3, кв. 12",
+  "г. Москва, ул. Примерная, д. 4, кв. 13",
+  "г. Москва, ул. Примерная, д. 5, кв. 14",
+  "г. Москва, ул. Примерная, д. 6, кв. 15",
+  "г. Москва, ул. Примерная, д. 7, кв. 16",
+  "г. Москва, ул. Примерная, д. 8, кв. 17",
+  "г. Москва, ул. Примерная, д. 9, кв. 18"
+ ],
+ "pii_emails": [
+  "owner10@example.test",
+  "owner11@example.test",
+  "owner12@example.test",
+  "owner13@example.test",
+  "owner14@example.test",
+  "owner15@example.test",
+  "owner16@example.test",
+  "owner17@example.test",
+  "owner18@example.test",
+  "owner19@example.test",
+  "owner1@example.test",
+  "owner20@example.test",
+  "owner21@example.test",
+  "owner22@example.test",
+  "owner23@example.test",
+  "owner24@example.test",
+  "owner25@example.test",
+  "owner2@example.test",
+  "owner3@example.test",
+  "owner4@example.test",
+  "owner5@example.test",
+  "owner6@example.test",
+  "owner7@example.test",
+  "owner8@example.test",
+  "owner9@example.test"
+ ],
+ "ambiguity_pair": {
+  "existing": "b4",
+  "candidates": [
+   "d22",
+   "d23"
+  ],
+  "kept_pair": "d22"
+ },
+ "note": "Hand-written labels: what the product SHOULD produce. expected.json is cross-checked against them."
+}

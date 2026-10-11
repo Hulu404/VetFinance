@@ -1,0 +1,39 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "6",
+  "good": [
+   {
+    "id": "1",
+    "title": "Первичный приём",
+    "is_service": "1"
+   },
+   {
+    "id": "2",
+    "title": "Вакцинация",
+    "is_service": "1"
+   },
+   {
+    "id": "3",
+    "title": "УЗИ",
+    "is_service": "1"
+   },
+   {
+    "id": "4",
+    "title": "Хирургия",
+    "is_service": "1"
+   },
+   {
+    "id": "11",
+    "title": "Корм лечебный",
+    "is_service": "0"
+   },
+   {
+    "id": "12",
+    "title": "Препарат",
+    "is_service": "0"
+   }
+  ]
+ }
+}

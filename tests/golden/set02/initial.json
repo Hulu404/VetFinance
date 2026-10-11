@@ -1,0 +1,205 @@
+{
+ "clinic": {
+  "name": "Клиника «Лапа» (набор 2)",
+  "inn": "7799000100",
+  "timezone": "Europe/Moscow"
+ },
+ "accounts": [
+  {
+   "key": "main",
+   "name": "Расчётный счёт",
+   "kind": "bank",
+   "number": "40702810500000000101",
+   "opening_balance": 125000000,
+   "opening_date": "2026-09-01"
+  },
+  {
+   "key": "reserve",
+   "name": "Резервный счёт",
+   "kind": "bank",
+   "number": "40702810500000000102",
+   "opening_balance": 30000000,
+   "opening_date": "2026-09-01"
+  },
+  {
+   "key": "cash",
+   "name": "Касса",
+   "kind": "cash",
+   "number": null,
+   "opening_balance": 5000000,
+   "opening_date": "2026-09-01"
+  }
+ ],
+ "categories": [
+  {
+   "name": "Выручка",
+   "type": "income"
+  },
+  {
+   "name": "Выручка (эквайринг)",
+   "type": "income"
+  },
+  {
+   "name": "Аренда",
+   "type": "expense"
+  },
+  {
+   "name": "Препараты",
+   "type": "expense"
+  },
+  {
+   "name": "Лаборатория",
+   "type": "expense"
+  },
+  {
+   "name": "Коммунальные услуги",
+   "type": "expense"
+  },
+  {
+   "name": "Налоги и взносы",
+   "type": "expense"
+  },
+  {
+   "name": "Зарплата",
+   "type": "expense"
+  },
+  {
+   "name": "Банковские комиссии",
+   "type": "expense"
+  },
+  {
+   "name": "Прочие расходы",
+   "type": "expense"
+  }
+ ],
+ "starter_rules": [
+  {
+   "match": "text",
+   "value": "эквайринга",
+   "direction": "in",
+   "category": "Выручка (эквайринг)"
+  },
+  {
+   "match": "inn",
+   "value": "7701000011",
+   "direction": null,
+   "category": "Аренда"
+  },
+  {
+   "match": "inn",
+   "value": "7703000044",
+   "direction": null,
+   "category": "Коммунальные услуги"
+  },
+  {
+   "match": "inn",
+   "value": "7704000055",
+   "direction": null,
+   "category": "Лаборатория"
+  },
+  {
+   "match": "text",
+   "value": "единый налоговый платеж",
+   "direction": "out",
+   "category": "Налоги и взносы"
+  },
+  {
+   "match": "text",
+   "value": "заработной платы",
+   "direction": "out",
+   "category": "Зарплата"
+  },
+  {
+   "match": "text",
+   "value": "комиссия за",
+   "direction": "out",
+   "category": "Банковские комиссии"
+  },
+  {
+   "match": "text",
+   "value": "ветеринарных услуг",
+   "direction": "in",
+   "category": "Выручка"
+  }
+ ],
+ "acquiring": {
+  "rate_bp": 190,
+  "max_delay_business_days": 3,
+  "tolerance_kop": 100,
+  "max_group_days": 3,
+  "mismatch_search_pct": 10
+ },
+ "existing_transactions": [
+  {
+   "label": "b1",
+   "account": "main",
+   "date": "2026-09-03",
+   "amount": 450000,
+   "source": "bot",
+   "category": "Выручка",
+   "description": "Оплата приема (бот)",
+   "note": "duplicate of d13 (same day)"
+  },
+  {
+   "label": "b2",
+   "account": "main",
+   "date": "2026-09-12",
+   "amount": 720000,
+   "source": "bot",
+   "category": "Выручка",
+   "description": "Оплата приема (бот)",
+   "note": "duplicate of d15 (bank date +2 days)"
+  },
+  {
+   "label": "b3",
+   "account": "main",
+   "date": "2026-09-14",
+   "amount": 600000,
+   "source": "bot",
+   "category": "Выручка",
+   "description": "Оплата приема (бот)",
+   "note": "NOT a duplicate of d16: 6 days apart"
+  },
+  {
+   "label": "b4",
+   "account": "main",
+   "date": "2026-09-11",
+   "amount": 500000,
+   "source": "bot",
+   "category": "Выручка",
+   "description": "Оплата приема (бот)",
+   "note": "pairs with exactly one of d22/d23 (the first by number)"
+  },
+  {
+   "label": "m1",
+   "account": "main",
+   "date": "2026-09-10",
+   "amount": -340000,
+   "source": "manual",
+   "category": "Прочие расходы",
+   "description": "Выплата курьеру",
+   "note": "NOT a duplicate of d17: opposite sign"
+  }
+ ],
+ "manual_after_first_import": {
+  "label": "m_post",
+  "account": "main",
+  "date": "2026-09-09",
+  "amount": 230000,
+  "source": "manual",
+  "category": "Выручка",
+  "description": "Оплата приема (ввод вручную)",
+  "note": "entered after file 1: becomes duplicate of d14"
+ },
+ "manual_category_before_rule": {
+  "label": "d29",
+  "category": "Прочие расходы"
+ },
+ "user_rule_from_edit": {
+  "created_from": "d07",
+  "match": "inn",
+  "value": "7702000022",
+  "direction": null,
+  "category": "Препараты"
+ }
+}

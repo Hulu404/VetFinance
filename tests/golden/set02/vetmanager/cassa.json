@@ -1,0 +1,19 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "2",
+  "cassa": [
+   {
+    "id": "1",
+    "title": "Касса (наличные)",
+    "type": "cash"
+   },
+   {
+    "id": "2",
+    "title": "Эквайринг (терминал)",
+    "type": "card"
+   }
+  ]
+ }
+}

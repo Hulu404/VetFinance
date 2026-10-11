@@ -1,0 +1,234 @@
+{
+ "success": true,
+ "message": "Records Retrieved Successfully",
+ "data": {
+  "totalCount": "25",
+  "admission": [
+   {
+    "id": "300",
+    "client_id": "100",
+    "patient_id": "200",
+    "user_id": "10",
+    "admission_date": "2026-09-01 09:00:00",
+    "status": "save",
+    "description": "Со слов владельца Смирнова: вялость, отказ от корма."
+   },
+   {
+    "id": "301",
+    "client_id": "101",
+    "patient_id": "201",
+    "user_id": "11",
+    "admission_date": "2026-09-02 10:07:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "302",
+    "client_id": "102",
+    "patient_id": "202",
+    "user_id": "12",
+    "admission_date": "2026-09-02 11:14:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "303",
+    "client_id": "103",
+    "patient_id": "203",
+    "user_id": "10",
+    "admission_date": "2026-09-02 12:21:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "304",
+    "client_id": "104",
+    "patient_id": "204",
+    "user_id": "11",
+    "admission_date": "2026-09-03 13:28:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "305",
+    "client_id": "105",
+    "patient_id": "205",
+    "user_id": "12",
+    "admission_date": "2026-09-03 14:35:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "306",
+    "client_id": "106",
+    "patient_id": "206",
+    "user_id": "10",
+    "admission_date": "2026-09-04 15:42:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "307",
+    "client_id": "107",
+    "patient_id": "207",
+    "user_id": "11",
+    "admission_date": "2026-09-05 16:49:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "308",
+    "client_id": "108",
+    "patient_id": "208",
+    "user_id": "12",
+    "admission_date": "2026-09-06 09:56:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "309",
+    "client_id": "109",
+    "patient_id": "209",
+    "user_id": "10",
+    "admission_date": "2026-09-08 10:03:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "310",
+    "client_id": "110",
+    "patient_id": "210",
+    "user_id": "11",
+    "admission_date": "2026-09-09 11:10:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "311",
+    "client_id": "111",
+    "patient_id": "211",
+    "user_id": "12",
+    "admission_date": "2026-09-10 12:17:00",
+    "status": "delete",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "312",
+    "client_id": "112",
+    "patient_id": "212",
+    "user_id": "10",
+    "admission_date": "2026-09-14 13:24:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "313",
+    "client_id": "113",
+    "patient_id": "213",
+    "user_id": "11",
+    "admission_date": "2026-09-14 14:31:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "314",
+    "client_id": "114",
+    "patient_id": "214",
+    "user_id": "12",
+    "admission_date": "2026-09-14 15:38:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "315",
+    "client_id": "115",
+    "patient_id": "215",
+    "user_id": "10",
+    "admission_date": "2026-09-15 16:45:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "316",
+    "client_id": "116",
+    "patient_id": "216",
+    "user_id": "11",
+    "admission_date": "2026-09-16 09:52:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "317",
+    "client_id": "117",
+    "patient_id": "217",
+    "user_id": "12",
+    "admission_date": "2026-09-21 10:59:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "318",
+    "client_id": "118",
+    "patient_id": "218",
+    "user_id": "10",
+    "admission_date": "2026-09-22 11:06:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "319",
+    "client_id": "119",
+    "patient_id": "219",
+    "user_id": "11",
+    "admission_date": "2026-09-23 12:13:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "320",
+    "client_id": "120",
+    "patient_id": "220",
+    "user_id": "12",
+    "admission_date": "2026-09-28 13:20:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "321",
+    "client_id": "121",
+    "patient_id": "221",
+    "user_id": "10",
+    "admission_date": "2026-09-28 14:27:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "322",
+    "client_id": "122",
+    "patient_id": "222",
+    "user_id": "11",
+    "admission_date": "2026-09-29 15:34:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "323",
+    "client_id": "123",
+    "patient_id": "223",
+    "user_id": "12",
+    "admission_date": "2026-09-29 16:41:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   },
+   {
+    "id": "324",
+    "client_id": "124",
+    "patient_id": "224",
+    "user_id": "10",
+    "admission_date": "2026-09-30 09:48:00",
+    "status": "save",
+    "description": "Осмотр, назначения выданы."
+   }
+  ]
+ }
+}
