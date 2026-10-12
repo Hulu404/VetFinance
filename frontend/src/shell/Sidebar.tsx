@@ -41,7 +41,7 @@ function SoonItem({ item }: { item: MenuItem }) {
 
 function ReadyLink({ item, sub = false }: { item: MenuItem; sub?: boolean }) {
   return (
-    <NavLink to={item.path ?? '/'} end className={sub ? 'nav__sub-item' : 'nav__item'}>
+    <NavLink to={item.path ?? '/'} end={item.path === '/'} className={sub ? 'nav__sub-item' : 'nav__item'}>
       {item.icon && <Icon id={item.icon} />}
       <span className="nav__text">{item.label}</span>
     </NavLink>

@@ -88,4 +88,5 @@ class DashboardBalanceOut(BaseModel):
 class DashboardOut(BaseModel):
     as_of: date
     data_as_of: datetime | None
+    data_stale: bool
     balance: DashboardBalanceOut

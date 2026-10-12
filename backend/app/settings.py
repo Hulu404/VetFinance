@@ -14,6 +14,12 @@ class Settings(BaseSettings):
     supabase_jwt_secret: SecretStr = SecretStr("")
     jwt_audience: str = "authenticated"
     cors_origins: str = ""  # comma-separated list of allowed origins
+    # Fernet key (urlsafe base64, 32 bytes) that encrypts Vetmanager API keys before they reach the database
+    secrets_key: SecretStr = SecretStr("")
+    # Vetmanager addresses are accepted only in these domains (protects the server from SSRF)
+    vetmanager_host_suffixes: str = "vetmanager.ru,vetmanager.cloud,vetmanager2.ru"
+    # Service endpoint that loads raw Vetmanager responses without a live account (tests, manual load)
+    vetmanager_import_enabled: bool = False
 
 
 @lru_cache

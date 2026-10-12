@@ -63,7 +63,8 @@ describe('App: login and shell', () => {
 
     const nav = screen.getByRole('navigation', { name: 'Основное меню' })
     expect(within(nav).getByRole('link', { name: 'Рабочий стол' })).toHaveAttribute('aria-current', 'page')
-    expect(within(nav).getByRole('button', { name: /Транзакции/ })).toBeDisabled()
+    expect(within(nav).getByRole('link', { name: 'Транзакции' })).toHaveAttribute('href', '/transactions')
+    expect(within(nav).getByRole('button', { name: /Прайс услуг/ })).toBeDisabled()
     expect(within(nav).getByRole('button', { name: /Отчёты/ })).toBeDisabled()
     expect(within(nav).queryByText('Врачи')).not.toBeInTheDocument()
   })
@@ -94,10 +95,10 @@ describe('App: login and shell', () => {
 
   it('shows a stub for a section that is not ready when its address is typed', async () => {
     const user = userEvent.setup()
-    renderWithAuth(<App />, '/transactions')
+    renderWithAuth(<App />, '/price')
     await signIn(user)
 
-    expect(await screen.findByRole('heading', { name: 'Транзакции' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Прайс услуг' })).toBeInTheDocument()
     expect(screen.getByText('Этот раздел откроем позже. Сейчас доступен Рабочий стол.')).toBeInTheDocument()
   })
 

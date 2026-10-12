@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ВетФинанс, прототип v7</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cg fill=%27%23B8174F%27%3E%3Ccircle cx=%275%27 cy=%276.6%27 r=%272.35%27/%3E%3Ccircle cx=%2712%27 cy=%273.3%27 r=%272.35%27/%3E%3Ccircle cx=%2719%27 cy=%275.4%27 r=%272.35%27/%3E%3Crect x=%272.75%27 y=%2710.4%27 width=%274.5%27 height=%2710.6%27 rx=%272.25%27/%3E%3Crect x=%279.75%27 y=%277.1%27 width=%274.5%27 height=%2713.9%27 rx=%272.25%27/%3E%3Crect x=%2716.75%27 y=%279.2%27 width=%274.5%27 height=%2711.8%27 rx=%272.25%27/%3E%3C/g%3E%3C/svg%3E">
+<!--
+  Прототип v7 (design/vetfinance-prototip-v7.html). v6 не изменён.
+  Что исправлено относительно v6 (подробности: design/screens/dashboard.md, раздел «Что отличается от v6»):
+  - арифметика: «+3,8%» стало 3,9% (15 400 / 397 400); прибыль IV кв. 2026 считается тождеством (выручка − переменные − постоянные − налоги − обязательства);
+    рост к ПРЕДЫДУЩЕМУ кварталу (−1,4%, а не +10,8% к IV кв. 2025); разбивки и итоги сходятся (касса, банк, месяц, прогноз, амортизация, срок годности);
+  - в ОПиУ добавлена строка «Обязательства и амортизация»; чистая прибыль августа 152 600 ₽ (была 186 000 ₽ без неё);
+  - календарь на 22 дня вперёд (скользящее окно), красный день имеет подпись «ниже запаса»;
+  - убраны роли, филиалы, годовая подписка, Telegram-бот, «Врачи», блок «Спросите про свои деньги» и слова «Ответ ИИ»;
+  - подсказки привязаны к элементу и открываются с клавиатуры (Tab, Esc) и касанием; на Рабочем столе подсказка у каждой цифры;
+  - тёмный мелкий текст вместо #A7A5B2, минимальный шрифт 11px, фокус без чужого радиуса;
+  - Рабочий стол: состояния для просмотра (кнопки внизу экрана; только в прототипе).
+  Шрифт Onest подключён с Google Fonts только для просмотра прототипа; в продукте он ставится из пакета @fontsource/onest.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#B8174F; --accent-dark:#8A0F3A; --accent-soft:#F8E1E9; --accent-soft2:#FCF1F5; --accent-mid:#D6567F; --accent-light:#E9A3BB;
+  --ink:#15141B; --ink-soft:#6C6B78; --ink-faint:#A7A5B2;
+  --bg-soft:#F7F6F9; --sidebar:#15131C; --border:#EDEAF2; --track:#F0EEF4; --control-border:#8E8C9A;
+  --ok:#12875E; --ok-ink:#0E7350; --ok-soft:#E1F6ED; --warn:#A6690A; --warn-ink:#8F5A06; --warn-soft:#FDF0D9;
+  --bad:#C23A22; --bad-soft:#FCEBE7; --vm:#2563EB; --vm-ink:#1D4ED8; --vm-soft:#E7EFFE;
+  --r:20px; --sh:0 1px 2px rgba(20,10,25,.04),0 10px 30px -16px rgba(20,10,25,.14);
+  --ease:cubic-bezier(.22,.9,.32,1);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{margin:0;font-family:'Onest',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg-soft);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;letter-spacing:-.02em} p{margin:0} button{font-family:inherit}
+::selection{background:var(--accent-soft);color:var(--accent-dark)}
+:focus-visible{outline:2.5px solid var(--accent-dark);outline-offset:2px}
+.sidebar :focus-visible{outline-color:#fff}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.i{width:1em;height:1em;flex-shrink:0;vertical-align:-.18em;fill:none}
+.i .base{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.i .pop{fill:var(--accent);stroke:none} .i .popl{fill:var(--accent);opacity:.26;stroke:none}
+.i .cut{fill:#fff;stroke:none} .i .cutl{fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.app{display:flex;min-height:100vh}
+.sidebar{width:252px;flex-shrink:0;background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:20px 13px;gap:16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:0}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 5px}
+.brand-mark{width:40px;height:40px;border-radius:12px;background:var(--accent-soft2);display:flex;align-items:center;justify-content:center;color:var(--accent)}
+.brand-name{font-size:18px;font-weight:800;line-height:1.1;letter-spacing:-.02em}
+.brand-name em{display:block;font-style:normal;font-size:11px;font-weight:500;color:#8C89A0}
+.nav{display:flex;flex-direction:column;gap:1px}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;min-height:40px;text-align:left;padding:10px 12px;border-radius:12px;background:none;border:0;cursor:pointer;color:#BCBAC7;font-size:13.5px;font-weight:600;transition:.15s var(--ease)}
+.nav button .i{font-size:19px;opacity:.9}
+.nav button:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav button.active{background:rgba(255,255,255,.11);color:#fff}
+.nav .arw{margin-left:auto;font-size:11px;opacity:.7;transition:transform .18s var(--ease)}
+.nav button.exp .arw{transform:rotate(90deg)}
+.nav .sub{display:flex;flex-direction:column;gap:1px;margin:1px 0 4px}
+.nav .sub button{padding:8px 12px 8px 43px;font-size:13px;font-weight:500;color:#9C99AB}
+.nav .sub button.active{background:rgba(255,255,255,.09);color:#fff;font-weight:600}
+.nav .sep{height:1px;background:rgba(255,255,255,.09);margin:9px 12px}
+.subnav{display:none}
+.sfoot{margin-top:auto;display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:14px;background:rgba(255,255,255,.05)}
+.sfoot .av{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.sfoot b{font-size:13px;font-weight:600;display:block;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sfoot .who{min-width:0}
+.sfoot .out{background:none;border:0;padding:0;min-height:24px;font-size:12px;color:#8C89A0;cursor:pointer;text-decoration:underline}
+.sfoot .out:hover{color:#fff}
+
+.main{flex:1;min-width:0;padding:24px 34px 64px;max-width:1280px}
+.view{animation:vin .28s var(--ease)}
+@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes sk{0%,100%{opacity:1}50%{opacity:.5}}
+.head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px;flex-wrap:wrap}
+.head h1{font-size:26px;font-weight:800}
+.head .sub{font-size:13px;color:var(--ink-soft);margin-top:3px}
+.hr2{display:flex;align-items:center;gap:16px}
+.tb{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;text-align:left;cursor:help;border-radius:6px}
+.bal{text-align:right} .bal .v{display:block;font-size:19px;font-weight:800}
+.bal .l{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase}
+
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:22px 24px}
+.klabel{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;margin:0 0 12px}
+h2.klabel{letter-spacing:.08em}
+.g2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px}
+.up{color:var(--ok)} .down{color:var(--bad)} .faint{color:var(--ink-soft)}
+.note{font-size:12px;color:var(--ink-soft);line-height:1.55;margin-top:13px}
+.badt{font-size:12px;font-weight:700;color:var(--bad)}
+
+.hero{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:26px 28px 0;margin-bottom:16px;overflow:hidden}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hero .lbl{display:block;font-size:13px;color:var(--ink-soft)}
+.hero .num{display:block;font-size:44px;font-weight:800;letter-spacing:-.035em;line-height:1.1;margin:4px 0 2px;white-space:nowrap}
+.hero .cap{font-size:12px;color:var(--ink-soft);text-align:right}
+.hero .d{font-size:13px;font-weight:600;color:var(--ok)}
+.hero .d.neg{color:var(--bad)} .hero .d.zero{color:var(--ink-soft)}
+.hero .neg-note{display:block;font-size:13px;font-weight:600;color:var(--bad)}
+.chartwrap{position:relative;height:104px;margin-top:12px}
+.chartwrap svg{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+.chartwrap path{vector-effect:non-scaling-stroke}
+.cpt{position:absolute;top:0;bottom:0;background:none;border:0;padding:0;margin:0;cursor:help}
+.cpt:focus-visible{outline-offset:-2px;border-radius:8px}
+.cdot{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--accent);border:2px solid #fff;opacity:0;pointer-events:none;transition:opacity .15s var(--ease)}
+.cdot.on,.cdot.last{opacity:1}
+.cdot::before{content:'';position:absolute;left:50%;top:100%;width:1px;height:200px;background:var(--accent-light);transform:translateX(-50%);opacity:0}
+.cdot.on::before{opacity:1}
+.chart-empty{margin-top:12px;height:104px;display:flex;align-items:center;justify-content:center;background:var(--bg-soft);border-radius:12px;font-size:13px;color:var(--ink-soft);text-align:center;padding:0 16px}
+
+.accs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+.acc{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:help;min-height:88px;transition:.18s var(--ease);font:inherit;color:inherit;text-align:left;width:100%}
+.acc:hover{transform:translateY(-2px)}
+.acc .em{font-size:29px;line-height:1}
+.acc .t{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;color:var(--ink-soft);text-transform:uppercase}
+.acc .v{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:2px;white-space:nowrap}
+.acc .s{display:block;font-size:12px;font-weight:600;margin-top:4px;color:var(--ink-soft)}
+.acc.hi{background:linear-gradient(135deg,var(--accent),#8A0F3A);border-color:transparent;color:#fff}
+.acc.hi .t,.acc.hi .s{color:rgba(255,255,255,.85)}
+.hint{margin:-4px 0 22px}
+.mrow{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mcard{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:20px;display:flex;align-items:flex-start;gap:13px;min-height:88px;transition:.18s var(--ease)}
+.mcard:hover{transform:translateY(-2px)}
+.mcard .em{font-size:25px;line-height:1}
+.mcard .mc-body{min-width:0}
+.mcard .mc-body .tb{display:block}
+.mcard .t{display:block;font-size:11px;font-weight:700;letter-spacing:.07em;color:var(--ink-soft);text-transform:uppercase}
+.mcard .v{display:block;font-size:23px;font-weight:800;letter-spacing:-.025em;margin-top:3px;white-space:nowrap}
+.mcard .s{display:block;font-size:12px;font-weight:600;margin-top:4px;color:var(--ink-soft)}
+.mcard .s.bad{color:var(--bad)} .mcard .s.up{color:var(--ok-ink)}
+
+.advl{list-style:none;margin:0;padding:0}
+.tip-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:18px 22px;margin-bottom:11px}
+.tip-card.al{border-left:3px solid var(--accent)} .tip-card.wr{border-left:3px solid var(--warn)} .tip-card.gd{border-left:3px solid var(--ok)}
+.tip-h{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.tip-l{display:flex;gap:14px}
+.tip-em{font-size:22px;line-height:1.2}
+.tip-b .pill{margin-bottom:5px}
+.tip-b h3{font-size:16px;font-weight:700;margin-bottom:3px}
+.tip-b p{font-size:13px;color:var(--ink-soft);max-width:66ch}
+.why{border:1px solid var(--border);background:#fff;border-radius:10px;padding:8px 15px;min-height:40px;font-size:13px;font-weight:700;color:var(--accent-dark);cursor:pointer;white-space:nowrap}
+.why:hover{background:var(--accent-soft2);border-color:var(--accent-soft)}
+.why.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.ans{margin-top:15px;padding:16px 18px;background:var(--accent-soft2);border-radius:14px;font-size:14px;line-height:1.65;animation:vin .28s var(--ease)}
+.ans .who{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px}
+.ans ol{margin:8px 0 0;padding-left:20px} .ans li{margin-bottom:5px}
+.ans .src{margin-top:10px;font-size:12px;color:var(--ink-soft)}
+
+.banner{margin-bottom:16px;padding:11px 14px;border-radius:12px;font-size:13px;font-weight:600;display:flex;gap:6px 14px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.banner.warning{background:var(--warn-soft);color:var(--warn-ink)}
+.banner .lnk{background:none;border:0;padding:0;min-height:24px;font:inherit;font-weight:700;color:inherit;text-decoration:underline;cursor:pointer}
+.errcard{border-left:3px solid var(--bad)}
+.errcard h3,.empty h3{font-size:16px;font-weight:700;margin:8px 0 4px}
+.errcard p,.empty p{font-size:13px;color:var(--ink-soft);max-width:66ch}
+.empty{display:flex;gap:14px;align-items:flex-start;margin-bottom:16px}
+.empty .em{font-size:29px;line-height:1}
+.empty .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.sk{display:block;background:var(--track);border-radius:6px;animation:sk 1.4s ease-in-out infinite}
+.demo{margin-top:26px;padding:12px 14px;border:1px dashed var(--control-border);border-radius:12px;font-size:12px;color:var(--ink-soft)}
+.demo button{margin:4px 4px 0 0;border:1px solid var(--border);background:#fff;border-radius:10px;padding:6px 12px;min-height:32px;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+.demo button.on{background:var(--sidebar);border-color:var(--sidebar);color:#fff}
+
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;color:var(--ink-soft);font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:0 10px 12px}
+th:first-child{padding-left:0} th.r,td.r{text-align:right} td:last-child,th:last-child{padding-right:0}
+td{padding:13px 10px;border-top:1px solid var(--border);font-size:14px}
+td:first-child{padding-left:0} td.r{font-weight:600;white-space:nowrap}
+.meta{font-size:12px;color:var(--ink-soft);margin-top:2px}
+tr[data-tip]{cursor:help;transition:background .15s} tr[data-tip]:hover{background:var(--accent-soft2)}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;background:var(--warn-soft);color:var(--warn-ink);white-space:nowrap}
+.pill.red{background:var(--bad-soft);color:var(--bad)} .pill.grn{background:var(--ok-soft);color:var(--ok-ink)}
+.pill.vm{background:var(--vm-soft);color:var(--vm-ink)} .pill.gr{background:var(--track);color:var(--ink-soft)}
+.pill.tg{background:#E4F1FB;color:#1B6CA8}
+
+.pl{display:grid;grid-template-columns:1fr 160px 68px;gap:12px;align-items:center;padding:13px 14px;border-radius:12px;font-size:14px;cursor:help;transition:.15s}
+.pl:hover{background:var(--accent-soft2)}
+.pl .bar{border-left:3px solid var(--ink-faint);padding-left:11px}
+.pl.rev .bar{border-color:var(--ok)} .pl.exp .bar{border-color:var(--bad)} .pl.sum .bar{border-color:var(--accent)}
+.pl.sum{background:var(--accent-soft2);font-weight:700} .pl.tot{background:var(--ok-soft);font-weight:700}
+.pl .n{text-align:right;font-weight:700;white-space:nowrap} .pl .p{text-align:right;font-size:12px;color:var(--ink-soft);font-weight:600}
+
+.bars{display:flex;flex-direction:column;gap:14px}
+.brow{cursor:help;padding:3px 0}
+.b-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.b-top b{font-weight:600} .b-top span{color:var(--ink-soft)}
+.track{height:10px;background:var(--track);border-radius:6px;overflow:hidden}
+.fill{height:100%;border-radius:6px;background:var(--accent)}
+.fill.l{background:#E9A3BB} .fill.n{background:var(--bad)} .fill.g{background:var(--ok)} .fill.d{background:var(--sidebar)}
+
+.gauge{position:relative;height:24px;background:var(--track);border-radius:7px;overflow:hidden}
+.gz{position:absolute;top:0;bottom:0;background:var(--ok-soft)}
+.gm{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--ink);border-radius:2px}
+.gm.bad{background:var(--bad)} .gm.warn{background:var(--warn)}
+
+.seg{display:flex;gap:5px;margin-bottom:16px;flex-wrap:wrap}
+.seg button{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 16px;min-height:40px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+.seg button:hover{border-color:var(--accent);color:var(--accent-dark)}
+.seg button.on{background:var(--sidebar);border-color:var(--sidebar);color:#fff}
+.seg button .cnt{display:inline-block;margin-left:6px;font-size:11px;color:var(--accent);font-weight:800}
+.seg button.on .cnt{color:#F29BB8}
+
+.stack{display:flex;height:38px;border-radius:12px;overflow:hidden;margin-bottom:14px}
+.stack div{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;cursor:help}
+.legend{display:flex;flex-wrap:wrap;gap:9px 20px;font-size:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px}
+
+.act{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 15px;min-height:40px;font-size:13px;font-weight:600;cursor:pointer}
+.act:hover{background:var(--accent-soft2)}
+.act.pri{background:var(--accent-dark);border-color:var(--accent-dark);color:#fff}
+.act.pri:hover{background:var(--accent)}
+.act.rd{background:var(--bad);border-color:var(--bad);color:#fff}
+.srow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px 0;border-top:1px solid var(--border);font-size:14px;flex-wrap:wrap}
+.srow:first-of-type{border-top:0}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:9px}
+.dot.off{background:var(--ink-faint)}
+.inp{background:var(--bg-soft);border:1px solid var(--control-border);border-radius:10px;padding:9px 13px;font-size:14px;font-weight:600}
+.field{display:grid;grid-template-columns:1fr 200px;gap:14px;align-items:center;padding:12px 0;border-top:1px solid var(--border)}
+.field:first-of-type{border-top:0}
+
+.setwrap{display:grid;grid-template-columns:212px 1fr;gap:16px}
+.setnav{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:10px;height:fit-content}
+.setnav .h{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;padding:10px 12px 5px}
+.setnav button{display:block;width:100%;min-height:40px;text-align:left;padding:9px 12px;border:0;background:none;border-radius:10px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+.setnav button:hover{background:var(--bg-soft)}
+.setnav button.on{background:var(--accent-soft2);color:var(--accent-dark)}
+
+.flow{position:relative;background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:22px 24px;margin-bottom:16px}
+.flow svg{display:block;width:100%;height:210px}
+.daylist .d{display:grid;grid-template-columns:104px 1fr 150px 140px;gap:14px;align-items:center;padding:14px 12px;border-radius:12px;font-size:14px;cursor:help;transition:.15s}
+.daylist .d:hover{background:var(--accent-soft2)}
+.daylist .d.bad{background:var(--bad-soft)}
+.daylist .d.bad:hover{background:#F8DAD3}
+.daylist .dt{font-weight:700} .daylist .dt em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);font-weight:500}
+.daylist .amt{text-align:right;font-weight:600;white-space:nowrap} .daylist .rest{text-align:right;font-weight:700}
+.daylist .rest .badt{display:block}
+
+.mcard .v.cv{font-size:20px}
+.calbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:2px 4px 14px}
+.calbar b{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.calbar .lg{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px;color:var(--ink-soft)}
+.calbar .li{display:inline-block;width:10px;height:10px;border-radius:3px;margin-left:6px}
+.li.in{background:var(--ok-soft);box-shadow:inset 0 0 0 1px var(--ok)} .li.pay{background:var(--accent)} .li.bd{background:var(--bad-soft);box-shadow:inset 0 0 0 1px var(--bad)}
+.calwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px}
+.cal{min-width:860px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--border);border-left:1px solid var(--border);border-radius:14px;overflow:hidden}
+.cal .wh{padding:9px 10px;font-size:12px;font-weight:600;color:var(--ink-soft);border-right:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-soft)}
+.cal .c{min-height:138px;padding:7px 7px 9px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:4px;background:#fff;min-width:0;transition:background .15s}
+.cal .c.wk{background:#FBFAFC}
+.cal .c.out{background:#F9F8FA} .cal .c.out .n{color:var(--ink-faint)}
+.cal .c.past .n{color:var(--ink-soft)}
+.cal .c[data-cd]{cursor:pointer}
+.cal .c[data-cd]:hover{background:var(--accent-soft2)}
+.cal .c.bad,.cal .c.bad:hover{background:var(--bad-soft)}
+.cal .c.sel{box-shadow:inset 0 0 0 2px var(--accent)}
+.cal .n{font-size:13px;font-weight:600;min-width:26px;height:26px;padding:0 6px;border-radius:13px;display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;margin-bottom:1px}
+.cal .c.today .n{background:var(--accent);color:#fff}
+.cal .ev{font-size:12px;line-height:1.3;padding:3px 7px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal .ev.in{background:var(--ok-soft);color:var(--ok-ink);font-weight:600}
+.cal .ev.pay{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:3px 6px 6px 3px}
+.cal .ev.pay b{display:block;font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+.cal .ev.pay span{font-weight:700;color:var(--accent-dark)}
+.cal .ev.more{color:var(--ink-soft);font-weight:600;padding:1px 7px}
+.cal .cbal{margin-top:auto;font-size:11px;color:var(--ink-soft);padding:4px 2px 0}
+.cal .cbal b{display:block;font-size:13px;color:var(--ink);font-weight:700;white-space:nowrap}
+.cal .c.bad .cbal b{color:var(--bad)}
+.dayp h3{font-size:19px;font-weight:700;margin-bottom:12px}
+.dayp table{width:100%;border-collapse:collapse;font-size:14px}
+.dayp td{padding:9px 2px;border-bottom:1px solid var(--border)}
+.dayp td.r{text-align:right;font-weight:600;white-space:nowrap}
+.dayp tr.tot td{font-weight:700;border-bottom:0;padding-top:12px}
+.dayp.bad{border-left:3px solid var(--bad)}
+.warnline{margin-top:12px;padding:11px 14px;border-radius:12px;background:var(--bad-soft);color:var(--bad);font-size:13px;font-weight:600}
+
+#tip{position:fixed;z-index:99;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .18s var(--ease),transform .18s var(--ease);
+  background:#15131C;color:#fff;border-radius:14px;padding:15px 17px;max-width:min(335px,calc(100vw - 24px));box-shadow:0 20px 48px -14px rgba(10,4,16,.55);font-size:13px;line-height:1.55}
+#tip.on{opacity:1;transform:translateY(0);pointer-events:auto}
+#tip h4{font-size:14px;font-weight:700;margin:0 0 9px}
+#tip .r{display:flex;justify-content:space-between;gap:18px;padding:4px 0}
+#tip .r span{color:#9C99AB} #tip .r b{font-weight:600;white-space:nowrap}
+#tip .hr{height:1px;background:rgba(255,255,255,.12);margin:9px 0}
+#tip .f{margin-top:9px;padding-top:9px;border-top:1px solid rgba(255,255,255,.12);color:#C9C6D6;font-size:12px}
+#tip .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.13);margin-bottom:8px}
+#tip .srcs{margin-top:8px;color:#9C99AB}
+#tip .srcs .tag{margin:0 0 0 6px;color:#fff}
+#tip .bad{color:#FF8F7A} #tip .good{color:#5FD3A3}
+
+@media (max-width:1100px){ .g2,.setwrap{grid-template-columns:1fr} }
+@media (max-width:820px){
+  .app{flex-direction:column} .sidebar{width:100%;height:auto;position:static}
+  .nav{flex-direction:row;overflow-x:auto} .nav .sub{display:none} .nav .sep{display:none} .nav button{white-space:nowrap;min-height:44px;width:auto}
+  .subnav{display:flex;gap:4px;overflow-x:auto}
+  .subnav button{white-space:nowrap;min-height:44px;padding:8px 14px;border-radius:12px;border:0;background:rgba(255,255,255,.06);color:#BCBAC7;font-size:13px;font-weight:600;cursor:pointer}
+  .subnav button.active{background:rgba(255,255,255,.14);color:#fff}
+  .main{padding:18px 14px 40px} .hero .num{font-size:32px}
+  .pl{grid-template-columns:1fr 100px} .daylist .d{grid-template-columns:1fr 1fr}
+  .why,.act,.seg button,.banner .lnk{min-height:44px}
+  .sfoot .out{min-height:44px}
+}
+@media (max-width:720px){ .accs,.mrow{grid-template-columns:1fr} }
+@media (max-width:560px){
+  .hero-top{display:block} .hero .cap{display:block;text-align:left;margin-top:4px}
+  .tip-h{display:block} .why{width:100%;margin-top:12px;min-height:44px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+<div id="tip" role="tooltip"></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark" id="logo"></div>
+      <div class="brand-name">ВетФинанс<em>Айболит на Ленина</em></div></div>
+    <nav class="nav" id="nav" aria-label="Основное меню"></nav>
+    <div class="subnav" id="subnav"></div>
+    <div class="sfoot"><div class="av">O</div><div class="who"><b>owner@aibolit-vet.example</b><button class="out" type="button">Выйти</button></div></div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+/* ================= ФОРМАТЫ ================= */
+const num=n=>String(Math.abs(Math.round(n))).replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+const M=n=>num(n)+' ₽';
+const Ms=n=>(n<0?'−':'+')+M(n);
+const Mn=n=>(n<0?'−':'')+M(n);
+const P=(x,sign)=>(x<0?'−':(sign&&x>0?'+':''))+Math.abs(x).toFixed(1).replace('.',',')+'%';
+const dn=n=>{const a=Math.abs(n)%100,b=a%10;return n+' '+(a>10&&a<20?'дней':b===1?'день':(b>1&&b<5)?'дня':'дней');};
+const STATE_Q=new URLSearchParams(location.search).get('state');
+let STATE=['loading','error','empty','noaccounts','stale'].includes(STATE_Q)?STATE_Q:'';
+
+const ICONS={
+'ic-home':`<path class="base" d="M3.6 10.4 12 3.6l8.4 6.8V19a1.6 1.6 0 0 1-1.6 1.6H5.2A1.6 1.6 0 0 1 3.6 19z"/>
+ <path class="popl" d="M3.6 10.4 12 3.6l8.4 6.8v2.2L12 6.2l-8.4 6.4z"/>
+ <path class="pop" d="M9.4 20.6v-5.2a1.2 1.2 0 0 1 1.2-1.2h2.8a1.2 1.2 0 0 1 1.2 1.2v5.2z"/>`,
+'ic-tx':`<rect class="base" x="2.8" y="5" width="18.4" height="14" rx="2.8"/><path class="base" d="M2.8 9.6h18.4"/>
+ <path class="popl" d="M2.8 9.6h18.4v2.2H2.8z"/>
+ <path class="pop" d="M6.4 14.6h5v2.2h-5z"/><circle class="pop" cx="17.4" cy="15.7" r="2.1"/>`,
+'ic-price':`<path class="base" d="M5.6 3.5h8.8l3.6 3.6v6.2M17.8 16.4V19a1.5 1.5 0 0 1-1.5 1.5H5.6A1.5 1.5 0 0 1 4.1 19V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+ <path class="base" d="M14.2 3.6v3.6h3.6M7.4 10.6h5.2M7.4 13.6h3"/>
+ <circle class="pop" cx="17.2" cy="16.2" r="4.3"/><path class="cutl" d="M15.6 14.9h3M15.6 16.6h3M17.1 18.4v-4.4"/>`,
+'ic-report':`<rect class="base" x="4" y="3.2" width="16" height="17.6" rx="2.6"/><path class="base" d="M7.6 7.4h8.8"/>
+ <rect class="popl" x="7.6" y="10.6" width="8.8" height="7.4" rx="1.4"/>
+ <path class="pop" d="M9 17.2v-3.4h1.9v3.4zm3.2 0v-5.2h1.9v5.2z"/>`,
+'ic-plan':`<rect class="base" x="3.2" y="5.2" width="17.6" height="15.2" rx="2.6"/><path class="base" d="M3.2 9.7h17.6M8 3.3v3.6M16 3.3v3.6"/>
+ <rect class="popl" x="6.1" y="11.9" width="3.5" height="3.1" rx="1"/><rect class="pop" x="10.3" y="11.9" width="3.5" height="3.1" rx="1"/>
+ <rect class="popl" x="14.5" y="11.9" width="3.5" height="3.1" rx="1"/>`,
+'ic-anal':`<path class="base" d="M3.4 3.4v17.2h17.2"/>
+ <path class="popl" d="M6.4 18.6h2.6v-5.2H6.4zm4.6 0h2.6V9.4H11zm4.6 0h2.6V6H15.6z" opacity=".3"/>
+ <path class="pop" d="M6.4 18.6h2.6v-5.2H6.4z"/><path class="pop" d="M11 18.6h2.6V9.4H11z" opacity=".65"/>
+ <path class="base" d="m6.2 11.4 3.6-3.8 3 2.4 5.4-5.6"/><circle class="pop" cx="18.6" cy="4.4" r="1.9"/>`,
+'ic-set':`<path class="base" d="M11 3.2h2l.5 2.3 2 .85 2-1.25 1.4 1.4-1.25 2 .85 2 2.3.5v2l-2.3.5-.85 2 1.25 2-1.4 1.4-2-1.25-2 .85-.5 2.3h-2l-.5-2.3-2-.85-2 1.25-1.4-1.4 1.25-2-.85-2-2.3-.5v-2l2.3-.5.85-2-1.25-2 1.4-1.4 2 1.25 2-.85z"/>
+ <circle class="popl" cx="12" cy="12" r="4.2"/><circle class="pop" cx="12" cy="12" r="2.1"/>`,
+'ic-logo':`<g fill="currentColor"><circle cx="5" cy="6.6" r="2.35"/><circle cx="12" cy="3.3" r="2.35"/><circle cx="19" cy="5.4" r="2.35"/><rect x="2.75" y="10.4" width="4.5" height="10.6" rx="2.25"/><rect x="9.75" y="7.1" width="4.5" height="13.9" rx="2.25"/><rect x="16.75" y="9.2" width="4.5" height="11.8" rx="2.25"/></g>`
+};
+const ic=(n,s)=>`<svg class="i" aria-hidden="true" viewBox="0 0 24 24"${s?` style="font-size:${s}"`:''}>${ICONS[n]||''}</svg>`;
+
+let view='dash', open1=null, opiuMode='all', txTab='all', setTab='main', scen='base', calMode='month', calSel=9;
+
+const NAV=[
+ ['dash','ic-home','Рабочий стол'],
+ ['tx','ic-tx','Транзакции'],
+ ['price','ic-price','Прайс услуг'],
+ ['sep'],
+ ['G','ic-report','Отчёты',[['opiu','Прибыль и убытки'],['norm','Норма'],['sklad','Склад и сроки']]],
+ ['G','ic-plan','Планирование',[['cal','Платёжный календарь'],['oblig','Обязательства']]],
+ ['G','ic-anal','Аналитика',[['anal','Финмодель и прогноз'],['eff','Эффективность клиники']]],
+ ['sep'],
+ ['set','ic-set','Настройки']
+];
+
+/* ================= ПОДСКАЗКИ: помощник ================= */
+const tipH=(tag,h,rows,foot,src,hc)=>{
+ rows=rows||[]; src=src||[];
+ return `<span class="tag">${tag}</span><h4 class="${hc||''}">${h}</h4>`
+  + rows.map(r=>r==='-'?'<div class="hr"></div>':`<div class="r"><span>${r[0]}</span><b class="${r[2]||''}">${r[1]}</b></div>`).join('')
+  + ((foot||src.length)?`<div class="f">${foot||''}${src.length?`<div class="srcs">Источник:${src.map(s=>`<span class="tag">${s}</span>`).join('')}</div>`:''}</div>`:'');
+};
+const SBANK='Банк', SHAND='Внесено вручную', SVM='Ветменеджер', SCALC='Расчёт';
+
+/* ================= ДАННЫЕ: Рабочий стол (как ответ GET /v1/dashboard) ================= */
+const D={
+ asOf:'9 сентября 2026', dataAt:'04:12',
+ total:412800, bank:341300, cash:71500,
+ weekAgo:397400, weekPct:3.9, weekDelta:15400,
+ bankWeekAgo:326780, bankIn:190400, bankOut:235880, fromCash:60000,
+ cashWeekAgo:70620, cashIn:68200, cashOut:7320, cashToBank:60000,
+ expDay:35125, runway:11,
+ rev:330000, revServ:201300, revGoods:128700, avgCheck:2143, visits:154, forecast:1237500,
+ exp:281000, expSal:128000, expMed:92400, expSup:42500, expOther:18100, expPrev:253100, expChg:11.0,
+ profit:49000, margin:14.8, passed:8, totalDays:30,
+ trend:[['27 августа',371200],['28 августа',379400],['29 августа',376100],['30 августа',385300],['31 августа',382000],['1 сентября',391800],['2 сентября',397400],
+        ['3 сентября',405900],['4 сентября',402200],['5 сентября',409700],['6 сентября',407100],['7 сентября',414500],['8 сентября',410900],['9 сентября',412800]]
+};
+
+/* ================= ДАННЫЕ: платёжный календарь (окно 22 дня: 9–30 сентября) ================= */
+const SAFE=60000, TODAY=9, WIN_END=30;
+const WD=['вс','пн','вт','ср','чт','пт','сб'];
+const WDF=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+const INC={9:48000,10:41000,11:39000,12:44000,13:64000,14:37000,15:42000,16:40000,17:43000,18:47000,19:58000,
+ 20:61000,21:36000,22:41000,23:40000,24:44000,25:49000,26:57000,27:60000,28:38000,29:42000,30:45000};
+const PAY={
+ 9:[['Поставщик «ВетПрепарат»',62000]],
+ 10:[['Поставщик «Зоовет»',96000],['Кредит на УЗИ',26500],['Лизинг рентгена',12000]],
+ 11:[['Аренда за сентябрь',85000],['Лаборатория «Шанс Био»',34000],['Связь и интернет',7300]],
+ 12:[['Зарплата сотрудникам',258000]],
+ 15:[['Реагенты',14000]],
+ 17:[['Хозтовары',9800]],
+ 20:[['Налоги и взносы',61000]],
+ 23:[['Закупка кормов',58000]],
+ 25:[['Аванс сотрудникам',110000]],
+ 28:[['Реклама',15000]],
+ 30:[['Поставщик «Зоовет»',96000]]
+};
+const DAYS=(()=>{let bal=D.total,out=[];
+ for(let d=TODAY;d<=WIN_END;d++){const p=INC[d],pays=PAY[d]||[],m=pays.reduce((a,x)=>a+x[1],0),st=bal;bal+=p-m;
+  const wd=new Date(2026,8,d).getDay();out.push({d,p,pays,m,st,end:bal,w:WD[wd],wf:WDF[wd]});}
+ return out;})();
+const DMAP=Object.fromEntries(DAYS.map(x=>[x.d,x]));
+const BAD=DAYS.find(x=>x.end<SAFE);
+const SHORT=BAD?(PAY[BAD.d].reduce((a,x)=>a+x[1],0)-BAD.st):0;   /* не хватает на утро дня разрыва */
+
+/* ================= ПОДСКАЗКИ (содержимое) ================= */
+const T={
+ o_rev:`<span class="tag">Выручка</span><h4>1 240 000 ₽ · 100%</h4>
+  <div class="r"><span>Услуги врачей</span><b>756 400 ₽</b></div><div class="r"><span>Продажа кормов</span><b>321 600 ₽</b></div>
+  <div class="r"><span>Продажа препаратов</span><b>162 000 ₽</b></div>
+  <div class="f">Данные из Ветменеджера, сверены с эквайрингом и кассой.</div>`,
+ o_var:`<span class="tag">Переменные расходы</span><h4>− 632 000 ₽ · 51,0%</h4>
+  <div class="r"><span>Проценты врачам</span><b>218 000 ₽</b></div><div class="r"><span>Закупка препаратов</span><b>248 800 ₽</b></div>
+  <div class="r"><span>Закупка кормов</span><b>118 400 ₽</b></div><div class="r"><span>Лаборатории</span><b>46 800 ₽</b></div>
+  <div class="f">Растут вместе с выручкой. Норма — 48–54%.</div>`,
+ o_marg:`<span class="tag">Маржинальная прибыль</span><h4>608 000 ₽ · 49,0%</h4>
+  <div class="r"><span>Выручка</span><b>1 240 000 ₽</b></div><div class="r"><span>Переменные расходы</span><b>−632 000 ₽</b></div>
+  <div class="f">Столько остаётся после расходов, которые зависят от количества приёмов. Из этой суммы покрываются аренда, оклады, налоги и обязательства.</div>`,
+ o_fix:`<span class="tag">Постоянные расходы</span><h4>− 376 000 ₽ · 30,3%</h4>
+  <div class="r"><span>Оклады</span><b>228 000 ₽</b></div><div class="r"><span>Аренда и коммуналка</span><b>85 000 ₽</b></div>
+  <div class="r"><span>Маркетинг</span><b>26 000 ₽</b></div><div class="r"><span>Связь, хозтовары</span><b>37 000 ₽</b></div>
+  <div class="f">Платятся независимо от того, сколько было приёмов.</div>`,
+ o_tax:`<span class="tag">Налоги и взносы</span><h4>− 46 000 ₽ · 3,7%</h4>
+  <div class="r"><span>УСН 6% с учётом взносов</span><b>37 200 ₽</b></div><div class="r"><span>Взносы</span><b>8 800 ₽</b></div>
+  <div class="f">К уплате 20 числа следующего месяца.</div>`,
+ o_obl:`<span class="tag">Обязательства и амортизация</span><h4>− 33 400 ₽ · 2,7%</h4>
+  <div class="r"><span>Амортизация оборудования</span><b>21 400 ₽</b></div><div class="r"><span>Проценты по кредиту и лизингу</span><b>12 000 ₽</b></div>
+  <div class="f">Платёж по кредиту и лизингу 38 500 ₽ в месяц: в расходы идут только проценты, основной долг расходом не считается. Амортизация не списывает деньги со счёта.</div>`,
+ o_net:`<span class="tag">Чистая прибыль</span><h4>152 600 ₽ · 12,3%</h4>
+  <div class="r"><span>Норма отрасли</span><b>12–20%</b></div><div class="r"><span>Изъято владельцем</span><b>120 000 ₽</b></div>
+  <div class="r"><span>Осталось в бизнесе</span><b>32 600 ₽</b></div>
+  <div class="f">Это деньги, которые клиника реально заработала. Без строки «Обязательства и амортизация» прибыль выглядела бы выше: 186 000 ₽.</div>`,
+ d_hir:`<span class="tag">Хирургия</span><h4>+ 94 000 ₽</h4><div class="r"><span>Выручка</span><b>214 000 ₽</b></div>
+  <div class="r"><span>Зарплата и проценты</span><b>−78 000 ₽</b></div><div class="r"><span>Расходники и анестезия</span><b>−30 000 ₽</b></div>
+  <div class="r"><span>Аренда операционной</span><b>−12 000 ₽</b></div><div class="f">Рентабельность 44% — лучшее направление.</div>`,
+ d_ter:`<span class="tag">Терапия</span><h4>+ 73 000 ₽</h4><div class="r"><span>Выручка</span><b>287 000 ₽</b></div>
+  <div class="r"><span>Зарплата и проценты</span><b>−148 000 ₽</b></div><div class="r"><span>Расходники</span><b>−44 000 ₽</b></div>
+  <div class="r"><span>Лаборатория</span><b>−22 000 ₽</b></div><div class="f">Рентабельность 25%. Расходники 15,3% выручки направления при норме 9,7%.</div>`,
+ d_gru:`<span class="tag">Груминг</span><h4>+ 26 000 ₽</h4><div class="r"><span>Выручка</span><b>62 000 ₽</b></div>
+  <div class="r"><span>Зарплата грумера</span><b>−28 000 ₽</b></div><div class="r"><span>Косметика</span><b>−8 000 ₽</b></div>
+  <div class="f">Небольшое, но стабильно прибыльное направление.</div>`,
+ d_lab:`<span class="tag">Лаборатория</span><h4>+ 7 000 ₽</h4><div class="r"><span>Выручка</span><b>44 000 ₽</b></div>
+  <div class="r"><span>Реагенты</span><b>−21 000 ₽</b></div><div class="r"><span>Аутсорс «Шанс Био»</span><b>−16 000 ₽</b></div>
+  <div class="f">Почти в ноль. Треть анализов уходит на сторону.</div>`,
+ d_sta:`<span class="tag">Стационар</span><h4 class="bad">− 14 000 ₽</h4><div class="r"><span>Выручка</span><b>68 000 ₽</b></div>
+  <div class="r"><span>Ночные смены</span><b class="bad">−49 000 ₽</b></div><div class="r"><span>Препараты</span><b>−21 000 ₽</b></div>
+  <div class="r"><span>Аренда площади</span><b>−12 000 ₽</b></div>
+  <div class="f"><b class="bad">Убыток третий месяц:</b> −9 000 ₽ в июне, −11 000 ₽ в июле, −14 000 ₽ в августе.</div>`,
+ d_sum:`<span class="tag">Сумма по направлениям</span><h4>186 000 ₽</h4>
+  <div class="r"><span>Хирургия</span><b>+94 000 ₽</b></div><div class="r"><span>Терапия</span><b>+73 000 ₽</b></div><div class="r"><span>Груминг</span><b>+26 000 ₽</b></div>
+  <div class="r"><span>Лаборатория</span><b>+7 000 ₽</b></div><div class="r"><span>Стационар</span><b class="bad">−14 000 ₽</b></div>
+  <div class="f">Обязательства и амортизация (33 400 ₽) к направлениям не относятся и вычитаются отдельно.</div>`,
+ n_fot:`<span class="tag">ФОТ врачей · 24,6%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>22–28%</b></div>
+  <div class="r"><span>В рублях</span><b>305 000 ₽</b></div><div class="f">Запас до верхней границы — 42 200 ₽ в месяц.</div>`,
+ n_med:`<span class="tag">Препараты · 27,4%</span><h4 class="bad">Выше нормы на 2,4 п.п.</h4><div class="r"><span>Норма</span><b>20–25%</b></div>
+  <div class="r"><span>Ваш расход</span><b>339 800 ₽</b></div><div class="r"><span>По верхней границе</span><b>310 000 ₽</b></div>
+  <div class="r"><span>Перерасход</span><b class="bad">29 800 ₽ в месяц</b></div>
+  <div class="f">Держится третий месяц. Связано с разбросом цен у поставщиков.</div>`,
+ n_rent:`<span class="tag">Аренда · 6,9%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>5–10%</b></div>
+  <div class="r"><span>В рублях</span><b>85 000 ₽</b></div><div class="f">Хороший показатель для помещения такой площади.</div>`,
+ n_lab:`<span class="tag">Лаборатории · 3,8%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>3–6%</b></div>
+  <div class="r"><span>В рублях</span><b>46 800 ₽</b></div><div class="f">Часть анализов можно делать у себя — это снизит долю.</div>`,
+ n_exp:`<span class="tag">Списание по сроку · 1,9%</span><h4 class="bad">Выше нормы вдвое</h4><div class="r"><span>Норма</span><b>до 0,8%</b></div>
+  <div class="r"><span>Списано в августе</span><b>23 400 ₽</b></div><div class="r"><span>Норма для вас</span><b>до 9 900 ₽</b></div>
+  <div class="r"><span>Лишние потери</span><b class="bad">13 500 ₽ в месяц</b></div>
+  <div class="f">Закупаете объёмом больше, чем успеваете израсходовать.</div>`,
+ n_acq:`<span class="tag">Эквайринг · 2,0%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>1,5–2,5%</b></div>
+  <div class="r"><span>В рублях</span><b>24 800 ₽</b></div><div class="f">Ставка средняя по рынку.</div>`,
+ n_mkt:`<span class="tag">Маркетинг · 2,1%</span><h4>Ниже нормы</h4><div class="r"><span>Норма</span><b>3–7%</b></div>
+  <div class="r"><span>В рублях</span><b>26 000 ₽</b></div><div class="f">Экономия не всегда хорошо: недоинвестируете в поток новых клиентов.</div>`,
+ n_net:`<span class="tag">Чистая прибыль · 12,3%</span><h4 class="good">В норме, у нижней границы</h4><div class="r"><span>Норма</span><b>12–20%</b></div>
+  <div class="r"><span>В рублях</span><b>152 600 ₽</b></div>
+  <div class="f">Если убрать два перерасхода выше (29 800 и 13 500 ₽), было бы 15,8%.</div>`,
+ s_ket:`<span class="tag">Кетофен 10%</span><h4 class="bad">Сгорит через 45 дней</h4><div class="r"><span>На складе</span><b>8 уп · 9 400 ₽</b></div>
+  <div class="r"><span>Расход за 90 дней</span><b>2 упаковки</b></div><div class="r"><span>Успеете израсходовать</span><b>1 упаковку</b></div>
+  <div class="r"><span>Уйдёт в списание</span><b class="bad">7 уп · 8 200 ₽</b></div><div class="f">Закуплено 12 июня одной партией, 10 упаковок.</div>`,
+ s_rc:`<span class="tag">Royal Canin Renal</span><h4>Срок до 2 ноября</h4><div class="r"><span>На складе</span><b>6 шт · 11 800 ₽</b></div>
+  <div class="r"><span>Продаётся</span><b>4 шт в месяц</b></div><div class="f">Успеете продать всё. Риск низкий.</div>`,
+ s_sin:`<span class="tag">Синулокс 250 мг</span><h4>Срок до 5 ноября</h4><div class="r"><span>На складе</span><b>12 уп · 8 600 ₽</b></div>
+  <div class="r"><span>Расход</span><b>8 уп в месяц</b></div><div class="f">Покупался по 890 и 1 240 ₽: разница 350 ₽ × 41 упаковка = 14 350 ₽ на объёме.</div>`,
+ s_nob:`<span class="tag">Вакцина Нобивак</span><h4>Срок до 8 ноября</h4><div class="r"><span>На складе</span><b>9 доз · 11 200 ₽</b></div>
+  <div class="r"><span>Расход</span><b>14 доз в месяц</b></div><div class="f">Разойдётся за три недели. Пора планировать закупку.</div>`,
+ sk_frozen:`<span class="tag">Заморожено</span><h4>📦 387 000 ₽</h4>
+  <div class="r"><span>Без движения 60–89 дней</span><b>156 000 ₽</b></div><div class="r"><span>Без движения 90–179 дней</span><b>148 000 ₽</b></div>
+  <div class="r"><span>Без движения от 180 дней</span><b>83 000 ₽</b></div><div class="f">1 840 позиций. Данные склада из Ветменеджера на утро 9 сентября.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ sk_burn:`<span class="tag">Сгорит за 60 дней</span><h4>⏳ 41 000 ₽</h4>
+  <div class="r"><span>Кетофен 10%</span><b>9 400 ₽</b></div><div class="r"><span>Royal Canin Renal</span><b>11 800 ₽</b></div>
+  <div class="r"><span>Синулокс 250 мг</span><b>8 600 ₽</b></div><div class="r"><span>Вакцина Нобивак</span><b>11 200 ₽</b></div>
+  <div class="f">Партии со сроком годности до 8 ноября.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ sk_wo:`<span class="tag">Списано в августе</span><h4>🗑️ 23 400 ₽</h4>
+  <div class="r"><span>Норма для вашей клиники</span><b>до 9 900 ₽</b></div><div class="r"><span>Сверх нормы</span><b class="bad">13 500 ₽</b></div>
+  <div class="f">Списание по сроку годности.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ ob_debt:`<span class="tag">Всего долг</span><h4>🏦 840 000 ₽</h4>
+  <div class="r"><span>Кредит на аппарат УЗИ</span><b>620 000 ₽</b></div><div class="r"><span>Лизинг рентген-аппарата</span><b>220 000 ₽</b></div>
+  <div class="f">Остаток основного долга на сегодня.<div class="srcs">Источник:<span class="tag">Внесено вручную</span></div></div>`,
+ ob_pay:`<span class="tag">Платёж в месяц</span><h4>📆 38 500 ₽</h4>
+  <div class="r"><span>Кредит на аппарат УЗИ</span><b>26 500 ₽</b></div><div class="r"><span>Лизинг рентген-аппарата</span><b>12 000 ₽</b></div>
+  <div class="f">3,1% выручки августа. Оба платежа стоят в платёжном календаре 10 сентября.<div class="srcs">Источник:<span class="tag">Внесено вручную</span></div></div>`,
+ ob_am:`<span class="tag">Амортизация</span><h4>🔧 21 400 ₽ в месяц</h4>
+  <div class="r"><span>Аппарат УЗИ</span><b>11 200 ₽</b></div><div class="r"><span>Рентген</span><b>6 300 ₽</b></div><div class="r"><span>Анализатор крови</span><b>3 900 ₽</b></div>
+  <div class="f">Стоимость, делённая на срок службы. Деньги со счёта не уходят, но в отчёте «Прибыль и убытки» амортизация входит в строку «Обязательства и амортизация».<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ p_zp:`<h4>ЗП врача · 1 350 ₽</h4><div class="r"><span>Доля в цене</span><b>30%</b></div><div class="r"><span>Норма</span><b>22–28%</b></div>
+  <div class="f">Процент выше нормы, но операция сложная — оправдано.</div>`,
+ p_med:`<h4>Препараты · 630 ₽</h4><div class="r"><span>Доля в цене</span><b>14%</b></div><div class="r"><span>Позиций в техкарте</span><b>6</b></div>
+  <div class="f">Подтягивается из списаний в Ветменеджере по факту приёма.</div>`,
+ p_an:`<h4>Анестезия · 360 ₽</h4><div class="r"><span>Доля в цене</span><b>8%</b></div><div class="f">Пропофол и премедикация. Цена зависит от веса животного.</div>`,
+ p_rash:`<h4>Расходники · 495 ₽</h4><div class="r"><span>Доля в цене</span><b>11%</b></div><div class="f">Шовный материал, перчатки, салфетки, шприцы.</div>`,
+ p_acq:`<h4>Эквайринг · 90 ₽</h4><div class="r"><span>Доля в цене</span><b>2%</b></div><div class="f">Средняя ставка банка по клинике.</div>`,
+ p_fix:`<h4>Постоянные · 378 ₽</h4><div class="r"><span>Доля в цене</span><b>8,4%</b></div><div class="f">Аренда, оклады и коммуналка на один приём.</div>`,
+ p_net:`<h4 class="good">Чистая прибыль · 1 197 ₽</h4><div class="r"><span>Доля в цене</span><b>26,6%</b></div>
+  <div class="r"><span>Приёмов в месяц</span><b>18</b></div><div class="r"><span>Приносит клинике</span><b>21 546 ₽</b></div>
+  <div class="f">Если поднять цену до 4 900 ₽, прибыль вырастет до 32%.</div>`
+};
+
+/* --- Рабочий стол: подсказки (разбивки сходятся с итогами) --- */
+Object.assign(T,{
+ acc_all:tipH('Остаток на счетах','💰 '+M(D.total),[['Расчётный счёт · Т-Банк 7972',M(D.bank)],['Касса клиники',M(D.cash)]],'Остаток на утро 9 сентября по выписке банка и данным кассы.',[SBANK,SHAND]),
+ wk:tipH('Изменение за неделю','📈 '+P(D.weekPct,true),[['Неделю назад (2 сентября)',M(D.weekAgo)],['Сейчас',M(D.total)],['Изменение',Ms(D.weekDelta),'good']],'Сравниваем остаток на счетах и в кассе сегодня и 7 дней назад.',[SBANK,SHAND]),
+ runway:tipH('Хватит на','⏳ '+dn(D.runway),[['Остаток на счетах',M(D.total)],['Расходы в день, в среднем',M(D.expDay)]],M(D.total)+' ÷ '+M(D.expDay)+' ≈ 11,75: берём целые дни. Средний расход за 1–8 сентября. Платежи вперёд не учтены: смотрите платёжный календарь.',[SCALC]),
+ acc_cash:tipH('Касса клиники','💵 '+M(D.cash),[['Неделю назад',M(D.cashWeekAgo)],['Внесено за смены',Ms(D.cashIn),'good'],['Расходы наличными',Ms(-D.cashOut),'bad'],['Отправлено в банк',Ms(-D.cashToBank),'bad']],'Последняя инкассация 8 сентября: 60 000 ₽ ушли на расчётный счёт.',[SHAND]),
+ acc_bank:tipH('В банке','💳 '+M(D.bank),[['Неделю назад',M(D.bankWeekAgo)],['Поступило',Ms(D.bankIn),'good'],['Списано',Ms(-D.bankOut),'bad'],['Из кассы',Ms(D.fromCash),'good']],'Последняя выписка: по 9 сентября.',[SBANK]),
+ m_rev:tipH('Выручка · сентябрь','📈 '+M(D.rev),[['Услуги',M(D.revServ)],['Корма и препараты',M(D.revGoods)],'-',['Средний чек',M(D.avgCheck)],['Приёмов',String(D.visits)]],'Данные Ветменеджера за 1–8 сентября. Операции 9 сентября войдут в итог завтра.',[SVM]),
+ m_fc:tipH('Прогноз выручки на месяц','📈 '+M(D.forecast),[['Уже получено (8 дней)',M(D.rev)],['Ожидаем до конца месяца (22 дня)',M(D.forecast-D.rev)]],'Пока по среднему за 8 дней: 330 000 ÷ 8 × 30. Когда накопится история, учтём сезонность.',[SCALC]),
+ m_exp:tipH('Расходы · сентябрь','📉 '+M(D.exp),[['Зарплаты и проценты',M(D.expSal)],['Препараты и корма',M(D.expMed)],['Расходники и хозтовары',M(D.expSup)],['Прочее',M(D.expOther)]],'Заплачено за 1–8 сентября. Операции 9 сентября войдут в итог завтра.',[SBANK,SHAND]),
+ m_expchg:tipH('Расходы к августу','📉 '+P(D.expChg,true),[['Расходы 1–8 августа',M(D.expPrev)],['Расходы 1–8 сентября',M(D.exp)],['Разница',Ms(D.exp-D.expPrev),'bad']],'Сравниваем одинаковые периоды: первые 8 дней месяца.',[SBANK,SHAND]),
+ m_prof:tipH('Прибыль · сентябрь','💰 '+M(D.profit),[['Выручка',Ms(D.rev),'good'],['Расходы',Ms(-D.exp),'bad']],'Выручка минус уже заплаченные расходы за 1–8 сентября. Налоги и амортизацию считает отчёт «Прибыль и убытки» при закрытии месяца.',[SCALC]),
+ m_margin:tipH('Рентабельность','💰 '+P(D.margin),[['Прибыль',M(D.profit)],['Выручка',M(D.rev)]],M(D.profit)+' ÷ '+M(D.rev)+'. Норма отрасли для клиник такого размера: 12–20%.',[SCALC])
+});
+D.trend.forEach((p,i)=>{T['pt'+i]=tipH('Остаток · '+p[0],'💰 '+M(p[1]),[],'Остаток на конец дня по банку и кассе.',[SBANK,SHAND]);});
+
+/* --- Транзакции: итоги месяца --- */
+Object.assign(T,{
+ tx_in:tipH('Доходы · сентябрь','📥 296 400 ₽',[['Доход · услуги',M(238700)],['Продажа товаров',M(57700)]],'Без переводов между счетами и дублей.',[SBANK,SVM,SHAND]),
+ tx_out:tipH('Расходы · сентябрь','📤 281 000 ₽',[['Зарплаты и проценты',M(128000)],['Закупка препаратов и кормов',M(92400)],['Расходники и хозтовары',M(42500)],['Прочее',M(18100)]],'Без переводов между счетами и дублей.',[SBANK,SHAND]),
+ tx_bal:tipH('Сальдо · сентябрь','⚖️ 15 400 ₽',[['Доходы',Ms(296400),'good'],['Расходы',Ms(-281000),'bad']],'Доходы минус расходы за месяц. Это не остаток на счетах: переводы между счетами не входят.',[SCALC])
+});
+
+/* --- Календарь: подсказки дней --- */
+DAYS.forEach(x=>{
+ const bad=x.end<SAFE;
+ T['c'+x.d]=tipH(`${x.d} сентября, ${x.w}`,`Остаток ${M(x.end)}`,
+  [['На утро',M(x.st)],['Выручка, прогноз',Ms(x.p),'good']].concat(x.pays.map(p=>[p[0],Ms(-p[1]),'bad'])),
+  bad?`<b class="bad">Ниже безопасного запаса.</b> Перенос «Зоовет» с 10-го на 13-е закрывает разрыв.`:'День проходит без риска.',[SCALC],bad?'bad':'');
+});
+(function(){
+ const wk=[[9,13],[14,20],[21,27],[28,30]];
+ const sum=(a,b,f)=>DAYS.filter(x=>x.d>=a&&x.d<=b).reduce((s,x)=>s+f(x),0);
+ const tin=DAYS.reduce((a,x)=>a+x.p,0), tout=DAYS.reduce((a,x)=>a+x.m,0), low=DAYS.reduce((a,x)=>x.end<a.end?x:a,DAYS[0]);
+ T.cal_in=tipH('Поступит за 22 дня','📥 '+M(tin),wk.map(([a,b])=>[`${a}–${b} сентября`,M(sum(a,b,x=>x.p))]),'Прогноз выручки по последним 90 дням, с учётом дней недели.',[SCALC]);
+ T.cal_out=tipH('Спишется за 22 дня','📤 '+M(tout),wk.map(([a,b])=>[`${a}–${b} сентября`,M(sum(a,b,x=>x.m))]),DAYS.reduce((a,x)=>a+x.pays.length,0)+' платежей: аренда, зарплата, поставщики, налоги, кредит и лизинг.',[SCALC]);
+ T.cal_low=tipH('Самый низкий остаток','📉 '+M(low.end),[['На утро '+low.d+' сентября',M(low.st)],['Выручка, прогноз',Ms(low.p),'good']].concat(low.pays.map(p=>[p[0],Ms(-p[1]),'bad']),[['Безопасный запас',M(SAFE)]]),`Ниже запаса на ${M(SAFE-low.end)}.`,[SCALC],'bad');
+})();
+
+/* ================= СОВЕТЫ (поля как advice[] из контракта) ================= */
+const ADVICE=[
+ {id:'cash-gap',sev:'alert',em:'📅',t:`${BAD.d} сентября не хватит ${M(SHORT)} на зарплату`,
+  p:`На утро будет ${M(BAD.st)}, к выплате ${M(258000)}. Если перенести платёж «Зоовет» с 10-го на 13-е, разрыва не будет.`,
+  why:{s:'Три крупных платежа подряд уходят быстрее, чем приходит выручка.',
+   steps:[`10 сентября: «Зоовет» ${M(96000)}, кредит и лизинг ${M(38500)}.`,`11 сентября: аренда, лаборатория и связь ${M(126300)}.`,`12 сентября: зарплата ${M(258000)}.`,
+    `Выручки за 10–12 сентября ожидаем ${M(41000+39000+44000)}, этого не хватает.`,
+    `Если перенести «Зоовет» на 13-е, на утро 12-го будет ${M(BAD.st+96000)}, после зарплаты останется ${M(BAD.st+96000+44000-258000)}. Договор допускает отсрочку до 5 дней.`],
+   src:'платёжный календарь; история поступлений за 90 дней; карточка контрагента'}},
+ {id:'stationary-loss',sev:'alert',em:'🩸',t:'Стационар в минусе третий месяц',
+  p:'Август −14 000 ₽, июль −11 000 ₽, июнь −9 000 ₽. Убыток растёт.',
+  why:{s:'Минус даёт не выручка, а ночные смены.',
+   steps:['Выручка 68 000 ₽ за 52 суток пребывания — 1 308 ₽ в сутки.','Расходы 82 000 ₽: ночные смены 49 000 ₽, препараты 21 000 ₽, аренда площади 12 000 ₽. Зарплата ночного персонала платится независимо от загрузки.','Средняя заполняемость — 1,7 места из 6.','Выйдет в ноль при 2,1 места (62,7 суток в месяц) или при цене 1 580 ₽ за сутки вместо 1 308 ₽. Ещё вариант: перевести ночное дежурство на вызов.'],
+   src:'Ветменеджер (госпитализации); ведомость зарплат; разнесение аренды по площади'}},
+ {id:'drugs-share',sev:'warning',em:'💊',t:'Препараты съедают 27,4% выручки при норме до 25%',
+  p:'Перерасход в августе 29 800 ₽ (339 800 ₽ вместо 310 000 ₽), держится третий месяц.',
+  why:{s:'Две причины, обе видны в закупках и списаниях:',
+   steps:['Разные цены на одно и то же. Синулокс 250 мг закупался по 890 ₽ и по 1 240 ₽. Если брать по меньшей цене все 41 упаковку, экономия 350 ₽ × 41 = 14 350 ₽.','Расходники в терапии: 44 000 ₽ при выручке направления 287 000 ₽ — это 15,3% при норме 9,7%. Лишние около 16 200 ₽.','Вместе это 30 550 ₽, больше перерасхода в 29 800 ₽. Если закрыть обе причины, доля препаратов и расходников вернётся к 24,9%: внутрь нормы (до 25%).'],
+   src:'закупки из выписки; списания на приём из Ветменеджера'}},
+ {id:'writeoff',sev:'warning',em:'📦',t:'23 400 ₽ списано по сроку годности в августе',
+  p:'Норма для клиники вашего размера — до 9 900 ₽.',
+  why:{s:'Списание идёт из закупок объёмом больше, чем клиника успевает израсходовать:',
+   steps:['Кетофен 10% куплен 12 июня партией 10 упаковок. За 90 дней израсходованы 2 упаковки.','Срок истекает 24 октября; до этого уйдёт ещё около 1 упаковки, в списание пойдут 7 упаковок на 8 200 ₽.','Оборачиваемость склада 74 дня при норме 45.'],
+   src:'остатки и списания из Ветменеджера; даты закупок из выписки'}},
+ {id:'surgery-best',sev:'good',em:'📈',t:'Хирургия — лучшее направление, 44% рентабельности',
+  p:'94 000 ₽ прибыли при выручке 214 000 ₽.',
+  why:{s:'Направление приносит больше всех, и резерв роста ещё есть:',
+   steps:['Выручка 214 000 ₽, прямые расходы 120 000 ₽: зарплата и проценты 78 000 ₽, расходники и анестезия 30 000 ₽, аренда операционной 12 000 ₽.','Прибыль 94 000 ₽ — 43,9% выручки, лучшее значение среди направлений.','Операционная загружена на 58%: 58 приёмов в месяц из возможных 100. Прибыль на приём около 1 620 ₽.','При 80 приёмах без найма второго хирурга это ещё около 36 000 ₽ в месяц, итого около 130 000 ₽ вместо 94 000 ₽.'],
+   src:'прайс услуг; расписание Ветменеджера; разнесение постоянных расходов'}}
+];
+const SEV={alert:['al','pill red','срочно'],warning:['wr','pill','внимание'],good:['gd','pill grn','хорошо']};
+function adviceCard(a,k,opt){
+ opt=opt||{};
+ const cls=opt.plain?'gd':SEV[a.sev][0], on=open1===k;
+ return `<li class="tip-card ${cls}" data-testid="advice-card" data-advice-id="${a.id}" data-severity="${a.sev}"><div class="tip-h"><div class="tip-l">
+   <div class="tip-em" aria-hidden="true">${a.em}</div><div class="tip-b">${opt.plain?'':`<span class="${SEV[a.sev][1]}" data-testid="advice-severity">${SEV[a.sev][2]}</span>`}<h3 data-testid="advice-title">${a.t}</h3><p>${a.p}</p></div></div>
+   <button type="button" class="why ${on?'on':''}" data-q="${k}" aria-expanded="${on}" aria-controls="why-${k}" data-testid="advice-why">${on?'Свернуть':'Почему?'}</button></div>
+   ${on?`<div class="ans" id="why-${k}" role="region" aria-labelledby="who-${k}" data-testid="advice-why-panel"><div class="who" id="who-${k}">Разбор</div>${a.why.s}
+    <ol data-testid="advice-why-steps">${a.why.steps.map(s=>`<li>${s}</li>`).join('')}</ol><div class="src" data-testid="advice-why-sources">Источник: ${a.why.src}</div></div>`:''}</li>`;
+}
+
+/* финмодель: сценарии. Прибыль считается тождеством, а не хранится */
+const SC={
+ base:{n:'Базовый',d:'Всё идёт как сейчас, сезонность по прошлому году',q:[4120,3890,4480,4760]},
+ grow:{n:'С ростом',d:'Стационар выходит в ноль, хирургия загружена на 80%',q:[4380,4290,5120,5540]},
+ safe:{n:'Осторожный',d:'Поток не растёт, инфляция по расходам 8% в год',q:[3960,3620,4020,4110]}
+};
+const FACT=[3720,3510,3980,4180];            /* факт, тыс. ₽: IV 25, I 26, II 26, III 26 */
+const QN=['IV кв 2026','I кв 2027','II кв 2027','III кв 2027'];
+const OBL_Q=33400*3;                         /* обязательства и амортизация за квартал, ₽ */
+function plan(sc){return sc.q.map((qk,i)=>{
+ const rev=qk*1000, vr=Math.round(rev*.51), marg=rev-vr, fix=Math.round(rev*.30), tax=Math.round(rev*.037), obl=OBL_Q;
+ const profit=marg-fix-tax-obl, prev=i===0?FACT[3]*1000:sc.q[i-1]*1000;
+ return {rev,vr,marg,fix,tax,obl,profit,margin:profit/rev*100,growth:(rev/prev-1)*100,prev};});}
+
+/* ================= ОБЩЕЕ ================= */
+const head=(t,s,extra,bal)=>`<div class="head"><div><h1>${t}</h1><div class="sub">${s}</div></div>
+ <div class="hr2">${extra||''}${bal===false?'':`<button type="button" class="tb bal" data-tip="acc_all" data-figure="balance.total"><span class="v">${M(D.total)}</span><span class="l">на счетах и в кассе</span></button>`}</div></div>`;
+const SUBLINE=`${D.asOf} · данные обновлены в ${D.dataAt}`;
+const sk=(w,h,x)=>`<span class="sk" style="width:${w};height:${h};${x||''}"></span>`;
+
+/* ================= РАБОЧИЙ СТОЛ ================= */
+function dashBalance(){
+ const pts=D.trend, vals=pts.map(p=>p[1]), n=pts.length, mn=Math.min(...vals), mx=Math.max(...vals), w=760, h=104;
+ const yp=v=>mx===mn?50:12+(mx-v)/(mx-mn)*76, xp=i=>i/(n-1)*100;
+ const line=vals.map((v,i)=>`${(xp(i)/100*w).toFixed(1)},${(yp(v)/100*h).toFixed(1)}`).join(' L');
+ const strips=pts.map((p,i)=>{
+  const l=i===0?0:(xp(i)+xp(i-1))/2, r=i===n-1?100:(xp(i)+xp(i+1))/2;
+  return `<button type="button" class="cpt" style="left:${l}%;width:${r-l}%" tabindex="${i===n-1?0:-1}" data-tip="pt${i}" data-anchor="dot${i}" data-figure="balance_trend" data-testid="balance-chart-point" data-date="${i<5?'2026-08-'+(27+i):'2026-09-0'+(i-4)}" aria-label="${p[0]}, ${M(p[1])}"></button>`;}).join('');
+ const dots=pts.map((p,i)=>`<i class="cdot ${i===n-1?'last':''}" id="dot${i}" style="left:${xp(i)}%;top:${yp(p[1])}%"></i>`).join('');
+ const wkCls=D.weekPct>0?'':D.weekPct<0?'neg':'zero';
+ const wkTxt=D.weekPct===0?'без изменений за неделю':P(D.weekPct,true)+' за неделю';
+ return `<div class="hero" data-testid="balance-hero" role="group" aria-label="Остаток на счетах">
+  <div class="hero-top"><button type="button" class="tb" data-tip="acc_all" data-figure="balance.total" data-testid="balance-total"><span class="lbl">Остаток на счетах</span><span class="num">${M(D.total)}</span></button>
+   <span class="cap">Остаток на конец дня, ${n} дней</span></div>
+  <button type="button" class="tb d ${wkCls}" data-tip="wk" data-figure="balance.week_change" data-testid="balance-week-change">${wkTxt}</button>
+  <div class="chartwrap" data-testid="balance-chart" role="group" aria-label="График остатка за ${n} дней: с ${M(vals[0])} до ${M(vals[n-1])}">
+   <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8174F" stop-opacity=".22"/><stop offset="1" stop-color="#B8174F" stop-opacity="0"/></linearGradient></defs>
+    <path d="M${line} L${w},${h} L0,${h} Z" fill="url(#g)"/><path d="M${line}" fill="none" stroke="#B8174F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>
+   ${dots}${strips}</div>
+  <table class="sr-only"><caption>Остаток на конец дня</caption><thead><tr><th>Дата</th><th>Остаток</th></tr></thead><tbody>${pts.map(p=>`<tr><td>${p[0]}</td><td>${M(p[1])}</td></tr>`).join('')}</tbody></table></div>
+ <div class="accs">
+  <button type="button" class="acc hi" data-tip="runway" data-figure="balance.runway_days" data-testid="balance-runway"><span class="em" aria-hidden="true">⏳</span><span><span class="t">Хватит на</span><span class="v">${dn(D.runway)}</span><span class="s">при текущем темпе расходов</span></span></button>
+  <button type="button" class="acc" data-tip="acc_cash" data-figure="balance.cash" data-testid="balance-cash"><span class="em" aria-hidden="true">💵</span><span><span class="t">Касса клиники</span><span class="v">${M(D.cash)}</span></span></button>
+  <button type="button" class="acc" data-tip="acc_bank" data-figure="balance.bank" data-testid="balance-bank"><span class="em" aria-hidden="true">💳</span><span><span class="t">В банке</span><span class="v">${M(D.bank)}</span></span></button></div>
+ <p class="note hint">Наведите или нажмите на сумму: покажем, из чего она состоит.</p>`;
+}
+const noAccounts=()=>`<div class="card empty" data-testid="dashboard-no-accounts"><div class="em" aria-hidden="true">💳</div><div><h3>Счетов пока нет</h3><p>Остаток появится, когда в сервисе будет хотя бы один счёт или касса.</p></div></div>`;
+function mcard(em,label,figKey,tipKey,value,tid,subKey,subTip,subText,subCls,subTid){
+ return `<div class="mcard" data-testid="${tid}"><div class="em" aria-hidden="true">${em}</div><div class="mc-body">
+  <button type="button" class="tb" data-tip="${tipKey}" data-figure="${figKey}"><span class="t">${label}</span><span class="v">${value}</span></button>
+  <button type="button" class="tb s ${subCls||''}" data-tip="${subTip}" data-figure="${subKey}" data-testid="${subTid}">${subText}</button></div></div>`;
+}
+function dashMonth(){
+ return `<h2 class="klabel" style="margin:22px 0 12px" data-testid="month-caption">Сентябрь · ${dn(D.passed).replace(' ',' ')} из ${D.totalDays}</h2>
+  <div class="mrow" style="margin-bottom:26px" data-testid="month-section">
+   ${mcard('📈','Выручка','month.revenue','m_rev',M(D.rev),'month-revenue','month.revenue_forecast','m_fc','прогноз месяца '+M(D.forecast),'','month-revenue-forecast')}
+   ${mcard('📉','Расходы','month.expenses','m_exp',M(D.exp),'month-expenses','month.expenses_change_pct','m_expchg',P(D.expChg,true)+' к августу','bad','month-expenses-change')}
+   ${mcard('💰','Прибыль','month.profit','m_prof',M(D.profit),'month-profit','month.profit_margin_pct','m_margin','рентабельность '+P(D.margin),'','month-profit-margin')}</div>`;
+}
+const monthEmpty=()=>`<h2 class="klabel" style="margin:22px 0 12px" data-testid="month-caption">Сентябрь</h2>
+ <div class="card empty" style="margin-bottom:26px" data-testid="month-empty"><div class="em" aria-hidden="true">📈</div><div><p style="font-size:14px">За сентябрь данных пока нет. Загрузите выписку или подключите Ветменеджер: цифры появятся здесь.</p>
+ <div class="btns"><button type="button" class="act">Загрузить выписку</button><button type="button" class="act">Подключения</button></div></div></div>`;
+const adviceBlock=()=>`<h2 class="klabel" style="margin-bottom:12px" data-testid="advice-section">Советы · ${ADVICE.length}</h2><ul class="advl" data-testid="advice-list">${ADVICE.map((a,i)=>adviceCard(a,'a'+i)).join('')}</ul>`;
+const adviceEmpty=()=>`<h2 class="klabel" style="margin-bottom:12px" data-testid="advice-section">Советы</h2><div class="card empty" data-testid="advice-empty"><div class="em" aria-hidden="true">📈</div><div><h3>Пока всё в порядке</h3><p>Заметных отклонений нет. Совет появится, если что-то выйдет из нормы.</p></div></div>`;
+function dashLoading(){
+ const card=`<div class="acc" style="cursor:default"><div class="em" aria-hidden="true">💳</div><div>${sk('80px','11px')}${sk('140px','22px','margin-top:6px')}</div></div>`;
+ const mc=`<div class="mcard"><div class="em" aria-hidden="true">📈</div><div>${sk('80px','11px')}${sk('140px','23px','margin-top:6px')}${sk('110px','12px','margin-top:8px')}</div></div>`;
+ const ad=`<div class="tip-card" style="min-height:88px">${sk('60%','16px')}${sk('90%','13px','margin-top:10px')}</div>`;
+ return `<div data-testid="dashboard-loading" aria-busy="true"><span class="sr-only">Загружаем Рабочий стол</span>
+  <div class="hero" style="padding-bottom:20px">${sk('100px','13px')}${sk('200px','44px','margin:8px 0')}${sk('110px','13px')}<div class="sk" style="height:104px;margin-top:12px;border-radius:12px"></div></div>
+  <div class="accs">${card}${card}${card}</div>
+  <div class="mrow" style="margin:22px 0 26px">${mc}${mc}${mc}</div>${ad}${ad}</div>`;
+}
+const dashError=()=>`<div class="card errcard" role="alert" data-testid="dashboard-error"><span class="pill red">не загрузилось</span><h3>Не получилось загрузить Рабочий стол</h3>
+ <p>Это сбой на нашей стороне, ваши данные не пострадали. Попробуйте ещё раз.</p><div style="margin-top:14px"><button type="button" class="act" data-st="" data-testid="dashboard-error-retry">Повторить</button></div></div>`;
+function vDash(){
+ const sub=STATE==='empty'?'9 сентября 2026 · данные ещё не загружались':(STATE==='loading'?sk('220px','13px','margin-top:5px'):SUBLINE);
+ let h=head('Рабочий стол',sub,'',false);
+ h=h.replace('<div class="sub">','<div class="sub" data-testid="dashboard-subtitle">');
+ if(STATE==='loading') return `<div data-testid="dashboard">${h+dashLoading()}${demoBar()}</div>`;
+ if(STATE==='error') return `<div data-testid="dashboard">${h+dashError()}${demoBar()}</div>`;
+ if(STATE==='stale') h+=`<div class="banner warning" role="status" data-testid="dashboard-stale-banner"><span>Данные обновлены вчера в 04:12 и могли устареть.</span><button type="button" class="lnk">Проверить подключения</button></div>`;
+ h+=STATE==='noaccounts'?noAccounts():dashBalance();
+ h+=STATE==='empty'?monthEmpty():dashMonth();
+ h+=STATE==='empty'?adviceEmpty():adviceBlock();
+ return `<div data-testid="dashboard">${h+demoBar()}</div>`;
+}
+function demoBar(){
+ const L=[['','Обычное'],['loading','Загрузка'],['error','Ошибка'],['noaccounts','Нет счетов'],['empty','Пустой месяц и нет советов'],['stale','Данные устарели']];
+ return `<div class="demo"><b>Только в прототипе.</b> Состояния Рабочего стола:<br>${L.map(([k,t])=>`<button type="button" data-st="${k}" class="${STATE===k?'on':''}">${t}</button>`).join('')}</div>`;
+}
+
+/* ================= ТРАНЗАКЦИИ ================= */
+const TX=[
+ ['9 сен','Оплата пациентов · эквайринг','Доход · услуги','Т-Банк','Банк',71000,'in','all'],
+ ['9 сен','Корма Роял Канин, 3 уп.','Товары для перепродажи','Касса','Вручную',-5400,'out','all'],
+ ['9 сен','Такси за анализами','Прочие расходы','Касса','Вручную',-640,'out','all'],
+ ['8 сен','Оплата пациентов · наличные','Доход · услуги','Касса','Ветменеджер',18200,'in','all'],
+ ['8 сен','ООО «Зоовет» · счёт 4412','Закупка препаратов','Т-Банк','Банк',-48000,'out','all'],
+ ['8 сен','Перевод между счетами','Перевод','Касса → Т-Банк','Банк',-60000,'mv','all'],
+ ['7 сен','Списание 1 240,00 · назначение не распознано','Без статьи','Т-Банк','Банк',-1240,'out','check'],
+ ['5 сен','Поступление 9 400,00 от ИП Кузнецов','Без статьи','Т-Банк','Банк',9400,'in','check'],
+ ['6 сен','Корма Роял Канин, 3 уп.','Товары для перепродажи','Т-Банк','Вручную',-5400,'out','dup'],
+ ['6 сен','Роял Канин 3 упаковки','Товары для перепродажи','Т-Банк','Банк',-5400,'out','dup'],
+ ['5 сен','Хозтовары (внесено вручную)','Хозрасходы','Т-Банк','Вручную',-9800,'out','dup'],
+ ['4 сен','Хозтовары «Чистовъ»','Хозрасходы','Т-Банк','Банк',-9800,'out','dup']
+];
+function vTx(){
+ const cnt={all:TX.filter(t=>t[7]==='all').length,check:TX.filter(t=>t[7]==='check').length,dup:TX.filter(t=>t[7]==='dup').length/2};
+ const rows=TX.filter(t=>t[7]===txTab);
+ const tab=(k,t,c)=>`<button type="button" role="tab" aria-selected="${txTab===k}" class="${txTab===k?'on':''}" data-tx="${k}">${t}${c!==undefined?`<span class="cnt">${c}</span>`:''}</button>`;
+ return head('Транзакции',SUBLINE,`<button type="button" class="act pri">+ Операция</button><button type="button" class="act">Загрузить выписку</button>`)
+ + `<div class="mrow" style="margin-bottom:16px">
+   <div class="mcard"><div class="em" aria-hidden="true">📥</div><div class="mc-body"><button type="button" class="tb" data-tip="tx_in"><span class="t">Доходы за сентябрь</span><span class="v up">296 400 ₽</span></button></div></div>
+   <div class="mcard"><div class="em" aria-hidden="true">📤</div><div class="mc-body"><button type="button" class="tb" data-tip="tx_out"><span class="t">Расходы за сентябрь</span><span class="v">281 000 ₽</span></button></div></div>
+   <div class="mcard"><div class="em" aria-hidden="true">⚖️</div><div class="mc-body"><button type="button" class="tb" data-tip="tx_bal"><span class="t">Сальдо</span><span class="v">15 400 ₽</span></button></div></div></div>
+  <div class="seg" role="tablist">${tab('all','Все',cnt.all)}${tab('check','На проверку',cnt.check)}${tab('dup','Дубли',cnt.dup)}${tab('rule','Правила разнесения')}</div>`
+ + (txTab==='rule'
+  ? `<div class="card"><div class="klabel">Правила разнесения</div><table><thead><tr><th>Если в назначении</th><th>Статья</th><th class="r">Сработало</th></tr></thead><tbody>
+     <tr><td><b style="font-weight:600">«Зоовет», «Апиценна», «Ветфарм»</b></td><td>Закупка препаратов</td><td class="r">41 раз</td></tr>
+     <tr><td><b style="font-weight:600">«Роял Канин», «Пурина», «корм»</b></td><td>Товары для перепродажи</td><td class="r">28 раз</td></tr>
+     <tr><td><b style="font-weight:600">«Шанс Био», «ВетЮнион»</b></td><td>Лаборатории</td><td class="r">12 раз</td></tr>
+     <tr><td><b style="font-weight:600">ИП Волков</b></td><td>Аренда</td><td class="r">9 раз</td></tr>
+     <tr><td><b style="font-weight:600">«НДФЛ», «страховые взносы», «УСН»</b></td><td>Налоги и взносы</td><td class="r">18 раз</td></tr>
+     </tbody></table><p class="note">Правила создаются сами, когда вы выбираете статью и оставляете галочку «Создать правило». Один раз поправили, дальше разносится автоматически.</p></div>`
+  : `<div class="card">${txTab==='check'?'<p class="note" style="margin:0 0 14px">Эти операции не удалось отнести к статье автоматически. Выберите статью: похожие дальше будут разноситься сами.</p>':''}
+     ${txTab==='dup'?'<p class="note" style="margin:0 0 14px">Похоже, одна и та же операция попала к нам дважды, например из банка и из ручного ввода. Выберите, какую оставить; вторая останется в истории с пометкой.</p>':''}
+     <table><caption class="sr-only">Операции за сентябрь 2026</caption><thead><tr><th scope="col">Дата</th><th scope="col">Операция</th><th scope="col">Статья</th><th scope="col">Счёт</th><th scope="col">Источник</th><th scope="col" class="r">Сумма</th>${txTab!=='all'?'<th scope="col" class="r">Действие</th>':''}</tr></thead><tbody>
+     ${rows.map(([d,n,c,a,s,v,k])=>`<tr><td class="faint" style="font-size:13px">${d}</td>
+      <td><b style="font-weight:600">${n}</b></td>
+      <td>${c==='Без статьи'?'<span class="pill red">без статьи</span>':`<span class="pill gr">${c==='Перевод'?'перевод между счетами':c}</span>`}</td>
+      <td class="faint" style="font-size:13px">${a}</td>
+      <td><span class="pill ${s==='Бот'?'tg':s==='Ветменеджер'?'vm':'gr'}">${s}</span></td>
+      <td class="r ${k==='in'?'up':k==='mv'?'faint':''}">${k==='in'?'+':'−'}${M(v)}</td>
+      ${txTab==='check'?'<td class="r"><button type="button" class="act">Выбрать статью</button></td>':''}
+      ${txTab==='dup'?'<td class="r"><button type="button" class="act">Оставить эту</button></td>':''}</tr>`).join('')}
+     </tbody></table></div>`);
+}
+
+/* ================= ОТЧЁТЫ ================= */
+function vOpiu(){
+ const rows=[['rev','Выручка','1 240 000 ₽','100%','o_rev'],['exp','Переменные расходы','− 632 000 ₽','51,0%','o_var'],
+  ['sum','Маржинальная прибыль','608 000 ₽','49,0%','o_marg'],['exp','Постоянные расходы','− 376 000 ₽','30,3%','o_fix'],
+  ['exp','Налоги и взносы','− 46 000 ₽','3,7%','o_tax'],['exp','Обязательства и амортизация','− 33 400 ₽','2,7%','o_obl'],['tot','Чистая прибыль','152 600 ₽','12,3%','o_net']];
+ const dirs=[['Хирургия',94000,78,'','d_hir'],['Терапия',73000,61,'','d_ter'],['Груминг',26000,22,'l','d_gru'],['Лаборатория',7000,9,'l','d_lab'],['Стационар',-14000,12,'n','d_sta']];
+ return head('Прибыль и убытки','Август 2026 · наведите на строку, чтобы увидеть состав')
+ + `<div class="seg"><button type="button" class="${opiuMode==='all'?'on':''}" data-om="all">Вся клиника</button><button type="button" class="${opiuMode==='dir'?'on':''}" data-om="dir">По направлениям</button></div>`
+ + (opiuMode==='all'
+  ? `<div class="card">${rows.map(([k,n,v,p,tip])=>`<div class="pl ${k}" data-tip="${tip}"><div class="bar"><b>${n}</b></div><div class="n">${v}</div><div class="p">${p}</div></div>`).join('')}
+     <p class="note">Выручка − переменные − постоянные − налоги и взносы − обязательства и амортизация = чистая прибыль. Наведите на любую строку: покажется, из чего она собрана.</p></div>`
+  : `<div class="card"><div class="klabel">Прибыль по направлениям</div><div class="bars">
+     ${dirs.map(([n,v,w,c,tip])=>`<div class="brow" data-tip="${tip}"><div class="b-top"><b>${n}</b><span class="${v<0?'down':''}">${v<0?'− ':'+ '}${M(v)}</span></div><div class="track"><div class="fill ${c}" style="width:${w}%"></div></div></div>`).join('')}
+     </div>
+     <table style="margin-top:18px"><tbody>
+      <tr data-tip="d_sum"><td>Сумма по направлениям</td><td class="r">186 000 ₽</td></tr>
+      <tr data-tip="o_obl"><td>Обязательства и амортизация<div class="meta">общие, к направлениям не относятся</div></td><td class="r down">− 33 400 ₽</td></tr>
+      <tr data-tip="o_net"><td><b>Чистая прибыль клиники</b></td><td class="r up">152 600 ₽</td></tr></tbody></table>
+     <p class="note">Аренда разнесена по площади, зарплата — по графику смен.</p></div>`);
+}
+const NORM=[['ФОТ врачей','22–28%',24.6,22,28,'ok','n_fot'],['Препараты и расходники','20–25%',27.4,20,25,'bad','n_med'],
+ ['Аренда и коммуналка','5–10%',6.9,5,10,'ok','n_rent'],['Лаборатории','3–6%',3.8,3,6,'ok','n_lab'],
+ ['Списание по сроку','до 0,8%',1.9,0,0.8,'bad','n_exp'],['Эквайринг','1,5–2,5%',2.0,1.5,2.5,'ok','n_acq'],
+ ['Маркетинг','3–7%',2.1,3,7,'warn','n_mkt'],['Чистая прибыль','12–20%',12.3,12,20,'ok','n_net']];
+const vNorm=()=>head('Норма','Август 2026 · ваши показатели против нормы ветклиник на 2–6 врачей')
+ + `<div class="card"><table><thead><tr><th>Статья</th><th style="width:110px">Норма</th><th style="width:210px">Где вы</th><th class="r" style="width:78px">Ваше</th><th class="r" style="width:110px">Отклонение</th></tr></thead><tbody>
+ ${NORM.map(([n,b,v,lo,hi,k,tip])=>{const mx=Math.max(hi*1.6,v*1.25);
+  const dev=v<lo?`−${(lo-v).toFixed(1).replace('.',',')} п.п.`:v>hi?`+${(v-hi).toFixed(1).replace('.',',')} п.п.`:'в норме';
+  return `<tr data-tip="${tip}"><td><b style="font-weight:600">${n}</b></td><td><span class="pill gr">${b}</span></td>
+  <td><div class="gauge"><div class="gz" style="left:${lo/mx*100}%;width:${(hi-lo)/mx*100}%"></div><div class="gm ${k==='bad'?'bad':k==='warn'?'warn':''}" style="left:${v/mx*100}%"></div></div></td>
+  <td class="r">${v.toFixed(1).replace('.',',')}%</td><td class="r"><span class="pill ${k==='bad'?'red':k==='warn'?'':'grn'}">${dev}</span></td></tr>`;}).join('')}
+ </tbody></table><p class="note">Зелёная зона — норма отрасли, чёрточка — ваше значение. Наведите на строку, чтобы увидеть отклонение в рублях.</p></div>`;
+const vSklad=()=>head('Склад и сроки','Деньги, которые лежат на полке и тают')
+ + `<div class="mrow" style="margin-bottom:16px">
+  <div class="mcard"><div class="em" aria-hidden="true">📦</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_frozen"><span class="t">Заморожено</span><span class="v">387 000 ₽</span></button><span class="s">1 840 позиций</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">⏳</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_burn"><span class="t">Сгорит за 60 дней</span><span class="v">41 000 ₽</span></button><span class="s bad">4 позиции в риске</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">🗑️</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_wo"><span class="t">Списано в августе</span><span class="v">23 400 ₽</span></button><span class="s bad">норма — до 9 900 ₽</span></div></div></div>
+ <div class="card"><div class="klabel">Сгорит в ближайшие 60 дней</div>
+ <table><thead><tr><th>Позиция</th><th>Осталось</th><th class="r">Сумма</th></tr></thead><tbody>
+ ${[['Кетофен 10%, 8 уп.','до 24 октября',9400,'red','45 дней','s_ket'],['Royal Canin Renal, 6 шт','до 2 ноября',11800,'','54 дня','s_rc'],
+    ['Синулокс 250 мг, 12 уп.','до 5 ноября',8600,'','57 дней','s_sin'],['Вакцина Нобивак, 9 доз','до 8 ноября',11200,'','60 дней','s_nob']]
+  .map(([n,d,v,c,t,tip])=>`<tr data-tip="${tip}"><td><b style="font-weight:600">${n}</b><div class="meta">${d}</div></td><td><span class="pill ${c}">${t}</span></td><td class="r">${M(v)}</td></tr>`).join('')}
+ </tbody></table><p class="note">Оборачиваемость склада 74 дня при норме 45.</p></div>`;
+
+/* ================= ПЛАНИРОВАНИЕ ================= */
+function calAlert(){
+ if(!BAD) return '';
+ return `<ul class="advl">${adviceCard(ADVICE[0],'cal1')}</ul>`;
+}
+function calMonth(){
+ const cells=[];
+ for(let i=0;i<35;i++){
+  const dt=new Date(2026,7,31+i), d=dt.getDate(), inM=dt.getMonth()===8, wk=dt.getDay()===0||dt.getDay()===6;
+  const x=inM?DMAP[d]:null, past=inM&&d<TODAY;
+  const cls=['c',wk?'wk':'',!x&&!past?'out':'',past?'past':'',d===TODAY&&inM?'today':'',x&&x.end<SAFE?'bad':'',x&&calSel===d?'sel':''].join(' ');
+  let body='';
+  if(x){
+   const shown=x.pays.slice(0,2), rest=x.pays.length-shown.length;
+   body=`<div class="ev in">+ ${M(x.p)}</div>`
+    + shown.map(p=>`<div class="ev pay"><b>${p[0]}</b><span>− ${M(p[1])}</span></div>`).join('')
+    + (rest?`<div class="ev more">ещё ${rest}: − ${M(x.pays.slice(2).reduce((a,p)=>a+p[1],0))}</div>`:'')
+    + (x.end<SAFE?`<div class="badt">ниже запаса</div>`:'')
+    + `<div class="cbal">остаток<b>${M(x.end)}</b></div>`;
+  } else if(past){ body=`<div class="cbal">прошёл</div>`; }
+  cells.push(`<div class="${cls}" ${x?`data-cd="${d}" data-tip="c${d}" role="button" tabindex="0" aria-label="${d} сентября, остаток ${M(x.end)}${x.end<SAFE?', ниже безопасного запаса':''}"`:''}>
+   <div class="n">${d===1&&inM?'1 сен':d===1?'1 окт':d}</div>${body}</div>`);
+ }
+ return `<div class="card" style="padding:18px 18px 16px;margin-bottom:16px">
+  <div class="calbar"><b>9–30 сентября</b><span class="lg"><i class="li in"></i>выручка <i class="li pay"></i>платёж <i class="li bd"></i>ниже безопасного запаса</span></div>
+  <div class="calwrap"><div class="cal">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(w=>`<div class="wh">${w}</div>`).join('')}${cells.join('')}</div></div>
+  <p class="note">Окно календаря — 22 дня вперёд от сегодняшнего дня. Нажмите на день, чтобы открыть его разбор ниже.</p></div>` + calDay();
+}
+function calDay(){
+ const x=DMAP[calSel]; if(!x) return '';
+ const b=x.end<SAFE;
+ return `<div class="card dayp ${b?'bad':''}"><div class="klabel">Разбор дня</div>
+  <h3>${x.d} сентября, ${x.wf}</h3>
+  <table><tbody>
+   <tr><td>Остаток на утро</td><td class="r">${M(x.st)}</td></tr>
+   <tr><td>Выручка, прогноз по последним 90 дням</td><td class="r up">+ ${M(x.p)}</td></tr>
+   ${x.pays.map(p=>`<tr><td>${p[0]}</td><td class="r down">− ${M(p[1])}</td></tr>`).join('')}
+   <tr class="tot"><td>Остаток на вечер</td><td class="r ${b?'down':''}">${M(x.end)}</td></tr>
+  </tbody></table>
+  ${b?`<p class="warnline">Ниже безопасного запаса на ${M(SAFE-x.end)}. Перенос оплаты «Зоовет» с 10-го на 13-е закрывает разрыв.</p>`:`<p class="note">Запас соблюдён: остаток выше ${M(SAFE)}.</p>`}</div>`;
+}
+function calList(){
+ const min=Math.min(...DAYS.map(x=>x.end)), max=Math.max(...DAYS.map(x=>x.end));
+ const w=880,h=180,pad=18, lo=Math.min(0,min);
+ const X=i=>pad+i*((w-pad*2)/(DAYS.length-1));
+ const Y=v=>h-pad-((v-lo)/(max-lo))*(h-pad*2);
+ const line=DAYS.map((x,i)=>`${X(i)},${Y(x.end)}`).join(' L');
+ return `<div class="flow"><div class="klabel">Как будет меняться остаток</div>
+  <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Остаток на 22 дня вперёд, самый низкий ${M(min)}">
+   <defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8174F" stop-opacity=".16"/><stop offset="1" stop-color="#B8174F" stop-opacity="0"/></linearGradient></defs>
+   <line x1="${pad}" y1="${Y(SAFE)}" x2="${w-pad}" y2="${Y(SAFE)}" stroke="#C23A22" stroke-width="1.4" stroke-dasharray="5 5" opacity=".7"/>
+   <path d="M${line} L${X(DAYS.length-1)},${h-pad} L${X(0)},${h-pad} Z" fill="url(#gc)"/>
+   <path d="M${line}" fill="none" stroke="#B8174F" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+   ${DAYS.map((x,i)=>x.end<SAFE?`<circle cx="${X(i)}" cy="${Y(x.end)}" r="6" fill="#C23A22"/>`:'').join('')}
+  </svg>
+  <div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--ink-soft);margin-top:6px"><span>9 сентября</span><span>пунктир: безопасный запас ${M(SAFE)}; красная точка: ниже запаса</span><span>30 сентября</span></div></div>
+  <div class="card"><div class="klabel">По дням</div><div class="daylist">
+   ${DAYS.map(x=>`<div class="d ${x.end<SAFE?'bad':''}" data-tip="c${x.d}">
+    <div class="dt">${x.d} сентября<em>${x.w}</em></div>
+    <div><div class="faint">Выручка, прогноз</div>${x.pays.map(p=>`<div>${p[0]}</div>`).join('')}</div>
+    <div class="amt"><span class="up">+ ${M(x.p)}</span>${x.pays.map(p=>`<br><span class="down">− ${M(p[1])}</span>`).join('')}</div>
+    <div class="rest ${x.end<SAFE?'down':''}">${M(x.end)}${x.end<SAFE?'<span class="badt">ниже запаса</span>':''}</div></div>`).join('')}
+  </div><p class="note">Наведите на день, чтобы увидеть, из чего он складывается. Дни ниже безопасного запаса отмечены красным и подписью «ниже запаса».</p></div>`;
+}
+function vCal(){
+ const tin=DAYS.reduce((a,x)=>a+x.p,0), tout=DAYS.reduce((a,x)=>a+x.m,0), cnt=DAYS.reduce((a,x)=>a+x.pays.length,0);
+ const low=DAYS.reduce((a,x)=>x.end<a.end?x:a,DAYS[0]);
+ const sw=`<div class="seg" style="margin:0" role="tablist"><button type="button" role="tab" aria-selected="${calMode==='month'}" class="${calMode==='month'?'on':''}" data-cm="month">Календарь</button><button type="button" role="tab" aria-selected="${calMode==='list'}" class="${calMode==='list'?'on':''}" data-cm="list">Список</button></div>`;
+ return head('Платёжный календарь','Платежи и остаток на каждый день на 22 дня вперёд · 9–30 сентября',sw)
+ + `<div class="mrow" style="margin-bottom:16px">
+  <div class="mcard"><div class="em" aria-hidden="true">📥</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_in"><span class="t">Поступит за 22 дня</span><span class="v cv">${M(tin)}</span></button><span class="s">прогноз выручки</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">📤</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_out"><span class="t">Спишется</span><span class="v cv">${M(tout)}</span></button><span class="s">${cnt} платежей</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">📉</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_low"><span class="t">Самый низкий остаток</span><span class="v cv ${low.end<SAFE?'down':''}">${M(low.end)}</span></button><span class="s ${low.end<SAFE?'bad':''}">${low.d} сентября${low.end<SAFE?' · ниже запаса':''}</span></div></div></div>`
+ + calAlert()
+ + (calMode==='month'?calMonth():calList());
+}
+const vOblig=()=>head('Обязательства','Кредиты, лизинг и амортизация оборудования')
+ + `<div class="mrow" style="margin-bottom:16px">
+  <div class="mcard"><div class="em" aria-hidden="true">🏦</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_debt"><span class="t">Всего долг</span><span class="v">840 000 ₽</span></button><span class="s">2 обязательства</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">📆</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_pay"><span class="t">Платёж в месяц</span><span class="v">38 500 ₽</span></button><span class="s">3,1% выручки</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">🔧</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_am"><span class="t">Амортизация</span><span class="v">21 400 ₽/мес</span></button><span class="s">неденежный расход</span></div></div></div>
+ <div class="card"><div class="klabel">Обязательства</div><table><thead><tr><th>Что</th><th>Прогресс</th><th class="r">Осталось</th><th class="r">Платёж</th></tr></thead><tbody>
+  <tr><td><b style="font-weight:600">Кредит на аппарат УЗИ</b><div class="meta">Сбербанк · до августа 2028</div></td>
+   <td><div class="track" style="width:150px"><div class="fill" style="width:34%"></div></div><div class="meta">34% выплачено</div></td>
+   <td class="r">620 000 ₽</td><td class="r">26 500 ₽</td></tr>
+  <tr><td><b style="font-weight:600">Лизинг рентген-аппарата</b><div class="meta">до марта 2027</div></td>
+   <td><div class="track" style="width:150px"><div class="fill g" style="width:71%"></div></div><div class="meta">71% выплачено</div></td>
+   <td class="r">220 000 ₽</td><td class="r">12 000 ₽</td></tr>
+ </tbody></table></div>
+ <div class="card" style="margin-top:16px"><div class="klabel">Амортизация оборудования</div><table><tbody>
+  <tr><td>Аппарат УЗИ<div class="meta">940 000 ₽ · срок службы 7 лет</div></td><td class="r">11 200 ₽/мес</td></tr>
+  <tr><td>Рентген<div class="meta">760 000 ₽ · срок службы 10 лет</div></td><td class="r">6 300 ₽/мес</td></tr>
+  <tr><td>Анализатор крови<div class="meta">234 000 ₽ · срок службы 5 лет</div></td><td class="r">3 900 ₽/мес</td></tr>
+ </tbody></table><p class="note">Амортизация не списывает деньги со счёта, но показывает реальную стоимость работы оборудования. Без неё прибыль выглядит выше, чем есть. В отчёте «Прибыль и убытки» она идёт одной строкой с процентами по кредиту и лизингу: 21 400 + 12 000 = 33 400 ₽ в месяц.</p></div>`;
+
+/* ================= АНАЛИТИКА ================= */
+function vAnal(){
+ const s=SC[scen], PL=plan(s), PB=plan(SC.base), PG=plan(SC.grow);
+ const w=880,h=190,pad=22;
+ const all=[...FACT,...s.q], mx=Math.max(...all)*1.08, mn=Math.min(...all)*.82;
+ const X=i=>pad+i*((w-pad*2)/7);
+ const Y=v=>h-pad-((v-mn)/(mx-mn))*(h-pad*2);
+ const fl=FACT.map((v,i)=>`${X(i)},${Y(v)}`).join(' L');
+ const pl=[`${X(3)},${Y(FACT[3])}`,...s.q.map((v,i)=>`${X(i+4)},${Y(v)}`)].join(' L');
+ const lbl=v=>(v/1000).toFixed(1).replace('.',',')+' млн';
+ PL.forEach((x,i)=>{
+  T['qr'+i]=tipH(QN[i]+' · план','📈 '+M(x.rev),[['Предыдущий квартал',M(x.prev)],['Рост к предыдущему',P(x.growth,true),x.growth>=0?'good':'bad']],'Рост считается к предыдущему кварталу, а не к тому же кварталу прошлого года.',[SCALC]);
+  T['qp'+i]=tipH(QN[i]+' · чистая прибыль','💰 '+M(x.profit),[['Маржинальная прибыль',M(x.marg)],['Постоянные расходы',Ms(-x.fix),'bad'],['Налоги и взносы',Ms(-x.tax),'bad'],['Обязательства и амортизация',Ms(-x.obl),'bad']],'Выручка − переменные − постоянные − налоги и взносы − обязательства и амортизация.',[SCALC]);
+  T['qm'+i]=tipH(QN[i]+' · рентабельность','💰 '+P(x.margin),[['Чистая прибыль',M(x.profit)],['Выручка',M(x.rev)]],'Норма отрасли 12–20%.',[SCALC]);
+ });
+ const diff=PG.reduce((a,x)=>a+x.profit,0)-PB.reduce((a,x)=>a+x.profit,0);
+ const gA={id:'growth-plan',sev:'good',em:'🎯',t:'Что нужно, чтобы выйти на сценарий «С ростом»',p:`Разница с базовым — ${M(diff)} прибыли за четыре квартала.`,
+  why:{s:'Сценарий держится на трёх допущениях; ни одно не требует найма или вложений. Ограничение — расписание операционной: чтобы взять 80 приёмов, хирург должен выйти на пять дней вместо четырёх.',
+   steps:['Стационар выходит в ноль. Перевод ночного дежурства на вызов убирает около 34 000 ₽ из 42 000 ₽ убытка в квартал.','Хирургия загружается до 80%: с 58 до 80 приёмов в месяц, это около 36 000 ₽ прибыли в месяц при той же команде.','Препараты и расходники возвращаются в норму (до 25%): единый поставщик и контроль расходников дают около 29 800 ₽ в месяц.'],
+   src:'факт за 90 дней; прайс услуг; расписание Ветменеджера; норма отрасли'}};
+ const row=(lab,norm,fn,tipKey,cls)=>`<tr><td>${tipKey&&tipKey!=='x'?`<b style="font-weight:600">${lab}</b>`:lab}</td><td><span class="pill gr">${norm}</span></td>${PL.map((x,i)=>`<td class="r ${cls||''}" ${tipKey&&tipKey!=='x'?`data-tip="${tipKey}${i}"`:''}>${fn(x)}</td>`).join('')}</tr>`;
+ return head('Финмодель и прогноз','План развития клиники на четыре квартала вперёд',`<button type="button" class="act">Выгрузить PDF</button>`)
+ + `<div class="seg" role="tablist">${Object.entries(SC).map(([k,v])=>`<button type="button" role="tab" aria-selected="${scen===k}" class="${scen===k?'on':''}" data-sc="${k}">${v.n}</button>`).join('')}
+    <button type="button" class="act" style="margin-left:6px">+ Свой сценарий</button></div>
+  <div class="card" style="margin-bottom:16px"><div class="klabel">Сценарий «${s.n}»</div>
+   <p style="font-size:14px;color:var(--ink-soft);margin-bottom:16px">${s.d}</p>
+   <svg viewBox="0 0 ${w} ${h}" style="display:block;width:100%;height:${h}px" role="img" aria-label="Выручка по кварталам: четыре квартала факта и четыре квартала плана">
+    <defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8174F" stop-opacity=".16"/><stop offset="1" stop-color="#B8174F" stop-opacity="0"/></linearGradient></defs>
+    <path d="M${pl} L${X(7)},${h-pad} L${X(3)},${h-pad} Z" fill="url(#ga)"/>
+    <path d="M${fl}" fill="none" stroke="#15131C" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M${pl}" fill="none" stroke="#B8174F" stroke-width="2.6" stroke-dasharray="7 5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${all.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="4.5" fill="${i<4?'#15131C':'#B8174F'}"/>`).join('')}
+    ${all.map((v,i)=>`<text x="${X(i)}" y="${Y(v)-13}" text-anchor="middle" font-size="12" font-weight="700" fill="${i<4?'#15131C':'#8A0F3A'}" font-family="Onest">${lbl(v)}</text>`).join('')}
+   </svg>
+   <div style="display:grid;grid-template-columns:repeat(8,1fr);font-size:12px;color:var(--ink-soft);text-align:center;margin-top:4px">
+    ${['IV 25','I 26','II 26','III 26'].map(q=>`<span>${q}</span>`).join('')}${QN.map(q=>`<span style="color:var(--accent-dark);font-weight:700">${q.replace(' 20',' ')}</span>`).join('')}</div>
+   <p class="note">Чёрная линия — факт по кварталам, розовая пунктирная — план. Наведите на ячейку в таблице ниже для деталей квартала.</p></div>
+
+  <div class="card" style="margin-bottom:16px"><div class="klabel">План по кварталам</div>
+   <table><thead><tr><th>Статья</th><th style="width:96px">Норма</th>
+    ${QN.map(q=>`<th class="r" style="width:120px">${q}</th>`).join('')}</tr></thead><tbody>
+    ${row('Выручка','100%',x=>M(x.rev),'qr')}
+    ${row('Переменные расходы','48–54%',x=>'− '+M(x.vr),'x','down')}
+    ${row('Маржинальная прибыль','46–52%',x=>M(x.marg),'x')}
+    ${row('Постоянные расходы','28–34%',x=>'− '+M(x.fix),'x','down')}
+    ${row('Налоги и взносы','3–5%',x=>'− '+M(x.tax),'x','down')}
+    ${row('Обязательства и амортизация','по графику',x=>'− '+M(x.obl),'x','down')}
+    ${row('Чистая прибыль','12–20%',x=>M(x.profit),'qp','up')}
+    ${row('Рентабельность','12–20%',x=>P(x.margin),'qm')}
+   </tbody></table>
+   <p class="note">Доли статей берутся из вашего факта за последние 90 дней и сверяются с нормой отрасли; обязательства идут по графику платежей. Прибыль считается как выручка − переменные − постоянные − налоги и взносы − обязательства, поэтому строки таблицы всегда сходятся с итогом.</p></div>
+  <ul class="advl">${adviceCard(gA,'an1',{plain:true})}</ul>`;
+}
+const vEff=()=>head('Эффективность клиники','Загрузка, стоимость часа и средний чек')
+ + `<div class="mrow" style="margin-bottom:16px">
+  <div class="mcard"><div class="em" aria-hidden="true">🐾</div><div class="mc-body"><span class="t">Приёмов в августе</span><span class="v">614</span><span class="s">из них 87 первичных</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">⏱️</div><div class="mc-body"><span class="t">Загрузка врачей</span><span class="v">58%</span><span class="s">от максимума по графику</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">🧾</div><div class="mc-body"><span class="t">Средний чек</span><span class="v">2 020 ₽</span><span class="s up">+6% к июлю</span></div></div></div>
+ <div class="g2"><div class="card"><div class="klabel">Загрузка по кабинетам</div><div class="bars">
+  <div class="brow"><div class="b-top"><b>Кабинет терапии 1</b><span>74%</span></div><div class="track"><div class="fill" style="width:74%"></div></div></div>
+  <div class="brow"><div class="b-top"><b>Кабинет терапии 2</b><span>61%</span></div><div class="track"><div class="fill" style="width:61%"></div></div></div>
+  <div class="brow"><div class="b-top"><b>Операционная</b><span>58%</span></div><div class="track"><div class="fill l" style="width:58%"></div></div></div>
+  <div class="brow"><div class="b-top"><b>Стационар</b><span>28%</span></div><div class="track"><div class="fill n" style="width:28%"></div></div></div>
+  </div><p class="note">Операционная и стационар — главный резерв роста без найма.</p></div>
+  <div class="card"><div class="klabel">Стоимость часа работы клиники</div>
+   <div style="font-size:32px;font-weight:800;letter-spacing:-.03em">1 176 ₽</div>
+   <p class="note" style="margin-top:6px">Столько стоит один час работы с учётом аренды, окладов и амортизации: (376 000 + 21 400) ÷ 338. Любая услуга, которая приносит меньше, работает в минус.</p>
+   <table style="margin-top:14px"><tbody>
+    <tr><td>Рабочих часов в месяц</td><td class="r">338</td></tr>
+    <tr><td>Постоянные расходы</td><td class="r">376 000 ₽</td></tr>
+    <tr><td>Амортизация</td><td class="r">21 400 ₽</td></tr>
+    <tr><td>Приёмов в час</td><td class="r">1,8</td></tr>
+   </tbody></table></div></div>`;
+
+/* ================= ПРАЙС ================= */
+const vPrice=()=>head('Прайс услуг','148 услуг · разбор позиции до чистой прибыли',`<button type="button" class="act">Все услуги</button>`)
+ + `<div class="card" style="margin-bottom:16px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+   <div><div class="klabel" style="margin:0 0 4px">Хирургия / Кастрация кота, всё включено</div>
+   <div style="font-size:26px;font-weight:800;letter-spacing:-.025em">4 500 ₽ <span style="font-size:14px;font-weight:600;color:var(--ink-soft)">цена для клиента</span></div></div>
+   <div style="text-align:right"><div style="font-size:26px;font-weight:800;color:var(--ok);letter-spacing:-.025em">1 197 ₽</div>
+   <div class="klabel" style="margin:2px 0 0">чистая прибыль · 26,6%</div></div></div>
+  <div class="stack">
+   <div style="width:30%;background:var(--sidebar)" data-tip="p_zp">30%</div>
+   <div style="width:14%;background:var(--accent)" data-tip="p_med">14%</div>
+   <div style="width:8%;background:#D6567F" data-tip="p_an">8%</div>
+   <div style="width:11%;background:#E9A3BB;color:var(--ink)" data-tip="p_rash">11%</div>
+   <div style="width:2%;background:#D8D3E2" data-tip="p_acq" aria-label="Эквайринг 2%"></div>
+   <div style="width:8.4%;background:#BDB7CC;color:var(--ink)" data-tip="p_fix">8%</div>
+   <div style="width:26.6%;background:var(--ok)" data-tip="p_net">26,6%</div></div>
+  <div class="legend"><span><i style="background:var(--sidebar)"></i>ЗП врача 1 350 ₽</span><span><i style="background:var(--accent)"></i>Препараты 630 ₽</span>
+   <span><i style="background:#D6567F"></i>Анестезия 360 ₽</span><span><i style="background:#E9A3BB"></i>Расходники 495 ₽</span>
+   <span><i style="background:#D8D3E2"></i>Эквайринг 90 ₽</span><span><i style="background:#BDB7CC"></i>Постоянные 378 ₽</span>
+   <span><i style="background:var(--ok)"></i>Прибыль 1 197 ₽</span></div>
+  <p class="note">Наведите на любой сегмент полосы — покажется, из чего он собран. Сумма сегментов равна цене: 1 350 + 630 + 360 + 495 + 90 + 378 + 1 197 = 4 500 ₽.</p></div>
+ <div class="card"><div class="klabel">Самые и наименее выгодные услуги</div><table><tbody>
+  <tr><td>Вакцинация комплексная<div class="meta">1 200 ₽ · 84 приёма в месяц</div></td><td class="r up">41%</td></tr>
+  <tr><td>УЗИ брюшной полости<div class="meta">2 100 ₽ · 41 приём</div></td><td class="r up">37%</td></tr>
+  <tr><td>Кастрация кота<div class="meta">4 500 ₽ · 18 приёмов</div></td><td class="r">26,6%</td></tr>
+  <tr><td>Стоматология под наркозом<div class="meta">9 800 ₽ · 6 приёмов</div></td><td class="r">14%</td></tr>
+  <tr><td>Стационар, сутки<div class="meta">1 308 ₽ в среднем · 52 суток</div></td><td class="r down">−21%</td></tr>
+ </tbody></table></div>`;
+
+/* ================= НАСТРОЙКИ ================= */
+const SETNAV=[['h','Клиника'],['main','Основное'],['acc','Счета'],
+ ['h','Справочники'],['cat','Статьи'],['dir','Направления'],
+ ['h','Подключения'],['vm','Ветменеджер'],['bank','Банк'],
+ ['h','Прочее'],['log','Журнал действий'],['bill','Подписка']];
+const SET={
+ main:`<div class="card"><div class="klabel">Основное</div>
+  <div class="field"><span>Название клиники</span><div class="inp">Айболит на Ленина</div></div>
+  <div class="field"><span>Юридическое лицо</span><div class="inp">ИП Ковалёв Д. А.</div></div>
+  <div class="field"><span>Система налогообложения</span><div class="inp">УСН «Доходы», 6%</div></div>
+  <div class="field"><span>Часовой пояс</span><div class="inp">Москва, UTC+3</div></div></div>
+  <div class="card" style="margin-top:16px"><div class="klabel">Безопасный запас на счетах</div>
+  <div class="field"><span>Предупреждать, если остаток ниже</span><div class="inp">60 000 ₽</div></div>
+  <p class="note">Если остаток упадёт ниже этой суммы, дни в платёжном календаре отметятся красным и подписью «ниже запаса».</p></div>`,
+ acc:`<div class="card"><div class="klabel">Счета и кассы</div>
+  <div class="srow"><div><span class="dot"></span><b style="font-weight:600">Т-Банк · 7972</b><div class="meta" style="margin-left:17px">расчётный счёт</div></div><b>341 300 ₽</b></div>
+  <div class="srow"><div><span class="dot"></span><b style="font-weight:600">Касса клиники</b><div class="meta" style="margin-left:17px">наличные</div></div><b>71 500 ₽</b></div>
+  <div class="srow"><div><span class="dot off"></span><b style="font-weight:600">Вторая касса</b><div class="meta" style="margin-left:17px">не используется</div></div><span class="faint">—</span></div>
+  <p class="note">Остаток по счетам: 341 300 + 71 500 = 412 800 ₽. Счета пока заводит команда ВетФинанс.</p></div>`,
+ cat:`<div class="card"><div class="klabel">Статьи доходов и расходов</div><table><tbody>
+  <tr><td><b style="font-weight:600">Закупка препаратов</b><div class="meta">переменная · 248 800 ₽ в месяц</div></td><td class="r"><span class="pill gr">20–25%</span></td></tr>
+  <tr><td><b style="font-weight:600">Товары для перепродажи</b><div class="meta">переменная · 118 400 ₽</div></td><td class="r"><span class="pill gr">—</span></td></tr>
+  <tr><td><b style="font-weight:600">Проценты врачам</b><div class="meta">переменная · 218 000 ₽</div></td><td class="r"><span class="pill gr">22–28%</span></td></tr>
+  <tr><td><b style="font-weight:600">Лаборатории</b><div class="meta">переменная · 46 800 ₽</div></td><td class="r"><span class="pill gr">3–6%</span></td></tr>
+  <tr><td><b style="font-weight:600">Оклады</b><div class="meta">постоянная · 228 000 ₽</div></td><td class="r"><span class="pill gr">22–28%</span></td></tr>
+  <tr><td><b style="font-weight:600">Аренда и коммуналка</b><div class="meta">постоянная · 85 000 ₽</div></td><td class="r"><span class="pill gr">5–10%</span></td></tr>
+  <tr><td><b style="font-weight:600">Маркетинг</b><div class="meta">постоянная · 26 000 ₽</div></td><td class="r"><span class="pill gr">3–7%</span></td></tr>
+  <tr><td><b style="font-weight:600">Обязательства и амортизация</b><div class="meta">постоянная · 33 400 ₽ · из раздела «Обязательства»</div></td><td class="r"><span class="pill gr">—</span></td></tr>
+ </tbody></table><p class="note">Норма подставляется автоматически по отрасли. Статьи с нормой попадают в отчёт «Норма».</p></div>`,
+ dir:`<div class="card"><div class="klabel">Направления клиники</div><table><tbody>
+  <tr><td><b style="font-weight:600">Терапия</b><div class="meta">2 врача · 2 кабинета</div></td><td class="r">287 000 ₽</td></tr>
+  <tr><td><b style="font-weight:600">Хирургия</b><div class="meta">1 врач · операционная</div></td><td class="r">214 000 ₽</td></tr>
+  <tr><td><b style="font-weight:600">Стационар</b><div class="meta">6 мест · ночные смены</div></td><td class="r">68 000 ₽</td></tr>
+  <tr><td><b style="font-weight:600">Груминг</b><div class="meta">1 мастер</div></td><td class="r">62 000 ₽</td></tr>
+  <tr><td><b style="font-weight:600">Лаборатория</b><div class="meta">своя + аутсорс</div></td><td class="r">44 000 ₽</td></tr>
+ </tbody></table><p class="note">Направления берутся из Ветменеджера. Аренда и постоянные расходы разносятся по площади и графику смен.</p></div>`,
+ vm:`<div class="card"><div class="srow" style="padding-top:0"><div><span class="dot"></span><b style="font-weight:600">Ветменеджер</b>
+   <div class="meta" style="margin-left:17px">приёмы, услуги, продажи, склад</div></div>
+   <span style="color:var(--ok);font-size:13px;font-weight:600">обновлено сегодня в 04:12</span></div>
+  <div class="field"><span>Адрес системы</span><div class="inp">aibolit.vetmanager.ru</div></div>
+  <div class="field"><span>Ключ доступа</span><div class="inp">••••••••••••4a7f</div></div>
+  <div class="field"><span>Обновление данных</span><div class="inp">Каждую ночь в 04:00</div></div>
+  <div style="margin-top:14px"><button type="button" class="act">Синхронизировать сейчас</button></div>
+  <p class="note">Ключ выдаётся в настройках Ветменеджера, раздел «Интеграции». Мы читаем данные и ничего в них не меняем. После сохранения ключ показывается только последними четырьмя знаками.</p></div>
+  <div class="card" style="margin-top:16px"><div class="klabel">Работа без Ветменеджера</div>
+  <p style="font-size:14px;color:var(--ink-soft);max-width:70ch">Сервис работает и без него. Операции можно загружать выпиской из банка и вносить вручную. Не будет только данных о визитах, продажах и услугах из Ветменеджера.</p></div>`,
+ bank:`<div class="card"><div class="srow" style="padding-top:0"><div><span class="dot"></span><b style="font-weight:600">Банк</b>
+   <div class="meta" style="margin-left:17px">выписка 1С, загрузка файлом</div></div>
+   <span style="color:var(--ok);font-size:13px;font-weight:600">последняя выписка по 9 сентября</span></div>
+  <div class="srow"><div><b style="font-weight:600">Т-Банк · 7972</b><div class="meta">выписка по 9 сентября</div></div></div>
+  <div style="margin-top:6px"><button type="button" class="act pri">Загрузить выписку</button></div>
+  <p class="note">Подойдёт выгрузка в формате 1С из любого банка. Подключение банка напрямую появится позже.</p></div>`,
+ log:`<div class="card"><div class="klabel">Журнал действий</div><table><tbody>
+  <tr><td><b style="font-weight:600">Изменена статья операции</b><div class="meta">вчера в 18:40</div></td><td class="r"><button type="button" class="act">Откатить</button></td></tr>
+  <tr><td><b style="font-weight:600">Оставлена одна из двух операций (дубль)</b><div class="meta">вчера в 10:12</div></td><td class="r"><button type="button" class="act">Откатить</button></td></tr>
+  <tr><td><b style="font-weight:600">Создано правило разнесения «ИП Волков»</b><div class="meta">7 сентября в 12:02</div></td><td class="r"><button type="button" class="act">Откатить</button></td></tr>
+  <tr><td><b style="font-weight:600">Добавлен счёт «Касса клиники»</b><div class="meta">3 сентября в 09:15</div></td><td class="r"><span class="faint">срок отката истёк</span></td></tr>
+ </tbody></table><p class="note">Журнал хранится 90 дней, откатить действие можно в течение 7 дней.</p></div>`,
+ bill:`<div class="card"><div class="klabel">Подписка</div>
+  <div style="font-size:30px;font-weight:800;letter-spacing:-.03em">3 500 ₽ <span style="font-size:15px;font-weight:600;color:var(--ink-soft)">в месяц</span></div>
+  <p class="note" style="margin-top:6px">Следующее списание 1 октября. Подключение и настройка оплачены.</p>
+  <table style="margin-top:16px"><tbody>
+   <tr><td>Тариф</td><td class="r">Одна клиника</td></tr>
+   <tr><td>Оплачено до</td><td class="r">30 сентября 2026</td></tr>
+  </tbody></table>
+  <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="act pri">Оплатить подписку</button><button type="button" class="act">Отменить подписку</button></div></div>`
+};
+const vSet=()=>head('Настройки','Клиника, справочники и подключения')
+ + `<div class="setwrap"><div class="setnav">
+  ${SETNAV.map(x=>x[0]==='h'?`<div class="h">${x[1]}</div>`:`<button type="button" data-set="${x[0]}" class="${setTab===x[0]?'on':''}">${x[1]}</button>`).join('')}
+ </div><div>${SET[setTab]||''}</div></div>`;
+
+/* ================= РОУТИНГ ================= */
+const V={dash:vDash,tx:vTx,price:vPrice,opiu:vOpiu,norm:vNorm,sklad:vSklad,cal:vCal,oblig:vOblig,anal:vAnal,eff:vEff,set:vSet};
+
+function drawNav(){
+ document.getElementById('nav').innerHTML=NAV.map(x=>{
+  if(x[0]==='sep') return '<div class="sep"></div>';
+  if(x[0]==='G'){
+   const exp=x[3].some(s=>s[0]===view);
+   return `<button type="button" class="${exp?'exp':''}" data-g="${x[2]}" aria-expanded="${exp}">${ic(x[1])}${x[2]}<span class="arw" aria-hidden="true">▸</span></button>`
+    + (exp?`<div class="sub">${x[3].map(s=>`<button type="button" data-v="${s[0]}" class="${s[0]===view?'active':''}"${s[0]===view?' aria-current="page"':''}>${s[1]}</button>`).join('')}</div>`:'');
+  }
+  return `<button type="button" data-v="${x[0]}" class="${x[0]===view?'active':''}"${x[0]===view?' aria-current="page"':''}>${ic(x[1])}${x[2]}</button>`;
+ }).join('');
+ const grp=NAV.find(x=>x[0]==='G'&&x[3].some(s=>s[0]===view));
+ document.getElementById('subnav').innerHTML=grp?grp[3].map(s=>`<button type="button" data-v="${s[0]}" class="${s[0]===view?'active':''}"${s[0]===view?' aria-current="page"':''}>${s[1]}</button>`).join(''):'';
+ document.querySelectorAll('#nav button[data-v], #subnav button[data-v]').forEach(b=>b.onclick=()=>{view=b.dataset.v;open1=null;drawNav();draw(false);});
+ document.querySelectorAll('#nav button[data-g]').forEach(b=>b.onclick=()=>{
+  const g=NAV.find(x=>x[0]==='G'&&x[2]===b.dataset.g);
+  if(!g[3].some(s=>s[0]===view)){view=g[3][0][0];open1=null;drawNav();draw(false);}
+ });
+}
+function draw(keep){
+ closeTip();
+ const m=document.getElementById('main'), y=window.scrollY;
+ const ak=document.activeElement; let sel=null;
+ if(keep&&ak&&ak.dataset){for(const k of ['q','tx','om','sc','set','cm','st','cd']){if(ak.dataset[k]!==undefined){sel=`[data-${k}="${ak.dataset[k]}"]`;break;}}}
+ m.innerHTML=`<div class="view">${(V[view]||vDash)()}</div>`;
+ document.title=`${({dash:'Рабочий стол',tx:'Транзакции',price:'Прайс услуг',opiu:'Прибыль и убытки',norm:'Норма',sklad:'Склад и сроки',cal:'Платёжный календарь',oblig:'Обязательства',anal:'Финмодель и прогноз',eff:'Эффективность клиники',set:'Настройки'})[view]||'Рабочий стол'} · ВетФинанс`;
+ window.scrollTo(0,keep?y:0);
+ m.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{open1=open1===b.dataset.q?null:b.dataset.q;draw(true);});
+ m.querySelectorAll('[data-om]').forEach(b=>b.onclick=()=>{opiuMode=b.dataset.om;draw(true);});
+ m.querySelectorAll('[data-tx]').forEach(b=>b.onclick=()=>{txTab=b.dataset.tx;draw(true);});
+ m.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{scen=b.dataset.sc;open1=null;draw(true);});
+ m.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{setTab=b.dataset.set;draw(true);});
+ m.querySelectorAll('[data-cm]').forEach(b=>b.onclick=()=>{calMode=b.dataset.cm;draw(true);});
+ m.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{STATE=b.dataset.st;draw(true);});
+ m.querySelectorAll('[data-cd]').forEach(b=>{const go=()=>{calSel=+b.dataset.cd;draw(true);};
+  b.onclick=go;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
+ m.querySelectorAll('[data-tip]').forEach(el=>{if(!/^(BUTTON|A)$/.test(el.tagName)&&!el.hasAttribute('tabindex'))el.tabIndex=0;});
+ const pts=m.querySelectorAll('.cpt');
+ pts.forEach((b,i)=>{b.onkeydown=e=>{
+  let j=i; if(e.key==='ArrowLeft')j=i-1; else if(e.key==='ArrowRight')j=i+1; else if(e.key==='Home')j=0; else if(e.key==='End')j=pts.length-1; else return;
+  e.preventDefault(); if(j<0||j>=pts.length)return; b.tabIndex=-1; pts[j].tabIndex=0; pts[j].focus();};});
+ if(sel){const n=m.querySelector(sel);if(n)n.focus({preventScroll:true});}
+}
+
+/* --- подсказка: привязана к элементу, открывается по наведению (80 мс), фокусу и касанию; Esc закрывает --- */
+const tipEl=document.getElementById('tip'); let cur=null, openT=null, closeT=null, lastPtr='';
+const anchorOf=el=>el.dataset.anchor?(document.getElementById(el.dataset.anchor)||el):el;
+function place(el){
+ const a=anchorOf(el).getBoundingClientRect(), r=tipEl.getBoundingClientRect();
+ let x=a.left+a.width/2-r.width/2; x=Math.max(12,Math.min(x,innerWidth-r.width-12));
+ let y=a.bottom+8; if(y+r.height>innerHeight-12&&a.top-8-r.height>=12)y=a.top-8-r.height;
+ tipEl.style.left=x+'px'; tipEl.style.top=y+'px';
+}
+function openTip(el){
+ clearTimeout(closeT); if(cur===el)return;
+ const k=el.dataset.tip; if(!T[k])return;
+ closeTip(); cur=el; tipEl.innerHTML=T[k]; tipEl.classList.add('on'); el.setAttribute('aria-describedby','tip');
+ if(el.dataset.anchor){const a=document.getElementById(el.dataset.anchor); if(a)a.classList.add('on');}
+ place(el);
+}
+function closeTip(){
+ clearTimeout(openT); if(!cur)return;
+ cur.removeAttribute('aria-describedby');
+ if(cur.dataset.anchor){const a=document.getElementById(cur.dataset.anchor); if(a)a.classList.remove('on');}
+ cur=null; tipEl.classList.remove('on');
+}
+const tipTarget=e=>e.target&&e.target.closest?e.target.closest('[data-tip]'):null;
+document.addEventListener('pointerdown',e=>{lastPtr=e.pointerType;});
+document.addEventListener('mouseover',e=>{
+ if(lastPtr==='touch')return;
+ const el=tipTarget(e); if(!el)return;
+ clearTimeout(closeT); if(cur===el)return;
+ clearTimeout(openT); openT=setTimeout(()=>openTip(el),80);
+});
+document.addEventListener('mouseout',e=>{
+ const el=tipTarget(e); if(!el)return;
+ if(e.relatedTarget&&(el.contains(e.relatedTarget)||tipEl.contains(e.relatedTarget)))return;
+ clearTimeout(openT); closeT=setTimeout(closeTip,120);
+});
+tipEl.addEventListener('mouseenter',()=>clearTimeout(closeT));
+tipEl.addEventListener('mouseleave',()=>{closeT=setTimeout(closeTip,120);});
+document.addEventListener('focusin',e=>{const el=tipTarget(e); if(el&&el.matches(':focus-visible'))openTip(el);});
+document.addEventListener('focusout',e=>{if(tipTarget(e))closeTip();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTip();});
+document.addEventListener('click',e=>{
+ const el=tipTarget(e);
+ if(!el){closeTip();return;}
+ if(lastPtr==='touch'){ if(cur===el)closeTip(); else openTip(el); }
+});
+window.addEventListener('scroll',()=>{if(cur)place(cur);},true);
+window.addEventListener('resize',()=>{if(cur)place(cur);});
+
+document.getElementById('logo').innerHTML=ic('ic-logo','24px');
+drawNav(); draw(false);
+</script>
+</body>
+</html>

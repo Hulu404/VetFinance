@@ -8,6 +8,7 @@ import './styles/global.css'
 import { shouldRetry } from './api/retry'
 import { App } from './App'
 import { AuthProvider } from './auth/AuthProvider'
+import { ToastProvider } from './components/Toast'
 import { isMockMode } from './lib/config'
 
 const queryClient = new QueryClient({
@@ -26,7 +27,9 @@ async function bootstrap(): Promise<void> {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthProvider>
-            <App />
+            <ToastProvider>
+              <App />
+            </ToastProvider>
           </AuthProvider>
         </BrowserRouter>
       </QueryClientProvider>

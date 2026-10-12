@@ -24,7 +24,8 @@ def assert_figure(fig, where):
     assert isinstance(fig, dict), f"{where}: Figure must be an object"
     assert type(fig.get("value")) is int, f"{where}.value must be int kopecks, got {fig.get('value')!r}"
     assert fig.get("unit") in UNITS, f"{where}.unit"
-    assert isinstance(fig.get("breakdown"), list) and fig["breakdown"], f"{where}.breakdown must be a non-empty list"
+    # owner-agreed exception (docs/handoff.md): no accounts of this kind -> value 0 and an empty breakdown
+    assert isinstance(fig.get("breakdown"), list) and (fig["breakdown"] or fig["value"] == 0),         f"{where}.breakdown must be a non-empty list (an empty one is allowed only for value 0)"
     for i, b in enumerate(fig["breakdown"]):
         assert isinstance(b.get("label"), str) and b["label"], f"{where}.breakdown[{i}].label"
         assert type(b.get("value")) is int, f"{where}.breakdown[{i}].value must be int"

@@ -1,0 +1,21 @@
+.bal { text-align: right; }
+.bal__button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 2px 4px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-ink);
+  font: inherit;
+  cursor: help;
+}
+.bal__value { font-size: var(--fs-xl); font-weight: var(--fw-extrabold); letter-spacing: var(--ls-tight); white-space: nowrap; }
+.bal__label { font-size: var(--fs-2xs); font-weight: var(--fw-bold); letter-spacing: .07em; text-transform: uppercase; color: var(--color-ink-soft); }
+.bal--skeleton { display: block; width: 90px; height: 19px; border-radius: 6px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+
+@media (max-width: 560px) {
+  .bal { text-align: left; }
+  .bal__button { align-items: flex-start; padding-left: 0; }
+}

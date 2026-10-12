@@ -4,7 +4,11 @@ import { useAuth } from './auth/AuthProvider'
 import { IconSprite } from './components/Icon'
 import { DashboardPage } from './pages/DashboardPage'
 import { LoginPage } from './pages/LoginPage'
+import { BankSection } from './pages/settings/BankSection'
+import { SettingsLayout, SettingsSoon } from './pages/settings/SettingsLayout'
+import { VetmanagerSection } from './pages/settings/VetmanagerSection'
 import { ComingSoonPage, NotFoundPage } from './pages/StubPages'
+import { TransactionsPage } from './pages/transactions/TransactionsPage'
 import { flattenPaths, MENU } from './shell/menu'
 import { BrandSplash, Shell } from './shell/Shell'
 
@@ -40,6 +44,13 @@ export function App() {
         <Route element={<RequireAuth />}>
           <Route element={<Shell />}>
             <Route index element={<DashboardPage />} />
+            <Route path="transactions" element={<TransactionsPage />} />
+            <Route path="settings" element={<SettingsLayout />}>
+              <Route index element={<Navigate to="connections/vetmanager" replace />} />
+              <Route path="connections/vetmanager" element={<VetmanagerSection />} />
+              <Route path="connections/bank" element={<BankSection />} />
+              <Route path="*" element={<SettingsSoon />} />
+            </Route>
             {SOON_ROUTES.map((item) => (
               <Route key={item.id} path={item.path} element={<ComingSoonPage title={item.label} />} />
             ))}

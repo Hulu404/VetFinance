@@ -42,6 +42,17 @@
 .btn--primary:hover:not(:disabled) { background: var(--color-accent); border-color: var(--color-accent); }
 .btn--primary:disabled { background: var(--color-accent-dark); border-color: var(--color-accent-dark); color: var(--color-on-accent); opacity: .75; }
 .btn--block { width: 100%; }
+.btn--sm { min-height: 36px; padding: 0 var(--space-4); }
+.btn--danger { background: var(--color-bad); border-color: var(--color-bad); color: var(--color-on-accent); }
+.btn--danger:hover:not(:disabled) { background: var(--color-bad); border-color: var(--color-ink); }
+.btn--danger:disabled { background: var(--color-bad); border-color: var(--color-bad); color: var(--color-on-accent); opacity: .75; }
+.btn--text { min-height: 36px; padding: 0 var(--space-3); border-color: var(--color-border); background: none; color: var(--color-accent-dark); font-weight: var(--fw-bold); }
+.btn--text:hover:not(:disabled) { background: var(--color-accent-faint); border-color: var(--color-border); }
+.btn[aria-busy='true'] { cursor: progress; }
+
+@media (max-width: 820px) {
+  .btn, .btn--sm, .btn--text { min-height: var(--touch-min); }
+}
 
 .link-button {
   margin-left: auto;
@@ -93,6 +104,14 @@
 .state-card__title { font-size: var(--fs-lg); font-weight: var(--fw-bold); }
 .state-card__text { font-size: var(--fs-sm); color: var(--color-ink-soft); max-width: 60ch; }
 .state-card .btn { margin-top: var(--space-2); }
+.state-card--wide { width: 100%; }
+.state-card__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
+.state-card__actions .btn { margin-top: 0; }
+.state-card--center { align-items: center; text-align: center; }
+.state-card--center .state-card__text { margin-left: auto; margin-right: auto; }
+@media (max-width: 820px) {
+  .state-card--center { align-items: flex-start; text-align: left; }
+}
 
 /* Splash and centered screens */
 .splash { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-3); background: var(--color-bg); }
@@ -103,3 +122,15 @@
 .center-card { width: 100%; max-width: var(--auth-card-width); padding: var(--card-padding); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: var(--space-3); }
 .center-card__title { font-size: var(--fs-xl); font-weight: var(--fw-extrabold); }
 .center-card__text { font-size: var(--fs-sm); color: var(--color-ink-soft); }
+
+/* Error message inside a dialog or card (v6 .warnline in red) */
+.inline-alert {
+  margin-top: var(--space-3);
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-bad-soft);
+  color: var(--color-bad);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+}
+.inline-alert .btn { margin-left: var(--space-2); }

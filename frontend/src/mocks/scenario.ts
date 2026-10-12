@@ -9,6 +9,16 @@ export type MockScenario =
   | 'slow'
   | 'noclinic'
   | 'expired'
+  // Stage 1
+  | 'stale' // data_stale: true on the dashboard and connections
+  | 'syncerror' // last Vetmanager run failed with invalid_key
+  | 'txempty' // no operations at all
+  | 'txerror' // every transactions endpoint answers 500
+  | 'notconnected' // Vetmanager not connected, no bank statements yet
+  | 'nostatement' // reconciliation: bank statement ends on 3 September
+  | 'acqempty' // reconciliation: no card payments
+  | 'acqerror' // reconciliation endpoints answer 500
+  | 'ratelimit' // statement upload and sync answer 429
 
 const SCENARIOS: readonly string[] = [
   'default',
@@ -20,6 +30,15 @@ const SCENARIOS: readonly string[] = [
   'slow',
   'noclinic',
   'expired',
+  'stale',
+  'syncerror',
+  'txempty',
+  'txerror',
+  'notconnected',
+  'nostatement',
+  'acqempty',
+  'acqerror',
+  'ratelimit',
 ]
 const STORAGE_KEY = 'vf-mock-scenario'
 

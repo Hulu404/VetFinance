@@ -17,7 +17,7 @@ export interface MenuItem {
 // Order and names are fixed by design/screens/shell.md. Open a section by changing its status.
 export const MENU: MenuItem[] = [
   { id: 'dashboard', label: 'Рабочий стол', icon: 'ic-home', path: '/', status: 'ready' },
-  { id: 'transactions', label: 'Транзакции', icon: 'ic-tx', path: '/transactions', status: 'soon' },
+  { id: 'transactions', label: 'Транзакции', icon: 'ic-tx', path: '/transactions', status: 'ready' },
   { id: 'price', label: 'Прайс услуг', icon: 'ic-price', path: '/price', status: 'soon' },
   {
     id: 'reports',
@@ -51,7 +51,7 @@ export const MENU: MenuItem[] = [
       { id: 'efficiency', label: 'Эффективность клиники', path: '/analytics/efficiency', status: 'soon' },
     ],
   },
-  { id: 'settings', label: 'Настройки', icon: 'ic-set', path: '/settings', status: 'soon', dividerBefore: true },
+  { id: 'settings', label: 'Настройки', icon: 'ic-set', path: '/settings', status: 'ready', dividerBefore: true },
 ]
 
 export function visibleItems(items: MenuItem[]): MenuItem[] {

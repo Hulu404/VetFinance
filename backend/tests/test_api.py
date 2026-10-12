@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
-from tests.conftest import FakeRepo, make_token
+from tests.conftest import make_token
+from tests.memory_repo import MemoryRepo
 
 
 def auth(token: str | None = None) -> dict[str, str]:
@@ -38,7 +39,7 @@ def test_get_clinic(client: TestClient) -> None:
     assert r.json()["safe_balance"] == 0
 
 
-def test_patch_clinic(client: TestClient, repo: FakeRepo) -> None:
+def test_patch_clinic(client: TestClient, repo: MemoryRepo) -> None:
     r = client.patch(
         "/v1/clinic",
         headers=auth(),
@@ -59,7 +60,7 @@ def test_patch_clinic_validation(client: TestClient) -> None:
 def test_accounts(client: TestClient) -> None:
     r = client.get("/v1/accounts", headers=auth())
     items = r.json()["items"]
-    assert [a["kind"] for a in items] == ["bank", "cash"]
+    assert [a["kind"] for a in items] == ["cash", "bank"]  # ordered by name
     assert r.json()["next_cursor"] is None
 
 
@@ -67,7 +68,8 @@ def test_dashboard_stage0_shape(client: TestClient) -> None:
     r = client.get("/v1/dashboard", headers=auth())
     assert r.status_code == 200
     body = r.json()
-    assert set(body) == {"as_of", "data_as_of", "balance"}
+    assert set(body) == {"as_of", "data_as_of", "data_stale", "balance"}
+    assert body["data_stale"] is False
     assert set(body["balance"]) == {"total", "bank"}
     assert body["balance"]["total"]["value"] == 9_500_000
     assert body["balance"]["bank"]["value"] == 9_000_000

@@ -30,3 +30,31 @@ def pct_one_decimal(part: int, whole: int) -> Decimal:
         raise ZeroDivisionError("whole must not be zero")
     tenths = div_round(part * 1000, whole)
     return Decimal(tenths) / Decimal(10)
+
+
+BASIS_POINTS = 10_000
+NBSP = "\u00a0"
+
+
+def apply_rate_bp(amount: int, rate_bp: int) -> int:
+    """`amount` kopecks times a rate in basis points (190 = 1.9%), rounded half away from zero."""
+    return div_round(amount * rate_bp, BASIS_POINTS)
+
+
+def rate_bp_to_pct(rate_bp: int) -> Decimal:
+    """Basis points to percent with two decimals available (190 -> Decimal('1.9'))."""
+    return (Decimal(rate_bp) / Decimal(100)).normalize()
+
+
+def pct_to_rate_bp(pct: Decimal | str) -> int:
+    """Percent (as the user types it) to whole basis points; more than two decimals are rounded."""
+    return int((Decimal(pct) * 100).quantize(Decimal(1), rounding=ROUND_HALF_UP))
+
+
+def format_rub(kopecks: int) -> str:
+    """'5 400 ₽' or '5 400,50 ₽' for texts built on the backend (no rounding, exact kopecks)."""
+    sign = "\u2212" if kopecks < 0 else ""
+    rub, kop = divmod(abs(kopecks), KOPECKS_IN_RUB)
+    digits = f"{rub:,}".replace(",", NBSP)
+    tail = f",{kop:02d}" if kop else ""
+    return f"{sign}{digits}{tail}{NBSP}\u20bd"

@@ -83,3 +83,15 @@
 @media (max-width: 560px) {
   .kpi__label { white-space: normal; }
 }
+
+/* Variant with a sub-line (design/components.md, section 1: detailed) */
+.kpi--detailed .kpi__button,
+.kpi--detailed.kpi--loading,
+.kpi--detailed.kpi--error,
+.kpi--detailed.kpi--empty { align-items: flex-start; }
+.kpi--detailed .kpi__emoji { font-size: 25px; }
+.kpi--detailed .kpi__value { font-size: var(--fs-kpi-lg); }
+
+.kpi--with-extra { flex-direction: column; }
+.kpi--with-extra .kpi__button { padding-bottom: 4px; }
+.kpi__extra { padding: 0 20px 14px 59px; font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--color-ink-soft); }

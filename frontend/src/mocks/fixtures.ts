@@ -50,6 +50,9 @@ export const dashboardA: Dashboard = {
   },
 }
 
+/** Same numbers, but the backend marks the data as stale and the last load was yesterday. */
+export const dashboardStale: Dashboard = { ...dashboardA, data_as_of: '2026-09-08T04:12:00+03:00', data_stale: true }
+
 const emptyFigure = (note: string): Figure => ({ value: 0, unit: 'rub', breakdown: [], source: ['manual'], note })
 
 /** Clinic without accounts: breakdown is empty, value 0 (agreed with backend in docs/handoff.md). */

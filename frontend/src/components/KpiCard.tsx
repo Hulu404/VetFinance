@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { Figure } from '../api/types'
 import { formatFigure } from '../lib/format'
 import { FigureTip } from './FigureTip'
@@ -8,7 +9,7 @@ export type KpiState = 'loading' | 'error' | 'empty' | 'ready'
 interface KpiCardProps {
   label: string
   emoji: string
-  variant?: 'accent' | 'default'
+  variant?: 'accent' | 'default' | 'detailed'
   state: KpiState
   /** Required when state is "ready". */
   figure?: Figure
@@ -17,6 +18,8 @@ interface KpiCardProps {
   zeroText?: string
   /** Sub-line for the empty state ("счетов пока нет"). */
   emptyText?: string
+  /** Extra line under the number with its own tip (a second FigureTip): "комиссия 8 683 ₽". */
+  extra?: ReactNode
 }
 
 function subline(state: KpiState, figure: Figure | undefined, zeroText?: string, emptyText?: string) {
@@ -28,8 +31,8 @@ function subline(state: KpiState, figure: Figure | undefined, zeroText?: string,
   return null
 }
 
-export function KpiCard({ label, emoji, variant = 'default', state, figure, testId, zeroText, emptyText }: KpiCardProps) {
-  const className = `kpi kpi--${variant} kpi--${state}`
+export function KpiCard({ label, emoji, variant = 'default', state, figure, testId, zeroText, emptyText, extra }: KpiCardProps) {
+  const className = `kpi kpi--${variant} kpi--${state}${extra ? ' kpi--with-extra' : ''}`
   const hint = subline(state, figure, zeroText, emptyText)
 
   // The test id is only on a card with data, so e2e waits for the number instead of reading a placeholder.
@@ -78,6 +81,7 @@ export function KpiCard({ label, emoji, variant = 'default', state, figure, test
           </button>
         )}
       </FigureTip>
+      {extra && <div className="kpi__extra">{extra}</div>}
     </div>
   )
 }

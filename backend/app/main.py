@@ -1,13 +1,13 @@
 from dataclasses import asdict
-from datetime import date, datetime
-from typing import Annotated
+from datetime import date
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.errors import install_error_handlers
-from app.repo import Repository, get_repo
+from app.deps import NowDep, RepoDep
+from app.errors import error_responses, install_error_handlers
+from app.routes import acquiring, connections, transactions
 from app.schemas import (
     AccountOut,
     AccountsOut,
@@ -17,11 +17,11 @@ from app.schemas import (
     DashboardOut,
     figure_out,
 )
+from app.services.connections import data_is_stale
 from app.settings import Settings, get_settings
 from engine.balance import compute_balance
 
-router = APIRouter(prefix="/v1")
-RepoDep = Annotated[Repository, Depends(get_repo)]
+router = APIRouter(prefix="/v1", responses=error_responses(401, 403, 422))
 
 NOT_NULL_FIELDS = ("name", "timezone", "safe_balance")
 
@@ -58,15 +58,17 @@ async def list_accounts(repo: RepoDep) -> AccountsOut:
 
 
 @router.get("/dashboard", response_model=DashboardOut)
-async def dashboard(repo: RepoDep, as_of: date | None = None) -> DashboardOut:
+async def dashboard(repo: RepoDep, now: NowDep, as_of: date | None = None) -> DashboardOut:
     clinic = await repo.get_clinic()
-    as_of = as_of or datetime.now(ZoneInfo(clinic.timezone)).date()
+    today = now.astimezone(ZoneInfo(clinic.timezone)).date()
+    as_of = as_of or today
     accounts = await repo.list_accounts()
-    transactions = await repo.list_transactions(as_of)
-    result = compute_balance(accounts, transactions, as_of)
+    operations = await repo.list_transactions(as_of)
+    result = compute_balance(accounts, operations, as_of)
     return DashboardOut(
         as_of=as_of,
         data_as_of=await repo.last_data_at(),
+        data_stale=await data_is_stale(repo, now, today),
         balance=DashboardBalanceOut(total=figure_out(result.total), bank=figure_out(result.bank)),
     )
 
@@ -87,6 +89,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return {"status": "ok"}
 
     app.include_router(router)
+    app.include_router(transactions.router)
+    app.include_router(acquiring.router)
+    app.include_router(connections.router)
     return app
 
 

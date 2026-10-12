@@ -223,7 +223,8 @@ export function FigureTip({ figure, title, emoji, children }: FigureTipProps) {
           >
             <TipBody figure={figure} title={title} emoji={emoji} />
           </div>,
-          document.body,
+          // A modal dialog sits in the top layer, above any z-index: inside a dialog the tip is drawn in it.
+          triggerRef.current?.closest('dialog') ?? document.body,
         )}
     </>
   )

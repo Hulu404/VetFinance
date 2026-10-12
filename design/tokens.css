@@ -143,6 +143,17 @@
   --color-drop-border: var(--color-control-border);
   --progress-height: 10px;                  /* как .track в v6 */
 
+  /* ---------- Этап 2: Рабочий стол (график, советы). Новых цветов нет ---------- */
+  --hero-padding: 26px 28px 0;              /* v6 .hero */
+  --chart-height: 104px;                    /* v6 .hero svg.chart */
+  --chart-stroke: 2.5px;                    /* линия графика */
+  --chart-area-opacity: .22;                /* заливка под линией: --color-accent с прозрачностью, к низу до 0 */
+  --chart-point-r: 5px;                     /* видимая точка */
+  --chart-point-hit: 44px;                  /* зона нажатия точки */
+  --advice-padding: 18px 22px;              /* v6 .tip-card */
+  --advice-gap: 11px;                       /* между карточками советов */
+  --advice-bar: 3px;                        /* рамка слева: alert = accent, warning = warn, good = ok */
+
   /* ---------- Фокус ---------- */
   --focus-ring: 2.5px solid var(--color-accent-dark);
   --focus-ring-on-dark: 2.5px solid #FFFFFF;   /* бордовый на тёмном меню не виден (1,9:1) */

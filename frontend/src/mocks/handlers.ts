@@ -1,31 +1,18 @@
-import { delay, http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 import {
   accountListA,
   clinicA,
   dashboardA,
   dashboardNegative,
   dashboardNoAccounts,
+  dashboardStale,
   dashboardZero,
 } from './fixtures'
+import { acquiringHandlers } from './acquiringHandlers'
+import { connectionHandlers } from './connectionHandlers'
+import { errorResponse, guard } from './guard'
 import { getMockScenario, type MockScenario } from './scenario'
-
-const SLOW_MS = 10_000
-
-function errorResponse(status: number, code: string, message: string) {
-  return HttpResponse.json({ error: { code, message, details: {} } }, { status })
-}
-
-/** Common checks: Bearer token and scenarios that break every request. Returns a response to stop, or null. */
-async function guard(request: Request) {
-  const scenario = getMockScenario()
-  if (!request.headers.get('Authorization')?.startsWith('Bearer ') || scenario === 'expired') {
-    return errorResponse(401, 'unauthorized', 'Нужен вход.')
-  }
-  if (scenario === 'noclinic') return errorResponse(403, 'forbidden', 'Почта не привязана к клинике.')
-  if (scenario === 'network') return HttpResponse.error()
-  if (scenario === 'slow') await delay(SLOW_MS)
-  return null
-}
+import { transactionHandlers } from './transactionHandlers'
 
 function dashboardFor(scenario: MockScenario) {
   switch (scenario) {
@@ -35,6 +22,8 @@ function dashboardFor(scenario: MockScenario) {
       return dashboardZero
     case 'negative':
       return dashboardNegative
+    case 'stale':
+      return dashboardStale
     default:
       return dashboardA
   }
@@ -50,4 +39,7 @@ export const handlers = [
     if (scenario === 'error') return errorResponse(500, 'sync_failed', 'Сбой на стороне сервера.')
     return HttpResponse.json(dashboardFor(scenario))
   }),
+  ...transactionHandlers,
+  ...connectionHandlers,
+  ...acquiringHandlers,
 ]

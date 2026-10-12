@@ -1,0 +1,1032 @@
+{
+ "note": "Computed by tools/compute_expected_set03.py from data.json; see set03/README.md for the rules.",
+ "parameters": {
+  "runway_window_days": 28,
+  "trend_days": 14,
+  "week_days": 7,
+  "min_data_days": 7,
+  "runway_alert_days": 14,
+  "runway_warning_days": 30,
+  "revenue_drop_threshold_pct": 85
+ },
+ "cases": [
+  {
+   "as_of": "2026-08-04",
+   "balance": {
+    "total": {
+     "value": 45883058,
+     "breakdown": {
+      "Касса": 6719306,
+      "Расчётный счёт": 37163752,
+      "Резервный счёт": 2000000
+     },
+     "source": [
+      "bank",
+      "vetmanager"
+     ]
+    },
+    "bank": {
+     "value": 39163752,
+     "breakdown": {
+      "Расчётный счёт": 37163752,
+      "Резервный счёт": 2000000
+     },
+     "source": [
+      "bank"
+     ]
+    },
+    "cash": {
+     "value": 6719306,
+     "breakdown": {
+      "Касса": 6719306
+     },
+     "source": [
+      "vetmanager"
+     ]
+    }
+   },
+   "week_change": null,
+   "week_change_pct": null,
+   "balance_trend": [
+    {
+     "date": "2026-08-01",
+     "value": 41491410
+    },
+    {
+     "date": "2026-08-02",
+     "value": 44926039
+    },
+    {
+     "date": "2026-08-03",
+     "value": 49846354
+    },
+    {
+     "date": "2026-08-04",
+     "value": 45883058
+    }
+   ],
+   "runway_days": {
+    "value": 23,
+    "window_days": 4,
+    "burn": 7840030,
+    "daily": 1960008,
+    "breakdown_values": [
+     45883058,
+     7840030,
+     1960008,
+     4
+    ],
+    "source": [
+     "bank",
+     "vetmanager"
+    ]
+   },
+   "month": {
+    "days_passed": 4,
+    "days_total": 31,
+    "revenue": {
+     "value": 13838617,
+     "breakdown": {
+      "Услуги": 8227561,
+      "Товары": 5611056
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "expenses": {
+     "value": 7840030,
+     "breakdown": {
+      "Препараты и расходники": 7840030
+     },
+     "source": [
+      "bank"
+     ]
+    },
+    "profit": {
+     "value": 5998587,
+     "breakdown": {
+      "Выручка": 13838617,
+      "Расходы": -7840030
+     },
+     "source": [
+      "bank",
+      "vetmanager"
+     ]
+    },
+    "profit_margin_pct": {
+     "value": 43.3,
+     "breakdown_values": [
+      5998587,
+      13838617
+     ],
+     "source": [
+      "bank",
+      "vetmanager"
+     ]
+    },
+    "visits": {
+     "value": 29,
+     "breakdown": {
+      "Соколова Е.": 16,
+      "Петров А.": 8,
+      "Ильина М.": 5
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "avg_check": {
+     "value": 345965,
+     "breakdown_values": [
+      13838617,
+      40
+     ],
+     "invoices": 40,
+     "source": [
+      "vetmanager"
+     ]
+    }
+   },
+   "advice": [],
+   "alternatives": {
+    "runway_days_month_to_date": 23
+   }
+  },
+  {
+   "as_of": "2026-08-31",
+   "balance": {
+    "total": {
+     "value": 56750653,
+     "breakdown": {
+      "Касса": 11762037,
+      "Расчётный счёт": 37988616,
+      "Резервный счёт": 7000000
+     },
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "bank": {
+     "value": 44988616,
+     "breakdown": {
+      "Расчётный счёт": 37988616,
+      "Резервный счёт": 7000000
+     },
+     "source": [
+      "bank",
+      "bot",
+      "manual"
+     ]
+    },
+    "cash": {
+     "value": 11762037,
+     "breakdown": {
+      "Касса": 11762037
+     },
+     "source": [
+      "vetmanager",
+      "manual"
+     ]
+    }
+   },
+   "week_change": {
+    "value": -4125548,
+    "breakdown": {
+     "Касса": -5101171,
+     "Расчётный счёт": 975623,
+     "Резервный счёт": 0
+    },
+    "source": [
+     "bank",
+     "vetmanager",
+     "manual"
+    ],
+    "previous": 60876201
+   },
+   "week_change_pct": {
+    "value": -6.8,
+    "breakdown_values": [
+     60876201,
+     56750653
+    ],
+    "source": [
+     "bank",
+     "vetmanager",
+     "manual"
+    ]
+   },
+   "balance_trend": [
+    {
+     "date": "2026-08-18",
+     "value": 57981010
+    },
+    {
+     "date": "2026-08-19",
+     "value": 53359617
+    },
+    {
+     "date": "2026-08-20",
+     "value": 54279332
+    },
+    {
+     "date": "2026-08-21",
+     "value": 52181382
+    },
+    {
+     "date": "2026-08-22",
+     "value": 57243019
+    },
+    {
+     "date": "2026-08-23",
+     "value": 58074084
+    },
+    {
+     "date": "2026-08-24",
+     "value": 60876201
+    },
+    {
+     "date": "2026-08-25",
+     "value": 50029976
+    },
+    {
+     "date": "2026-08-26",
+     "value": 54394535
+    },
+    {
+     "date": "2026-08-27",
+     "value": 50742296
+    },
+    {
+     "date": "2026-08-28",
+     "value": 46105453
+    },
+    {
+     "date": "2026-08-29",
+     "value": 51086580
+    },
+    {
+     "date": "2026-08-30",
+     "value": 53440301
+    },
+    {
+     "date": "2026-08-31",
+     "value": 56750653
+    }
+   ],
+   "runway_days": {
+    "value": 16,
+    "window_days": 28,
+    "burn": 95734160,
+    "daily": 3419077,
+    "breakdown_values": [
+     56750653,
+     95734160,
+     3419077,
+     28
+    ],
+    "source": [
+     "bank",
+     "vetmanager",
+     "bot",
+     "manual"
+    ]
+   },
+   "month": {
+    "days_passed": 31,
+    "days_total": 31,
+    "revenue": {
+     "value": 113195666,
+     "breakdown": {
+      "Услуги": 72660586,
+      "Товары": 40535080
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "expenses": {
+     "value": 95734160,
+     "breakdown": {
+      "Препараты и расходники": 30649965,
+      "Зарплата": 28520050,
+      "Аренда": 12000000,
+      "Прочие расходы": 10240070,
+      "Налоги и взносы": 5830040,
+      "Корма для перепродажи": 4800000,
+      "Коммунальные и связь": 2194035,
+      "Реклама": 1500000
+     },
+     "source": [
+      "bank",
+      "bot",
+      "manual"
+     ]
+    },
+    "profit": {
+     "value": 17461506,
+     "breakdown": {
+      "Выручка": 113195666,
+      "Расходы": -95734160
+     },
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "profit_margin_pct": {
+     "value": 15.4,
+     "breakdown_values": [
+      17461506,
+      113195666
+     ],
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "visits": {
+     "value": 255,
+     "breakdown": {
+      "Соколова Е.": 93,
+      "Петров А.": 92,
+      "Ильина М.": 70
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "avg_check": {
+     "value": 336892,
+     "breakdown_values": [
+      113195666,
+      336
+     ],
+     "invoices": 336,
+     "source": [
+      "vetmanager"
+     ]
+    }
+   },
+   "advice": [
+    {
+     "id": "cash_runway",
+     "severity": "warning",
+     "why_amounts": [
+      56750653,
+      95734160,
+      3419077
+     ],
+     "why_numbers": [
+      16,
+      28
+     ],
+     "why_pcts": [],
+     "facts": {
+      "runway_days": 16,
+      "balance": 56750653,
+      "burn": 95734160,
+      "window_days": 28,
+      "daily": 3419077
+     }
+    },
+    {
+     "id": "drug_share",
+     "severity": "warning",
+     "why_amounts": [
+      30649965,
+      113195666,
+      2351048,
+      9173045
+     ],
+     "why_numbers": [],
+     "why_pcts": [
+      "27,1",
+      "25"
+     ],
+     "facts": {
+      "drugs": 30649965,
+      "revenue": 113195666,
+      "share_pct": 27.1,
+      "norm_max_pct": 25,
+      "excess": 2351048,
+      "biggest_purchase": {
+       "date": "2026-08-19",
+       "amount": 9173045,
+       "id": "S3-tx-048"
+      }
+     }
+    },
+    {
+     "id": "margin_ok",
+     "severity": "good",
+     "why_amounts": [
+      17461506,
+      113195666,
+      95734160
+     ],
+     "why_numbers": [],
+     "why_pcts": [
+      "15,4",
+      "12"
+     ],
+     "facts": {
+      "margin_pct": 15.4,
+      "norm_min_pct": 12,
+      "norm_max_pct": 20,
+      "above_norm": false
+     }
+    }
+   ],
+   "alternatives": {
+    "runway_days_month_to_date": 18
+   }
+  },
+  {
+   "as_of": "2026-09-09",
+   "balance": {
+    "total": {
+     "value": 55298223,
+     "breakdown": {
+      "Касса": 17974625,
+      "Расчётный счёт": 30323598,
+      "Резервный счёт": 7000000
+     },
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "bank": {
+     "value": 37323598,
+     "breakdown": {
+      "Расчётный счёт": 30323598,
+      "Резервный счёт": 7000000
+     },
+     "source": [
+      "bank",
+      "bot",
+      "manual"
+     ]
+    },
+    "cash": {
+     "value": 17974625,
+     "breakdown": {
+      "Касса": 17974625
+     },
+     "source": [
+      "vetmanager",
+      "manual"
+     ]
+    }
+   },
+   "week_change": {
+    "value": 6031722,
+    "breakdown": {
+     "Касса": 7274786,
+     "Расчётный счёт": -1243064,
+     "Резервный счёт": 0
+    },
+    "source": [
+     "bank",
+     "vetmanager",
+     "bot",
+     "manual"
+    ],
+    "previous": 49266501
+   },
+   "week_change_pct": {
+    "value": 12.2,
+    "breakdown_values": [
+     49266501,
+     55298223
+    ],
+    "source": [
+     "bank",
+     "vetmanager",
+     "bot",
+     "manual"
+    ]
+   },
+   "balance_trend": [
+    {
+     "date": "2026-08-27",
+     "value": 50742296
+    },
+    {
+     "date": "2026-08-28",
+     "value": 46105453
+    },
+    {
+     "date": "2026-08-29",
+     "value": 51086580
+    },
+    {
+     "date": "2026-08-30",
+     "value": 53440301
+    },
+    {
+     "date": "2026-08-31",
+     "value": 56750653
+    },
+    {
+     "date": "2026-09-01",
+     "value": 47278108
+    },
+    {
+     "date": "2026-09-02",
+     "value": 49266501
+    },
+    {
+     "date": "2026-09-03",
+     "value": 41124709
+    },
+    {
+     "date": "2026-09-04",
+     "value": 44261476
+    },
+    {
+     "date": "2026-09-05",
+     "value": 43164989
+    },
+    {
+     "date": "2026-09-06",
+     "value": 45218585
+    },
+    {
+     "date": "2026-09-07",
+     "value": 49439330
+    },
+    {
+     "date": "2026-09-08",
+     "value": 51047095
+    },
+    {
+     "date": "2026-09-09",
+     "value": 55298223
+    }
+   ],
+   "runway_days": {
+    "value": 17,
+    "window_days": 28,
+    "burn": 88032670,
+    "daily": 3144024,
+    "breakdown_values": [
+     55298223,
+     88032670,
+     3144024,
+     28
+    ],
+    "source": [
+     "bank",
+     "vetmanager",
+     "bot",
+     "manual"
+    ]
+   },
+   "month": {
+    "days_passed": 9,
+    "days_total": 30,
+    "revenue": {
+     "value": 33391346,
+     "breakdown": {
+      "Услуги": 19658288,
+      "Товары": 13733058
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "expenses": {
+     "value": 32947540,
+     "breakdown": {
+      "Препараты и расходники": 13460040,
+      "Аренда": 12000000,
+      "Корма для перепродажи": 5400000,
+      "Реклама": 1500000,
+      "Коммунальные и связь": 320000,
+      "Прочие расходы": 143500,
+      "Без статьи": 124000
+     },
+     "source": [
+      "bank",
+      "bot",
+      "manual"
+     ]
+    },
+    "profit": {
+     "value": 443806,
+     "breakdown": {
+      "Выручка": 33391346,
+      "Расходы": -32947540
+     },
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "profit_margin_pct": {
+     "value": 1.3,
+     "breakdown_values": [
+      443806,
+      33391346
+     ],
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "visits": {
+     "value": 73,
+     "breakdown": {
+      "Ильина М.": 27,
+      "Петров А.": 25,
+      "Соколова Е.": 21
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "avg_check": {
+     "value": 333913,
+     "breakdown_values": [
+      33391346,
+      100
+     ],
+     "invoices": 100,
+     "source": [
+      "vetmanager"
+     ]
+    }
+   },
+   "advice": [
+    {
+     "id": "cash_runway",
+     "severity": "warning",
+     "why_amounts": [
+      55298223,
+      88032670,
+      3144024
+     ],
+     "why_numbers": [
+      17,
+      28
+     ],
+     "why_pcts": [],
+     "facts": {
+      "runway_days": 17,
+      "balance": 55298223,
+      "burn": 88032670,
+      "window_days": 28,
+      "daily": 3144024
+     }
+    },
+    {
+     "id": "drug_share",
+     "severity": "warning",
+     "why_amounts": [
+      13460040,
+      33391346,
+      5112203,
+      13460040
+     ],
+     "why_numbers": [],
+     "why_pcts": [
+      "40,3",
+      "25"
+     ],
+     "facts": {
+      "drugs": 13460040,
+      "revenue": 33391346,
+      "share_pct": 40.3,
+      "norm_max_pct": 25,
+      "excess": 5112203,
+      "biggest_purchase": {
+       "date": "2026-09-03",
+       "amount": 13460040,
+       "id": "S3-tx-094"
+      }
+     }
+    }
+   ],
+   "alternatives": {
+    "runway_days_month_to_date": 15
+   }
+  },
+  {
+   "as_of": "2026-09-20",
+   "balance": {
+    "total": {
+     "value": 40386767,
+     "breakdown": {
+      "Касса": 6982485,
+      "Расчётный счёт": 28904282,
+      "Резервный счёт": 4500000
+     },
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "bank": {
+     "value": 33404282,
+     "breakdown": {
+      "Расчётный счёт": 28904282,
+      "Резервный счёт": 4500000
+     },
+     "source": [
+      "bank",
+      "bot",
+      "manual"
+     ]
+    },
+    "cash": {
+     "value": 6982485,
+     "breakdown": {
+      "Касса": 6982485
+     },
+     "source": [
+      "vetmanager",
+      "manual"
+     ]
+    }
+   },
+   "week_change": {
+    "value": -1542297,
+    "breakdown": {
+     "Касса": -2271027,
+     "Расчётный счёт": 3228730,
+     "Резервный счёт": -2500000
+    },
+    "source": [
+     "bank",
+     "vetmanager",
+     "manual"
+    ],
+    "previous": 41929064
+   },
+   "week_change_pct": {
+    "value": -3.7,
+    "breakdown_values": [
+     41929064,
+     40386767
+    ],
+    "source": [
+     "bank",
+     "vetmanager",
+     "manual"
+    ]
+   },
+   "balance_trend": [
+    {
+     "date": "2026-09-07",
+     "value": 49439330
+    },
+    {
+     "date": "2026-09-08",
+     "value": 51047095
+    },
+    {
+     "date": "2026-09-09",
+     "value": 55298223
+    },
+    {
+     "date": "2026-09-10",
+     "value": 44382616
+    },
+    {
+     "date": "2026-09-11",
+     "value": 46470770
+    },
+    {
+     "date": "2026-09-12",
+     "value": 40032338
+    },
+    {
+     "date": "2026-09-13",
+     "value": 41929064
+    },
+    {
+     "date": "2026-09-14",
+     "value": 43920426
+    },
+    {
+     "date": "2026-09-15",
+     "value": 43228453
+    },
+    {
+     "date": "2026-09-16",
+     "value": 45814448
+    },
+    {
+     "date": "2026-09-17",
+     "value": 48149242
+    },
+    {
+     "date": "2026-09-18",
+     "value": 37631399
+    },
+    {
+     "date": "2026-09-19",
+     "value": 38963110
+    },
+    {
+     "date": "2026-09-20",
+     "value": 40386767
+    }
+   ],
+   "runway_days": {
+    "value": 11,
+    "window_days": 28,
+    "burn": 99981600,
+    "daily": 3570771,
+    "breakdown_values": [
+     40386767,
+     99981600,
+     3570771,
+     28
+    ],
+    "source": [
+     "bank",
+     "vetmanager",
+     "bot",
+     "manual"
+    ]
+   },
+   "month": {
+    "days_passed": 20,
+    "days_total": 30,
+    "revenue": {
+     "value": 52572007,
+     "breakdown": {
+      "Услуги": 31319458,
+      "Товары": 21252549
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "expenses": {
+     "value": 68649660,
+     "breakdown": {
+      "Препараты и расходники": 27208060,
+      "Зарплата": 14000000,
+      "Аренда": 12000000,
+      "Налоги и взносы": 5830040,
+      "Корма для перепродажи": 5400000,
+      "Коммунальные и связь": 2232060,
+      "Реклама": 1500000,
+      "Прочие расходы": 355500,
+      "Без статьи": 124000
+     },
+     "source": [
+      "bank",
+      "bot",
+      "manual"
+     ]
+    },
+    "profit": {
+     "value": -16077653,
+     "breakdown": {
+      "Выручка": 52572007,
+      "Расходы": -68649660
+     },
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "profit_margin_pct": {
+     "value": -30.6,
+     "breakdown_values": [
+      -16077653,
+      52572007
+     ],
+     "source": [
+      "bank",
+      "vetmanager",
+      "bot",
+      "manual"
+     ]
+    },
+    "visits": {
+     "value": 115,
+     "breakdown": {
+      "Ильина М.": 50,
+      "Соколова Е.": 40,
+      "Петров А.": 25
+     },
+     "source": [
+      "vetmanager"
+     ]
+    },
+    "avg_check": {
+     "value": 334854,
+     "breakdown_values": [
+      52572007,
+      157
+     ],
+     "invoices": 157,
+     "source": [
+      "vetmanager"
+     ]
+    }
+   },
+   "advice": [
+    {
+     "id": "cash_runway",
+     "severity": "alert",
+     "why_amounts": [
+      40386767,
+      99981600,
+      3570771
+     ],
+     "why_numbers": [
+      11,
+      28
+     ],
+     "why_pcts": [],
+     "facts": {
+      "runway_days": 11,
+      "balance": 40386767,
+      "burn": 99981600,
+      "window_days": 28,
+      "daily": 3570771
+     }
+    },
+    {
+     "id": "drug_share",
+     "severity": "warning",
+     "why_amounts": [
+      27208060,
+      52572007,
+      14065058,
+      13460040
+     ],
+     "why_numbers": [],
+     "why_pcts": [
+      "51,8",
+      "25"
+     ],
+     "facts": {
+      "drugs": 27208060,
+      "revenue": 52572007,
+      "share_pct": 51.8,
+      "norm_max_pct": 25,
+      "excess": 14065058,
+      "biggest_purchase": {
+       "date": "2026-09-03",
+       "amount": 13460040,
+       "id": "S3-tx-094"
+      }
+     }
+    },
+    {
+     "id": "revenue_drop",
+     "severity": "warning",
+     "why_amounts": [
+      52572007,
+      75419667,
+      22847660
+     ],
+     "why_numbers": [
+      115,
+      165
+     ],
+     "why_pcts": [
+      "30,3"
+     ],
+     "facts": {
+      "current": 52572007,
+      "prior": 75419667,
+      "drop_pct": 30.3,
+      "visits_now": 115,
+      "visits_prior": 165,
+      "prior_from": "2026-08-01",
+      "prior_to": "2026-08-20"
+     }
+    }
+   ],
+   "alternatives": {
+    "runway_days_month_to_date": 11
+   }
+  }
+ ]
+}

@@ -1,0 +1,29 @@
+.drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 22px;
+  border: 1.5px dashed var(--color-drop-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  text-align: center;
+}
+.drop--over { border-color: var(--color-accent); background: var(--color-accent-faint); }
+.drop--picked { border-style: solid; border-color: var(--color-border); background: var(--color-surface); padding: 12px 14px; }
+.drop--error { border: 1px solid var(--color-bad); }
+.drop--disabled { background: var(--color-track); }
+
+.drop__input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.drop__title { font-size: var(--fs-base); font-weight: var(--fw-semibold); }
+.drop__hint { font-size: var(--fs-xs); color: var(--color-ink-soft); }
+
+.drop__picked { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-width: 0; }
+.drop__name { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: var(--fs-base); font-weight: var(--fw-semibold); text-align: left; }
+.drop__size { flex-shrink: 0; font-size: var(--fs-sm); color: var(--color-ink-soft); }
+
+@media (max-width: 560px) {
+  .drop__title { display: none; }
+  .drop .btn:not(.btn--text) { width: 100%; }
+}

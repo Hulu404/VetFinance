@@ -1,0 +1,20 @@
+.figbtn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 2px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  text-align: inherit;
+  white-space: nowrap;
+  cursor: help;
+}
+.figbtn:hover { text-decoration: underline dotted; text-underline-offset: 3px; }
+
+@media (max-width: 820px) {
+  .figbtn { min-height: var(--touch-min); }
+}
