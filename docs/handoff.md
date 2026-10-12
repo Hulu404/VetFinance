@@ -409,3 +409,17 @@
 Повторный прогон сквозного сценария требует чистой клиники C: удалить её операции, `raw_events`, `sync_runs`, `payments`, `acquiring_reviews` и правила сверх восьми из сида.
 Открыто для владельца: на Railway (сервис vetfinance-api) нужно задать `SECRETS_KEY` (Fernet), иначе сохранение ключа Ветменеджера отвечает 503 «Хранилище ключей не настроено».
 Статус: открыто
+
+## 2026-10-12 · главный агент → backend-developer, frontend-developer, designer, tester (этап 2: единый контракт `GET /v1/dashboard`)
+Решение по расхождениям между запросом designer (2026-10-12, «поля `GET /v1/dashboard`») и эталоном №3 tester. Где они расходятся, действует решение владельца и эталон `tests/golden/set03` (источник правды по числам):
+1. `month.days_passed = as_of.day`, операции дня `as_of` входят и в остаток, и в месяц («9 дней из 30»). Пункт 1 designer (as_of − 1, note «войдут завтра») не берём.
+2. `balance.runway_days` по окну 28 дней (меньше, если истории меньше): `floor(total * window / расходы за окно)`; breakdown «Остаток на счетах», «Расходы за N дней», «Расходы в день, в среднем»; note с формулой; при остатке ≤ 0 значение 0; если расходов в окне нет, поля нет. Пункт 3 designer (по `days_passed`) не берём.
+3. Изменение за неделю — два поля: `balance.week_change: Figure(unit=rub, delta=true)` (breakdown «Неделю назад (2 сентября)», «Сейчас») и `balance.week_change_pct: Figure(unit=pct, delta=true)` (breakdown те же два остатка в рублях). Без истории на 7 дней оба `null`.
+4. `month.visits: Figure(unit=count)` (breakdown по врачам, кодом или «Фамилия И.», без ФИО владельцев), `month.avg_check: Figure(unit=rub)` (выручка / закрытые счета; breakdown «Выручка», «Счетов»; число счетов — строка с `unit=count`). Плюс `month.revenue.details = [avg_check, visits как {label,value,unit}]` — справочные строки подсказки выручки (пункт 5 designer).
+5. `month.profit_margin_pct: Figure(unit=pct)`. Проценты в JSON числом с одним знаком (`14.8`).
+6. Новые необязательные поля `Figure.delta: bool` и `breakdown[].delta: bool`, `Figure.details` (пункты 5 и 9 designer) — берём.
+7. `balance_trend`: 14 точек `{date, value}` по `as_of` включительно, от старых к новым (меньше при короткой истории); `balance_trend_info: {note, source}` — берём.
+8. `month.revenue_forecast` и `month.expenses_change_pct` (пункты 6, 7 designer) на этапе 2 НЕ делаем: нет эталона (правило 8). Frontend работает с фолбэком (подстроки нет).
+9. `advice[]`: 4 правила из `set03/README.md` раздел 5 (`cash_runway`, `drug_share`, `revenue_drop`, `margin_ok`), ограничения designer по длине, иконкам и порядку (пункт 10) соблюдаются; `why: {summary, steps[1..5], sources}`.
+10. `source` производных цифр — объединение источников (bank, vetmanager, bot, manual), без `calc`. `as_of` вне данных: 200, нули, пустые советы; неверный `as_of`: 422.
+Статус: открыто
