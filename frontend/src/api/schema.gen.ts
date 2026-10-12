@@ -56,6 +56,296 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Transactions */
+        get: operations["list_transactions_v1_transactions_get"];
+        put?: never;
+        /** Create Transaction */
+        post: operations["create_transaction_v1_transactions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transactions/counts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Transaction Counts */
+        get: operations["transaction_counts_v1_transactions_counts_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transactions/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Transaction Summary */
+        get: operations["transaction_summary_v1_transactions_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transactions/{tx_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Transaction */
+        patch: operations["patch_transaction_v1_transactions__tx_id__patch"];
+        trace?: never;
+    };
+    "/v1/transactions/{tx_id}/rule-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rule Preview */
+        get: operations["rule_preview_v1_transactions__tx_id__rule_preview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/transactions/{tx_id}/resolve-duplicate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resolve Duplicate */
+        post: operations["resolve_duplicate_v1_transactions__tx_id__resolve_duplicate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/category-rules": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Category Rules */
+        get: operations["list_category_rules_v1_category_rules_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/category-rules/{rule_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Category Rule */
+        delete: operations["delete_category_rule_v1_category_rules__rule_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Categories */
+        get: operations["list_categories_v1_categories_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/imports/bank-statement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Bank Statement */
+        post: operations["import_bank_statement_v1_imports_bank_statement_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/acquiring/reconciliation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Reconciliation */
+        get: operations["reconciliation_v1_acquiring_reconciliation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/acquiring/days/{day}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Day Details */
+        get: operations["day_details_v1_acquiring_days__day__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/acquiring/days/{day}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Review Day */
+        post: operations["review_day_v1_acquiring_days__day__review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/connections": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Connections */
+        get: operations["list_connections_v1_connections_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/connections/vetmanager": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save Vetmanager */
+        put: operations["save_vetmanager_v1_connections_vetmanager_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/connections/vetmanager/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Import Vetmanager */
+        post: operations["import_vetmanager_v1_connections_vetmanager_import_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/connections/{connection_id}/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sync Connection */
+        post: operations["sync_connection_v1_connections__connection_id__sync_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -83,6 +373,200 @@ export interface components {
         AccountsOut: {
             /** Items */
             items: components["schemas"]["AccountOut"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+        };
+        /** AcquiringCreditOut */
+        AcquiringCreditOut: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Description */
+            description: string;
+            /** Amount */
+            amount: number;
+            /** Transaction Id */
+            transaction_id: string | null;
+        };
+        /** AcquiringDayOut */
+        AcquiringDayOut: {
+            /**
+             * Date From
+             * Format: date
+             */
+            date_from: string;
+            /**
+             * Date To
+             * Format: date
+             */
+            date_to: string;
+            /** Payments */
+            payments: components["schemas"]["AcquiringPaymentOut"][];
+            /** Credits */
+            credits: components["schemas"]["AcquiringCreditOut"][];
+            review: components["schemas"]["ReviewOut"];
+        };
+        /** AcquiringMemberOut */
+        AcquiringMemberOut: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            card_payments: components["schemas"]["FigureOut"];
+            commission: components["schemas"]["FigureOut"];
+            expected: components["schemas"]["FigureOut"];
+        };
+        /** AcquiringOut */
+        AcquiringOut: {
+            settlement_days: components["schemas"]["SettlementDaysOut"];
+            /** Rate Pct */
+            rate_pct: number;
+            /** Bank Covered To */
+            bank_covered_to: string | null;
+            summary: components["schemas"]["AcquiringSummaryOut"];
+            /** Days */
+            days: components["schemas"]["AcquiringRowOut"][];
+        };
+        /** AcquiringPaymentOut */
+        AcquiringPaymentOut: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Description */
+            description: string;
+            /** Amount */
+            amount: number;
+        };
+        /** AcquiringRowOut */
+        AcquiringRowOut: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /**
+             * Date From
+             * Format: date
+             */
+            date_from: string;
+            /**
+             * Date To
+             * Format: date
+             */
+            date_to: string;
+            card_payments: components["schemas"]["FigureOut"];
+            commission: components["schemas"]["FigureOut"];
+            expected: components["schemas"]["FigureOut"];
+            credited: components["schemas"]["FigureOut"] | null;
+            discrepancy: components["schemas"]["FigureOut"] | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "matched" | "mismatch" | "waiting" | "no_statement" | "no_payments";
+            /** Expected By */
+            expected_by: string | null;
+            /** Reviewed */
+            reviewed: boolean;
+            /** Members */
+            members: components["schemas"]["AcquiringMemberOut"][];
+        };
+        /** AcquiringSummaryOut */
+        AcquiringSummaryOut: {
+            card_payments: components["schemas"]["FigureOut"];
+            commission: components["schemas"]["FigureOut"];
+            credited: components["schemas"]["FigureOut"];
+            discrepancy: components["schemas"]["FigureOut"];
+            waiting: components["schemas"]["FigureOut"];
+        };
+        /** AdviceOut */
+        AdviceOut: {
+            /** Id */
+            id: string;
+            /**
+             * Severity
+             * @enum {string}
+             */
+            severity: "alert" | "warning" | "good";
+            /** Icon */
+            icon: string;
+            /** Title */
+            title: string;
+            /** Text */
+            text: string;
+            why: components["schemas"]["WhyOut"];
+        };
+        /** BankAccountStatusOut */
+        BankAccountStatusOut: {
+            account: components["schemas"]["NamedRefOut"];
+            /** Last Statement To */
+            last_statement_to: string | null;
+        };
+        /** BankInfoOut */
+        BankInfoOut: {
+            /** Accounts */
+            accounts: components["schemas"]["BankAccountStatusOut"][];
+        };
+        /** Body_import_bank_statement_v1_imports_bank_statement_post */
+        Body_import_bank_statement_v1_imports_bank_statement_post: {
+            /** File */
+            file: string;
+            /** Account Id */
+            account_id?: string | null;
+        };
+        /** CategoriesOut */
+        CategoriesOut: {
+            /** Items */
+            items: components["schemas"]["CategoryOut"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+        };
+        /** CategoryOut */
+        CategoryOut: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "income" | "variable" | "fixed";
+            /** Norm Min Pct */
+            norm_min_pct: number | null;
+            /** Norm Max Pct */
+            norm_max_pct: number | null;
+        };
+        /** CategoryRuleOut */
+        CategoryRuleOut: {
+            /** Id */
+            id: string;
+            /**
+             * Match
+             * @enum {string}
+             */
+            match: "inn" | "text";
+            /** Match Text */
+            match_text: string;
+            /** Direction */
+            direction: ("in" | "out") | null;
+            category: components["schemas"]["NamedRefOut"];
+            applied_count: components["schemas"]["FigureOut"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** CategoryRulesOut */
+        CategoryRulesOut: {
+            /** Items */
+            items: components["schemas"]["CategoryRuleOut"][];
             /** Next Cursor */
             next_cursor?: string | null;
         };
@@ -114,12 +598,530 @@ export interface components {
             /** Safe Balance */
             safe_balance?: number | null;
         };
+        /** ConnectionOut */
+        ConnectionOut: {
+            /** Id */
+            id: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "vetmanager" | "bank";
+            /** Connected */
+            connected: boolean;
+            /** Address */
+            address: string | null;
+            /** Key Hint */
+            key_hint: string | null;
+            schedule: components["schemas"]["ScheduleOut"] | null;
+            /** Data Stale */
+            data_stale: boolean;
+            /** Last Success At */
+            last_success_at: string | null;
+            last_run: components["schemas"]["SyncRunOut"] | null;
+            /** Runs */
+            runs: components["schemas"]["SyncRunOut"][];
+            bank: components["schemas"]["BankInfoOut"] | null;
+        };
+        /** ConnectionsOut */
+        ConnectionsOut: {
+            /** Items */
+            items: components["schemas"]["ConnectionOut"][];
+            /** Next Cursor */
+            next_cursor?: string | null;
+        };
+        /** CreatedRuleOut */
+        CreatedRuleOut: {
+            /** Id */
+            id: string;
+            /** Match Text */
+            match_text: string;
+            category: components["schemas"]["NamedRefOut"];
+            /** Applied Count */
+            applied_count: number;
+        };
         /** DashboardBalanceOut */
         DashboardBalanceOut: {
             total: components["schemas"]["FigureOut"];
             bank: components["schemas"]["FigureOut"];
+            cash: components["schemas"]["FigureOut"];
+            week_change: components["schemas"]["FigureOut"] | null;
+            week_change_pct: components["schemas"]["FigureOut"] | null;
+            runway_days?: components["schemas"]["FigureOut"] | null;
         };
-        /** DashboardOut */
+        /** DashboardMonthOut */
+        DashboardMonthOut: {
+            /** Days Passed */
+            days_passed: number;
+            /** Days Total */
+            days_total: number;
+            revenue: components["schemas"]["FigureOut"];
+            expenses: components["schemas"]["FigureOut"];
+            profit: components["schemas"]["FigureOut"];
+            profit_margin_pct?: components["schemas"]["FigureOut"] | null;
+            visits: components["schemas"]["FigureOut"];
+            avg_check?: components["schemas"]["FigureOut"] | null;
+        };
+        /**
+         * DashboardOut
+         * @example {
+         *       "as_of": "2026-09-09",
+         *       "data_as_of": "2026-09-09T01:12:00Z",
+         *       "data_stale": false,
+         *       "balance": {
+         *         "total": {
+         *           "value": 55298223,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Касса",
+         *               "value": 17974625,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Расчётный счёт",
+         *               "value": 30323598,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Резервный счёт",
+         *               "value": 7000000,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "vetmanager",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Остаток на всех счетах на 2026-09-09: остаток на начало плюс операции без дублей, счетов: 3."
+         *         },
+         *         "bank": {
+         *           "value": 37323598,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Расчётный счёт",
+         *               "value": 30323598,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Резервный счёт",
+         *               "value": 7000000,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Остаток на расчётных счетах на 2026-09-09: остаток на начало плюс операции без дублей, счетов: 2."
+         *         },
+         *         "cash": {
+         *           "value": 17974625,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Касса",
+         *               "value": 17974625,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "vetmanager",
+         *             "manual"
+         *           ],
+         *           "note": "Остаток в кассе на 2026-09-09: остаток на начало плюс операции без дублей, счетов: 1."
+         *         },
+         *         "week_change": {
+         *           "value": 6031722,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Касса",
+         *               "value": 7274786,
+         *               "unit": "rub",
+         *               "delta": true
+         *             },
+         *             {
+         *               "label": "Расчётный счёт",
+         *               "value": -1243064,
+         *               "unit": "rub",
+         *               "delta": true
+         *             },
+         *             {
+         *               "label": "Резервный счёт",
+         *               "value": 0,
+         *               "unit": "rub",
+         *               "delta": true
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "vetmanager",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Изменение остатка на всех счетах за 7 дней: с конца 2 сентября до конца 9 сентября. В разбивке изменение по каждому счёту.",
+         *           "delta": true,
+         *           "details": [
+         *             {
+         *               "label": "Неделю назад (2 сентября)",
+         *               "value": 49266501,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Сейчас",
+         *               "value": 55298223,
+         *               "unit": "rub"
+         *             }
+         *           ]
+         *         },
+         *         "week_change_pct": {
+         *           "value": 12.2,
+         *           "unit": "pct",
+         *           "breakdown": [
+         *             {
+         *               "label": "Неделю назад (2 сентября)",
+         *               "value": 49266501,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Сейчас",
+         *               "value": 55298223,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "vetmanager",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Изменение 60 317,22 ₽ к остатку неделю назад (492 665,01 ₽): 12,2%.",
+         *           "delta": true
+         *         },
+         *         "runway_days": {
+         *           "value": 17,
+         *           "unit": "days",
+         *           "breakdown": [
+         *             {
+         *               "label": "Остаток на счетах",
+         *               "value": 55298223,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Расходы за 28 дней",
+         *               "value": 88032670,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Расходы в день, в среднем",
+         *               "value": 3144024,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Окно расчёта",
+         *               "value": 28,
+         *               "unit": "days"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "vetmanager",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Остаток 552 982,23 ₽ делим на средний расход в день 31 440,24 ₽ (расходы за 28 дней 880 326,70 ₽ ÷ 28) и берём целые дни вниз. Платежи вперёд не учитываются: смотрите платёжный календарь."
+         *         }
+         *       },
+         *       "month": {
+         *         "days_passed": 9,
+         *         "days_total": 30,
+         *         "revenue": {
+         *           "value": 33391346,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Услуги",
+         *               "value": 19658288,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Товары",
+         *               "value": 13733058,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "vetmanager"
+         *           ],
+         *           "note": "Закрытые счета Ветменеджера за 1–9 сентября 2026 (9 из 30 дн.): 100 закрытых счетов. Черновики счетов не входят.",
+         *           "details": [
+         *             {
+         *               "label": "Средний чек",
+         *               "value": 333913,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Приёмов",
+         *               "value": 73,
+         *               "unit": "count"
+         *             }
+         *           ]
+         *         },
+         *         "expenses": {
+         *           "value": 32947540,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Препараты и расходники",
+         *               "value": 13460040,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Аренда",
+         *               "value": 12000000,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Корма для перепродажи",
+         *               "value": 5400000,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Реклама",
+         *               "value": 1500000,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Коммунальные и связь",
+         *               "value": 320000,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Прочие расходы",
+         *               "value": 143500,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Без статьи",
+         *               "value": 124000,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Деньги, ушедшие с банковских счетов и из кассы за 1–9 сентября 2026, по статьям; дубли и переводы между своими счетами не входят. Закупка впрок попадает в расходы целиком, в месяц покупки."
+         *         },
+         *         "profit": {
+         *           "value": 443806,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Выручка",
+         *               "value": 33391346,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Расходы",
+         *               "value": -32947540,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "vetmanager",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Выручка минус уже заплаченные расходы за 1–9 сентября 2026. Налоги и амортизацию считает отчёт «Прибыль и убытки» при закрытии месяца, поэтому число может отличаться от чистой прибыли отчёта."
+         *         },
+         *         "profit_margin_pct": {
+         *           "value": 1.3,
+         *           "unit": "pct",
+         *           "breakdown": [
+         *             {
+         *               "label": "Прибыль",
+         *               "value": 443806,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Выручка",
+         *               "value": 33391346,
+         *               "unit": "rub"
+         *             }
+         *           ],
+         *           "source": [
+         *             "bank",
+         *             "vetmanager",
+         *             "bot",
+         *             "manual"
+         *           ],
+         *           "note": "Прибыль 4 438,06 ₽ ÷ выручка 333 913,46 ₽ = 1,3%. Норма клиники: не ниже 12%."
+         *         },
+         *         "visits": {
+         *           "value": 73,
+         *           "unit": "count",
+         *           "breakdown": [
+         *             {
+         *               "label": "Ильина М.",
+         *               "value": 27,
+         *               "unit": "count"
+         *             },
+         *             {
+         *               "label": "Петров А.",
+         *               "value": 25,
+         *               "unit": "count"
+         *             },
+         *             {
+         *               "label": "Соколова Е.",
+         *               "value": 21,
+         *               "unit": "count"
+         *             }
+         *           ],
+         *           "source": [
+         *             "vetmanager"
+         *           ],
+         *           "note": "Приёмы по данным Ветменеджера за 1–9 сентября 2026, по врачам."
+         *         },
+         *         "avg_check": {
+         *           "value": 333913,
+         *           "unit": "rub",
+         *           "breakdown": [
+         *             {
+         *               "label": "Выручка",
+         *               "value": 33391346,
+         *               "unit": "rub"
+         *             },
+         *             {
+         *               "label": "Счетов",
+         *               "value": 100,
+         *               "unit": "count"
+         *             }
+         *           ],
+         *           "source": [
+         *             "vetmanager"
+         *           ],
+         *           "note": "Выручка 333 913,46 ₽ ÷ 100 закрытых счетов за 1–9 сентября 2026."
+         *         }
+         *       },
+         *       "balance_trend": [
+         *         {
+         *           "date": "2026-08-27",
+         *           "value": 50742296
+         *         },
+         *         {
+         *           "date": "2026-08-28",
+         *           "value": 46105453
+         *         },
+         *         {
+         *           "date": "2026-08-29",
+         *           "value": 51086580
+         *         },
+         *         {
+         *           "date": "2026-08-30",
+         *           "value": 53440301
+         *         },
+         *         {
+         *           "date": "2026-08-31",
+         *           "value": 56750653
+         *         },
+         *         {
+         *           "date": "2026-09-01",
+         *           "value": 47278108
+         *         },
+         *         {
+         *           "date": "2026-09-02",
+         *           "value": 49266501
+         *         },
+         *         {
+         *           "date": "2026-09-03",
+         *           "value": 41124709
+         *         },
+         *         {
+         *           "date": "2026-09-04",
+         *           "value": 44261476
+         *         },
+         *         {
+         *           "date": "2026-09-05",
+         *           "value": 43164989
+         *         },
+         *         {
+         *           "date": "2026-09-06",
+         *           "value": 45218585
+         *         },
+         *         {
+         *           "date": "2026-09-07",
+         *           "value": 49439330
+         *         },
+         *         {
+         *           "date": "2026-09-08",
+         *           "value": 51047095
+         *         },
+         *         {
+         *           "date": "2026-09-09",
+         *           "value": 55298223
+         *         }
+         *       ],
+         *       "balance_trend_info": {
+         *         "note": "Остаток на конец каждого дня по всем счетам (банк и касса): 14 дней по 9 сентября включительно.",
+         *         "source": [
+         *           "bank",
+         *           "vetmanager",
+         *           "bot",
+         *           "manual"
+         *         ]
+         *       },
+         *       "advice": [
+         *         {
+         *           "id": "cash_runway",
+         *           "severity": "warning",
+         *           "icon": "🩸",
+         *           "title": "Денег хватит примерно на 17 дней",
+         *           "text": "Остаток 552 982,23 ₽ при расходах в среднем 31 440,24 ₽ в день. Платежи вперёд здесь не учтены: их покажет платёжный календарь.",
+         *           "why": {
+         *             "summary": "Остатка 552 982,23 ₽ хватит на 17 дней при расходах 31 440,24 ₽ в день (среднее за 28 дней).",
+         *             "steps": [
+         *               "Остаток на всех счетах, банк и касса: 552 982,23 ₽.",
+         *               "Расходы за последние 28 дней: 880 326,70 ₽ (переводы между своими счетами и дубли не входят).",
+         *               "В среднем в день: 31 440,24 ₽ (880 326,70 ₽ ÷ 28).",
+         *               "Остаток делим на расход в день и берём целые дни вниз: 17 дней."
+         *             ],
+         *             "sources": [
+         *               "Остатки счетов и операции: выписки банка, Ветменеджер, ввод из мессенджера, ручной ввод",
+         *               "Расчёт по среднему расходу за 28 дней"
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "id": "drug_share",
+         *           "severity": "warning",
+         *           "icon": "💊",
+         *           "title": "Препараты съедают 40,3% выручки при норме до 25%",
+         *           "text": "За месяц на препараты ушло 134 600,40 ₽ из выручки 333 913,46 ₽. Это на 51 122,03 ₽ больше нормы клиники.",
+         *           "why": {
+         *             "summary": "Доля препаратов 40,3% выручки, норма клиники до 25%: сверх нормы 51 122,03 ₽.",
+         *             "steps": [
+         *               "Статья «Препараты и расходники» за 1–9 сентября: 134 600,40 ₽.",
+         *               "Выручка за тот же период: 333 913,46 ₽; доля препаратов 40,3%.",
+         *               "Норма клиники до 25% выручки, это 83 478,37 ₽; превышение 51 122,03 ₽.",
+         *               "Самая крупная закупка месяца 134 600,40 ₽ от 3 сентября. Закупка впрок целиком попадает в расходы месяца, поэтому доля может снизиться в следующие недели."
+         *             ],
+         *             "sources": [
+         *               "Операции банка и кассы по статье расходов",
+         *               "Закрытые счета Ветменеджера (выручка)"
+         *             ]
+         *           }
+         *         }
+         *       ]
+         *     }
+         */
         DashboardOut: {
             /**
              * As Of
@@ -128,7 +1130,33 @@ export interface components {
             as_of: string;
             /** Data As Of */
             data_as_of: string | null;
+            /** Data Stale */
+            data_stale: boolean;
             balance: components["schemas"]["DashboardBalanceOut"];
+            month: components["schemas"]["DashboardMonthOut"];
+            /** Balance Trend */
+            balance_trend: components["schemas"]["TrendPointOut"][];
+            balance_trend_info: components["schemas"]["TrendInfoOut"];
+            /** Advice */
+            advice: components["schemas"]["AdviceOut"][];
+        };
+        /**
+         * ErrorBodyOut
+         * @description Every error of the API: {"error": {"code", "message", "details"}}.
+         */
+        ErrorBodyOut: {
+            error: components["schemas"]["ErrorDetailOut"];
+        };
+        /** ErrorDetailOut */
+        ErrorDetailOut: {
+            /** Code */
+            code: string;
+            /** Message */
+            message: string;
+            /** Details */
+            details: {
+                [key: string]: unknown;
+            };
         };
         /** FigureItemOut */
         FigureItemOut: {
@@ -142,6 +1170,8 @@ export interface components {
              * @enum {string}
              */
             unit: "rub" | "pct" | "count" | "days";
+            /** Delta */
+            delta?: boolean | null;
         };
         /** FigureOut */
         FigureOut: {
@@ -158,24 +1188,351 @@ export interface components {
             source: ("bank" | "vetmanager" | "bot" | "manual" | "calc")[];
             /** Note */
             note: string;
+            /** Delta */
+            delta?: boolean | null;
+            /** Details */
+            details?: components["schemas"]["FigureItemOut"][] | null;
         };
-        /** HTTPValidationError */
-        HTTPValidationError: {
-            /** Detail */
-            detail?: components["schemas"]["ValidationError"][];
+        /** ImportOut */
+        ImportOut: {
+            /** Import Id */
+            import_id: string;
+            account: components["schemas"]["NamedRefOut"];
+            period: components["schemas"]["PeriodOut"];
+            /** Loaded */
+            loaded: number;
+            /** Duplicates */
+            duplicates: number;
+            /** To Check */
+            to_check: number;
+            /** Already Loaded */
+            already_loaded: number;
+            /** Skipped */
+            skipped: number;
         };
-        /** ValidationError */
-        ValidationError: {
-            /** Location */
-            loc: (string | number)[];
-            /** Message */
-            msg: string;
-            /** Error Type */
-            type: string;
-            /** Input */
-            input?: unknown;
-            /** Context */
-            ctx?: Record<string, never>;
+        /** NamedRefOut */
+        NamedRefOut: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+        };
+        /** PeriodOut */
+        PeriodOut: {
+            /**
+             * From
+             * Format: date
+             */
+            from: string;
+            /**
+             * To
+             * Format: date
+             */
+            to: string;
+        };
+        /** ResolveDuplicateBody */
+        ResolveDuplicateBody: {
+            /** Keep Id */
+            keep_id?: string | null;
+            /**
+             * Keep Both
+             * @default false
+             */
+            keep_both: boolean;
+        };
+        /** ResolveDuplicateOut */
+        ResolveDuplicateOut: {
+            /** Kept */
+            kept: components["schemas"]["TransactionOut"][];
+            /** Duplicates */
+            duplicates: components["schemas"]["TransactionOut"][];
+        };
+        /** ReviewBody */
+        ReviewBody: {
+            /** Note */
+            note?: string | null;
+        };
+        /** ReviewOut */
+        ReviewOut: {
+            /** Reviewed */
+            reviewed: boolean;
+            /** Note */
+            note: string | null;
+        };
+        /** RulePreviewOut */
+        RulePreviewOut: {
+            /** Can Create */
+            can_create: boolean;
+            /** Already Exists */
+            already_exists: boolean;
+            /** Match Text */
+            match_text: string | null;
+            /** Matches Count */
+            matches_count: number;
+        };
+        /** RunStartedOut */
+        RunStartedOut: {
+            run: components["schemas"]["SyncRunOut"];
+        };
+        /** ScheduleOut */
+        ScheduleOut: {
+            /**
+             * Kind
+             * @constant
+             */
+            kind: "nightly";
+            /** Time */
+            time: string;
+        };
+        /** SettlementDaysOut */
+        SettlementDaysOut: {
+            /** Min */
+            min: number;
+            /** Max */
+            max: number;
+        };
+        /** SuggestionOut */
+        SuggestionOut: {
+            category: components["schemas"]["NamedRefOut"];
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "rule" | "similar";
+            /** Text */
+            text: string;
+        };
+        /** SummaryOut */
+        SummaryOut: {
+            income: components["schemas"]["FigureOut"];
+            expense: components["schemas"]["FigureOut"];
+            balance: components["schemas"]["FigureOut"];
+        };
+        /** SyncRunOut */
+        SyncRunOut: {
+            /** Id */
+            id: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "running" | "success" | "partial" | "failed";
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /** Finished At */
+            finished_at: string | null;
+            /** Error Code */
+            error_code: ("invalid_key" | "unreachable" | "rate_limited" | "unknown") | null;
+            counts: components["schemas"]["FigureOut"] | null;
+        };
+        /** TabCountsOut */
+        TabCountsOut: {
+            /** All */
+            all: number;
+            /** Check */
+            check: number;
+            /** Duplicates */
+            duplicates: number;
+        };
+        /** TransactionBriefOut */
+        TransactionBriefOut: {
+            /** Id */
+            id: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Description */
+            description: string;
+            category: components["schemas"]["NamedRefOut"] | null;
+            account: components["schemas"]["NamedRefOut"];
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "bank" | "vetmanager" | "bot" | "manual";
+            /** Amount */
+            amount: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "in" | "out" | "transfer";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "check" | "duplicate";
+            /** Duplicate State */
+            duplicate_state: ("pending" | "confirmed") | null;
+            figure: components["schemas"]["FigureOut"];
+        };
+        /** TransactionCreate */
+        TransactionCreate: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "in" | "out";
+            /**
+             * Account Id
+             * Format: uuid
+             */
+            account_id: string;
+            /** Category Id */
+            category_id?: string | null;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Amount */
+            amount: number;
+            /** Comment */
+            comment?: string | null;
+        };
+        /** TransactionListOut */
+        TransactionListOut: {
+            /** Items */
+            items: components["schemas"]["TransactionOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+        };
+        /** TransactionOut */
+        TransactionOut: {
+            /** Id */
+            id: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Description */
+            description: string;
+            category: components["schemas"]["NamedRefOut"] | null;
+            account: components["schemas"]["NamedRefOut"];
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "bank" | "vetmanager" | "bot" | "manual";
+            /** Amount */
+            amount: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "in" | "out" | "transfer";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "check" | "duplicate";
+            /** Duplicate State */
+            duplicate_state: ("pending" | "confirmed") | null;
+            figure: components["schemas"]["FigureOut"];
+            duplicate_of: components["schemas"]["TransactionBriefOut"] | null;
+            /** Duplicate Reason */
+            duplicate_reason: string | null;
+            suggestion: components["schemas"]["SuggestionOut"] | null;
+        };
+        /** TransactionPatch */
+        TransactionPatch: {
+            /**
+             * Category Id
+             * Format: uuid
+             */
+            category_id: string;
+            /**
+             * Create Rule
+             * @default false
+             */
+            create_rule: boolean;
+        };
+        /** TransactionPatchedOut */
+        TransactionPatchedOut: {
+            /** Id */
+            id: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Description */
+            description: string;
+            category: components["schemas"]["NamedRefOut"] | null;
+            account: components["schemas"]["NamedRefOut"];
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "bank" | "vetmanager" | "bot" | "manual";
+            /** Amount */
+            amount: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "in" | "out" | "transfer";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "check" | "duplicate";
+            /** Duplicate State */
+            duplicate_state: ("pending" | "confirmed") | null;
+            figure: components["schemas"]["FigureOut"];
+            duplicate_of: components["schemas"]["TransactionBriefOut"] | null;
+            /** Duplicate Reason */
+            duplicate_reason: string | null;
+            suggestion: components["schemas"]["SuggestionOut"] | null;
+            rule: components["schemas"]["CreatedRuleOut"] | null;
+        };
+        /** TrendInfoOut */
+        TrendInfoOut: {
+            /** Note */
+            note: string;
+            /** Source */
+            source: ("bank" | "vetmanager" | "bot" | "manual" | "calc")[];
+        };
+        /** TrendPointOut */
+        TrendPointOut: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Value */
+            value: number;
+        };
+        /** VetmanagerBody */
+        VetmanagerBody: {
+            /** Address */
+            address: string;
+            /** Key */
+            key?: string | null;
+        };
+        /** VetmanagerImportBody */
+        VetmanagerImportBody: {
+            /** Entities */
+            entities: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            };
+        };
+        /** WhyOut */
+        WhyOut: {
+            /** Summary */
+            summary: string;
+            /** Steps */
+            steps: string[];
+            /** Sources */
+            sources: string[];
         };
     };
     responses: never;
@@ -204,6 +1561,33 @@ export interface operations {
                     "application/json": components["schemas"]["ClinicOut"];
                 };
             };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
         };
     };
     patch_clinic_v1_clinic_patch: {
@@ -228,13 +1612,31 @@ export interface operations {
                     "application/json": components["schemas"]["ClinicOut"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorBodyOut"];
                 };
             };
         };
@@ -255,6 +1657,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AccountsOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
                 };
             };
         };
@@ -279,13 +1708,1046 @@ export interface operations {
                     "application/json": components["schemas"]["DashboardOut"];
                 };
             };
-            /** @description Validation Error */
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
             422: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    list_transactions_v1_transactions_get: {
+        parameters: {
+            query?: {
+                tab?: "all" | "check" | "duplicates";
+                from?: string | null;
+                to?: string | null;
+                limit?: number;
+                cursor?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionListOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    create_transaction_v1_transactions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransactionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionPatchedOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    transaction_counts_v1_transactions_counts_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TabCountsOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    transaction_summary_v1_transactions_summary_get: {
+        parameters: {
+            query: {
+                month: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SummaryOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    patch_transaction_v1_transactions__tx_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tx_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TransactionPatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionPatchedOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    rule_preview_v1_transactions__tx_id__rule_preview_get: {
+        parameters: {
+            query: {
+                category_id: string;
+            };
+            header?: never;
+            path: {
+                tx_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RulePreviewOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    resolve_duplicate_v1_transactions__tx_id__resolve_duplicate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                tx_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResolveDuplicateBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResolveDuplicateOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    list_category_rules_v1_category_rules_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryRulesOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    delete_category_rule_v1_category_rules__rule_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                rule_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    list_categories_v1_categories_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoriesOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    import_bank_statement_v1_imports_bank_statement_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_import_bank_statement_v1_imports_bank_statement_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ImportOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Слишком часто (`rate_limited`), заголовок `Retry-After`. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    reconciliation_v1_acquiring_reconciliation_get: {
+        parameters: {
+            query: {
+                month: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AcquiringOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    day_details_v1_acquiring_days__day__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                day: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AcquiringDayOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    review_day_v1_acquiring_days__day__review_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                day: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AcquiringRowOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    list_connections_v1_connections_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConnectionsOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    save_vetmanager_v1_connections_vetmanager_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VetmanagerBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConnectionOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    import_vetmanager_v1_connections_vetmanager_import_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VetmanagerImportBody"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStartedOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    sync_connection_v1_connections__connection_id__sync_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                connection_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RunStartedOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Конфликт состояния (`conflict`). */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Слишком часто (`rate_limited`), заголовок `Retry-After`. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
                 };
             };
         };

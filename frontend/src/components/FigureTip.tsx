@@ -11,10 +11,11 @@ import {
   type PointerEvent,
   type ReactNode,
   type Ref,
+  type RefObject,
 } from 'react'
 import { createPortal } from 'react-dom'
-import type { Figure } from '../api/types'
-import { formatByUnit, formatFigure, sourceLabel } from '../lib/format'
+import type { Figure, FigureItem } from '../api/types'
+import { formatDeltaAware, sourceLabel } from '../lib/format'
 import './FigureTip.css'
 
 const HOVER_OPEN_DELAY_MS = 80
@@ -42,6 +43,10 @@ interface FigureTipProps {
   /** Name of the metric, shown as the label in the tip (the Figure has no title of its own). */
   title: string
   emoji?: string
+  /** Element the tip is placed next to, when it is not the trigger itself (a point inside a chart). */
+  anchorRef?: RefObject<HTMLElement | null>
+  /** Changes when the tip must be placed again while open (another point of the chart). */
+  placeKey?: string | number
   /** Renders the element that opens the tip. Spread the given props on one focusable element. */
   children: (triggerProps: FigureTipTriggerProps) => ReactNode
 }
@@ -68,7 +73,7 @@ function computePosition(anchor: DOMRect, tip: DOMRect): Position {
   return { top, left }
 }
 
-export function FigureTip({ figure, title, emoji, children }: FigureTipProps) {
+export function FigureTip({ figure, title, emoji, anchorRef, placeKey, children }: FigureTipProps) {
   const tipId = useId()
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const tipRef = useRef<HTMLDivElement | null>(null)
@@ -106,7 +111,7 @@ export function FigureTip({ figure, title, emoji, children }: FigureTipProps) {
   useLayoutEffect(() => {
     if (!open) return
     const place = () => {
-      const anchor = triggerRef.current
+      const anchor = anchorRef?.current ?? triggerRef.current
       const tip = tipRef.current
       if (!anchor || !tip) return
       setPosition(computePosition(anchor.getBoundingClientRect(), tip.getBoundingClientRect()))
@@ -118,7 +123,7 @@ export function FigureTip({ figure, title, emoji, children }: FigureTipProps) {
       window.removeEventListener('resize', place)
       window.removeEventListener('scroll', place, true)
     }
-  }, [open])
+  }, [open, anchorRef, placeKey])
 
   // Esc closes (focus stays on the trigger); a tap outside closes and is not passed to what lies under it.
   useEffect(() => {
@@ -230,8 +235,28 @@ export function FigureTip({ figure, title, emoji, children }: FigureTipProps) {
   )
 }
 
+function amountClass(item: FigureItem): string {
+  if (item.value < 0) return 'figure-tip__amount figure-tip__amount--neg'
+  if (item.delta && item.value > 0) return 'figure-tip__amount figure-tip__amount--good'
+  return 'figure-tip__amount'
+}
+
+function TipRows({ rows, testId }: { rows: FigureItem[]; testId?: string }) {
+  return (
+    <ul className="figure-tip__rows">
+      {rows.map((row, index) => (
+        <li key={`${row.label}-${index}`} className="figure-tip__row" data-testid={testId}>
+          <span className="figure-tip__label">{row.label}</span>
+          <span className={amountClass(row)}>{formatDeltaAware(row)}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 function TipBody({ figure, title, emoji }: { figure: Figure; title: string; emoji?: string }) {
   const breakdown = figure.breakdown ?? []
+  const details = figure.details ?? []
   const sources = figure.source ?? []
   const hasFooter = Boolean(figure.note) || sources.length > 0
   return (
@@ -239,25 +264,23 @@ function TipBody({ figure, title, emoji }: { figure: Figure; title: string; emoj
       <span className="figure-tip__tag">{title}</span>
       <p className="figure-tip__value">
         {emoji ? <span aria-hidden="true">{emoji} </span> : null}
-        {formatFigure(figure)}
+        {formatDeltaAware(figure)}
       </p>
-      {breakdown.length > 0 && (
-        <ul className="figure-tip__rows">
-          {breakdown.map((row, index) => (
-            <li key={`${row.label}-${index}`} className="figure-tip__row">
-              <span className="figure-tip__label">{row.label}</span>
-              <span className={row.value < 0 ? 'figure-tip__amount figure-tip__amount--neg' : 'figure-tip__amount'}>
-                {formatByUnit(row.value, row.unit)}
-              </span>
-            </li>
-          ))}
-        </ul>
+      {breakdown.length > 0 && <TipRows rows={breakdown} testId="figure-tip-row" />}
+      {details.length > 0 && (
+        <div className="figure-tip__details">
+          <TipRows rows={details} testId="figure-tip-detail" />
+        </div>
       )}
       {hasFooter && (
         <div className="figure-tip__footer">
-          {figure.note ? <p className="figure-tip__note">{figure.note}</p> : null}
+          {figure.note ? (
+            <p className="figure-tip__note" data-testid="figure-tip-note">
+              {figure.note}
+            </p>
+          ) : null}
           {sources.length > 0 && (
-            <p className="figure-tip__sources">
+            <p className="figure-tip__sources" data-testid="figure-tip-source">
               <span>Источник:</span>
               {sources.map((source) => (
                 <span key={source} className="figure-tip__chip">

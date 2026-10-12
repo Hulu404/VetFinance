@@ -8,18 +8,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.deps import NowDep, RepoDep
 from app.errors import error_responses, install_error_handlers
 from app.routes import acquiring, connections, transactions
-from app.schemas import (
-    AccountOut,
-    AccountsOut,
-    ClinicOut,
-    ClinicPatch,
-    DashboardBalanceOut,
-    DashboardOut,
-    figure_out,
-)
+from app.schemas import AccountOut, AccountsOut, ClinicOut, ClinicPatch
+from app.schemas_dash import DashboardOut, dashboard_out
 from app.services.connections import data_is_stale
 from app.settings import Settings, get_settings
-from engine.balance import compute_balance
+from engine.dashboard import compute_dashboard, history_start
 
 router = APIRouter(prefix="/v1", responses=error_responses(401, 403, 422))
 
@@ -62,14 +55,19 @@ async def dashboard(repo: RepoDep, now: NowDep, as_of: date | None = None) -> Da
     clinic = await repo.get_clinic()
     today = now.astimezone(ZoneInfo(clinic.timezone)).date()
     as_of = as_of or today
-    accounts = await repo.list_accounts()
-    operations = await repo.list_transactions(as_of)
-    result = compute_balance(accounts, operations, as_of)
-    return DashboardOut(
-        as_of=as_of,
+    since = history_start(as_of)
+    result = compute_dashboard(
+        await repo.list_accounts(),
+        await repo.list_transactions(as_of),
+        await repo.list_sales(since, as_of),
+        await repo.list_visits(since, as_of),
+        await repo.get_norms(),
+        as_of,
+    )
+    return dashboard_out(
+        result,
         data_as_of=await repo.last_data_at(),
         data_stale=await data_is_stale(repo, now, today),
-        balance=DashboardBalanceOut(total=figure_out(result.total), bank=figure_out(result.bank)),
     )
 
 

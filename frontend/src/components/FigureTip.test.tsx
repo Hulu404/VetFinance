@@ -132,4 +132,32 @@ describe('FigureTip', () => {
     const tip = await screen.findByRole('tooltip')
     expect(tip).toHaveTextContent('−')
   })
+
+  it('signs a delta figure and its rows, and keeps reference rows apart from the breakdown', async () => {
+    const user = userEvent.setup()
+    const delta: Figure = {
+      value: 1540000,
+      unit: 'rub',
+      delta: true,
+      breakdown: [
+        { label: 'Неделю назад (2 сентября)', value: 39740000, unit: 'rub' },
+        { label: 'Сейчас', value: 41280000, unit: 'rub' },
+        { label: 'Изменение', value: 1540000, unit: 'rub', delta: true },
+      ],
+      details: [{ label: 'Приёмов', value: 154, unit: 'count' }],
+      source: ['bank'],
+      note: 'Сравниваем остаток сегодня и 7 дней назад.',
+    }
+    render(<Harness value={delta} />)
+
+    await user.tab()
+
+    const tip = await screen.findByRole('tooltip')
+    expect(tip).toHaveTextContent(`+15${SP}400${SP}₽`)
+    expect(screen.getAllByTestId('figure-tip-row')).toHaveLength(3)
+    expect(screen.getAllByTestId('figure-tip-detail')).toHaveLength(1)
+    expect(screen.getByTestId('figure-tip-detail')).toHaveTextContent('Приёмов154')
+    expect(screen.getByTestId('figure-tip-note')).toHaveTextContent('Сравниваем остаток')
+    expect(screen.getByTestId('figure-tip-source')).toHaveTextContent('Банк')
+  })
 })

@@ -70,6 +70,26 @@ export function formatByUnit(value: number | null | undefined, unit: FigureUnit)
   }
 }
 
+const PLUS = '+'
+
+/** Delta values always carry a sign: "+15 400 ₽", "−3,2%". Zero has no sign. Only for values the API marks `delta`. */
+export function formatSigned(value: number | null | undefined, unit: FigureUnit): string {
+  const text = formatByUnit(value, unit)
+  if (value === null || value === undefined || value <= 0) return text
+  return `${PLUS}${text}`
+}
+
+/** Figure with the sign rule applied when the API marked it as a change (`delta`). */
+export function formatDeltaAware(item: { value: number; unit: FigureUnit; delta?: boolean | null }): string {
+  return item.delta ? formatSigned(item.value, item.unit) : formatByUnit(item.value, item.unit)
+}
+
+/** Days longer than a year are shown as "больше года"; the tip keeps the exact number (design/screens/dashboard.md). */
+export const RUNWAY_YEAR_DAYS = 365
+export function formatRunway(days: number): string {
+  return days > RUNWAY_YEAR_DAYS ? 'больше года' : formatDays(days)
+}
+
 export function formatFigure(figure: Pick<Figure, 'value' | 'unit'>): string {
   return formatByUnit(figure.value, figure.unit)
 }

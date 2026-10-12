@@ -20,6 +20,14 @@ interface KpiCardProps {
   emptyText?: string
   /** Extra line under the number with its own tip (a second FigureTip): "комиссия 8 683 ₽". */
   extra?: ReactNode
+  /** Path of the API field, written to `data-figure` of the button that opens the tip (e2e: every number has a tip). */
+  figureKey?: string
+  /** Header of the tip when it differs from the card label ("Выручка · сентябрь"). */
+  tipTitle?: string
+  /** Replaces the formatted value ("больше года"); the tip keeps the exact figure. */
+  valueText?: string
+  /** Sub-line chosen by the screen; wins over the zero and negative hints. */
+  subText?: string
 }
 
 function subline(state: KpiState, figure: Figure | undefined, zeroText?: string, emptyText?: string) {
@@ -31,9 +39,23 @@ function subline(state: KpiState, figure: Figure | undefined, zeroText?: string,
   return null
 }
 
-export function KpiCard({ label, emoji, variant = 'default', state, figure, testId, zeroText, emptyText, extra }: KpiCardProps) {
+export function KpiCard({
+  label,
+  emoji,
+  variant = 'default',
+  state,
+  figure,
+  testId,
+  zeroText,
+  emptyText,
+  extra,
+  figureKey,
+  tipTitle,
+  valueText: valueOverride,
+  subText,
+}: KpiCardProps) {
   const className = `kpi kpi--${variant} kpi--${state}${extra ? ' kpi--with-extra' : ''}`
-  const hint = subline(state, figure, zeroText, emptyText)
+  const hint = subText && state === 'ready' ? { text: subText, tone: 'soft' as const } : subline(state, figure, zeroText, emptyText)
 
   // The test id is only on a card with data, so e2e waits for the number instead of reading a placeholder.
   if (state === 'loading') {
@@ -61,15 +83,16 @@ export function KpiCard({ label, emoji, variant = 'default', state, figure, test
     )
   }
 
-  const valueText = formatFigure(figure)
+  const valueText = valueOverride ?? formatFigure(figure)
   return (
     <div className={className} data-testid={testId}>
-      <FigureTip figure={figure} title={label} emoji={emoji}>
+      <FigureTip figure={figure} title={tipTitle ?? label} emoji={emoji}>
         {(triggerProps) => (
           <button
             {...triggerProps}
             type="button"
             className="kpi__button"
+            data-figure={figureKey}
             aria-label={`${label}, ${valueText}`}
           >
             <span className="kpi__emoji" aria-hidden="true">{emoji}</span>

@@ -33,6 +33,16 @@ describe('App: login and shell', () => {
     expect(await screen.findByText('Клиника «Лапа» (набор A)')).toBeInTheDocument()
   })
 
+  it('keeps ?as_of= through the login redirect and passes it to the dashboard request', async () => {
+    const user = userEvent.setup()
+    renderWithAuth(<App />, '/?as_of=2026-09-10')
+
+    await signIn(user)
+
+    expect(await screen.findByTestId('balance-total')).toBeInTheDocument()
+    expect(screen.getByTestId('dashboard-subtitle')).toHaveTextContent('10 сентября 2026')
+  })
+
   it('validates empty fields and a malformed e-mail', async () => {
     const user = userEvent.setup()
     renderWithAuth(<App />, '/')

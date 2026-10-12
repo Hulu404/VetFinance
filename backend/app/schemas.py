@@ -1,38 +1,58 @@
 """API models. Money is int kopecks."""
 
-from datetime import date, datetime
-from typing import Literal
+from datetime import date
+from decimal import Decimal
+from typing import Any, Literal
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StrictInt,
+    field_validator,
+)
 
 from engine.figure import Figure as EngineFigure
+from engine.figure import FigureItem
+
+
+def _is_empty(value: object) -> bool:
+    """Optional keys are left out of the JSON when they carry nothing (None, False, empty list)."""
+    return not value
 
 
 class FigureItemOut(BaseModel):
     label: str
     value: int
     unit: Literal["rub", "pct", "count", "days"] = "rub"
+    delta: bool | None = Field(default=None, exclude_if=_is_empty)  # a change; key omitted if not
 
 
 class FigureOut(BaseModel):
-    value: int
+    value: int | float  # int for rub/count/days, a number with one decimal for pct
     unit: Literal["rub", "pct", "count", "days"]
     breakdown: list[FigureItemOut]
     source: list[Literal["bank", "vetmanager", "bot", "manual", "calc"]]
     note: str
+    delta: bool | None = Field(default=None, exclude_if=_is_empty)
+    details: list[FigureItemOut] | None = Field(default=None, exclude_if=_is_empty)
+
+
+def _item_data(i: FigureItem) -> dict[str, Any]:
+    return {"label": i.label, "value": i.value, "unit": i.unit, "delta": i.delta or None}
 
 
 def figure_out(f: EngineFigure) -> FigureOut:
     return FigureOut.model_validate(
         {
-            "value": f.value,
+            "value": float(f.value) if isinstance(f.value, Decimal) else f.value,
             "unit": f.unit,
-            "breakdown": [
-                {"label": i.label, "value": i.value, "unit": i.unit} for i in f.breakdown
-            ],
+            "breakdown": [_item_data(i) for i in f.breakdown],
             "source": list(f.source),
             "note": f.note,
+            "delta": f.delta or None,
+            "details": [_item_data(i) for i in f.details] or None,
         }
     )
 
@@ -78,15 +98,3 @@ class AccountOut(BaseModel):
 class AccountsOut(BaseModel):
     items: list[AccountOut]
     next_cursor: str | None = None
-
-
-class DashboardBalanceOut(BaseModel):
-    total: FigureOut
-    bank: FigureOut
-
-
-class DashboardOut(BaseModel):
-    as_of: date
-    data_as_of: datetime | None
-    data_stale: bool
-    balance: DashboardBalanceOut

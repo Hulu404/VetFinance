@@ -18,6 +18,13 @@ def div_round(numerator: int, denominator: int) -> int:
     return sign * ((abs(numerator) * 2 + denominator) // (denominator * 2))
 
 
+def floor_div(numerator: int, denominator: int) -> int:
+    """Whole part of a positive ratio, rounded down (days of cash: 17.6 is shown as 17)."""
+    if denominator <= 0 or numerator < 0:
+        raise ValueError("floor_div expects a non-negative numerator and a positive denominator")
+    return numerator // denominator
+
+
 def rub_to_kopecks(rub: Decimal | str | int) -> int:
     """Convert a rouble amount (from user input) to kopecks."""
     value = Decimal(rub) * KOPECKS_IN_RUB
@@ -58,3 +65,9 @@ def format_rub(kopecks: int) -> str:
     digits = f"{rub:,}".replace(",", NBSP)
     tail = f",{kop:02d}" if kop else ""
     return f"{sign}{digits}{tail}{NBSP}\u20bd"
+
+
+def format_pct(value: Decimal) -> str:
+    """'40,3' or '−30,6' for texts built on the backend; `value` already has one decimal."""
+    text = f"{value:.1f}".replace(".", ",")
+    return text.replace("-", "−")

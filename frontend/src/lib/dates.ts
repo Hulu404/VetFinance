@@ -97,6 +97,12 @@ export function monthNameLower(month: string): string {
   return MONTHS_NOMINATIVE[number - 1] ?? month
 }
 
+/** "2026-09" -> "Сентябрь" (a heading). */
+export function monthNameTitle(month: string): string {
+  const name = monthNameLower(month)
+  return `${name.charAt(0).toUpperCase()}${name.slice(1)}`
+}
+
 export function monthOf(isoDate: string): string {
   return isoDate.slice(0, 7)
 }

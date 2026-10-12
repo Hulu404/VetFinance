@@ -1,5 +1,7 @@
 import { useRef } from 'react'
 import { useInfiniteQuery, useQuery, type QueryClient } from '@tanstack/react-query'
+import { useLocation } from 'react-router-dom'
+import { asOfFromSearch } from '../lib/asOf'
 import { lastDayOfMonth } from '../lib/dates'
 import { apiGet } from './client'
 import type {
@@ -38,10 +40,12 @@ export const queryKeys = {
   acquiringDay: (date: string) => ['acquiring', 'day', date] as const,
 }
 
+/** Shared by the dashboard and the header balance. `?as_of=` in the address is passed through (golden-data checks). */
 export function useDashboard() {
+  const asOf = asOfFromSearch(useLocation().search)
   return useQuery({
-    queryKey: queryKeys.dashboard,
-    queryFn: ({ signal }) => apiGet<Dashboard>('/v1/dashboard', signal),
+    queryKey: [...queryKeys.dashboard, asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<Dashboard>(asOf ? `/v1/dashboard?as_of=${asOf}` : '/v1/dashboard', signal),
   })
 }
 

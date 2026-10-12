@@ -64,18 +64,36 @@ def test_accounts(client: TestClient) -> None:
     assert r.json()["next_cursor"] is None
 
 
-def test_dashboard_stage0_shape(client: TestClient) -> None:
+def test_dashboard_shape_on_a_quiet_clinic(client: TestClient) -> None:
     r = client.get("/v1/dashboard", headers=auth())
     assert r.status_code == 200
     body = r.json()
-    assert set(body) == {"as_of", "data_as_of", "data_stale", "balance"}
+    assert set(body) == {
+        "as_of",
+        "data_as_of",
+        "data_stale",
+        "balance",
+        "month",
+        "balance_trend",
+        "balance_trend_info",
+        "advice",
+    }
     assert body["data_stale"] is False
-    assert set(body["balance"]) == {"total", "bank"}
-    assert body["balance"]["total"]["value"] == 9_500_000
-    assert body["balance"]["bank"]["value"] == 9_000_000
-    assert body["balance"]["total"]["unit"] == "rub"
-    assert len(body["balance"]["total"]["breakdown"]) == 2
-    assert body["balance"]["total"]["source"] == ["bank"]
+    balance = body["balance"]
+    assert balance["total"]["value"] == 9_500_000
+    assert balance["bank"]["value"] == 9_000_000
+    assert balance["cash"]["value"] == 500_000
+    assert balance["total"]["unit"] == "rub"
+    assert len(balance["total"]["breakdown"]) == 2
+    assert balance["total"]["source"] == ["bank"]
+    # no expenses in the last 28 days: "enough for N days" has no value and the key is absent
+    assert "runway_days" not in balance
+    assert balance["week_change"]["value"] == 0
+    assert body["month"]["days_passed"] == 30 and body["month"]["days_total"] == 30
+    assert body["month"]["revenue"]["value"] == 0
+    assert "profit_margin_pct" not in body["month"] and "avg_check" not in body["month"]
+    assert len(body["balance_trend"]) == 14
+    assert body["advice"] == []
 
 
 def test_cors_preflight(client: TestClient) -> None:

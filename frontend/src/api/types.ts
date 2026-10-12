@@ -3,12 +3,17 @@ import type { components } from './schema.gen'
 
 type Schemas = components['schemas']
 
-export type Figure = Schemas['FigureOut']
 export type FigureItem = Schemas['FigureItemOut']
+export type Figure = Schemas['FigureOut']
 export type FigureUnit = Figure['unit']
 export type FigureSource = Figure['source'][number]
-/** `data_stale` is requested from backend for stage 1 (docs/handoff.md); until it is in openapi it is optional here. */
-export type Dashboard = Schemas['DashboardOut'] & { data_stale?: boolean }
+export type Dashboard = Schemas['DashboardOut']
+export type DashboardBalance = Dashboard['balance']
+export type DashboardMonth = Dashboard['month']
+export type Advice = Schemas['AdviceOut']
+export type AdviceSeverity = Advice['severity']
+export type TrendPoint = Schemas['TrendPointOut']
+export type BalanceTrendInfo = Schemas['TrendInfoOut']
 export type Clinic = Schemas['ClinicOut']
 export type Account = Schemas['AccountOut']
 export type AccountList = Schemas['AccountsOut']

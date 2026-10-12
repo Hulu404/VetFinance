@@ -24,6 +24,7 @@ from app.rows import (
     TxRow,
 )
 from engine.balance import AccountInput, TransactionInput
+from engine.dashboard_inputs import NormsInput, SaleInput, SaleLineInput, VisitInput
 from engine.dedup import TxRef
 from engine.vetmanager import Payment, Sale, Visit
 
@@ -43,6 +44,7 @@ class MemoryRepo:
     def __init__(self, clinic: ClinicRow | None = None) -> None:
         self.clinic = clinic or ClinicRow("c1", "Клиника", None, None, "Europe/Moscow", 0)
         self.acquiring_rate_bp = 190
+        self.norms = NormsInput("Препараты и расходники", 25, 12)
         self.accounts: list[AccountRow] = []
         self.categories: list[CategoryRow] = []
         self.rules: list[RuleRow] = []
@@ -178,13 +180,36 @@ class MemoryRepo:
     # ------------------------------------------------------------ balance
     async def list_transactions(self, as_of: date) -> list[TransactionInput]:
         return [
-            TransactionInput(t.account_id, t.date, t.amount, t.status, t.source)
+            TransactionInput(
+                t.account_id, t.date, t.amount, t.status, t.source, t.kind, t.category_name
+            )
             for t in self.txs
             if t.date <= as_of and t.status != "duplicate"
         ]
 
     async def last_data_at(self) -> datetime | None:
         return max((t.created_at for t in self.txs), default=None)
+
+    # ------------------------------------------------------------ dashboard
+    async def get_norms(self) -> NormsInput:
+        return self.norms
+
+    async def list_sales(self, first: date, last: date) -> list[SaleInput]:
+        return [
+            SaleInput(
+                s.date, s.status, tuple(SaleLineInput(line.kind, line.amount) for line in s.lines)
+            )
+            for s in self.sales.values()
+            if first <= s.date <= last
+        ]
+
+    async def list_visits(self, first: date, last: date) -> list[VisitInput]:
+        names = {d[0]: d[2] for d in self.doctors.values()}
+        return [
+            VisitInput(day, names.get(doctor_id or "", ""))
+            for day, doctor_id in self.visits.values()
+            if first <= day <= last
+        ]
 
     # ------------------------------------------------------------ categories and rules
     async def list_categories(self) -> list[CategoryRow]:

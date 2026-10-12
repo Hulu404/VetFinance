@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react'
 import { isApiError } from '../api/errors'
 import { useClinic, useDashboard } from '../api/queries'
 import type { Dashboard } from '../api/types'
-import { KpiCard } from '../components/KpiCard'
+import { BalanceHero } from '../components/BalanceHero'
+import { Banner } from '../components/Banner'
 import { PageHeader } from '../components/PageHeader'
-import { Pill } from '../components/Pill'
+import { LoadErrorCard } from '../components/StateBlocks'
+import { formatRelativeMoment } from '../lib/dates'
 import { formatAsOfDate, formatClockTime } from '../lib/format'
+import { useSlowLoading } from '../lib/useSlowLoading'
+import { AdviceSection } from './dashboard/AdviceSection'
+import { BalanceRow } from './dashboard/BalanceRow'
+import { DashboardSkeleton } from './dashboard/DashboardSkeleton'
+import { DashEmpty } from './dashboard/DashEmpty'
+import { MonthSection } from './dashboard/MonthSection'
 import './DashboardPage.css'
 
-const SLOW_LOADING_MS = 8000
-
-const NETWORK_ERROR_TEXT = 'Нет связи с сервером. Проверьте интернет и повторите.'
-const SERVER_ERROR_TEXT = 'Это сбой на нашей стороне, ваши данные не пострадали. Попробуйте ещё раз.'
+const CONNECTIONS_ROUTE = '/settings/connections/vetmanager'
 
 function headerSubtitle(data: Dashboard, timeZone: string | undefined): string {
   const date = formatAsOfDate(data.as_of)
@@ -21,53 +25,60 @@ function headerSubtitle(data: Dashboard, timeZone: string | undefined): string {
   return `${date} · ${freshness}`
 }
 
-function useSlowLoading(loading: boolean): boolean {
-  const [slow, setSlow] = useState(false)
-  useEffect(() => {
-    if (!loading) {
-      setSlow(false)
-      return
-    }
-    const timer = window.setTimeout(() => setSlow(true), SLOW_LOADING_MS)
-    return () => window.clearTimeout(timer)
-  }, [loading])
-  return slow
+interface BannersProps {
+  data: Dashboard
+  timeZone?: string
+  refreshFailed: boolean
+  onRefresh: () => void
 }
 
-function LoadError({ network, retrying, onRetry }: { network: boolean; retrying: boolean; onRetry: () => void }) {
+function Banners({ data, timeZone, refreshFailed, onRefresh }: BannersProps) {
+  const when = data.data_as_of ? formatRelativeMoment(data.data_as_of, data.as_of, timeZone) : null
   return (
-    <div className="state-card state-card--error" role="alert">
-      <Pill variant="danger">не загрузилось</Pill>
-      <h2 className="state-card__title">Не получилось загрузить остаток</h2>
-      <p className="state-card__text">{network ? NETWORK_ERROR_TEXT : SERVER_ERROR_TEXT}</p>
-      <button type="button" className="btn" onClick={onRetry} disabled={retrying}>
-        {retrying ? 'Загружаем…' : 'Повторить'}
-      </button>
-    </div>
+    <>
+      {refreshFailed && (
+        <Banner variant="warning" testId="dashboard-refresh-banner" action={{ label: 'Обновить', onClick: onRefresh }}>
+          Не удалось обновить.
+          {data.data_as_of ? ` Показаны данные на ${formatClockTime(data.data_as_of, timeZone)}.` : ''}
+        </Banner>
+      )}
+      {data.data_stale && (
+        <Banner variant="warning" testId="dashboard-stale-banner" action={{ label: 'Проверить подключения', to: CONNECTIONS_ROUTE }}>
+          {when ? `Данные обновлены ${when} и могли устареть.` : 'Данные могли устареть.'}
+        </Banner>
+      )}
+    </>
   )
 }
 
-function NoAccounts() {
+function Content({ data }: { data: Dashboard }) {
+  const hasAccounts = data.balance.total.breakdown.length > 0
   return (
-    <div className="state-card">
-      <span className="state-card__emoji" aria-hidden="true">
-        💳
-      </span>
-      <h2 className="state-card__title">Счетов пока нет</h2>
-      <p className="state-card__text">Остаток появится, когда в сервисе будет хотя бы один счёт или касса.</p>
-    </div>
-  )
-}
-
-function StaleBanner({ data, timeZone, onRefresh }: { data: Dashboard; timeZone?: string; onRefresh: () => void }) {
-  return (
-    <div className="stale-bar" role="status">
-      <Pill variant="warning">не удалось обновить</Pill>
-      {data.data_as_of && <span>Показаны данные на {formatClockTime(data.data_as_of, timeZone)}</span>}
-      <button type="button" className="link-button" onClick={onRefresh}>
-        Обновить
-      </button>
-    </div>
+    <>
+      {hasAccounts ? (
+        <>
+          <BalanceHero
+            total={data.balance.total}
+            weekChange={data.balance.week_change}
+            weekChangePct={data.balance.week_change_pct}
+            trend={data.balance_trend}
+            trendInfo={data.balance_trend_info}
+          />
+          <BalanceRow balance={data.balance} />
+          <p className="dash-hint">Наведите или нажмите на сумму: покажем, из чего она состоит.</p>
+        </>
+      ) : (
+        <DashEmpty
+          testId="dashboard-no-accounts"
+          level={2}
+          icon="💳"
+          title="Счетов пока нет"
+          text="Остаток появится, когда в сервисе будет хотя бы один счёт или касса."
+        />
+      )}
+      {data.month && <MonthSection month={data.month} asOf={data.as_of} dataAsOf={data.data_as_of} />}
+      <AdviceSection advice={data.advice} historyDays={data.balance_trend?.length} />
+    </>
   )
 }
 
@@ -82,65 +93,37 @@ export function DashboardPage() {
   if (isApiError(error) && error.kind === 'unauthorized') return null
 
   const failedWithoutData = dashboard.isError && !data
-  const noAccounts = data !== undefined && data.balance.total.breakdown.length === 0
-
-  let content
-  if (failedWithoutData) {
-    content = (
-      <LoadError
-        network={isApiError(error) && error.kind === 'network'}
-        retrying={dashboard.isFetching}
-        onRetry={() => void dashboard.refetch()}
-      />
-    )
-  } else if (noAccounts) {
-    content = <NoAccounts />
-  } else {
-    content = (
-      <ul className="kpi-grid">
-        <li>
-          <KpiCard
-            testId="balance-total"
-            label="Остаток на счетах"
-            emoji="💰"
-            variant="accent"
-            state={data ? 'ready' : 'loading'}
-            figure={data?.balance.total}
-            zeroText="на счетах пусто"
-          />
-        </li>
-        <li>
-          <KpiCard
-            testId="balance-bank"
-            label="В банке"
-            emoji="💳"
-            state={data ? 'ready' : 'loading'}
-            figure={data?.balance.bank}
-            zeroText="в банке пусто"
-          />
-        </li>
-      </ul>
-    )
-  }
+  const subtitle = data ? <span data-testid="dashboard-subtitle">{headerSubtitle(data, timeZone)}</span> : undefined
 
   return (
-    <>
-      <PageHeader
-        title="Рабочий стол"
-        subtitle={data ? headerSubtitle(data, timeZone) : undefined}
-        subtitleLoading={loading}
-      />
-      <section aria-label="Остаток на счетах" aria-busy={loading}>
-        {loading && <p className="sr-only" role="status">Загружаем остаток</p>}
-        {dashboard.isError && data && (
-          <StaleBanner data={data} timeZone={timeZone} onRefresh={() => void dashboard.refetch()} />
-        )}
-        {content}
-        {slow && <p className="slow-hint">Загрузка идёт дольше обычного. Подождите ещё немного.</p>}
-        {!failedWithoutData && !noAccounts && (
-          <p className="dash-hint">Наведите или нажмите на сумму: покажем, из чего она состоит.</p>
-        )}
-      </section>
-    </>
+    <div data-testid="dashboard" aria-busy={loading}>
+      <PageHeader title="Рабочий стол" subtitle={subtitle} subtitleLoading={loading} />
+      {loading && (
+        <p className="sr-only" role="status">
+          Загружаем Рабочий стол
+        </p>
+      )}
+      {slow && <p className="slow-hint">Загрузка идёт дольше обычного. Подождите ещё немного.</p>}
+      {data && (
+        <Banners
+          data={data}
+          timeZone={timeZone}
+          refreshFailed={dashboard.isError}
+          onRefresh={() => void dashboard.refetch()}
+        />
+      )}
+      {loading && <DashboardSkeleton />}
+      {failedWithoutData && (
+        <LoadErrorCard
+          testId="dashboard-error"
+          retryTestId="dashboard-error-retry"
+          title="Не получилось загрузить Рабочий стол"
+          network={isApiError(error) && error.kind === 'network'}
+          retrying={dashboard.isFetching}
+          onRetry={() => void dashboard.refetch()}
+        />
+      )}
+      {data && <Content data={data} />}
+    </div>
   )
 }

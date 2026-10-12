@@ -4,8 +4,11 @@ import {
   formatByUnit,
   formatClockTime,
   formatDays,
+  formatDeltaAware,
   formatMoney,
   formatPercent,
+  formatRunway,
+  formatSigned,
   sourceLabel,
 } from './format'
 
@@ -71,5 +74,28 @@ describe('sourceLabel', () => {
     expect(sourceLabel('bank')).toBe('Банк')
     expect(sourceLabel('manual')).toBe('Внесено вручную')
     expect(sourceLabel('something')).toBe('something')
+  })
+})
+
+describe('signed values (delta)', () => {
+  it('puts a plus before growth and keeps the real minus for decline', () => {
+    expect(formatSigned(1540000, 'rub')).toBe(`+15${NBSP}400${NBSP}₽`)
+    expect(formatSigned(3.9, 'pct')).toBe('+3,9%')
+    expect(formatSigned(-3.2, 'pct')).toBe(`${MINUS}3,2%`)
+    expect(formatSigned(0, 'rub')).toBe(`0${NBSP}₽`)
+  })
+
+  it('signs a figure only when the API marked it as a change', () => {
+    expect(formatDeltaAware({ value: 1540000, unit: 'rub', delta: true })).toBe(`+15${NBSP}400${NBSP}₽`)
+    expect(formatDeltaAware({ value: 1540000, unit: 'rub' })).toBe(`15${NBSP}400${NBSP}₽`)
+  })
+})
+
+describe('formatRunway', () => {
+  it('declines days and says "больше года" above 365', () => {
+    expect(formatRunway(11)).toBe(`11${NBSP}дней`)
+    expect(formatRunway(21)).toBe(`21${NBSP}день`)
+    expect(formatRunway(365)).toBe(`365${NBSP}дней`)
+    expect(formatRunway(366)).toBe('больше года')
   })
 })

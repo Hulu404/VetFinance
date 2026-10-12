@@ -173,17 +173,17 @@ def _summary(rows: Sequence[RowView], rate_bp: int) -> SummaryView:
             figure: Figure | None = getattr(row, figure_of)
             if figure is not None:
                 items.append(
-                    FigureItem(format_range_short(row.date_from, row.date_to), figure.value)
+                    FigureItem(format_range_short(row.date_from, row.date_to), int(figure.value))
                 )
         return tuple(items)
 
-    gross = sum(r.card_payments.value for r in rows)
-    commission = sum(r.commission.value for r in rows)
+    gross = sum(int(r.card_payments.value) for r in rows)
+    commission = sum(int(r.commission.value) for r in rows)
     credited_rows = [r for r in rows if r.credited is not None and r.discrepancy is not None]
-    credited = sum(r.credited.value for r in credited_rows if r.credited)
-    expected_known = sum(r.expected.value for r in credited_rows)
+    credited = sum(int(r.credited.value) for r in credited_rows if r.credited)
+    expected_known = sum(int(r.expected.value) for r in credited_rows)
     waiting_rows = [r for r in rows if r.status == WAITING]
-    waiting = sum(r.expected.value for r in waiting_rows)
+    waiting = sum(int(r.expected.value) for r in waiting_rows)
     return SummaryView(
         card_payments=Figure(
             gross,
@@ -203,7 +203,7 @@ def _summary(rows: Sequence[RowView], rate_bp: int) -> SummaryView:
             credited,
             "rub",
             tuple(
-                FigureItem(format_range_short(r.date_from, r.date_to), r.credited.value)
+                FigureItem(format_range_short(r.date_from, r.date_to), int(r.credited.value))
                 for r in credited_rows
                 if r.credited
             )
@@ -225,7 +225,7 @@ def _summary(rows: Sequence[RowView], rate_bp: int) -> SummaryView:
             waiting,
             "rub",
             tuple(
-                FigureItem(format_range_short(r.date_from, r.date_to), r.expected.value)
+                FigureItem(format_range_short(r.date_from, r.date_to), int(r.expected.value))
                 for r in waiting_rows
             )
             or _none_item("Нет дней в ожидании"),

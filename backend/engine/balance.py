@@ -36,6 +36,8 @@ class TransactionInput:
     amount: int
     status: str  # "ok" | "check" | "duplicate"
     source: str  # "bank" | "vetmanager" | "bot" | "manual"
+    kind: str = ""  # "in" | "out" | "transfer"; empty when the caller does not need it
+    category: str | None = None  # category name, None: no category
 
 
 @dataclass(frozen=True)

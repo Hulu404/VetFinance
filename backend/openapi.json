@@ -3,7 +3,7 @@
   "info": {
     "title": "VetFinance API",
     "version": "0.1.0",
-    "description": "Stage 0 schema, generated from the code. Contract: docs/api-contract.md"
+    "description": "Generated from the code. Contract: docs/api-contract.md"
   },
   "paths": {
     "/v1/clinic": {
@@ -17,6 +17,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ClinicOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
                 }
               }
             }
@@ -47,12 +77,32 @@
               }
             }
           },
-          "422": {
-            "description": "Validation Error",
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
                 }
               }
             }
@@ -71,6 +121,36 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AccountsOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
                 }
               }
             }
@@ -112,12 +192,1284 @@
               }
             }
           },
-          "422": {
-            "description": "Validation Error",
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/transactions": {
+      "get": {
+        "summary": "List Transactions",
+        "operationId": "list_transactions_v1_transactions_get",
+        "parameters": [
+          {
+            "name": "tab",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "all",
+                "check",
+                "duplicates"
+              ],
+              "type": "string",
+              "default": "all",
+              "title": "Tab"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionListOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Transaction",
+        "operationId": "create_transaction_v1_transactions_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionPatchedOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/transactions/counts": {
+      "get": {
+        "summary": "Transaction Counts",
+        "operationId": "transaction_counts_v1_transactions_counts_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TabCountsOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/transactions/summary": {
+      "get": {
+        "summary": "Transaction Summary",
+        "operationId": "transaction_summary_v1_transactions_summary_get",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/transactions/{tx_id}": {
+      "patch": {
+        "summary": "Patch Transaction",
+        "operationId": "patch_transaction_v1_transactions__tx_id__patch",
+        "parameters": [
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tx Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionPatchedOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/transactions/{tx_id}/rule-preview": {
+      "get": {
+        "summary": "Rule Preview",
+        "operationId": "rule_preview_v1_transactions__tx_id__rule_preview_get",
+        "parameters": [
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tx Id"
+            }
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Category Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulePreviewOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/transactions/{tx_id}/resolve-duplicate": {
+      "post": {
+        "summary": "Resolve Duplicate",
+        "operationId": "resolve_duplicate_v1_transactions__tx_id__resolve_duplicate_post",
+        "parameters": [
+          {
+            "name": "tx_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tx Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveDuplicateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResolveDuplicateOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/category-rules": {
+      "get": {
+        "summary": "List Category Rules",
+        "operationId": "list_category_rules_v1_category_rules_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryRulesOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/category-rules/{rule_id}": {
+      "delete": {
+        "summary": "Delete Category Rule",
+        "operationId": "delete_category_rule_v1_category_rules__rule_id__delete",
+        "parameters": [
+          {
+            "name": "rule_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Rule Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/categories": {
+      "get": {
+        "summary": "List Categories",
+        "operationId": "list_categories_v1_categories_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoriesOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/imports/bank-statement": {
+      "post": {
+        "summary": "Import Bank Statement",
+        "operationId": "import_bank_statement_v1_imports_bank_statement_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_import_bank_statement_v1_imports_bank_statement_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Слишком часто (`rate_limited`), заголовок `Retry-After`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/acquiring/reconciliation": {
+      "get": {
+        "summary": "Reconciliation",
+        "operationId": "reconciliation_v1_acquiring_reconciliation_get",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+              "title": "Month"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcquiringOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/acquiring/days/{day}": {
+      "get": {
+        "summary": "Day Details",
+        "operationId": "day_details_v1_acquiring_days__day__get",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Day"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcquiringDayOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/acquiring/days/{day}/review": {
+      "post": {
+        "summary": "Review Day",
+        "operationId": "review_day_v1_acquiring_days__day__review_post",
+        "parameters": [
+          {
+            "name": "day",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Day"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcquiringRowOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/connections": {
+      "get": {
+        "summary": "List Connections",
+        "operationId": "list_connections_v1_connections_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionsOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/connections/vetmanager": {
+      "put": {
+        "summary": "Save Vetmanager",
+        "operationId": "save_vetmanager_v1_connections_vetmanager_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VetmanagerBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConnectionOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/connections/vetmanager/import": {
+      "post": {
+        "summary": "Import Vetmanager",
+        "operationId": "import_vetmanager_v1_connections_vetmanager_import_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VetmanagerImportBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStartedOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/connections/{connection_id}/sync": {
+      "post": {
+        "summary": "Sync Connection",
+        "operationId": "sync_connection_v1_connections__connection_id__sync_post",
+        "parameters": [
+          {
+            "name": "connection_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Connection Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunStartedOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Конфликт состояния (`conflict`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Слишком часто (`rate_limited`), заголовок `Retry-After`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
                 }
               }
             }
@@ -192,6 +1544,572 @@
           "items"
         ],
         "title": "AccountsOut"
+      },
+      "AcquiringCreditOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "amount": {
+            "type": "integer",
+            "title": "Amount"
+          },
+          "transaction_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transaction Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "description",
+          "amount",
+          "transaction_id"
+        ],
+        "title": "AcquiringCreditOut"
+      },
+      "AcquiringDayOut": {
+        "properties": {
+          "date_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Date From"
+          },
+          "date_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Date To"
+          },
+          "payments": {
+            "items": {
+              "$ref": "#/components/schemas/AcquiringPaymentOut"
+            },
+            "type": "array",
+            "title": "Payments"
+          },
+          "credits": {
+            "items": {
+              "$ref": "#/components/schemas/AcquiringCreditOut"
+            },
+            "type": "array",
+            "title": "Credits"
+          },
+          "review": {
+            "$ref": "#/components/schemas/ReviewOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date_from",
+          "date_to",
+          "payments",
+          "credits",
+          "review"
+        ],
+        "title": "AcquiringDayOut"
+      },
+      "AcquiringMemberOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "card_payments": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "commission": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "expected": {
+            "$ref": "#/components/schemas/FigureOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "card_payments",
+          "commission",
+          "expected"
+        ],
+        "title": "AcquiringMemberOut"
+      },
+      "AcquiringOut": {
+        "properties": {
+          "settlement_days": {
+            "$ref": "#/components/schemas/SettlementDaysOut"
+          },
+          "rate_pct": {
+            "type": "number",
+            "title": "Rate Pct"
+          },
+          "bank_covered_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Covered To"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/AcquiringSummaryOut"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/AcquiringRowOut"
+            },
+            "type": "array",
+            "title": "Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "settlement_days",
+          "rate_pct",
+          "bank_covered_to",
+          "summary",
+          "days"
+        ],
+        "title": "AcquiringOut"
+      },
+      "AcquiringPaymentOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "amount": {
+            "type": "integer",
+            "title": "Amount"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "description",
+          "amount"
+        ],
+        "title": "AcquiringPaymentOut"
+      },
+      "AcquiringRowOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "date_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Date From"
+          },
+          "date_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Date To"
+          },
+          "card_payments": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "commission": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "expected": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "credited": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "discrepancy": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "matched",
+              "mismatch",
+              "waiting",
+              "no_statement",
+              "no_payments"
+            ],
+            "title": "Status"
+          },
+          "expected_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected By"
+          },
+          "reviewed": {
+            "type": "boolean",
+            "title": "Reviewed"
+          },
+          "members": {
+            "items": {
+              "$ref": "#/components/schemas/AcquiringMemberOut"
+            },
+            "type": "array",
+            "title": "Members"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "date_from",
+          "date_to",
+          "card_payments",
+          "commission",
+          "expected",
+          "credited",
+          "discrepancy",
+          "status",
+          "expected_by",
+          "reviewed",
+          "members"
+        ],
+        "title": "AcquiringRowOut"
+      },
+      "AcquiringSummaryOut": {
+        "properties": {
+          "card_payments": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "commission": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "credited": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "discrepancy": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "waiting": {
+            "$ref": "#/components/schemas/FigureOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "card_payments",
+          "commission",
+          "credited",
+          "discrepancy",
+          "waiting"
+        ],
+        "title": "AcquiringSummaryOut"
+      },
+      "AdviceOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "alert",
+              "warning",
+              "good"
+            ],
+            "title": "Severity"
+          },
+          "icon": {
+            "type": "string",
+            "title": "Icon"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "why": {
+            "$ref": "#/components/schemas/WhyOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "severity",
+          "icon",
+          "title",
+          "text",
+          "why"
+        ],
+        "title": "AdviceOut"
+      },
+      "BankAccountStatusOut": {
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "last_statement_to": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Statement To"
+          }
+        },
+        "type": "object",
+        "required": [
+          "account",
+          "last_statement_to"
+        ],
+        "title": "BankAccountStatusOut"
+      },
+      "BankInfoOut": {
+        "properties": {
+          "accounts": {
+            "items": {
+              "$ref": "#/components/schemas/BankAccountStatusOut"
+            },
+            "type": "array",
+            "title": "Accounts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accounts"
+        ],
+        "title": "BankInfoOut"
+      },
+      "Body_import_bank_statement_v1_imports_bank_statement_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "account_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Account Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_import_bank_statement_v1_imports_bank_statement_post"
+      },
+      "CategoriesOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "CategoriesOut"
+      },
+      "CategoryOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "income",
+              "variable",
+              "fixed"
+            ],
+            "title": "Type"
+          },
+          "norm_min_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Norm Min Pct"
+          },
+          "norm_max_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Norm Max Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "norm_min_pct",
+          "norm_max_pct"
+        ],
+        "title": "CategoryOut"
+      },
+      "CategoryRuleOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "match": {
+            "type": "string",
+            "enum": [
+              "inn",
+              "text"
+            ],
+            "title": "Match"
+          },
+          "match_text": {
+            "type": "string",
+            "title": "Match Text"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "category": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "applied_count": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "match",
+          "match_text",
+          "direction",
+          "category",
+          "applied_count",
+          "created_at"
+        ],
+        "title": "CategoryRuleOut"
+      },
+      "CategoryRulesOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryRuleOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "CategoryRulesOut"
       },
       "ClinicOut": {
         "properties": {
@@ -312,6 +2230,170 @@
         "type": "object",
         "title": "ClinicPatch"
       },
+      "ConnectionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "vetmanager",
+              "bank"
+            ],
+            "title": "Type"
+          },
+          "connected": {
+            "type": "boolean",
+            "title": "Connected"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "key_hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key Hint"
+          },
+          "schedule": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScheduleOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_stale": {
+            "type": "boolean",
+            "title": "Data Stale"
+          },
+          "last_success_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Success At"
+          },
+          "last_run": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SyncRunOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "runs": {
+            "items": {
+              "$ref": "#/components/schemas/SyncRunOut"
+            },
+            "type": "array",
+            "title": "Runs"
+          },
+          "bank": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BankInfoOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "connected",
+          "address",
+          "key_hint",
+          "schedule",
+          "data_stale",
+          "last_success_at",
+          "last_run",
+          "runs",
+          "bank"
+        ],
+        "title": "ConnectionOut"
+      },
+      "ConnectionsOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ConnectionOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "ConnectionsOut"
+      },
+      "CreatedRuleOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "match_text": {
+            "type": "string",
+            "title": "Match Text"
+          },
+          "category": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "applied_count": {
+            "type": "integer",
+            "title": "Applied Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "match_text",
+          "category",
+          "applied_count"
+        ],
+        "title": "CreatedRuleOut"
+      },
       "DashboardBalanceOut": {
         "properties": {
           "total": {
@@ -319,14 +2401,104 @@
           },
           "bank": {
             "$ref": "#/components/schemas/FigureOut"
+          },
+          "cash": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "week_change": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "week_change_pct": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "runway_days": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
         "required": [
           "total",
-          "bank"
+          "bank",
+          "cash",
+          "week_change",
+          "week_change_pct"
         ],
         "title": "DashboardBalanceOut"
+      },
+      "DashboardMonthOut": {
+        "properties": {
+          "days_passed": {
+            "type": "integer",
+            "title": "Days Passed"
+          },
+          "days_total": {
+            "type": "integer",
+            "title": "Days Total"
+          },
+          "revenue": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "expenses": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "profit": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "profit_margin_pct": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "visits": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "avg_check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "days_passed",
+          "days_total",
+          "revenue",
+          "expenses",
+          "profit",
+          "visits"
+        ],
+        "title": "DashboardMonthOut"
       },
       "DashboardOut": {
         "properties": {
@@ -347,17 +2519,540 @@
             ],
             "title": "Data As Of"
           },
+          "data_stale": {
+            "type": "boolean",
+            "title": "Data Stale"
+          },
           "balance": {
             "$ref": "#/components/schemas/DashboardBalanceOut"
+          },
+          "month": {
+            "$ref": "#/components/schemas/DashboardMonthOut"
+          },
+          "balance_trend": {
+            "items": {
+              "$ref": "#/components/schemas/TrendPointOut"
+            },
+            "type": "array",
+            "title": "Balance Trend"
+          },
+          "balance_trend_info": {
+            "$ref": "#/components/schemas/TrendInfoOut"
+          },
+          "advice": {
+            "items": {
+              "$ref": "#/components/schemas/AdviceOut"
+            },
+            "type": "array",
+            "title": "Advice"
           }
         },
         "type": "object",
         "required": [
           "as_of",
           "data_as_of",
-          "balance"
+          "data_stale",
+          "balance",
+          "month",
+          "balance_trend",
+          "balance_trend_info",
+          "advice"
         ],
-        "title": "DashboardOut"
+        "title": "DashboardOut",
+        "example": {
+          "as_of": "2026-09-09",
+          "data_as_of": "2026-09-09T01:12:00Z",
+          "data_stale": false,
+          "balance": {
+            "total": {
+              "value": 55298223,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Касса",
+                  "value": 17974625,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Расчётный счёт",
+                  "value": 30323598,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Резервный счёт",
+                  "value": 7000000,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual"
+              ],
+              "note": "Остаток на всех счетах на 2026-09-09: остаток на начало плюс операции без дублей, счетов: 3."
+            },
+            "bank": {
+              "value": 37323598,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Расчётный счёт",
+                  "value": 30323598,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Резервный счёт",
+                  "value": 7000000,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "bot",
+                "manual"
+              ],
+              "note": "Остаток на расчётных счетах на 2026-09-09: остаток на начало плюс операции без дублей, счетов: 2."
+            },
+            "cash": {
+              "value": 17974625,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Касса",
+                  "value": 17974625,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "vetmanager",
+                "manual"
+              ],
+              "note": "Остаток в кассе на 2026-09-09: остаток на начало плюс операции без дублей, счетов: 1."
+            },
+            "week_change": {
+              "value": 6031722,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Касса",
+                  "value": 7274786,
+                  "unit": "rub",
+                  "delta": true
+                },
+                {
+                  "label": "Расчётный счёт",
+                  "value": -1243064,
+                  "unit": "rub",
+                  "delta": true
+                },
+                {
+                  "label": "Резервный счёт",
+                  "value": 0,
+                  "unit": "rub",
+                  "delta": true
+                }
+              ],
+              "source": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual"
+              ],
+              "note": "Изменение остатка на всех счетах за 7 дней: с конца 2 сентября до конца 9 сентября. В разбивке изменение по каждому счёту.",
+              "delta": true,
+              "details": [
+                {
+                  "label": "Неделю назад (2 сентября)",
+                  "value": 49266501,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Сейчас",
+                  "value": 55298223,
+                  "unit": "rub"
+                }
+              ]
+            },
+            "week_change_pct": {
+              "value": 12.2,
+              "unit": "pct",
+              "breakdown": [
+                {
+                  "label": "Неделю назад (2 сентября)",
+                  "value": 49266501,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Сейчас",
+                  "value": 55298223,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual"
+              ],
+              "note": "Изменение 60 317,22 ₽ к остатку неделю назад (492 665,01 ₽): 12,2%.",
+              "delta": true
+            },
+            "runway_days": {
+              "value": 17,
+              "unit": "days",
+              "breakdown": [
+                {
+                  "label": "Остаток на счетах",
+                  "value": 55298223,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Расходы за 28 дней",
+                  "value": 88032670,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Расходы в день, в среднем",
+                  "value": 3144024,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Окно расчёта",
+                  "value": 28,
+                  "unit": "days"
+                }
+              ],
+              "source": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual"
+              ],
+              "note": "Остаток 552 982,23 ₽ делим на средний расход в день 31 440,24 ₽ (расходы за 28 дней 880 326,70 ₽ ÷ 28) и берём целые дни вниз. Платежи вперёд не учитываются: смотрите платёжный календарь."
+            }
+          },
+          "month": {
+            "days_passed": 9,
+            "days_total": 30,
+            "revenue": {
+              "value": 33391346,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Услуги",
+                  "value": 19658288,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Товары",
+                  "value": 13733058,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "vetmanager"
+              ],
+              "note": "Закрытые счета Ветменеджера за 1–9 сентября 2026 (9 из 30 дн.): 100 закрытых счетов. Черновики счетов не входят.",
+              "details": [
+                {
+                  "label": "Средний чек",
+                  "value": 333913,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Приёмов",
+                  "value": 73,
+                  "unit": "count"
+                }
+              ]
+            },
+            "expenses": {
+              "value": 32947540,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Препараты и расходники",
+                  "value": 13460040,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Аренда",
+                  "value": 12000000,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Корма для перепродажи",
+                  "value": 5400000,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Реклама",
+                  "value": 1500000,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Коммунальные и связь",
+                  "value": 320000,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Прочие расходы",
+                  "value": 143500,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Без статьи",
+                  "value": 124000,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "bot",
+                "manual"
+              ],
+              "note": "Деньги, ушедшие с банковских счетов и из кассы за 1–9 сентября 2026, по статьям; дубли и переводы между своими счетами не входят. Закупка впрок попадает в расходы целиком, в месяц покупки."
+            },
+            "profit": {
+              "value": 443806,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Выручка",
+                  "value": 33391346,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Расходы",
+                  "value": -32947540,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual"
+              ],
+              "note": "Выручка минус уже заплаченные расходы за 1–9 сентября 2026. Налоги и амортизацию считает отчёт «Прибыль и убытки» при закрытии месяца, поэтому число может отличаться от чистой прибыли отчёта."
+            },
+            "profit_margin_pct": {
+              "value": 1.3,
+              "unit": "pct",
+              "breakdown": [
+                {
+                  "label": "Прибыль",
+                  "value": 443806,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Выручка",
+                  "value": 33391346,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual"
+              ],
+              "note": "Прибыль 4 438,06 ₽ ÷ выручка 333 913,46 ₽ = 1,3%. Норма клиники: не ниже 12%."
+            },
+            "visits": {
+              "value": 73,
+              "unit": "count",
+              "breakdown": [
+                {
+                  "label": "Ильина М.",
+                  "value": 27,
+                  "unit": "count"
+                },
+                {
+                  "label": "Петров А.",
+                  "value": 25,
+                  "unit": "count"
+                },
+                {
+                  "label": "Соколова Е.",
+                  "value": 21,
+                  "unit": "count"
+                }
+              ],
+              "source": [
+                "vetmanager"
+              ],
+              "note": "Приёмы по данным Ветменеджера за 1–9 сентября 2026, по врачам."
+            },
+            "avg_check": {
+              "value": 333913,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Выручка",
+                  "value": 33391346,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Счетов",
+                  "value": 100,
+                  "unit": "count"
+                }
+              ],
+              "source": [
+                "vetmanager"
+              ],
+              "note": "Выручка 333 913,46 ₽ ÷ 100 закрытых счетов за 1–9 сентября 2026."
+            }
+          },
+          "balance_trend": [
+            {
+              "date": "2026-08-27",
+              "value": 50742296
+            },
+            {
+              "date": "2026-08-28",
+              "value": 46105453
+            },
+            {
+              "date": "2026-08-29",
+              "value": 51086580
+            },
+            {
+              "date": "2026-08-30",
+              "value": 53440301
+            },
+            {
+              "date": "2026-08-31",
+              "value": 56750653
+            },
+            {
+              "date": "2026-09-01",
+              "value": 47278108
+            },
+            {
+              "date": "2026-09-02",
+              "value": 49266501
+            },
+            {
+              "date": "2026-09-03",
+              "value": 41124709
+            },
+            {
+              "date": "2026-09-04",
+              "value": 44261476
+            },
+            {
+              "date": "2026-09-05",
+              "value": 43164989
+            },
+            {
+              "date": "2026-09-06",
+              "value": 45218585
+            },
+            {
+              "date": "2026-09-07",
+              "value": 49439330
+            },
+            {
+              "date": "2026-09-08",
+              "value": 51047095
+            },
+            {
+              "date": "2026-09-09",
+              "value": 55298223
+            }
+          ],
+          "balance_trend_info": {
+            "note": "Остаток на конец каждого дня по всем счетам (банк и касса): 14 дней по 9 сентября включительно.",
+            "source": [
+              "bank",
+              "vetmanager",
+              "bot",
+              "manual"
+            ]
+          },
+          "advice": [
+            {
+              "id": "cash_runway",
+              "severity": "warning",
+              "icon": "🩸",
+              "title": "Денег хватит примерно на 17 дней",
+              "text": "Остаток 552 982,23 ₽ при расходах в среднем 31 440,24 ₽ в день. Платежи вперёд здесь не учтены: их покажет платёжный календарь.",
+              "why": {
+                "summary": "Остатка 552 982,23 ₽ хватит на 17 дней при расходах 31 440,24 ₽ в день (среднее за 28 дней).",
+                "steps": [
+                  "Остаток на всех счетах, банк и касса: 552 982,23 ₽.",
+                  "Расходы за последние 28 дней: 880 326,70 ₽ (переводы между своими счетами и дубли не входят).",
+                  "В среднем в день: 31 440,24 ₽ (880 326,70 ₽ ÷ 28).",
+                  "Остаток делим на расход в день и берём целые дни вниз: 17 дней."
+                ],
+                "sources": [
+                  "Остатки счетов и операции: выписки банка, Ветменеджер, ввод из мессенджера, ручной ввод",
+                  "Расчёт по среднему расходу за 28 дней"
+                ]
+              }
+            },
+            {
+              "id": "drug_share",
+              "severity": "warning",
+              "icon": "💊",
+              "title": "Препараты съедают 40,3% выручки при норме до 25%",
+              "text": "За месяц на препараты ушло 134 600,40 ₽ из выручки 333 913,46 ₽. Это на 51 122,03 ₽ больше нормы клиники.",
+              "why": {
+                "summary": "Доля препаратов 40,3% выручки, норма клиники до 25%: сверх нормы 51 122,03 ₽.",
+                "steps": [
+                  "Статья «Препараты и расходники» за 1–9 сентября: 134 600,40 ₽.",
+                  "Выручка за тот же период: 333 913,46 ₽; доля препаратов 40,3%.",
+                  "Норма клиники до 25% выручки, это 83 478,37 ₽; превышение 51 122,03 ₽.",
+                  "Самая крупная закупка месяца 134 600,40 ₽ от 3 сентября. Закупка впрок целиком попадает в расходы месяца, поэтому доля может снизиться в следующие недели."
+                ],
+                "sources": [
+                  "Операции банка и кассы по статье расходов",
+                  "Закрытые счета Ветменеджера (выручка)"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "ErrorBodyOut": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetailOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorBodyOut",
+        "description": "Every error of the API: {\"error\": {\"code\", \"message\", \"details\"}}."
+      },
+      "ErrorDetailOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "details"
+        ],
+        "title": "ErrorDetailOut"
       },
       "FigureItemOut": {
         "properties": {
@@ -379,6 +3074,17 @@
             ],
             "title": "Unit",
             "default": "rub"
+          },
+          "delta": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta"
           }
         },
         "type": "object",
@@ -391,7 +3097,14 @@
       "FigureOut": {
         "properties": {
           "value": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
             "title": "Value"
           },
           "unit": {
@@ -428,6 +3141,31 @@
           "note": {
             "type": "string",
             "title": "Note"
+          },
+          "delta": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta"
+          },
+          "details": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FigureItemOut"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Details"
           }
         },
         "type": "object",
@@ -440,58 +3178,1002 @@
         ],
         "title": "FigureOut"
       },
-      "HTTPValidationError": {
+      "ImportOut": {
         "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
-      },
-      "ValidationError": {
-        "properties": {
-          "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "type": "array",
-            "title": "Location"
-          },
-          "msg": {
+          "import_id": {
             "type": "string",
-            "title": "Message"
+            "title": "Import Id"
           },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
+          "account": {
+            "$ref": "#/components/schemas/NamedRefOut"
           },
-          "input": {
-            "title": "Input"
+          "period": {
+            "$ref": "#/components/schemas/PeriodOut"
           },
-          "ctx": {
-            "type": "object",
-            "title": "Context"
+          "loaded": {
+            "type": "integer",
+            "title": "Loaded"
+          },
+          "duplicates": {
+            "type": "integer",
+            "title": "Duplicates"
+          },
+          "to_check": {
+            "type": "integer",
+            "title": "To Check"
+          },
+          "already_loaded": {
+            "type": "integer",
+            "title": "Already Loaded"
+          },
+          "skipped": {
+            "type": "integer",
+            "title": "Skipped"
           }
         },
         "type": "object",
         "required": [
-          "loc",
-          "msg",
-          "type"
+          "import_id",
+          "account",
+          "period",
+          "loaded",
+          "duplicates",
+          "to_check",
+          "already_loaded",
+          "skipped"
         ],
-        "title": "ValidationError"
+        "title": "ImportOut"
+      },
+      "NamedRefOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "NamedRefOut"
+      },
+      "PeriodOut": {
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date",
+            "title": "From"
+          },
+          "to": {
+            "type": "string",
+            "format": "date",
+            "title": "To"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to"
+        ],
+        "title": "PeriodOut"
+      },
+      "ResolveDuplicateBody": {
+        "properties": {
+          "keep_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keep Id"
+          },
+          "keep_both": {
+            "type": "boolean",
+            "title": "Keep Both",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ResolveDuplicateBody"
+      },
+      "ResolveDuplicateOut": {
+        "properties": {
+          "kept": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionOut"
+            },
+            "type": "array",
+            "title": "Kept"
+          },
+          "duplicates": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionOut"
+            },
+            "type": "array",
+            "title": "Duplicates"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kept",
+          "duplicates"
+        ],
+        "title": "ResolveDuplicateOut"
+      },
+      "ReviewBody": {
+        "properties": {
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ReviewBody"
+      },
+      "ReviewOut": {
+        "properties": {
+          "reviewed": {
+            "type": "boolean",
+            "title": "Reviewed"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reviewed",
+          "note"
+        ],
+        "title": "ReviewOut"
+      },
+      "RulePreviewOut": {
+        "properties": {
+          "can_create": {
+            "type": "boolean",
+            "title": "Can Create"
+          },
+          "already_exists": {
+            "type": "boolean",
+            "title": "Already Exists"
+          },
+          "match_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match Text"
+          },
+          "matches_count": {
+            "type": "integer",
+            "title": "Matches Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "can_create",
+          "already_exists",
+          "match_text",
+          "matches_count"
+        ],
+        "title": "RulePreviewOut"
+      },
+      "RunStartedOut": {
+        "properties": {
+          "run": {
+            "$ref": "#/components/schemas/SyncRunOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "run"
+        ],
+        "title": "RunStartedOut"
+      },
+      "ScheduleOut": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "nightly",
+            "title": "Kind"
+          },
+          "time": {
+            "type": "string",
+            "title": "Time"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "time"
+        ],
+        "title": "ScheduleOut"
+      },
+      "SettlementDaysOut": {
+        "properties": {
+          "min": {
+            "type": "integer",
+            "title": "Min"
+          },
+          "max": {
+            "type": "integer",
+            "title": "Max"
+          }
+        },
+        "type": "object",
+        "required": [
+          "min",
+          "max"
+        ],
+        "title": "SettlementDaysOut"
+      },
+      "SuggestionOut": {
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "rule",
+              "similar"
+            ],
+            "title": "Reason"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "reason",
+          "text"
+        ],
+        "title": "SuggestionOut"
+      },
+      "SummaryOut": {
+        "properties": {
+          "income": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "expense": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/FigureOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "income",
+          "expense",
+          "balance"
+        ],
+        "title": "SummaryOut"
+      },
+      "SyncRunOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "success",
+              "partial",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "invalid_key",
+                  "unreachable",
+                  "rate_limited",
+                  "unknown"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "counts": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "started_at",
+          "finished_at",
+          "error_code",
+          "counts"
+        ],
+        "title": "SyncRunOut"
+      },
+      "TabCountsOut": {
+        "properties": {
+          "all": {
+            "type": "integer",
+            "title": "All"
+          },
+          "check": {
+            "type": "integer",
+            "title": "Check"
+          },
+          "duplicates": {
+            "type": "integer",
+            "title": "Duplicates"
+          }
+        },
+        "type": "object",
+        "required": [
+          "all",
+          "check",
+          "duplicates"
+        ],
+        "title": "TabCountsOut"
+      },
+      "TransactionBriefOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NamedRefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "account": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "bank",
+              "vetmanager",
+              "bot",
+              "manual"
+            ],
+            "title": "Source"
+          },
+          "amount": {
+            "type": "integer",
+            "title": "Amount"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out",
+              "transfer"
+            ],
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "check",
+              "duplicate"
+            ],
+            "title": "Status"
+          },
+          "duplicate_state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "confirmed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate State"
+          },
+          "figure": {
+            "$ref": "#/components/schemas/FigureOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "description",
+          "category",
+          "account",
+          "source",
+          "amount",
+          "kind",
+          "status",
+          "duplicate_state",
+          "figure"
+        ],
+        "title": "TransactionBriefOut"
+      },
+      "TransactionCreate": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out"
+            ],
+            "title": "Kind"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Account Id"
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "amount": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Amount"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "account_id",
+          "date",
+          "amount"
+        ],
+        "title": "TransactionCreate"
+      },
+      "TransactionListOut": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "TransactionListOut"
+      },
+      "TransactionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NamedRefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "account": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "bank",
+              "vetmanager",
+              "bot",
+              "manual"
+            ],
+            "title": "Source"
+          },
+          "amount": {
+            "type": "integer",
+            "title": "Amount"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out",
+              "transfer"
+            ],
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "check",
+              "duplicate"
+            ],
+            "title": "Status"
+          },
+          "duplicate_state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "confirmed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate State"
+          },
+          "figure": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "duplicate_of": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransactionBriefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "duplicate_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate Reason"
+          },
+          "suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SuggestionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "description",
+          "category",
+          "account",
+          "source",
+          "amount",
+          "kind",
+          "status",
+          "duplicate_state",
+          "figure",
+          "duplicate_of",
+          "duplicate_reason",
+          "suggestion"
+        ],
+        "title": "TransactionOut"
+      },
+      "TransactionPatch": {
+        "properties": {
+          "category_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Category Id"
+          },
+          "create_rule": {
+            "type": "boolean",
+            "title": "Create Rule",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "category_id"
+        ],
+        "title": "TransactionPatch"
+      },
+      "TransactionPatchedOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NamedRefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "account": {
+            "$ref": "#/components/schemas/NamedRefOut"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "bank",
+              "vetmanager",
+              "bot",
+              "manual"
+            ],
+            "title": "Source"
+          },
+          "amount": {
+            "type": "integer",
+            "title": "Amount"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out",
+              "transfer"
+            ],
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "check",
+              "duplicate"
+            ],
+            "title": "Status"
+          },
+          "duplicate_state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "confirmed"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate State"
+          },
+          "figure": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "duplicate_of": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransactionBriefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "duplicate_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate Reason"
+          },
+          "suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SuggestionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rule": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CreatedRuleOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "description",
+          "category",
+          "account",
+          "source",
+          "amount",
+          "kind",
+          "status",
+          "duplicate_state",
+          "figure",
+          "duplicate_of",
+          "duplicate_reason",
+          "suggestion",
+          "rule"
+        ],
+        "title": "TransactionPatchedOut"
+      },
+      "TrendInfoOut": {
+        "properties": {
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "source": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "bank",
+                "vetmanager",
+                "bot",
+                "manual",
+                "calc"
+              ]
+            },
+            "type": "array",
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "note",
+          "source"
+        ],
+        "title": "TrendInfoOut"
+      },
+      "TrendPointOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "value"
+        ],
+        "title": "TrendPointOut"
+      },
+      "VetmanagerBody": {
+        "properties": {
+          "address": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Address"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "address"
+        ],
+        "title": "VetmanagerBody"
+      },
+      "VetmanagerImportBody": {
+        "properties": {
+          "entities": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Entities"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "entities"
+        ],
+        "title": "VetmanagerImportBody"
+      },
+      "WhyOut": {
+        "properties": {
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "steps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "summary",
+          "steps",
+          "sources"
+        ],
+        "title": "WhyOut"
       }
     }
   }

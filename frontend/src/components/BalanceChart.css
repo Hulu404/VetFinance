@@ -1,0 +1,98 @@
+.chart {
+  position: relative;
+  margin-top: 12px;
+}
+/* One frame around the whole drawing instead of a frame on a 26px strip (design/components.md, section 16) */
+.chart:has(.chart__strip:focus-visible) { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+
+.chart__area {
+  position: relative;
+  height: var(--chart-height);
+}
+.chart__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.chart__line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: var(--chart-stroke);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.chart__zero {
+  stroke: var(--color-border);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+.chart__stop--top { stop-color: var(--color-accent); stop-opacity: var(--chart-area-opacity); }
+.chart__stop--bottom { stop-color: var(--color-accent); stop-opacity: 0; }
+
+.chart__point {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.chart__strip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  cursor: help;
+}
+.chart__strip:focus-visible { outline: none; }
+
+.chart__dot {
+  position: absolute;
+  box-sizing: border-box;
+  width: calc(var(--chart-point-r) * 2);
+  height: calc(var(--chart-point-r) * 2);
+  margin: calc(var(--chart-point-r) * -1) 0 0 calc(var(--chart-point-r) * -1);
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.chart__dot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: var(--chart-height);
+  background: var(--color-accent-light);
+  transform: translateX(-50%);
+  opacity: 0;
+}
+.chart__strip--last .chart__dot,
+.chart__strip:hover .chart__dot,
+.chart__strip:focus-visible .chart__dot { opacity: 1; }
+.chart__strip:hover .chart__dot::before,
+.chart__strip:focus-visible .chart__dot::before { opacity: 1; }
+
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--chart-height);
+  margin-top: 12px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-ink-soft);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart__dot { transition: none; }
+}

@@ -1,31 +1,74 @@
-.kpi-grid {
+/* Rows of three cards: balance row and month row. Three columns from 721px, one up to 720px (design/tokens.md). */
+.dash-row {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--grid-gap);
-  margin: 0;
+  margin: 0 0 var(--section-gap);
   padding: 0;
   list-style: none;
 }
-.kpi-grid > li { display: flex; min-width: 0; }
-.kpi-grid > li > .kpi { flex: 1; }
+.dash-row > li { display: flex; min-width: 0; }
+.dash-row > li > .kpi { flex: 1; min-width: 0; }
 
-.dash-hint { margin-top: 13px; font-size: var(--fs-xs); color: var(--color-ink-soft); }
-.slow-hint { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-ink-soft); }
+.dash-hint { margin: -4px 0 22px; font-size: var(--fs-xs); color: var(--color-ink-soft); }
 
-.stale-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
-  padding: 4px var(--space-3);
-  border-radius: var(--radius-md);
-  background: var(--color-warn-soft);
-  color: var(--color-warn-ink);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
+/* Section captions: "Сентябрь · 9 дней из 30", "Советы · 4" (v6 .klabel) */
+.dash-caption {
+  margin: 22px 0 12px;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
 }
+.dash-month .dash-row { margin-bottom: 26px; }
 
+/* The sub-line inside a detailed card sits under the number */
+.dash-sub--bad { color: var(--color-bad); }
+
+/* Cards "no accounts", "month is empty", "no advice" (v6 .empty) */
+.dash-empty {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: var(--section-gap);
+  padding: var(--card-padding);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.dash-empty__icon { font-size: 29px; line-height: 1; }
+.dash-empty__title { margin: 0 0 4px; font-size: var(--fs-lg); font-weight: var(--fw-bold); }
+.dash-empty__text { max-width: 66ch; font-size: var(--fs-sm); color: var(--color-ink-soft); }
+.dash-empty__text--plain { font-size: var(--fs-md); }
+.dash-empty__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: 12px; }
+
+.advice-list { margin: 0; padding: 0; list-style: none; }
+.advice-skeleton {
+  min-height: 88px;
+  margin-bottom: var(--advice-gap);
+  padding: var(--advice-padding);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.advice-skeleton__title,
+.advice-skeleton__line {
+  display: block;
+  border-radius: 6px;
+  background: var(--color-track);
+  animation: vf-skeleton 1.4s ease-in-out infinite;
+}
+.advice-skeleton__title { width: 60%; height: 16px; }
+.advice-skeleton__line { width: 90%; height: 13px; margin-top: 10px; }
+
+.dash-row--month { margin-top: 22px; }
+
+@media (max-width: 720px) {
+  .dash-row { grid-template-columns: 1fr; }
+}
 @media (max-width: 560px) {
-  .kpi-grid { grid-template-columns: 1fr; }
   .btn { min-height: var(--control-height); }
 }

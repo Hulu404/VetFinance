@@ -23,7 +23,9 @@ export function PageHeader({ title, subtitle, subtitleLoading = false, actions, 
         {subtitleLoading ? (
           <span className="page-head__skeleton" aria-hidden="true" />
         ) : subtitle ? (
-          <p className="page-head__sub">{subtitle}</p>
+          <p className="page-head__sub" data-testid="page-subtitle">
+            {subtitle}
+          </p>
         ) : null}
       </div>
       {(actions || balance) && (

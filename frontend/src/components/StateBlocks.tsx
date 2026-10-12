@@ -32,16 +32,17 @@ interface LoadErrorCardProps {
   retrying: boolean
   onRetry: () => void
   testId?: string
+  retryTestId?: string
 }
 
 /** Block that replaces content that failed to load: red left border, a word, a button. */
-export function LoadErrorCard({ title, network, retrying, onRetry, testId }: LoadErrorCardProps) {
+export function LoadErrorCard({ title, network, retrying, onRetry, testId, retryTestId }: LoadErrorCardProps) {
   return (
     <div className="state-card state-card--wide state-card--error" role="alert" data-testid={testId}>
       <Pill variant="danger">не загрузилось</Pill>
       <h3 className="state-card__title">{title}</h3>
       <p className="state-card__text">{network ? NETWORK_ERROR_TEXT : SERVER_ERROR_TEXT}</p>
-      <button type="button" className="btn" onClick={onRetry} disabled={retrying}>
+      <button type="button" className="btn" onClick={onRetry} disabled={retrying} data-testid={retryTestId}>
         {retrying ? 'Загружаем…' : 'Повторить'}
       </button>
     </div>

@@ -19,6 +19,11 @@ export type MockScenario =
   | 'acqempty' // reconciliation: no card payments
   | 'acqerror' // reconciliation endpoints answer 500
   | 'ratelimit' // statement upload and sync answer 429
+  // Stage 2 (dashboard)
+  | 'emptymonth' // accounts exist, the month has no data yet
+  | 'noadvice' // advice: []
+  | 'fewdata' // 3 days of history: short chart, no week change, no advice
+  | 'norunway' // runway_days is absent
 
 const SCENARIOS: readonly string[] = [
   'default',
@@ -39,6 +44,10 @@ const SCENARIOS: readonly string[] = [
   'acqempty',
   'acqerror',
   'ratelimit',
+  'emptymonth',
+  'noadvice',
+  'fewdata',
+  'norunway',
 ]
 const STORAGE_KEY = 'vf-mock-scenario'
 

@@ -29,6 +29,7 @@ from app.rows import (
     TxRow,
 )
 from engine.balance import AccountInput, TransactionInput
+from engine.dashboard_inputs import NormsInput, SaleInput, SaleLineInput, VisitInput
 from engine.dedup import TxRef
 from engine.vetmanager import Payment, Sale, Visit
 
@@ -164,8 +165,9 @@ class PgRepository:
         cid = await self._clinic()
         res = await self._conn.execute(
             text(
-                "select account_id::text, date, amount, status, source from transactions "
-                "where clinic_id = :cid and date <= :as_of and status <> 'duplicate'"
+                "select t.account_id::text, t.date, t.amount, t.status, t.source, t.kind, c.name "
+                "from transactions t left join categories c on c.id = t.category_id "
+                "where t.clinic_id = :cid and t.date <= :as_of and t.status <> 'duplicate'"
             ),
             {"cid": cid, "as_of": as_of},
         )
@@ -178,6 +180,47 @@ class PgRepository:
         )
         value: datetime | None = res.scalar()
         return value
+
+    # ------------------------------------------------------------ dashboard
+    async def get_norms(self) -> NormsInput:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select drugs_category, drugs_max_pct, margin_min_pct from clinics where id = :cid"
+            ),
+            {"cid": cid},
+        )
+        return NormsInput(*res.one())
+
+    async def list_sales(self, first: date, last: date) -> list[SaleInput]:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select date, status, lines from sales "
+                "where clinic_id = :cid and date between :first and :last"
+            ),
+            {"cid": cid, "first": first, "last": last},
+        )
+        return [
+            SaleInput(
+                row_date,
+                status,
+                tuple(SaleLineInput(str(line["kind"]), int(line["amount"])) for line in lines),
+            )
+            for row_date, status, lines in res.all()
+        ]
+
+    async def list_visits(self, first: date, last: date) -> list[VisitInput]:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select v.date, coalesce(d.name, '') from visits v "
+                "left join doctors d on d.id = v.doctor_id and d.clinic_id = v.clinic_id "
+                "where v.clinic_id = :cid and v.date between :first and :last"
+            ),
+            {"cid": cid, "first": first, "last": last},
+        )
+        return [VisitInput(*r) for r in res.all()]
 
     # ------------------------------------------------------------ categories and rules
     async def list_categories(self) -> list[CategoryRow]:

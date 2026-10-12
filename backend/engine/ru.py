@@ -88,3 +88,12 @@ def format_range_short(first: date, last: date) -> str:
     if (first.year, first.month) == (last.year, last.month):
         return f"{first.day}–{format_date_short(last)}"
     return f"{format_date_short(first)} – {format_date_short(last)}"
+
+
+def format_days_range(first: date, last: date) -> str:
+    """'1–9 сентября' inside a month, '30 августа – 2 сентября' across months, '9 сентября' for one day."""
+    if first == last:
+        return format_day_month(first)
+    if (first.year, first.month) == (last.year, last.month):
+        return f"{first.day}–{format_day_month(last)}"
+    return f"{format_day_month(first)} – {format_day_month(last)}"

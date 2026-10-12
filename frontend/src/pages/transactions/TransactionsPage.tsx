@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useUpdateCategory } from '../../api/mutations'
 import { invalidateAfterOperationChange, useClinic, useDashboard, useTransactionCounts } from '../../api/queries'
@@ -60,7 +60,8 @@ export function TransactionsPage() {
 
   const [editing, setEditing] = useState<Transaction | null>(null)
   const [manualOpen, setManualOpen] = useState(false)
-  const [importOpen, setImportOpen] = useState(false)
+  // "Загрузить выписку" on the dashboard leads here with ?import=1: the dialog opens at once, the parameter is dropped.
+  const [importOpen, setImportOpen] = useState(() => params.get('import') === '1')
 
   const asOf = dashboard.data?.as_of
   const currentMonth = asOf ? monthOf(asOf) : null
@@ -69,6 +70,14 @@ export function TransactionsPage() {
   const tab = tabFrom(params.get('tab'))
   const referenceYear = asOf ? yearOf(asOf) : undefined
   const highlight = params.get('rule')
+
+  const importRequested = params.get('import') === '1'
+  useEffect(() => {
+    if (!importRequested) return
+    const cleaned = new URLSearchParams(params)
+    cleaned.delete('import')
+    setParams(cleaned, { replace: true })
+  }, [importRequested, params, setParams])
 
   const focusHeading = useCallback(() => headingRef.current?.focus(), [])
 

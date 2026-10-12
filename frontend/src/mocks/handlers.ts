@@ -3,8 +3,12 @@ import {
   accountListA,
   clinicA,
   dashboardA,
+  dashboardEmptyMonth,
+  dashboardFewData,
   dashboardNegative,
   dashboardNoAccounts,
+  dashboardNoAdvice,
+  dashboardNoRunway,
   dashboardStale,
   dashboardZero,
 } from './fixtures'
@@ -24,6 +28,14 @@ function dashboardFor(scenario: MockScenario) {
       return dashboardNegative
     case 'stale':
       return dashboardStale
+    case 'emptymonth':
+      return dashboardEmptyMonth
+    case 'noadvice':
+      return dashboardNoAdvice
+    case 'fewdata':
+      return dashboardFewData
+    case 'norunway':
+      return dashboardNoRunway
     default:
       return dashboardA
   }
@@ -37,7 +49,13 @@ export const handlers = [
     if (blocked) return blocked
     const scenario = getMockScenario()
     if (scenario === 'error') return errorResponse(500, 'sync_failed', 'Сбой на стороне сервера.')
-    return HttpResponse.json(dashboardFor(scenario))
+    // `?as_of=` is passed through as the reference date; the numbers stay those of the mock.
+    const asOf = new URL(request.url).searchParams.get('as_of')
+    if (asOf !== null && !/^\d{4}-\d{2}-\d{2}$/.test(asOf)) {
+      return errorResponse(422, 'validation', 'Неверная дата.', { fields: { as_of: 'invalid' } })
+    }
+    const dashboard = dashboardFor(scenario)
+    return HttpResponse.json(asOf ? { ...dashboard, as_of: asOf } : dashboard)
   }),
   ...transactionHandlers,
   ...connectionHandlers,

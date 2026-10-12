@@ -134,3 +134,5 @@
   font-weight: var(--fw-semibold);
 }
 .inline-alert .btn { margin-left: var(--space-2); }
+
+.slow-hint { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-ink-soft); }

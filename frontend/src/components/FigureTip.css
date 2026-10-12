@@ -64,6 +64,15 @@
 }
 
 .figure-tip__amount--neg { color: var(--color-tip-bad); }
+.figure-tip__amount--good { color: var(--color-tip-good); }
+
+/* Reference rows (Figure.details): not summands of the total, under their own divider */
+.figure-tip__details {
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-on-dark-line);
+}
+.figure-tip__details .figure-tip__rows { margin-top: 4px; }
 
 .figure-tip__footer {
   margin-top: 9px;

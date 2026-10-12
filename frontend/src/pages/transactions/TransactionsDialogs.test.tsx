@@ -26,6 +26,14 @@ async function counter(name: string): Promise<number> {
   return Number(text.replace(/\D/g, ''))
 }
 
+describe('Opening the upload from the dashboard', () => {
+  it('opens the upload dialog at once for ?import=1 and drops the parameter', async () => {
+    open('/transactions?import=1')
+
+    expect(await screen.findByTestId('import-file')).toBeInTheDocument()
+  })
+})
+
 describe('Statement upload', () => {
   async function upload(user: ReturnType<typeof userEvent.setup>, file: File) {
     await user.click(await screen.findByTestId('import-open'))

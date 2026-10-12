@@ -95,3 +95,18 @@
 .kpi--with-extra { flex-direction: column; }
 .kpi--with-extra .kpi__button { padding-bottom: 4px; }
 .kpi__extra { padding: 0 20px 14px 59px; font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--color-ink-soft); }
+
+/* Grids of cards (Transactions summary, acquiring) */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.kpi-grid > li { display: flex; min-width: 0; }
+.kpi-grid > li > .kpi { flex: 1; }
+@media (max-width: 560px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+}
