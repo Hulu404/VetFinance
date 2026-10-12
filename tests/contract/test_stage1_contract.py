@@ -424,8 +424,8 @@ def _counters(resp):
 
 def test_flow_first_import_counters(flow):
     got, exp = _counters(flow.imp1), EXPECTED["steps"]["import_file1"]
-    assert (got["created"], got["skipped_existing"], got["duplicates"], got["check"]) == \
-        (exp["created"], exp["skipped_existing"], exp["duplicates"], exp["check"])
+    assert (got["created"], got["already"], got["duplicates"], got["check"]) == \
+        (exp["created"], exp["skipped_existing"] + exp["skipped_in_file"], exp["duplicates"], exp["check"])
 
 
 def test_flow_duplicates_found_without_false_positives(flow):
@@ -474,7 +474,7 @@ def test_flow_reupload_changes_nothing(flow):
 def test_flow_rule_applies_to_new_operations_of_second_file(flow):
     exp = EXPECTED["steps"]["import_file2"]
     got = _counters(flow.imp2)
-    assert (got["created"], got["already"], got["check"]) == (exp["created"], exp["skipped_existing"], exp["check"])
+    assert (got["created"], got["already"], got["check"]) == (exp["created"], exp["skipped_existing"] + exp["skipped_in_file"], exp["check"])
     for day, amount in (("2026-09-24", -6178000), ("2026-09-28", -5000000)):
         t = _find(flow.after2, date=day, amount=amount)[0]
         assert t["status"] == "ok" and t["category"]["name"] == "Препараты"
@@ -500,7 +500,7 @@ def test_flow_summary_matches_expected(flow):
 
 def test_flow_resolve_duplicate_keeps_chosen_row_and_total(flow, client_c):
     dup = next(t for t in flow.after2 if t["status"] == "duplicate" and t["source"] == "bank")
-    twin = next(t for t in flow.after2 if t["source"] != "bank" and t["date"] == dup["date"] and t["amount"] == dup["amount"])
+    twin = next(t for t in flow.after2 if t["id"] == dup["duplicate_of"]["id"])   # dates may differ by up to 3 days
     r = implemented(client_c.post(f"/v1/transactions/{dup['id']}/resolve-duplicate", json={"keep_id": dup["id"]}))
     assert r.status_code == 200, r.text
     now = {t["id"]: t for t in get_all(client_c)}
