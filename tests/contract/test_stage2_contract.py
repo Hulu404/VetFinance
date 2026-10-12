@@ -121,8 +121,12 @@ def test_balance_block_has_all_figures(dash_a):
 def test_month_block(dash_a):
     m = dash_a["month"]
     for key in MONTH_FIGURES:
+        if key == "profit_margin_pct" and m["revenue"]["value"] == 0:
+            assert key not in m, "margin is undefined without revenue: the field is omitted (contract)"
+            continue
         assert_figure_v2(m[key], f"month.{key}")
-    assert m["profit_margin_pct"]["unit"] == "pct"
+    if "profit_margin_pct" in m:
+        assert m["profit_margin_pct"]["unit"] == "pct"
     assert type(m["days_passed"]) is int and type(m["days_total"]) is int
     assert 1 <= m["days_passed"] <= m["days_total"] <= 31
     assert m["days_passed"] == int(dash_a["as_of"][-2:]), "days_passed is the day of as_of (inclusive)"
