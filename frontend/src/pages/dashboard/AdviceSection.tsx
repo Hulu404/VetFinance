@@ -1,16 +1,13 @@
 import { useState } from 'react'
-import type { Advice } from '../../api/types'
+import type { Advice, Dashboard } from '../../api/types'
 import { AdviceCard } from '../../components/AdviceCard'
 import { DashEmpty } from './DashEmpty'
-
-/** Below this many days of history the service builds no advice (decision of the product owner, handoff 2026-10-12). */
-export const MIN_HISTORY_POINTS = 7
 
 interface AdviceSectionProps {
   /** `undefined` for an old response without advice: the block is not drawn. */
   advice: Advice[] | undefined
-  /** Number of days in `balance_trend`: a short history explains an empty list. */
-  historyDays?: number
+  /** From the API: `not_enough_data` explains an empty list by a short history. */
+  status?: Dashboard['advice_status']
 }
 
 function EmptyAdvice({ fewData }: { fewData: boolean }) {
@@ -35,10 +32,10 @@ function EmptyAdvice({ fewData }: { fewData: boolean }) {
 }
 
 /** "Советы · N": order and count come from the API; one "Почему?" is open at a time. */
-export function AdviceSection({ advice, historyDays }: AdviceSectionProps) {
+export function AdviceSection({ advice, status }: AdviceSectionProps) {
   const [openId, setOpenId] = useState<string | null>(null)
   if (!advice) return null
-  const fewData = historyDays !== undefined && historyDays < MIN_HISTORY_POINTS
+  const fewData = status === 'not_enough_data'
 
   return (
     <section aria-labelledby="advice-caption" data-testid="advice-section">

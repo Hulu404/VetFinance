@@ -66,7 +66,8 @@
   "advice": [
     { "id": "cash_runway", "severity": "alert|warning|good", "icon": "🩸", "title": "string", "text": "string",
       "why": { "summary": "string", "steps": ["string"], "sources": ["string"] } }
-  ]
+  ],
+  "advice_status": "ready|not_enough_data"
 }
 ```
 
@@ -85,6 +86,7 @@
 - `source` производных цифр: объединение источников операций и счетов, из которых получена цифра, в порядке `bank`, `vetmanager`, `bot`, `manual` (без `calc`). Если вошедших данных нет, `["manual"]`.
 - `balance_trend`: остаток `total` на конец каждого из 14 дней, оканчивая `as_of`, от старых к новым; дни раньше самого раннего `opening_date` не отдаются (на четвёртый день жизни клиники 4 точки). Последняя точка равна `balance.total.value`. `balance_trend_info`: подсказка точки (`note`, `source`), на каждую точку `Figure` не выдаётся.
 - `month.revenue_forecast` и `month.expenses_change_pct` (запрос designer) на этапе 2 не отдаются: нет эталона; клиент работает без них.
+- `advice_status` (с 2026-10-14, по запросу frontend): `not_enough_data`, если от самого раннего `opening_date` до `as_of` меньше 7 дней или счетов нет (советы не строились, экран пишет «Пока мало данных»); `ready`, если правила отработали (пустой `advice` тогда значит «отклонений нет»). Клиент не выводит это сам из длины `balance_trend`.
 - `advice` всегда есть (может быть пустым), не больше 5 советов, порядок `alert`, `warning`, `good`, внутри по порядку правил. Советов нет, пока данных меньше 7 дней; месячные правила работают с 7-го числа. Правила и пороги (настройки клиники до таблицы `benchmarks`):
 
 | `id` | Условие | `severity` | `icon` |

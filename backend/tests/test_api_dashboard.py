@@ -126,6 +126,7 @@ def test_api_json_types_and_optional_keys(client_d: TestClient) -> None:
     young = get(client_d, "2026-08-04")
     assert young["balance"]["week_change"] is None and "week_change" in young["balance"]
     assert young["balance"]["week_change_pct"] is None and young["advice"] == []
+    assert young["advice_status"] == "not_enough_data" and body["advice_status"] == "ready"
 
 
 def test_api_advice_has_why_and_no_forbidden_words(client_d: TestClient) -> None:
@@ -142,6 +143,7 @@ def test_api_advice_has_why_and_no_forbidden_words(client_d: TestClient) -> None
 def test_api_as_of_outside_the_data_and_bad_values(client_d: TestClient) -> None:
     body = get(client_d, "2000-01-01")
     assert body["month"]["revenue"]["value"] == 0 and body["advice"] == []
+    assert body["advice_status"] == "not_enough_data"
     assert body["balance_trend"] == []
     for bad in ("garbage", "2026-13-40", ""):
         r = client_d.get("/v1/dashboard", params={"as_of": bad}, headers=HEADERS)

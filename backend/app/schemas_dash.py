@@ -72,6 +72,7 @@ class DashboardOut(BaseModel):
     balance_trend: list[TrendPointOut]
     balance_trend_info: TrendInfoOut
     advice: list[AdviceOut]
+    advice_status: Literal["ready", "not_enough_data"]  # not_enough_data: under a week of history
 
 
 def _optional(figure: Any) -> FigureOut | None:
@@ -123,4 +124,5 @@ def dashboard_out(
             }
         ),
         advice=[_advice_out(a) for a in result.advice],
+        advice_status=result.advice_status,
     )

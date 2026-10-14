@@ -77,6 +77,7 @@ def test_dashboard_shape_on_a_quiet_clinic(client: TestClient) -> None:
         "balance_trend",
         "balance_trend_info",
         "advice",
+        "advice_status",
     }
     assert body["data_stale"] is False
     balance = body["balance"]

@@ -164,6 +164,20 @@ def test_advice_waits_for_a_week_of_history_and_a_week_of_the_month() -> None:
     assert [a.id for a in third.advice] == ["cash_runway"]
 
 
+def test_advice_status_says_why_the_list_is_empty() -> None:
+    sales = [sale(date(2026, 8, 2), 10_000_000)]
+    assert (
+        compute_dashboard([], [], [], [], NORMS, date(2026, 9, 9)).advice_status
+        == "not_enough_data"
+    )
+    assert run([], [], date(2000, 1, 1)).advice_status == "not_enough_data"
+    assert run([], sales, OPENING + timedelta(days=5)).advice_status == "not_enough_data"  # 6 days
+    seventh = run([], sales, OPENING + timedelta(days=6))  # 7 days of history: rules run
+    assert seventh.advice_status == "ready"
+    calm = run([], [], date(2026, 9, 3))  # enough history, nothing out of the norm
+    assert calm.advice == () and calm.advice_status == "ready"
+
+
 def test_advice_text_limits_and_forbidden_words() -> None:
     as_of = date(2026, 9, 20)
     txs = [

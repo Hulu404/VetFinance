@@ -345,6 +345,14 @@ describe('DashboardPage: advice', () => {
     expect(screen.getByTestId('advice-empty')).toHaveTextContent('Пока мало данных')
   })
 
+  it('takes "not enough data" from advice_status, not from the length of the trend', async () => {
+    serve((base) => ({ ...base, advice: [], advice_status: 'not_enough_data' }))
+    renderWithQuery(<DashboardPage />)
+    await loaded()
+
+    expect(screen.getByTestId('advice-empty')).toHaveTextContent('Пока мало данных')
+  })
+
   it('draws no advice block when the response has no advice field', async () => {
     serve((base) => {
       const { advice, ...rest } = base

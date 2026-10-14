@@ -249,9 +249,14 @@ _RULES = (_cash_runway, _drug_share, _revenue_drop, _margin_ok)
 _MONTH_RULES = {_drug_share, _revenue_drop, _margin_ok}
 
 
+def has_enough_history(first_day: date | None, as_of: date) -> bool:
+    """Advice is built only with at least MIN_DATA_DAYS days of data up to `as_of` inclusive."""
+    return first_day is not None and (as_of - first_day).days + 1 >= MIN_DATA_DAYS
+
+
 def build_advice(ctx: AdviceContext) -> tuple[Advice, ...]:
     """Advice sorted by severity (alert, warning, good), then by the order of the rules; at most five."""
-    if (ctx.as_of - ctx.first_day).days + 1 < MIN_DATA_DAYS:
+    if not has_enough_history(ctx.first_day, ctx.as_of):
         return ()
     found: list[Advice] = []
     for rule in _RULES:

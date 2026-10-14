@@ -77,7 +77,7 @@ function Content({ data }: { data: Dashboard }) {
         />
       )}
       {data.month && <MonthSection month={data.month} asOf={data.as_of} dataAsOf={data.data_as_of} />}
-      <AdviceSection advice={data.advice} historyDays={data.balance_trend?.length} />
+      <AdviceSection advice={data.advice} status={data.advice_status} />
     </>
   )
 }

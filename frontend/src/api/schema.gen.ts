@@ -1119,7 +1119,8 @@ export interface components {
          *             ]
          *           }
          *         }
-         *       ]
+         *       ],
+         *       "advice_status": "ready"
          *     }
          */
         DashboardOut: {
@@ -1139,6 +1140,11 @@ export interface components {
             balance_trend_info: components["schemas"]["TrendInfoOut"];
             /** Advice */
             advice: components["schemas"]["AdviceOut"][];
+            /**
+             * Advice Status
+             * @enum {string}
+             */
+            advice_status: "ready" | "not_enough_data";
         };
         /**
          * ErrorBodyOut

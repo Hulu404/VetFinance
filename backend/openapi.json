@@ -2545,6 +2545,14 @@
             },
             "type": "array",
             "title": "Advice"
+          },
+          "advice_status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "not_enough_data"
+            ],
+            "title": "Advice Status"
           }
         },
         "type": "object",
@@ -2556,7 +2564,8 @@
           "month",
           "balance_trend",
           "balance_trend_info",
-          "advice"
+          "advice",
+          "advice_status"
         ],
         "title": "DashboardOut",
         "example": {
@@ -3014,7 +3023,8 @@
                 ]
               }
             }
-          ]
+          ],
+          "advice_status": "ready"
         }
       },
       "ErrorBodyOut": {

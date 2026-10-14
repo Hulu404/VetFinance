@@ -258,6 +258,7 @@ export const dashboardA: Dashboard = {
   balance_trend: trend.map(([date, value]) => ({ date, value })),
   balance_trend_info: TREND_INFO,
   advice: adviceA,
+  advice_status: 'ready',
 }
 
 /** Same numbers, but the backend marks the data as stale and the last load was yesterday. */
@@ -298,6 +299,7 @@ export const dashboardNoAccounts: Dashboard = {
   balance_trend: [],
   balance_trend_info: TREND_INFO,
   advice: [],
+  advice_status: 'not_enough_data',
 }
 
 const runwayAt = (balance: number): Figure => ({
@@ -372,6 +374,7 @@ export const dashboardFewData: Dashboard = {
   balance: { total, bank, cash, week_change: null, week_change_pct: null, runway_days: runway },
   balance_trend: trend.slice(-3).map(([date, value]) => ({ date, value })),
   advice: [],
+  advice_status: 'not_enough_data',
 }
 
 /** `runway_days` is absent: no expenses in the window. */
