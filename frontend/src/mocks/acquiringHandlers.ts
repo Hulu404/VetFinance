@@ -23,6 +23,7 @@ function day(
 ): AcquiringDay {
   const discrepancy = credited === null ? null : credited - expected
   return {
+    date: from,
     date_from: from,
     date_to: to,
     card_payments: rubFigure(payments, [['Банковские карты', payments]], ['vetmanager'], 'Оплаты картой из Ветменеджера за день.'),
@@ -55,6 +56,7 @@ function day(
     status,
     expected_by: expectedBy,
     reviewed: reviewed.has(from),
+    members: [],
   }
 }
 
@@ -109,6 +111,7 @@ function reconciliation(month: string): AcquiringReconciliation {
   const empty = rubFigure(0, [], ['vetmanager'], 'Оплат картой за этот месяц нет.')
   return {
     settlement_days: { min: 1, max: 3 },
+    rate_pct: 1.9,
     bank_covered_to: scenario === 'nostatement' ? '2026-09-03' : '2026-09-09',
     summary: noPayments
       ? { card_payments: empty, commission: empty, credited: empty, discrepancy: empty, waiting: empty }
@@ -120,6 +123,8 @@ function reconciliation(month: string): AcquiringReconciliation {
 function details(date: string): AcquiringDayDetails {
   const isGroup = date === '2026-09-04'
   return {
+    date_from: date,
+    date_to: isGroup ? '2026-09-06' : date,
     payments: isGroup
       ? [
           { date: '2026-09-04', description: 'Приём · терапия', amount: 240000 },
@@ -128,8 +133,8 @@ function details(date: string): AcquiringDayDetails {
           { date: '2026-09-06', description: 'Стоматология', amount: 840000 },
         ]
       : [
-          { description: 'Приём · терапия', amount: 240000 },
-          { description: 'Анализы', amount: 380000 },
+          { date, description: 'Приём · терапия', amount: 240000 },
+          { date, description: 'Анализы', amount: 380000 },
         ],
     credits: isGroup
       ? [{ date: '2026-09-07', description: 'Расчётный счёт · зачисление эквайринга', amount: 23812400, transaction_id: 't-fill-1' }]

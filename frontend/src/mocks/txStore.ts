@@ -1,19 +1,19 @@
 // In-memory state of the mock backend for stage 1: operations, rules, imported files.
 // It behaves like the future backend (statuses, rules, duplicates) so the screens can be checked end to end.
-import type { Category, CategoryRule, NamedRef, Transaction, TxKind, TxSource, TxStatus } from '../api/types'
+import type { Category, CategoryRule, NamedRef, Transaction, TransactionBrief, TxKind, TxSource, TxStatus } from '../api/types'
 import { countFigure, rubFigure } from './figures'
 
 export const CATEGORIES: Category[] = [
-  { id: 'c-income', name: 'Выручка', type: 'income' },
-  { id: 'c-acq', name: 'Выручка (эквайринг)', type: 'income' },
+  { id: 'c-income', name: 'Выручка', type: 'income', norm_min_pct: null, norm_max_pct: null },
+  { id: 'c-acq', name: 'Выручка (эквайринг)', type: 'income', norm_min_pct: null, norm_max_pct: null },
   { id: 'c-rent', name: 'Аренда', type: 'fixed', norm_min_pct: 6, norm_max_pct: 10 },
   { id: 'c-drugs', name: 'Препараты', type: 'variable', norm_min_pct: 20, norm_max_pct: 28 },
-  { id: 'c-lab', name: 'Лаборатория', type: 'variable' },
-  { id: 'c-util', name: 'Коммунальные услуги', type: 'fixed' },
-  { id: 'c-tax', name: 'Налоги и взносы', type: 'fixed' },
-  { id: 'c-pay', name: 'Зарплата', type: 'fixed' },
-  { id: 'c-bank', name: 'Банковские комиссии', type: 'variable' },
-  { id: 'c-other', name: 'Прочие расходы', type: 'variable' },
+  { id: 'c-lab', name: 'Лаборатория', type: 'variable', norm_min_pct: null, norm_max_pct: null },
+  { id: 'c-util', name: 'Коммунальные услуги', type: 'fixed', norm_min_pct: null, norm_max_pct: null },
+  { id: 'c-tax', name: 'Налоги и взносы', type: 'fixed', norm_min_pct: null, norm_max_pct: null },
+  { id: 'c-pay', name: 'Зарплата', type: 'fixed', norm_min_pct: null, norm_max_pct: null },
+  { id: 'c-bank', name: 'Банковские комиссии', type: 'variable', norm_min_pct: null, norm_max_pct: null },
+  { id: 'c-other', name: 'Прочие расходы', type: 'variable', norm_min_pct: null, norm_max_pct: null },
 ]
 
 export const ACCOUNT_REFS: Record<string, NamedRef> = {
@@ -213,8 +213,7 @@ function accountLabel(accountId: string): string {
   return ACCOUNT_REFS[accountId]?.name ?? accountId
 }
 
-export function toDto(stored: StoredTx, depth = 0): Transaction {
-  const original = depth === 0 && stored.duplicateOfId ? store.transactions.find((t) => t.id === stored.duplicateOfId) : null
+function toBriefDto(stored: StoredTx): TransactionBrief {
   return {
     id: stored.id,
     date: stored.date,
@@ -235,9 +234,16 @@ export function toDto(stored: StoredTx, depth = 0): Transaction {
           ? `Статья «${categoryRef(stored.categoryId)?.name ?? ''}».`
           : 'Статья пока не назначена.',
     ),
-    duplicate_of: original ? toDto(original, 1) : null,
-    duplicate_reason: stored.duplicateReason,
     duplicate_state: stored.duplicateState,
+  }
+}
+
+export function toDto(stored: StoredTx): Transaction {
+  const original = stored.duplicateOfId ? store.transactions.find((t) => t.id === stored.duplicateOfId) : null
+  return {
+    ...toBriefDto(stored),
+    duplicate_of: original ? toBriefDto(original) : null,
+    duplicate_reason: stored.duplicateReason,
     suggestion: suggestionFor(stored),
   }
 }

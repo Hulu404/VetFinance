@@ -1,4 +1,4 @@
-import type { Figure, Transaction, TxSource } from '../../api/types'
+import type { Figure, TransactionBrief, TxSource } from '../../api/types'
 import { FigureButton } from '../../components/FigureButton'
 import { Pill, type PillVariant } from '../../components/Pill'
 import { formatDateLong, formatDateShort, formatDayMonth, parseIsoDate } from '../../lib/dates'
@@ -12,7 +12,7 @@ export const SOURCE_PILL: Record<TxSource, { text: string; variant: PillVariant 
 }
 
 /** The tip of an amount. Without `figure` from the API the tip is built from the fields of the row, without any arithmetic. */
-export function amountFigure(tx: Transaction): Figure {
+export function amountFigure(tx: TransactionBrief): Figure {
   if (tx.figure) return tx.figure
   const parts = [formatDateLong(tx.date), tx.account.name]
   if (tx.category) parts.push(`статья «${tx.category.name}»`)
@@ -44,7 +44,7 @@ export function DateCell({ date, referenceYear }: { date: string; referenceYear:
   )
 }
 
-export function AmountCell({ tx }: { tx: Transaction }) {
+export function AmountCell({ tx }: { tx: TransactionBrief }) {
   const tone = tx.kind === 'transfer' || tx.status === 'duplicate' ? 'soft' : tx.amount > 0 ? 'in' : 'out'
   return (
     <span className={`tx-amount tx-amount--${tone}`} data-testid="tx-amount">
@@ -56,7 +56,7 @@ export function AmountCell({ tx }: { tx: Transaction }) {
 }
 
 /** Description with the 2-line limit; the full text is in the title. */
-export function DescriptionText({ tx }: { tx: Transaction }) {
+export function DescriptionText({ tx }: { tx: TransactionBrief }) {
   return (
     <span className="tx-desc" data-testid="tx-description" title={tx.description}>
       {tx.description}
@@ -65,7 +65,7 @@ export function DescriptionText({ tx }: { tx: Transaction }) {
 }
 
 /** "Т-Банк · 7972 · Банк" under the description. */
-export function MetaLine({ tx }: { tx: Transaction }) {
+export function MetaLine({ tx }: { tx: TransactionBrief }) {
   return (
     <span className="tx-meta">
       {tx.account.name} · {SOURCE_PILL[tx.source].text}
@@ -73,16 +73,16 @@ export function MetaLine({ tx }: { tx: Transaction }) {
   )
 }
 
-interface CategoryCellProps {
-  tx: Transaction
+interface CategoryCellProps<T extends TransactionBrief> {
+  tx: T
   /** "all": the pill opens the dialog. "check": the action column has the button, the pill is only a label. */
   mode: 'all' | 'check'
   disabled?: boolean
-  onEdit: (tx: Transaction) => void
+  onEdit: (tx: T) => void
 }
 
 /** The "Статья" column: the pill that says what the operation is (design/components.md, section 3). */
-export function CategoryCell({ tx, mode, disabled = false, onEdit }: CategoryCellProps) {
+export function CategoryCell<T extends TransactionBrief>({ tx, mode, disabled = false, onEdit }: CategoryCellProps<T>) {
   if (tx.kind === 'transfer') return <Pill variant="neutral">перевод между счетами</Pill>
 
   if (tx.status === 'check') {
@@ -133,7 +133,7 @@ export function CategoryCell({ tx, mode, disabled = false, onEdit }: CategoryCel
 }
 
 /** The "дубль" plate next to the description of a confirmed duplicate. */
-export function DuplicateMark({ tx }: { tx: Transaction }) {
+export function DuplicateMark({ tx }: { tx: TransactionBrief }) {
   if (tx.status !== 'duplicate') return null
   return (
     <span data-testid="tx-status">

@@ -2,7 +2,7 @@ import type { RefObject } from 'react'
 import { isApiError } from '../../api/errors'
 import { useResolveDuplicate } from '../../api/mutations'
 import { useTransactionList } from '../../api/queries'
-import type { Transaction } from '../../api/types'
+import type { Transaction, TransactionBrief } from '../../api/types'
 import { Pill } from '../../components/Pill'
 import { EmptyState, LoadErrorCard } from '../../components/StateBlocks'
 import { useToast } from '../../components/Toast'
@@ -29,7 +29,7 @@ function DupRow({
   busy,
   onKeep,
 }: {
-  tx: Transaction
+  tx: TransactionBrief
   label: string
   referenceYear: number | undefined
   keepable: boolean
@@ -83,7 +83,7 @@ export function DuplicatesPanel({ referenceYear, narrow, headingRef }: Duplicate
 
   const fail = () => toast.show({ kind: 'error', message: 'Не получилось выполнить действие. Попробуйте ещё раз.' })
 
-  const keep = (flagged: Transaction, kept: Transaction) => {
+  const keep = (flagged: Transaction, kept: TransactionBrief) => {
     resolve.mutate(
       { id: flagged.id, decision: { keepId: kept.id } },
       {
@@ -129,6 +129,7 @@ export function DuplicatesPanel({ referenceYear, narrow, headingRef }: Duplicate
         <p className="tx-note">{NOTE}</p>
         <ul className="dup-list">
           {rows.map((flagged) => {
+            const original = flagged.duplicate_of
             const pending = flagged.duplicate_state !== 'confirmed'
             const busy = busyId === flagged.id
             return (
@@ -142,14 +143,14 @@ export function DuplicatesPanel({ referenceYear, narrow, headingRef }: Duplicate
                     </>
                   )}
                 </p>
-                {flagged.duplicate_of && (
+                {original && (
                   <DupRow
-                    tx={flagged.duplicate_of}
+                    tx={original}
                     label="Уже была в учёте"
                     referenceYear={referenceYear}
                     keepable={pending}
                     busy={busy}
-                    onKeep={() => keep(flagged, flagged.duplicate_of as Transaction)}
+                    onKeep={() => keep(flagged, original)}
                   />
                 )}
                 <DupRow
