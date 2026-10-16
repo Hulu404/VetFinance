@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import type { DashboardMonth, Figure } from '../../api/types'
 import { FigureButton } from '../../components/FigureButton'
 import { KpiCard } from '../../components/KpiCard'
+import { asOfFromSearch } from '../../lib/asOf'
 import { monthNameLower, monthNameTitle, monthOf } from '../../lib/dates'
 import { formatDays, formatFigure } from '../../lib/format'
 import { DashEmpty } from './DashEmpty'
@@ -67,8 +68,8 @@ function MonthCards({ month, asOf }: { month: DashboardMonth; asOf: string }) {
       <li>
         <KpiCard
           testId="month-profit"
-          label="Прибыль"
-          tipTitle={`Прибыль · ${name}`}
+          label="Прибыль по деньгам"
+          tipTitle={`Прибыль по деньгам · ${name}`}
           emoji="💰"
           variant="detailed"
           state="ready"
@@ -78,6 +79,22 @@ function MonthCards({ month, asOf }: { month: DashboardMonth; asOf: string }) {
         />
       </li>
     </ul>
+  )
+}
+
+/** Under the cards: this profit is cash-based, the month profit with taxes and depreciation lives in the report (decision of 2026-10-14). */
+function ProfitHint({ asOf }: { asOf: string }) {
+  const urlAsOf = asOfFromSearch(useLocation().search)
+  const query = new URLSearchParams({ month: monthOf(asOf) })
+  if (urlAsOf) query.set('as_of', urlAsOf)
+  return (
+    <p className="dash-profit-hint" data-testid="month-profit-hint">
+      Прибыль здесь считается по деньгам: выручка минус уже заплаченное. Прибыль месяца с налогами и амортизацией — в отчёте{' '}
+      <Link to={`/reports/pnl?${query.toString()}`} data-testid="month-profit-link">
+        Прибыль и убытки
+      </Link>
+      .
+    </p>
   )
 }
 
@@ -107,7 +124,10 @@ export function MonthSection({ month, asOf, dataAsOf }: MonthSectionProps) {
           }
         />
       ) : (
-        <MonthCards month={month} asOf={asOf} />
+        <>
+          <MonthCards month={month} asOf={asOf} />
+          <ProfitHint asOf={asOf} />
+        </>
       )}
     </section>
   )

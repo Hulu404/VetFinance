@@ -104,9 +104,15 @@ class CategoryRulesOut(BaseModel):
 class CategoryOut(BaseModel):
     id: str
     name: str
-    type: Literal["income", "variable", "fixed"]
-    norm_min_pct: float | None
+    # tax, obligation, capex and owner_draw are bank payments that are not costs of the P&L (docs/api-contract.md)
+    type: Literal["income", "variable", "fixed", "tax", "obligation", "capex", "owner_draw"]
+    norm_min_pct: float | None  # the clinic's own norm of the article
     norm_max_pct: float | None
+    norm_key: (
+        Literal["payroll", "drugs", "rent", "lab", "writeoff", "acquiring", "marketing"] | None
+    )
+    direction: Literal["services", "goods"] | None  # direct costs of a direction (function 18)
+    payroll: bool  # salaries of employees: the "ФОТ (оклады)" part of the fixed costs
 
 
 class CategoriesOut(BaseModel):

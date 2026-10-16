@@ -3,17 +3,24 @@
 import type { Category, CategoryRule, NamedRef, Transaction, TransactionBrief, TxKind, TxSource, TxStatus } from '../api/types'
 import { countFigure, rubFigure } from './figures'
 
+const REPORT_DEFAULTS: Pick<Category, 'norm_key' | 'direction' | 'payroll'> = {
+  norm_key: null, direction: null, payroll: false,
+}
+
 export const CATEGORIES: Category[] = [
-  { id: 'c-income', name: 'Выручка', type: 'income', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-acq', name: 'Выручка (эквайринг)', type: 'income', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-rent', name: 'Аренда', type: 'fixed', norm_min_pct: 6, norm_max_pct: 10 },
-  { id: 'c-drugs', name: 'Препараты', type: 'variable', norm_min_pct: 20, norm_max_pct: 28 },
-  { id: 'c-lab', name: 'Лаборатория', type: 'variable', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-util', name: 'Коммунальные услуги', type: 'fixed', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-tax', name: 'Налоги и взносы', type: 'fixed', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-pay', name: 'Зарплата', type: 'fixed', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-bank', name: 'Банковские комиссии', type: 'variable', norm_min_pct: null, norm_max_pct: null },
-  { id: 'c-other', name: 'Прочие расходы', type: 'variable', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-income', name: 'Выручка', type: 'income', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-acq', name: 'Выручка (эквайринг)', type: 'income', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-rent', name: 'Аренда', type: 'fixed', norm_min_pct: 6, norm_max_pct: 10, norm_key: 'rent' },
+  { ...REPORT_DEFAULTS, id: 'c-drugs', name: 'Препараты', type: 'variable', norm_min_pct: 20, norm_max_pct: 28, norm_key: 'drugs', direction: 'goods' },
+  { ...REPORT_DEFAULTS, id: 'c-lab', name: 'Лаборатория', type: 'variable', norm_min_pct: null, norm_max_pct: null, norm_key: 'lab', direction: 'services' },
+  { ...REPORT_DEFAULTS, id: 'c-util', name: 'Коммунальные услуги', type: 'fixed', norm_min_pct: null, norm_max_pct: null, norm_key: 'rent' },
+  { ...REPORT_DEFAULTS, id: 'c-tax', name: 'Налоги и взносы', type: 'tax', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-pay', name: 'Зарплата', type: 'fixed', norm_min_pct: null, norm_max_pct: null, payroll: true },
+  { ...REPORT_DEFAULTS, id: 'c-bank', name: 'Банковские комиссии', type: 'variable', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-other', name: 'Прочие расходы', type: 'variable', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-loan', name: 'Платёж по кредиту', type: 'obligation', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-capex', name: 'Покупка оборудования', type: 'capex', norm_min_pct: null, norm_max_pct: null },
+  { ...REPORT_DEFAULTS, id: 'c-owner', name: 'Вывод владельца', type: 'owner_draw', norm_min_pct: null, norm_max_pct: null },
 ]
 
 export const ACCOUNT_REFS: Record<string, NamedRef> = {

@@ -7,6 +7,9 @@ import { LoginPage } from './pages/LoginPage'
 import { BankSection } from './pages/settings/BankSection'
 import { SettingsLayout, SettingsSoon } from './pages/settings/SettingsLayout'
 import { VetmanagerSection } from './pages/settings/VetmanagerSection'
+import { NormPage } from './pages/reports/NormPage'
+import { PnlPage } from './pages/reports/PnlPage'
+import { StockPage } from './pages/reports/StockPage'
 import { ComingSoonPage, NotFoundPage } from './pages/StubPages'
 import { TransactionsPage } from './pages/transactions/TransactionsPage'
 import { flattenPaths, MENU } from './shell/menu'
@@ -45,6 +48,9 @@ export function App() {
           <Route element={<Shell />}>
             <Route index element={<DashboardPage />} />
             <Route path="transactions" element={<TransactionsPage />} />
+            <Route path="reports/pnl" element={<PnlPage />} />
+            <Route path="reports/norm" element={<NormPage />} />
+            <Route path="reports/stock" element={<StockPage />} />
             <Route path="settings" element={<SettingsLayout />}>
               <Route index element={<Navigate to="connections/vetmanager" replace />} />
               <Route path="connections/vetmanager" element={<VetmanagerSection />} />

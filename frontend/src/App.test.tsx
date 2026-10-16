@@ -75,8 +75,24 @@ describe('App: login and shell', () => {
     expect(within(nav).getByRole('link', { name: 'Рабочий стол' })).toHaveAttribute('aria-current', 'page')
     expect(within(nav).getByRole('link', { name: 'Транзакции' })).toHaveAttribute('href', '/transactions')
     expect(within(nav).getByRole('button', { name: /Прайс услуг/ })).toBeDisabled()
-    expect(within(nav).getByRole('button', { name: /Отчёты/ })).toBeDisabled()
+    expect(within(nav).getByRole('button', { name: /Планирование/ })).toBeDisabled()
+    expect(within(nav).getByRole('button', { name: /Аналитика/ })).toBeDisabled()
+    expect(within(nav).getByRole('button', { name: /Отчёты/ })).toBeEnabled()
     expect(within(nav).queryByText('Врачи')).not.toBeInTheDocument()
+  })
+
+  it('opens the reports group with its three ready sections', async () => {
+    const user = userEvent.setup()
+    renderWithAuth(<App />, '/')
+    await signIn(user)
+    await screen.findByTestId('balance-total')
+
+    const nav = screen.getByRole('navigation', { name: 'Основное меню' })
+    await user.click(within(nav).getByRole('button', { name: /Отчёты/ }))
+
+    expect(within(nav).getByRole('link', { name: 'Прибыль и убытки' })).toHaveAttribute('href', '/reports/pnl')
+    expect(within(nav).getByRole('link', { name: 'Норма' })).toHaveAttribute('href', '/reports/norm')
+    expect(within(nav).getByRole('link', { name: 'Склад и сроки' })).toHaveAttribute('href', '/reports/stock')
   })
 
   it('signs out from the menu', async () => {

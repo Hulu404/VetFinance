@@ -15,6 +15,7 @@ from app.clock import clinic_today, get_now
 from app.integrations.vetmanager import OK, VetmanagerError, get_vetmanager_api
 from app.jobs import get_runner
 from app.main import create_app
+from app.ratelimit import SlidingWindowLimiter, get_export_limiter
 from app.repo import get_repo
 from app.rows import ClinicRow, SyncRunRow
 from app.secrets import FernetBox, SecretBox, get_secret_box
@@ -127,6 +128,9 @@ def build_app(repo: MemoryRepo, api: FakeVetmanagerApi, box: SecretBox) -> FastA
 
     app.dependency_overrides[get_repo] = _repo
     app.dependency_overrides[get_now] = lambda: NOW
+    limiter = SlidingWindowLimiter()  # a fresh budget of exports per app: NOW never moves in tests
+    app.dependency_overrides[get_export_limiter] = lambda: limiter
+    app.state.export_limiter = limiter
     app.dependency_overrides[get_vetmanager_api] = lambda: api
     app.dependency_overrides[get_secret_box] = lambda: box
     runner = InlineRunner(repo, api, box)

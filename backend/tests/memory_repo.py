@@ -26,6 +26,14 @@ from app.rows import (
 from engine.balance import AccountInput, TransactionInput
 from engine.dashboard_inputs import NormsInput, SaleInput, SaleLineInput, VisitInput
 from engine.dedup import TxRef
+from engine.reports_inputs import (
+    BenchmarkInput,
+    ConsumptionInput,
+    ObligationChargeInput,
+    StockBatchInput,
+    StockItemInput,
+    WriteoffInput,
+)
 from engine.vetmanager import Payment, Sale, Visit
 
 BASE_TIME = datetime(2026, 9, 1, 0, 0, tzinfo=UTC)
@@ -59,6 +67,12 @@ class MemoryRepo:
         self.sales: dict[str, Sale] = {}
         self.payments: dict[str, tuple[Payment, str | None]] = {}
         self.reviews: dict[date, str | None] = {}
+        self.charges: list[ObligationChargeInput] = []
+        self.benchmarks: list[BenchmarkInput] = []
+        self.stock_items: list[StockItemInput] = []
+        self.stock_batches: list[StockBatchInput] = []
+        self.writeoffs: list[WriteoffInput] = []
+        self.consumption: list[ConsumptionInput] = []
         self.now = BASE_TIME  # "current" time of the data layer (run start, event time)
         self._seq = 0
 
@@ -88,8 +102,20 @@ class MemoryRepo:
         self.accounts.append(row)
         return row
 
-    def add_category(self, name: str, type_: str = "variable") -> CategoryRow:
-        row = CategoryRow(self.new_id(), name, type_, None, None)
+    def add_category(
+        self,
+        name: str,
+        type_: str = "variable",
+        *,
+        norm_min_pct: float | None = None,
+        norm_max_pct: float | None = None,
+        norm_key: str | None = None,
+        direction: str | None = None,
+        payroll: bool = False,
+    ) -> CategoryRow:
+        row = CategoryRow(
+            self.new_id(), name, type_, norm_min_pct, norm_max_pct, norm_key, direction, payroll
+        )
         self.categories.append(row)
         return row
 
@@ -213,8 +239,27 @@ class MemoryRepo:
 
     # ------------------------------------------------------------ categories and rules
     async def list_categories(self) -> list[CategoryRow]:
-        order = {"income": 0, "variable": 1, "fixed": 2}
-        return sorted(self.categories, key=lambda c: (order[c.type], c.name))
+        order = ("income", "variable", "fixed", "tax", "obligation", "capex", "owner_draw")
+        return sorted(self.categories, key=lambda c: (order.index(c.type), c.name))
+
+    # ------------------------------------------------------------ reports (stage 3)
+    async def list_obligation_charges(self) -> list[ObligationChargeInput]:
+        return list(self.charges)
+
+    async def list_benchmarks(self) -> list[BenchmarkInput]:
+        return sorted(self.benchmarks, key=lambda b: (b.sort, b.key))
+
+    async def list_stock_items(self) -> list[StockItemInput]:
+        return sorted(self.stock_items, key=lambda i: (i.name, i.id))
+
+    async def list_stock_batches(self) -> list[StockBatchInput]:
+        return [b for b in self.stock_batches if b.qty > 0]
+
+    async def list_writeoffs(self, first: date, last: date) -> list[WriteoffInput]:
+        return [w for w in self.writeoffs if first <= w.date <= last]
+
+    async def list_stock_consumption(self, first: date, last: date) -> list[ConsumptionInput]:
+        return [c for c in self.consumption if first <= c.date <= last]
 
     async def list_rules(self) -> list[RuleRow]:
         return list(self.rules)

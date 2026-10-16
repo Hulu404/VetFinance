@@ -1,0 +1,30 @@
+.gauge {
+  position: relative;
+  height: var(--gauge-height);
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  background: var(--color-track);
+}
+.gauge__zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  background: var(--color-ok-soft);
+  border-left: var(--gauge-zone-edge) solid var(--color-ok);
+  border-right: var(--gauge-zone-edge) solid var(--color-ok);
+}
+.gauge__zone--open-left { border-left: 0; }
+.gauge__zone--open-right { border-right: 0; }
+.gauge__marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--gauge-marker-width);
+  margin-left: calc(var(--gauge-marker-width) / -2);
+  border-radius: 2px;
+  background: var(--color-ink);
+  box-shadow: 0 0 0 1px var(--color-surface);
+}
+.gauge__marker--warn { background: var(--color-warn); }
+.gauge__marker--bad { background: var(--color-bad); }

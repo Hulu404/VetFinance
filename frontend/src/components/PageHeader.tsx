@@ -12,12 +12,14 @@ interface PageHeaderProps {
   actions?: ReactNode
   /** Total balance in the corner: on every screen except the dashboard (design/screens/shell.md). */
   balance?: boolean
+  /** Phone order of the right part: the report screens put the actions first, the balance under them. */
+  actionsFirst?: boolean
 }
 
-export function PageHeader({ title, subtitle, subtitleLoading = false, actions, balance = false }: PageHeaderProps) {
+export function PageHeader({ title, subtitle, subtitleLoading = false, actions, balance = false, actionsFirst = false }: PageHeaderProps) {
   usePageTitle(title)
   return (
-    <header className="page-head">
+    <header className={actionsFirst ? 'page-head page-head--actions-first' : 'page-head'}>
       <div className="page-head__title">
         <h1 tabIndex={-1}>{title}</h1>
         {subtitleLoading ? (

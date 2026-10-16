@@ -16,6 +16,17 @@
   - подсказки привязаны к элементу и открываются с клавиатуры (Tab, Esc) и касанием; на Рабочем столе подсказка у каждой цифры;
   - тёмный мелкий текст вместо #A7A5B2, минимальный шрифт 11px, фокус без чужого радиуса;
   - Рабочий стол: состояния для просмотра (кнопки внизу экрана; только в прототипе).
+  Правки этапа 3 (отчёты; спецификации design/screens/pnl.md, norm.md, stock.md):
+  - ОПиУ: постоянные расходы раскрыты на «ФОТ» и «Аренда и прочие постоянные»; состав статей сходится с «Нормой» (ФОТ врачей 305 000 = проценты 218 000 + оклады врачей 87 000; препараты и расходники 339 800 = закупка 248 800 + расходные материалы 91 000);
+  - ОПиУ, «по направлениям»: вместо прибыльности направлений (функция 19, очередь 2) выручка и маржа услуг и товаров (функция 18), с мостом к маржинальной прибыли 608 000;
+  - Норма: норма в рублях точная (0,8% × 1 240 000 = 9 920, перерасход 13 480), шкала с границами зоны, плашки словами, колонка «В рублях», строка «Остальные статьи» (доли сходятся к 100%);
+  - Склад: «Срок истекает за 60 дней» вместо «Сгорит», списание Кетофена 7 уп × 1 175 = 8 225 ₽, количества и суммы позиций делятся без остатка, список «Без движения» с интервалами 60–89, 90–179, от 180 дней;
+  - кнопки «Скачать Excel» и «Скачать PDF» на трёх отчётах (в прототипе не скачивают).
+  Правки по решениям владельца от 14.10.2026 (docs/handoff.md):
+  - списание по сроку (23 400 ₽) убрано из строк ОПиУ и из прямых расходов товаров: деньги за товар ушли закупкой. Остаётся справочной строкой в «Норме» и на «Складе». Итоги ОПиУ прежние, потому что 23 400 ₽ в составе «Закупки кормов» 118 400 ₽ это товары для перепродажи (70 200 + 23 400 = 93 600 ₽);
+  - Норма: эквайринг 1,0–2,0%; «Остальные статьи» 260 000 ₽ (21,0%); «Списание по сроку» справочно и не входит в вывод; вывод «Одна статья выше нормы»;
+  - Склад: оборачиваемость = запас ÷ расход за 90 дней (740 000 × 90 ÷ 900 000 = 74 дня);
+  - Рабочий стол: «Прибыль по деньгам» со ссылкой на отчёт «Прибыль и убытки»; «9 дней из 30» (days_passed = день as_of), «Хватит на» считается по окну 28 дней.
   Шрифт Onest подключён с Google Fonts только для просмотра прототипа; в продукте он ставится из пакета @fontsource/onest.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -175,9 +186,24 @@ tr[data-tip]{cursor:help;transition:background .15s} tr[data-tip]:hover{backgrou
 .pl{display:grid;grid-template-columns:1fr 160px 68px;gap:12px;align-items:center;padding:13px 14px;border-radius:12px;font-size:14px;cursor:help;transition:.15s}
 .pl:hover{background:var(--accent-soft2)}
 .pl .bar{border-left:3px solid var(--ink-faint);padding-left:11px}
-.pl.rev .bar{border-color:var(--ok)} .pl.exp .bar{border-color:var(--bad)} .pl.sum .bar{border-color:var(--accent)}
-.pl.sum{background:var(--accent-soft2);font-weight:700} .pl.tot{background:var(--ok-soft);font-weight:700}
+.pl.sum .bar{border-color:var(--accent)}
+.pl.sum{background:var(--accent-soft2);font-weight:700} .pl.tot{background:var(--ok-soft);font-weight:700} .pl.tot.neg{background:var(--bad-soft)}
+.pl.ch{font-size:13px} .pl.ch .bar{border-left:0;padding-left:28px} .pl.ch .bar b{font-weight:500} .pl.ch .n{font-weight:600}
 .pl .n{text-align:right;font-weight:700;white-space:nowrap} .pl .p{text-align:right;font-size:12px;color:var(--ink-soft);font-weight:600}
+.verdict{font-size:15px;font-weight:600;margin:0 0 16px;max-width:66ch}
+.mbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.mbar b{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.mbar .act{width:40px;padding:0;font-size:18px}
+/* полоса структуры (этап 3): сегменты и легенда */
+.sbar{display:flex;gap:2px;height:14px;margin:4px 0 12px}
+.sbar i{display:block;height:100%;border-radius:7px;min-width:3px}
+.sleg{display:flex;flex-wrap:wrap;gap:2px 18px;font-size:13px}
+.sleg .tb{display:inline-flex;align-items:center;gap:7px;min-height:32px;cursor:help;border-radius:8px;padding:2px 6px;margin:0 -6px}
+.sleg .tb:hover{background:var(--accent-soft2)}
+.sleg .tb b{font-weight:600} .sleg .tb span{font-size:12px;color:var(--ink-soft);font-weight:600}
+.s1{background:var(--accent-dark)} .s2{background:var(--accent)} .s3{background:var(--accent-mid)}
+.s4{background:var(--accent-light);box-shadow:inset 0 0 0 1px var(--accent-mid)} .s5{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-mid)} .s6{background:var(--sidebar)}
+.sleg i{display:inline-block;width:10px;height:10px;border-radius:3px}
 
 .bars{display:flex;flex-direction:column;gap:14px}
 .brow{cursor:help;padding:3px 0}
@@ -188,7 +214,8 @@ tr[data-tip]{cursor:help;transition:background .15s} tr[data-tip]:hover{backgrou
 .fill.l{background:#E9A3BB} .fill.n{background:var(--bad)} .fill.g{background:var(--ok)} .fill.d{background:var(--sidebar)}
 
 .gauge{position:relative;height:24px;background:var(--track);border-radius:7px;overflow:hidden}
-.gz{position:absolute;top:0;bottom:0;background:var(--ok-soft)}
+.gz{position:absolute;top:0;bottom:0;background:var(--ok-soft);border-left:2px solid var(--ok);border-right:2px solid var(--ok)}
+.gz.l0{border-left:0}
 .gm{position:absolute;top:-2px;bottom:-2px;width:3px;background:var(--ink);border-radius:2px}
 .gm.bad{background:var(--bad)} .gm.warn{background:var(--warn)}
 
@@ -283,7 +310,17 @@ tr[data-tip]{cursor:help;transition:background .15s} tr[data-tip]:hover{backgrou
 #tip .srcs .tag{margin:0 0 0 6px;color:#fff}
 #tip .bad{color:#FF8F7A} #tip .good{color:#5FD3A3}
 
-@media (max-width:1100px){ .g2,.setwrap{grid-template-columns:1fr} }
+.normtbl tr.muted td{color:var(--ink-soft)}
+@media (max-width:1100px){ .g2,.setwrap{grid-template-columns:1fr}
+  /* Норма: таблица превращается в карточки (в продукте отдельная разметка списка, здесь для просмотра) */
+  .normtbl,.normtbl tbody{display:block} .normtbl thead{display:none}
+  .normtbl tr{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nm dv" "ga ga" "sh no" "ru ru";gap:8px 12px;padding:14px 0;border-top:1px solid var(--border)}
+  .normtbl tr:first-child{border-top:0}
+  .normtbl td{display:block;padding:0;border:0;text-align:left}
+  .normtbl .t-name{grid-area:nm} .normtbl .t-dev{grid-area:dv;justify-self:end} .normtbl .t-gauge{grid-area:ga}
+  .normtbl .t-share{grid-area:sh} .normtbl .t-norm{grid-area:no;justify-self:end} .normtbl .t-rub{grid-area:ru}
+  .normtbl .t-share::before,.normtbl .t-rub::before{content:attr(data-l) ' ';color:var(--ink-soft);font-size:12px;font-weight:600}
+}
 @media (max-width:820px){
   .app{flex-direction:column} .sidebar{width:100%;height:auto;position:static}
   .nav{flex-direction:row;overflow-x:auto} .nav .sub{display:none} .nav .sep{display:none} .nav button{white-space:nowrap;min-height:44px;width:auto}
@@ -291,12 +328,13 @@ tr[data-tip]{cursor:help;transition:background .15s} tr[data-tip]:hover{backgrou
   .subnav button{white-space:nowrap;min-height:44px;padding:8px 14px;border-radius:12px;border:0;background:rgba(255,255,255,.06);color:#BCBAC7;font-size:13px;font-weight:600;cursor:pointer}
   .subnav button.active{background:rgba(255,255,255,.14);color:#fff}
   .main{padding:18px 14px 40px} .hero .num{font-size:32px}
-  .pl{grid-template-columns:1fr 100px} .daylist .d{grid-template-columns:1fr 1fr}
+  .daylist .d{grid-template-columns:1fr 1fr}
   .why,.act,.seg button,.banner .lnk{min-height:44px}
   .sfoot .out{min-height:44px}
 }
 @media (max-width:720px){ .accs,.mrow{grid-template-columns:1fr} }
 @media (max-width:560px){
+  .pl{grid-template-columns:1fr auto} .pl .p{grid-column:1;text-align:left;padding-left:14px} .pl.ch .p{padding-left:28px}
   .hero-top{display:block} .hero .cap{display:block;text-align:left;margin-top:4px}
   .tip-h{display:block} .why{width:100%;margin-top:12px;min-height:44px}
 }
@@ -353,7 +391,7 @@ const ICONS={
 };
 const ic=(n,s)=>`<svg class="i" aria-hidden="true" viewBox="0 0 24 24"${s?` style="font-size:${s}"`:''}>${ICONS[n]||''}</svg>`;
 
-let view='dash', open1=null, opiuMode='all', txTab='all', setTab='main', scen='base', calMode='month', calSel=9;
+let view='dash', open1=null, opiuMode='all', stkTab='all', txTab='all', setTab='main', scen='base', calMode='month', calSel=9;
 
 const NAV=[
  ['dash','ic-home','Рабочий стол'],
@@ -383,10 +421,10 @@ const D={
  weekAgo:397400, weekPct:3.9, weekDelta:15400,
  bankWeekAgo:326780, bankIn:190400, bankOut:235880, fromCash:60000,
  cashWeekAgo:70620, cashIn:68200, cashOut:7320, cashToBank:60000,
- expDay:35125, runway:11,
- rev:330000, revServ:201300, revGoods:128700, avgCheck:2143, visits:154, forecast:1237500,
+ exp28:1050000, expDay:37500, runway:11,
+ rev:330000, revServ:201300, revGoods:128700, avgCheck:2143, visits:154, forecast:1100000,
  exp:281000, expSal:128000, expMed:92400, expSup:42500, expOther:18100, expPrev:253100, expChg:11.0,
- profit:49000, margin:14.8, passed:8, totalDays:30,
+ profit:49000, margin:14.8, passed:9, totalDays:30,
  trend:[['27 августа',371200],['28 августа',379400],['29 августа',376100],['30 августа',385300],['31 августа',382000],['1 сентября',391800],['2 сентября',397400],
         ['3 сентября',405900],['4 сентября',402200],['5 сентября',409700],['6 сентября',407100],['7 сентября',414500],['8 сентября',410900],['9 сентября',412800]]
 };
@@ -426,15 +464,22 @@ const T={
   <div class="f">Данные из Ветменеджера, сверены с эквайрингом и кассой.</div>`,
  o_var:`<span class="tag">Переменные расходы</span><h4>− 632 000 ₽ · 51,0%</h4>
   <div class="r"><span>Проценты врачам</span><b>218 000 ₽</b></div><div class="r"><span>Закупка препаратов</span><b>248 800 ₽</b></div>
-  <div class="r"><span>Закупка кормов</span><b>118 400 ₽</b></div><div class="r"><span>Лаборатории</span><b>46 800 ₽</b></div>
-  <div class="f">Растут вместе с выручкой. Норма — 48–54%.</div>`,
+  <div class="r"><span>Товары для перепродажи</span><b>93 600 ₽</b></div><div class="r"><span>Лаборатории</span><b>46 800 ₽</b></div>
+  <div class="r"><span>Комиссия эквайринга</span><b>24 800 ₽</b></div>
+  <div class="f">Растут вместе с выручкой. Норма — 48–54%. Списание по сроку годности сюда не входит: деньги за товар уже учтены при закупке. Оно показано справочно в «Норме» и на «Складе».<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Ветменеджер</span></div></div>`,
  o_marg:`<span class="tag">Маржинальная прибыль</span><h4>608 000 ₽ · 49,0%</h4>
   <div class="r"><span>Выручка</span><b>1 240 000 ₽</b></div><div class="r"><span>Переменные расходы</span><b>−632 000 ₽</b></div>
   <div class="f">Столько остаётся после расходов, которые зависят от количества приёмов. Из этой суммы покрываются аренда, оклады, налоги и обязательства.</div>`,
  o_fix:`<span class="tag">Постоянные расходы</span><h4>− 376 000 ₽ · 30,3%</h4>
-  <div class="r"><span>Оклады</span><b>228 000 ₽</b></div><div class="r"><span>Аренда и коммуналка</span><b>85 000 ₽</b></div>
-  <div class="r"><span>Маркетинг</span><b>26 000 ₽</b></div><div class="r"><span>Связь, хозтовары</span><b>37 000 ₽</b></div>
-  <div class="f">Платятся независимо от того, сколько было приёмов.</div>`,
+  <div class="r"><span>ФОТ (оклады)</span><b>137 000 ₽</b></div><div class="r"><span>Аренда и прочие постоянные</span><b>239 000 ₽</b></div>
+  <div class="f">Платятся независимо от того, сколько было приёмов. Состав по статьям — в строках ниже.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Внесено вручную</span></div></div>`,
+ o_pay:`<span class="tag">ФОТ (оклады)</span><h4>− 137 000 ₽ · 11,0%</h4>
+  <div class="r"><span>Оклады врачей</span><b>87 000 ₽</b></div><div class="r"><span>Оклады персонала</span><b>50 000 ₽</b></div>
+  <div class="f">Проценты врачам (218 000 ₽) учтены в переменных расходах. Полный ФОТ врачей — 305 000 ₽, он в отчёте «Норма».<div class="srcs">Источник:<span class="tag">Банк</span></div></div>`,
+ o_oth:`<span class="tag">Аренда и прочие постоянные</span><h4>− 239 000 ₽ · 19,3%</h4>
+  <div class="r"><span>Аренда и коммуналка</span><b>85 000 ₽</b></div><div class="r"><span>Расходные материалы</span><b>91 000 ₽</b></div>
+  <div class="r"><span>Маркетинг</span><b>26 000 ₽</b></div><div class="r"><span>Связь и прочее</span><b>37 000 ₽</b></div>
+  <div class="f">85 000 + 91 000 + 26 000 + 37 000 = 239 000 ₽.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Внесено вручную</span></div></div>`,
  o_tax:`<span class="tag">Налоги и взносы</span><h4>− 46 000 ₽ · 3,7%</h4>
   <div class="r"><span>УСН 6% с учётом взносов</span><b>37 200 ₽</b></div><div class="r"><span>Взносы</span><b>8 800 ₽</b></div>
   <div class="f">К уплате 20 числа следующего месяца.</div>`,
@@ -442,69 +487,109 @@ const T={
   <div class="r"><span>Амортизация оборудования</span><b>21 400 ₽</b></div><div class="r"><span>Проценты по кредиту и лизингу</span><b>12 000 ₽</b></div>
   <div class="f">Платёж по кредиту и лизингу 38 500 ₽ в месяц: в расходы идут только проценты, основной долг расходом не считается. Амортизация не списывает деньги со счёта.</div>`,
  o_net:`<span class="tag">Чистая прибыль</span><h4>152 600 ₽ · 12,3%</h4>
-  <div class="r"><span>Норма отрасли</span><b>12–20%</b></div><div class="r"><span>Изъято владельцем</span><b>120 000 ₽</b></div>
+  <div class="r"><span>Выручка</span><b>1 240 000 ₽</b></div><div class="r"><span>Переменные расходы</span><b class="bad">−632 000 ₽</b></div>
+  <div class="r"><span>Постоянные расходы</span><b class="bad">−376 000 ₽</b></div><div class="r"><span>Налоги и взносы</span><b class="bad">−46 000 ₽</b></div>
+  <div class="r"><span>Обязательства и амортизация</span><b class="bad">−33 400 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма отрасли</span><b>12–20%</b></div><div class="r"><span>Изъято владельцем</span><b>120 000 ₽</b></div>
   <div class="r"><span>Осталось в бизнесе</span><b>32 600 ₽</b></div>
-  <div class="f">Это деньги, которые клиника реально заработала. Без строки «Обязательства и амортизация» прибыль выглядела бы выше: 186 000 ₽.</div>`,
- d_hir:`<span class="tag">Хирургия</span><h4>+ 94 000 ₽</h4><div class="r"><span>Выручка</span><b>214 000 ₽</b></div>
-  <div class="r"><span>Зарплата и проценты</span><b>−78 000 ₽</b></div><div class="r"><span>Расходники и анестезия</span><b>−30 000 ₽</b></div>
-  <div class="r"><span>Аренда операционной</span><b>−12 000 ₽</b></div><div class="f">Рентабельность 44% — лучшее направление.</div>`,
- d_ter:`<span class="tag">Терапия</span><h4>+ 73 000 ₽</h4><div class="r"><span>Выручка</span><b>287 000 ₽</b></div>
-  <div class="r"><span>Зарплата и проценты</span><b>−148 000 ₽</b></div><div class="r"><span>Расходники</span><b>−44 000 ₽</b></div>
-  <div class="r"><span>Лаборатория</span><b>−22 000 ₽</b></div><div class="f">Рентабельность 25%. Расходники 15,3% выручки направления при норме 9,7%.</div>`,
- d_gru:`<span class="tag">Груминг</span><h4>+ 26 000 ₽</h4><div class="r"><span>Выручка</span><b>62 000 ₽</b></div>
-  <div class="r"><span>Зарплата грумера</span><b>−28 000 ₽</b></div><div class="r"><span>Косметика</span><b>−8 000 ₽</b></div>
-  <div class="f">Небольшое, но стабильно прибыльное направление.</div>`,
- d_lab:`<span class="tag">Лаборатория</span><h4>+ 7 000 ₽</h4><div class="r"><span>Выручка</span><b>44 000 ₽</b></div>
-  <div class="r"><span>Реагенты</span><b>−21 000 ₽</b></div><div class="r"><span>Аутсорс «Шанс Био»</span><b>−16 000 ₽</b></div>
-  <div class="f">Почти в ноль. Треть анализов уходит на сторону.</div>`,
- d_sta:`<span class="tag">Стационар</span><h4 class="bad">− 14 000 ₽</h4><div class="r"><span>Выручка</span><b>68 000 ₽</b></div>
-  <div class="r"><span>Ночные смены</span><b class="bad">−49 000 ₽</b></div><div class="r"><span>Препараты</span><b>−21 000 ₽</b></div>
-  <div class="r"><span>Аренда площади</span><b>−12 000 ₽</b></div>
-  <div class="f"><b class="bad">Убыток третий месяц:</b> −9 000 ₽ в июне, −11 000 ₽ в июле, −14 000 ₽ в августе.</div>`,
- d_sum:`<span class="tag">Сумма по направлениям</span><h4>186 000 ₽</h4>
-  <div class="r"><span>Хирургия</span><b>+94 000 ₽</b></div><div class="r"><span>Терапия</span><b>+73 000 ₽</b></div><div class="r"><span>Груминг</span><b>+26 000 ₽</b></div>
-  <div class="r"><span>Лаборатория</span><b>+7 000 ₽</b></div><div class="r"><span>Стационар</span><b class="bad">−14 000 ₽</b></div>
-  <div class="f">Обязательства и амортизация (33 400 ₽) к направлениям не относятся и вычитаются отдельно.</div>`,
- n_fot:`<span class="tag">ФОТ врачей · 24,6%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>22–28%</b></div>
-  <div class="r"><span>В рублях</span><b>305 000 ₽</b></div><div class="f">Запас до верхней границы — 42 200 ₽ в месяц.</div>`,
- n_med:`<span class="tag">Препараты · 27,4%</span><h4 class="bad">Выше нормы на 2,4 п.п.</h4><div class="r"><span>Норма</span><b>20–25%</b></div>
-  <div class="r"><span>Ваш расход</span><b>339 800 ₽</b></div><div class="r"><span>По верхней границе</span><b>310 000 ₽</b></div>
-  <div class="r"><span>Перерасход</span><b class="bad">29 800 ₽ в месяц</b></div>
-  <div class="f">Держится третий месяц. Связано с разбросом цен у поставщиков.</div>`,
- n_rent:`<span class="tag">Аренда · 6,9%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>5–10%</b></div>
-  <div class="r"><span>В рублях</span><b>85 000 ₽</b></div><div class="f">Хороший показатель для помещения такой площади.</div>`,
- n_lab:`<span class="tag">Лаборатории · 3,8%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>3–6%</b></div>
-  <div class="r"><span>В рублях</span><b>46 800 ₽</b></div><div class="f">Часть анализов можно делать у себя — это снизит долю.</div>`,
- n_exp:`<span class="tag">Списание по сроку · 1,9%</span><h4 class="bad">Выше нормы вдвое</h4><div class="r"><span>Норма</span><b>до 0,8%</b></div>
-  <div class="r"><span>Списано в августе</span><b>23 400 ₽</b></div><div class="r"><span>Норма для вас</span><b>до 9 900 ₽</b></div>
-  <div class="r"><span>Лишние потери</span><b class="bad">13 500 ₽ в месяц</b></div>
-  <div class="f">Закупаете объёмом больше, чем успеваете израсходовать.</div>`,
- n_acq:`<span class="tag">Эквайринг · 2,0%</span><h4 class="good">В норме</h4><div class="r"><span>Норма</span><b>1,5–2,5%</b></div>
-  <div class="r"><span>В рублях</span><b>24 800 ₽</b></div><div class="f">Ставка средняя по рынку.</div>`,
- n_mkt:`<span class="tag">Маркетинг · 2,1%</span><h4>Ниже нормы</h4><div class="r"><span>Норма</span><b>3–7%</b></div>
-  <div class="r"><span>В рублях</span><b>26 000 ₽</b></div><div class="f">Экономия не всегда хорошо: недоинвестируете в поток новых клиентов.</div>`,
- n_net:`<span class="tag">Чистая прибыль · 12,3%</span><h4 class="good">В норме, у нижней границы</h4><div class="r"><span>Норма</span><b>12–20%</b></div>
-  <div class="r"><span>В рублях</span><b>152 600 ₽</b></div>
-  <div class="f">Если убрать два перерасхода выше (29 800 и 13 500 ₽), было бы 15,8%.</div>`,
- s_ket:`<span class="tag">Кетофен 10%</span><h4 class="bad">Сгорит через 45 дней</h4><div class="r"><span>На складе</span><b>8 уп · 9 400 ₽</b></div>
+  <div class="f">Столько клиника заработала за месяц. Без строки «Обязательства и амортизация» прибыль выглядела бы выше: 186 000 ₽.<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ d_srv_rev:`<span class="tag">Выручка · услуги</span><h4>756 400 ₽ · 61,0%</h4>
+  <div class="r"><span>Приёмы и процедуры</span><b>756 400 ₽</b></div>
+  <div class="f">61,0% выручки клиники. Строки счетов Ветменеджера с видом «услуга».<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ d_srv_cost:`<span class="tag">Прямые расходы · услуги</span><h4>264 800 ₽</h4>
+  <div class="r"><span>Проценты врачам</span><b>218 000 ₽</b></div><div class="r"><span>Лаборатории</span><b>46 800 ₽</b></div>
+  <div class="f">Статьи, отнесённые к услугам. Постоянные расходы к направлениям не относятся.<div class="srcs">Источник:<span class="tag">Банк</span></div></div>`,
+ d_srv_marg:`<span class="tag">Маржа · услуги</span><h4>491 600 ₽ · 65,0%</h4>
+  <div class="r"><span>Выручка</span><b>756 400 ₽</b></div><div class="r"><span>Прямые расходы</span><b>−264 800 ₽</b></div>
+  <div class="f">491 600 ÷ 756 400 = 65,0% выручки услуг.<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ d_gds_rev:`<span class="tag">Выручка · товары</span><h4>483 600 ₽ · 39,0%</h4>
+  <div class="r"><span>Продажа кормов</span><b>321 600 ₽</b></div><div class="r"><span>Продажа препаратов</span><b>162 000 ₽</b></div>
+  <div class="f">39,0% выручки клиники. Строки счетов Ветменеджера с видом «товар».<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ d_gds_cost:`<span class="tag">Прямые расходы · товары</span><h4>342 400 ₽</h4>
+  <div class="r"><span>Закупка препаратов</span><b>248 800 ₽</b></div><div class="r"><span>Товары для перепродажи</span><b>93 600 ₽</b></div>
+  <div class="f">Закупка препаратов отнесена к товарам целиком: препараты, израсходованные на приёмах, пока не выделены.<div class="srcs">Источник:<span class="tag">Банк</span></div></div>`,
+ d_gds_marg:`<span class="tag">Маржа · товары</span><h4>141 200 ₽ · 29,2%</h4>
+  <div class="r"><span>Выручка</span><b>483 600 ₽</b></div><div class="r"><span>Прямые расходы</span><b>−342 400 ₽</b></div>
+  <div class="f">141 200 ÷ 483 600 = 29,2% выручки товаров.<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ d_cmn:`<span class="tag">Общие переменные расходы</span><h4>− 24 800 ₽</h4>
+  <div class="r"><span>Комиссия эквайринга</span><b>24 800 ₽</b></div>
+  <div class="f">Расходы, которые нельзя отнести ни к услугам, ни к товарам. Их распределение по направлениям — в следующей версии.<div class="srcs">Источник:<span class="tag">Банк</span></div></div>`,
+ d_bridge:`<span class="tag">Маржинальная прибыль</span><h4>608 000 ₽ · 49,0%</h4>
+  <div class="r"><span>Маржа услуг</span><b>+491 600 ₽</b></div><div class="r"><span>Маржа товаров</span><b>+141 200 ₽</b></div>
+  <div class="r"><span>Общие переменные расходы</span><b class="bad">−24 800 ₽</b></div>
+  <div class="f">Совпадает со строкой «Маржинальная прибыль» в режиме «Вся клиника».<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ n_fot:`<span class="tag">ФОТ врачей · 24,6%</span><h4 class="good">В норме</h4>
+  <div class="r"><span>Проценты врачам</span><b>218 000 ₽</b></div><div class="r"><span>Оклады врачей</span><b>87 000 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>22–28%</b></div><div class="r"><span>Верхняя граница, 28%</span><b>347 200 ₽</b></div>
+  <div class="f">305 000 ÷ 1 240 000 = 24,6%. Запас до верхней границы — 42 200 ₽ в месяц.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ n_med:`<span class="tag">Препараты и расходники · 27,4%</span><h4 class="bad">Выше нормы на 2,4 п.п.</h4>
+  <div class="r"><span>Закупка препаратов</span><b>248 800 ₽</b></div><div class="r"><span>Расходные материалы</span><b>91 000 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>20–25%</b></div><div class="r"><span>Верхняя граница, 25%</span><b>310 000 ₽</b></div>
+  <div class="r"><span>Сверх нормы</span><b class="bad">+29 800 ₽ в месяц</b></div>
+  <div class="f">339 800 ÷ 1 240 000 = 27,4%. Держится третий месяц. Связано с разбросом цен у поставщиков.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ n_rent:`<span class="tag">Аренда и коммуналка · 6,9%</span><h4 class="good">В норме</h4>
+  <div class="r"><span>Аренда и коммуналка</span><b>85 000 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>5–10%</b></div>
+  <div class="f">85 000 ÷ 1 240 000 = 6,9%. Хороший показатель для помещения такой площади.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ n_lab:`<span class="tag">Лаборатории · 3,8%</span><h4 class="good">В норме</h4>
+  <div class="r"><span>Лаборатории</span><b>46 800 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>3–6%</b></div>
+  <div class="f">46 800 ÷ 1 240 000 = 3,8%. Часть анализов можно делать у себя — это снизит долю.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ n_exp:`<span class="tag">Списание по сроку · 1,9% · справочно</span><h4 class="bad">Выше нормы на 1,1 п.п.</h4>
+  <div class="r"><span>Списано в августе</span><b>23 400 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>до 0,8%</b></div><div class="r"><span>Верхняя граница, 0,8%</span><b>9 920 ₽</b></div>
+  <div class="r"><span>Сверх нормы</span><b class="bad">+13 480 ₽ в месяц</b></div>
+  <div class="f">23 400 ÷ 1 240 000 = 1,9%. Закупаете объёмом больше, чем успеваете израсходовать. Деньги за этот товар ушли при закупке, поэтому в расходы месяца и в сумму долей он не входит: строка справочная.<div class="srcs">Источник:<span class="tag">Ветменеджер</span><span class="tag">Расчёт</span></div></div>`,
+ n_acq:`<span class="tag">Эквайринг · 2,0%</span><h4 class="good">В норме</h4>
+  <div class="r"><span>Комиссия эквайринга</span><b>24 800 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>1,0–2,0%</b></div><div class="r"><span>Верхняя граница, 2,0%</span><b>24 800 ₽</b></div>
+  <div class="f">24 800 ÷ 1 240 000 = 2,0%, на верхней границе нормы. Банк берёт комиссию только с оплат картой, поэтому доля от всей выручки ниже тарифа.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ n_mkt:`<span class="tag">Маркетинг · 2,1%</span><h4>Ниже нормы на 0,9 п.п.</h4>
+  <div class="r"><span>Маркетинг</span><b>26 000 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>3–7%</b></div><div class="r"><span>Нижняя граница, 3%</span><b>37 200 ₽</b></div>
+  <div class="r"><span>До нижней границы</span><b>−11 200 ₽</b></div>
+  <div class="f">26 000 ÷ 1 240 000 = 2,1%. Экономия не всегда хорошо: недоинвестируете в поток новых клиентов.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ n_net:`<span class="tag">Чистая прибыль · 12,3%</span><h4 class="good">В норме, у нижней границы</h4>
+  <div class="r"><span>Чистая прибыль</span><b>152 600 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>12–20%</b></div><div class="r"><span>Нижняя граница, 12%</span><b>148 800 ₽</b></div>
+  <div class="r"><span>Над нижней границей</span><b>+3 800 ₽</b></div>
+  <div class="f">152 600 ÷ 1 240 000 = 12,3%. Если убрать перерасход по препаратам и расходникам (29 800 ₽), было бы 14,7%.<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ n_rest:`<span class="tag">Остальные статьи · 21,0%</span><h4>260 000 ₽</h4>
+  <div class="r"><span>Товары для перепродажи</span><b>93 600 ₽</b></div><div class="r"><span>Оклады персонала</span><b>50 000 ₽</b></div>
+  <div class="r"><span>Связь и прочее</span><b>37 000 ₽</b></div><div class="r"><span>Налоги и взносы</span><b>46 000 ₽</b></div>
+  <div class="r"><span>Обязательства и амортизация</span><b>33 400 ₽</b></div>
+  <div class="f">Статьи, для которых нормы нет. 260 000 ÷ 1 240 000 = 21,0%. Вместе с остальными строками и прибылью даёт 100% выручки.<div class="srcs">Источник:<span class="tag">Банк</span><span class="tag">Расчёт</span></div></div>`,
+ s_ket:`<span class="tag">Кетофен 10%</span><h4 class="bad">Срок истекает через 45 дней</h4><div class="r"><span>На складе</span><b>8 уп · 9 400 ₽</b></div>
   <div class="r"><span>Расход за 90 дней</span><b>2 упаковки</b></div><div class="r"><span>Успеете израсходовать</span><b>1 упаковку</b></div>
-  <div class="r"><span>Уйдёт в списание</span><b class="bad">7 уп · 8 200 ₽</b></div><div class="f">Закуплено 12 июня одной партией, 10 упаковок.</div>`,
- s_rc:`<span class="tag">Royal Canin Renal</span><h4>Срок до 2 ноября</h4><div class="r"><span>На складе</span><b>6 шт · 11 800 ₽</b></div>
-  <div class="r"><span>Продаётся</span><b>4 шт в месяц</b></div><div class="f">Успеете продать всё. Риск низкий.</div>`,
- s_sin:`<span class="tag">Синулокс 250 мг</span><h4>Срок до 5 ноября</h4><div class="r"><span>На складе</span><b>12 уп · 8 600 ₽</b></div>
-  <div class="r"><span>Расход</span><b>8 уп в месяц</b></div><div class="f">Покупался по 890 и 1 240 ₽: разница 350 ₽ × 41 упаковка = 14 350 ₽ на объёме.</div>`,
- s_nob:`<span class="tag">Вакцина Нобивак</span><h4>Срок до 8 ноября</h4><div class="r"><span>На складе</span><b>9 доз · 11 200 ₽</b></div>
-  <div class="r"><span>Расход</span><b>14 доз в месяц</b></div><div class="f">Разойдётся за три недели. Пора планировать закупку.</div>`,
+  <div class="r"><span>Может уйти в списание</span><b class="bad">7 уп · 8 225 ₽</b></div><div class="f">Закуплено 12 июня одной партией, 10 упаковок. 9 400 ÷ 8 = 1 175 ₽ за упаковку; 7 × 1 175 = 8 225 ₽.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ s_rc:`<span class="tag">Royal Canin Renal</span><h4>Срок до 2 ноября · 54 дня</h4><div class="r"><span>На складе</span><b>5 шт · 11 800 ₽</b></div>
+  <div class="r"><span>Продаётся</span><b>4 шт в месяц</b></div><div class="f">Успеете продать всё. Риск низкий. 11 800 ÷ 5 = 2 360 ₽ за штуку.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ s_sin:`<span class="tag">Синулокс 250 мг</span><h4>Срок до 5 ноября · 57 дней</h4><div class="r"><span>На складе</span><b>10 уп · 8 600 ₽</b></div>
+  <div class="r"><span>Расход</span><b>8 уп в месяц</b></div><div class="f">Успеете израсходовать. Покупался по 860 и 1 210 ₽: разница 350 ₽ × 41 упаковка = 14 350 ₽ на объёме.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ s_nob:`<span class="tag">Вакцина Нобивак</span><h4>Срок до 8 ноября · 60 дней</h4><div class="r"><span>На складе</span><b>8 доз · 11 200 ₽</b></div>
+  <div class="r"><span>Расход</span><b>14 доз в месяц</b></div><div class="f">Разойдётся примерно за 17 дней. Пора планировать закупку. 11 200 ÷ 8 = 1 400 ₽ за дозу.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
  sk_frozen:`<span class="tag">Заморожено</span><h4>📦 387 000 ₽</h4>
   <div class="r"><span>Без движения 60–89 дней</span><b>156 000 ₽</b></div><div class="r"><span>Без движения 90–179 дней</span><b>148 000 ₽</b></div>
-  <div class="r"><span>Без движения от 180 дней</span><b>83 000 ₽</b></div><div class="f">1 840 позиций. Данные склада из Ветменеджера на утро 9 сентября.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
- sk_burn:`<span class="tag">Сгорит за 60 дней</span><h4>⏳ 41 000 ₽</h4>
+  <div class="r"><span>Без движения от 180 дней</span><b>83 000 ₽</b></div><div class="f">1 840 позиций: 912 + 604 + 324. Данные склада из Ветменеджера на утро 9 сентября.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ sk_burn:`<span class="tag">Срок истекает за 60 дней</span><h4>⏳ 41 000 ₽</h4>
   <div class="r"><span>Кетофен 10%</span><b>9 400 ₽</b></div><div class="r"><span>Royal Canin Renal</span><b>11 800 ₽</b></div>
   <div class="r"><span>Синулокс 250 мг</span><b>8 600 ₽</b></div><div class="r"><span>Вакцина Нобивак</span><b>11 200 ₽</b></div>
-  <div class="f">Партии со сроком годности до 8 ноября.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+  <div class="r" style="margin-top:8px"><span>Может уйти в списание</span><b class="bad">8 225 ₽</b></div>
+  <div class="f">Партии со сроком годности до 8 ноября. Из них не успеем израсходовать только Кетофен: по темпу расхода за 90 дней.<div class="srcs">Источник:<span class="tag">Ветменеджер</span><span class="tag">Расчёт</span></div></div>`,
  sk_wo:`<span class="tag">Списано в августе</span><h4>🗑️ 23 400 ₽</h4>
-  <div class="r"><span>Норма для вашей клиники</span><b>до 9 900 ₽</b></div><div class="r"><span>Сверх нормы</span><b class="bad">13 500 ₽</b></div>
-  <div class="f">Списание по сроку годности.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+  <div class="r"><span>Мелоксидил 1,5 мг/мл, 3 фл</span><b>8 700 ₽</b></div><div class="r"><span>Цефтриаксон 1 г, 40 фл</span><b>6 400 ₽</b></div>
+  <div class="r"><span>Гель для дёсен, 5 туб</span><b>5 100 ₽</b></div><div class="r"><span>Шприцы 5 мл, 160 шт</span><b>3 200 ₽</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма для вашей клиники</span><b>до 9 920 ₽</b></div><div class="r"><span>Сверх нормы</span><b class="bad">13 480 ₽</b></div>
+  <div class="f">Списание по сроку годности. Норма 0,8% × 1 240 000 ₽ выручки августа = 9 920 ₽. Показано справочно: деньги за товар ушли при закупке, в прибыль месяца списание не входит.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ sk_idle:`<span class="tag">Без движения</span><h4>📦 387 000 ₽</h4>
+  <div class="r"><span>60–89 дней</span><b>156 000 ₽</b></div><div class="r"><span>90–179 дней</span><b>148 000 ₽</b></div>
+  <div class="r"><span>От 180 дней</span><b>83 000 ₽</b></div>
+  <div class="f">Товары, по которым не было ни продажи, ни списания на приём. Считаем с последнего движения.<div class="srcs">Источник:<span class="tag">Ветменеджер</span></div></div>`,
+ sk_turn:`<span class="tag">Оборачиваемость склада</span><h4>⏱️ 74 дня</h4>
+  <div class="r"><span>Запас на складе</span><b>740 000 ₽</b></div><div class="r"><span>Расход за 90 дней</span><b>900 000 ₽</b></div>
+  <div class="r"><span>Окно расчёта</span><b>90 дней</b></div>
+  <div class="r" style="margin-top:8px"><span>Норма</span><b>45 дней</b></div>
+  <div class="f">740 000 × 90 ÷ 900 000 = 74 дня. Расход: продажи и использование на приёмах по закупочной цене, в среднем 10 000 ₽ в день.<div class="srcs">Источник:<span class="tag">Ветменеджер</span><span class="tag">Расчёт</span></div></div>`,
  ob_debt:`<span class="tag">Всего долг</span><h4>🏦 840 000 ₽</h4>
   <div class="r"><span>Кредит на аппарат УЗИ</span><b>620 000 ₽</b></div><div class="r"><span>Лизинг рентген-аппарата</span><b>220 000 ₽</b></div>
   <div class="f">Остаток основного долга на сегодня.<div class="srcs">Источник:<span class="tag">Внесено вручную</span></div></div>`,
@@ -531,14 +616,14 @@ const T={
 Object.assign(T,{
  acc_all:tipH('Остаток на счетах','💰 '+M(D.total),[['Расчётный счёт · Т-Банк 7972',M(D.bank)],['Касса клиники',M(D.cash)]],'Остаток на утро 9 сентября по выписке банка и данным кассы.',[SBANK,SHAND]),
  wk:tipH('Изменение за неделю','📈 '+P(D.weekPct,true),[['Неделю назад (2 сентября)',M(D.weekAgo)],['Сейчас',M(D.total)],['Изменение',Ms(D.weekDelta),'good']],'Сравниваем остаток на счетах и в кассе сегодня и 7 дней назад.',[SBANK,SHAND]),
- runway:tipH('Хватит на','⏳ '+dn(D.runway),[['Остаток на счетах',M(D.total)],['Расходы в день, в среднем',M(D.expDay)]],M(D.total)+' ÷ '+M(D.expDay)+' ≈ 11,75: берём целые дни. Средний расход за 1–8 сентября. Платежи вперёд не учтены: смотрите платёжный календарь.',[SCALC]),
+ runway:tipH('Хватит на','⏳ '+dn(D.runway),[['Остаток на счетах',M(D.total)],['Расходы за 28 дней',M(D.exp28)],['Расходы в день, в среднем',M(D.expDay)],['Окно расчёта','28 дней']],M(D.total)+' × 28 ÷ '+M(D.exp28)+' ≈ 11,0: берём целые дни. Платежи вперёд не учтены: смотрите платёжный календарь.',[SCALC]),
  acc_cash:tipH('Касса клиники','💵 '+M(D.cash),[['Неделю назад',M(D.cashWeekAgo)],['Внесено за смены',Ms(D.cashIn),'good'],['Расходы наличными',Ms(-D.cashOut),'bad'],['Отправлено в банк',Ms(-D.cashToBank),'bad']],'Последняя инкассация 8 сентября: 60 000 ₽ ушли на расчётный счёт.',[SHAND]),
  acc_bank:tipH('В банке','💳 '+M(D.bank),[['Неделю назад',M(D.bankWeekAgo)],['Поступило',Ms(D.bankIn),'good'],['Списано',Ms(-D.bankOut),'bad'],['Из кассы',Ms(D.fromCash),'good']],'Последняя выписка: по 9 сентября.',[SBANK]),
- m_rev:tipH('Выручка · сентябрь','📈 '+M(D.rev),[['Услуги',M(D.revServ)],['Корма и препараты',M(D.revGoods)],'-',['Средний чек',M(D.avgCheck)],['Приёмов',String(D.visits)]],'Данные Ветменеджера за 1–8 сентября. Операции 9 сентября войдут в итог завтра.',[SVM]),
- m_fc:tipH('Прогноз выручки на месяц','📈 '+M(D.forecast),[['Уже получено (8 дней)',M(D.rev)],['Ожидаем до конца месяца (22 дня)',M(D.forecast-D.rev)]],'Пока по среднему за 8 дней: 330 000 ÷ 8 × 30. Когда накопится история, учтём сезонность.',[SCALC]),
- m_exp:tipH('Расходы · сентябрь','📉 '+M(D.exp),[['Зарплаты и проценты',M(D.expSal)],['Препараты и корма',M(D.expMed)],['Расходники и хозтовары',M(D.expSup)],['Прочее',M(D.expOther)]],'Заплачено за 1–8 сентября. Операции 9 сентября войдут в итог завтра.',[SBANK,SHAND]),
- m_expchg:tipH('Расходы к августу','📉 '+P(D.expChg,true),[['Расходы 1–8 августа',M(D.expPrev)],['Расходы 1–8 сентября',M(D.exp)],['Разница',Ms(D.exp-D.expPrev),'bad']],'Сравниваем одинаковые периоды: первые 8 дней месяца.',[SBANK,SHAND]),
- m_prof:tipH('Прибыль · сентябрь','💰 '+M(D.profit),[['Выручка',Ms(D.rev),'good'],['Расходы',Ms(-D.exp),'bad']],'Выручка минус уже заплаченные расходы за 1–8 сентября. Налоги и амортизацию считает отчёт «Прибыль и убытки» при закрытии месяца.',[SCALC]),
+ m_rev:tipH('Выручка · сентябрь','📈 '+M(D.rev),[['Услуги',M(D.revServ)],['Корма и препараты',M(D.revGoods)],'-',['Средний чек',M(D.avgCheck)],['Приёмов',String(D.visits)]],'Данные Ветменеджера за 1–9 сентября, день 9 сентября включён.',[SVM]),
+ m_fc:tipH('Прогноз выручки на месяц','📈 '+M(D.forecast),[['Уже получено (9 дней)',M(D.rev)],['Ожидаем до конца месяца (21 день)',M(D.forecast-D.rev)]],'Пока по среднему за 9 дней: 330 000 ÷ 9 × 30. Когда накопится история, учтём сезонность.',[SCALC]),
+ m_exp:tipH('Расходы · сентябрь','📉 '+M(D.exp),[['Зарплаты и проценты',M(D.expSal)],['Препараты и корма',M(D.expMed)],['Расходники и хозтовары',M(D.expSup)],['Прочее',M(D.expOther)]],'Заплачено за 1–9 сентября, день 9 сентября включён.',[SBANK,SHAND]),
+ m_expchg:tipH('Расходы к августу','📉 '+P(D.expChg,true),[['Расходы 1–9 августа',M(D.expPrev)],['Расходы 1–9 сентября',M(D.exp)],['Разница',Ms(D.exp-D.expPrev),'bad']],'Сравниваем одинаковые периоды: первые 9 дней месяца.',[SBANK,SHAND]),
+ m_prof:tipH('Прибыль по деньгам · сентябрь','💰 '+M(D.profit),[['Выручка',Ms(D.rev),'good'],['Расходы',Ms(-D.exp),'bad']],'Выручка минус всё, что заплачено за 1–9 сентября. Налоги, амортизацию и комиссию эквайринга здесь не начисляем: прибыль месяца по начислению показывает отчёт «Прибыль и убытки», его число может отличаться.',[SCALC]),
  m_margin:tipH('Рентабельность','💰 '+P(D.margin),[['Прибыль',M(D.profit)],['Выручка',M(D.rev)]],M(D.profit)+' ÷ '+M(D.rev)+'. Норма отрасли для клиник такого размера: 12–20%.',[SCALC])
 });
 D.trend.forEach((p,i)=>{T['pt'+i]=tipH('Остаток · '+p[0],'💰 '+M(p[1]),[],'Остаток на конец дня по банку и кассе.',[SBANK,SHAND]);});
@@ -583,12 +668,12 @@ const ADVICE=[
  {id:'drugs-share',sev:'warning',em:'💊',t:'Препараты съедают 27,4% выручки при норме до 25%',
   p:'Перерасход в августе 29 800 ₽ (339 800 ₽ вместо 310 000 ₽), держится третий месяц.',
   why:{s:'Две причины, обе видны в закупках и списаниях:',
-   steps:['Разные цены на одно и то же. Синулокс 250 мг закупался по 890 ₽ и по 1 240 ₽. Если брать по меньшей цене все 41 упаковку, экономия 350 ₽ × 41 = 14 350 ₽.','Расходники в терапии: 44 000 ₽ при выручке направления 287 000 ₽ — это 15,3% при норме 9,7%. Лишние около 16 200 ₽.','Вместе это 30 550 ₽, больше перерасхода в 29 800 ₽. Если закрыть обе причины, доля препаратов и расходников вернётся к 24,9%: внутрь нормы (до 25%).'],
+   steps:['Разные цены на одно и то же. Синулокс 250 мг закупался по 860 ₽ и по 1 210 ₽. Если брать по меньшей цене все 41 упаковку, экономия 350 ₽ × 41 = 14 350 ₽.','Расходники в терапии: 44 000 ₽ при выручке направления 287 000 ₽ — это 15,3% при норме 9,7%. Лишние около 16 200 ₽.','Вместе это 30 550 ₽, больше перерасхода в 29 800 ₽. Если закрыть обе причины, доля препаратов и расходников вернётся к 24,9%: внутрь нормы (до 25%).'],
    src:'закупки из выписки; списания на приём из Ветменеджера'}},
  {id:'writeoff',sev:'warning',em:'📦',t:'23 400 ₽ списано по сроку годности в августе',
-  p:'Норма для клиники вашего размера — до 9 900 ₽.',
+  p:'Норма для клиники вашего размера — до 9 920 ₽.',
   why:{s:'Списание идёт из закупок объёмом больше, чем клиника успевает израсходовать:',
-   steps:['Кетофен 10% куплен 12 июня партией 10 упаковок. За 90 дней израсходованы 2 упаковки.','Срок истекает 24 октября; до этого уйдёт ещё около 1 упаковки, в списание пойдут 7 упаковок на 8 200 ₽.','Оборачиваемость склада 74 дня при норме 45.'],
+   steps:['Кетофен 10% куплен 12 июня партией 10 упаковок. За 90 дней израсходованы 2 упаковки.','Срок истекает 24 октября; до этого уйдёт ещё около 1 упаковки, в списание пойдут 7 упаковок на 8 225 ₽.','Оборачиваемость склада 74 дня при норме 45.'],
    src:'остатки и списания из Ветменеджера; даты закупок из выписки'}},
  {id:'surgery-best',sev:'good',em:'📈',t:'Хирургия — лучшее направление, 44% рентабельности',
   p:'94 000 ₽ прибыли при выручке 214 000 ₽.',
@@ -665,7 +750,8 @@ function dashMonth(){
   <div class="mrow" style="margin-bottom:26px" data-testid="month-section">
    ${mcard('📈','Выручка','month.revenue','m_rev',M(D.rev),'month-revenue','month.revenue_forecast','m_fc','прогноз месяца '+M(D.forecast),'','month-revenue-forecast')}
    ${mcard('📉','Расходы','month.expenses','m_exp',M(D.exp),'month-expenses','month.expenses_change_pct','m_expchg',P(D.expChg,true)+' к августу','bad','month-expenses-change')}
-   ${mcard('💰','Прибыль','month.profit','m_prof',M(D.profit),'month-profit','month.profit_margin_pct','m_margin','рентабельность '+P(D.margin),'','month-profit-margin')}</div>`;
+   ${mcard('💰','Прибыль по деньгам','month.profit','m_prof',M(D.profit),'month-profit','month.profit_margin_pct','m_margin','рентабельность '+P(D.margin),'','month-profit-margin')}</div>
+  <p class="note" style="margin:-14px 0 26px" data-testid="month-profit-hint">Прибыль здесь считается по деньгам: выручка минус уже заплаченное. Прибыль месяца с налогами и амортизацией — в отчёте <button type="button" data-go="opiu" data-testid="month-profit-link" style="background:none;border:0;padding:0;min-height:24px;font:inherit;font-weight:700;color:var(--accent-dark);text-decoration:underline;cursor:pointer">«Прибыль и убытки»</button>.</p>`;
 }
 const monthEmpty=()=>`<h2 class="klabel" style="margin:22px 0 12px" data-testid="month-caption">Сентябрь</h2>
  <div class="card empty" style="margin-bottom:26px" data-testid="month-empty"><div class="em" aria-hidden="true">📈</div><div><p style="font-size:14px">За сентябрь данных пока нет. Загрузите выписку или подключите Ветменеджер: цифры появятся здесь.</p>
@@ -748,48 +834,85 @@ function vTx(){
 }
 
 /* ================= ОТЧЁТЫ ================= */
+/* --- отчёты: общие куски (этап 3) --- */
+const EXPORT_BTNS=`<button type="button" class="act" title="В прототипе файл не скачивается">Скачать Excel</button><button type="button" class="act" title="В прототипе файл не скачивается">Скачать PDF</button>`;
+const monthBar=(pill,cls)=>`<div class="mbar"><button type="button" class="act" aria-label="Предыдущий месяц" title="В прототипе месяц не переключается">‹</button><b>Август 2026</b><button type="button" class="act" aria-label="Следующий месяц" title="В прототипе месяц не переключается">›</button><span class="pill ${cls||'gr'}">${pill}</span></div>`;
+const structBar=(label,segs)=>`<div class="card"><div class="klabel">${label}</div>
+ <div class="sbar" role="img" aria-label="${label}: ${segs.map(s=>s[0]+' '+s[1]).join(', ')}">${segs.map((s,i)=>`<i class="s${i+1}" style="flex:${s[1].replace(',','.').replace('%','')} 1 0"></i>`).join('')}</div>
+ <div class="sleg">${segs.map((s,i)=>`<button type="button" class="tb" data-tip="${s[2]}"><i class="s${i+1}"></i><b>${s[0]}</b><span>${s[1]}</span></button>`).join('')}</div></div>`;
 function vOpiu(){
- const rows=[['rev','Выручка','1 240 000 ₽','100%','o_rev'],['exp','Переменные расходы','− 632 000 ₽','51,0%','o_var'],
-  ['sum','Маржинальная прибыль','608 000 ₽','49,0%','o_marg'],['exp','Постоянные расходы','− 376 000 ₽','30,3%','o_fix'],
-  ['exp','Налоги и взносы','− 46 000 ₽','3,7%','o_tax'],['exp','Обязательства и амортизация','− 33 400 ₽','2,7%','o_obl'],['tot','Чистая прибыль','152 600 ₽','12,3%','o_net']];
- const dirs=[['Хирургия',94000,78,'','d_hir'],['Терапия',73000,61,'','d_ter'],['Груминг',26000,22,'l','d_gru'],['Лаборатория',7000,9,'l','d_lab'],['Стационар',-14000,12,'n','d_sta']];
- return head('Прибыль и убытки','Август 2026 · наведите на строку, чтобы увидеть состав')
- + `<div class="seg"><button type="button" class="${opiuMode==='all'?'on':''}" data-om="all">Вся клиника</button><button type="button" class="${opiuMode==='dir'?'on':''}" data-om="dir">По направлениям</button></div>`
+ const rows=[['rev','Выручка','1 240 000 ₽','100%','o_rev'],['exp','Переменные расходы (себестоимость)','−632 000 ₽','51,0%','o_var'],
+  ['sum','Маржинальная прибыль','608 000 ₽','49,0%','o_marg'],['exp','Постоянные расходы','−376 000 ₽','30,3%','o_fix'],
+  ['ch','ФОТ (оклады)','−137 000 ₽','11,0%','o_pay'],['ch','Аренда и прочие постоянные','−239 000 ₽','19,3%','o_oth'],
+  ['exp','Налоги и взносы','−46 000 ₽','3,7%','o_tax'],['exp','Обязательства и амортизация','−33 400 ₽','2,7%','o_obl'],['tot','Чистая прибыль','152 600 ₽','12,3%','o_net']];
+ const segs=[['Переменные расходы','51,0%','o_var'],['ФОТ','11,0%','o_pay'],['Аренда и прочие постоянные','19,3%','o_oth'],['Налоги и взносы','3,7%','o_tax'],['Обязательства и амортизация','2,7%','o_obl'],['Чистая прибыль','12,3%','o_net']];
+ const dir=[['Услуги','756 400 ₽','61,0%','−264 800 ₽','491 600 ₽','65,0%','d_srv_rev','d_srv_cost','d_srv_marg'],
+            ['Товары','483 600 ₽','39,0%','−342 400 ₽','141 200 ₽','29,2%','d_gds_rev','d_gds_cost','d_gds_marg']];
+ return head('Прибыль и убытки','Август 2026 · наведите на сумму, чтобы увидеть, из чего она состоит',EXPORT_BTNS)
+ + monthBar('месяц закрыт')
+ + `<p class="verdict">Клиника заработала 152 600 ₽ чистыми: 12,3% выручки, у нижней границы нормы 12–20%.</p>`
+ + `<div class="seg"><button type="button" class="${opiuMode==='all'?'on':''}" data-om="all">Вся клиника</button><button type="button" class="${opiuMode==='dir'?'on':''}" data-om="dir">Услуги и товары</button></div>`
  + (opiuMode==='all'
-  ? `<div class="card">${rows.map(([k,n,v,p,tip])=>`<div class="pl ${k}" data-tip="${tip}"><div class="bar"><b>${n}</b></div><div class="n">${v}</div><div class="p">${p}</div></div>`).join('')}
-     <p class="note">Выручка − переменные − постоянные − налоги и взносы − обязательства и амортизация = чистая прибыль. Наведите на любую строку: покажется, из чего она собрана.</p></div>`
-  : `<div class="card"><div class="klabel">Прибыль по направлениям</div><div class="bars">
-     ${dirs.map(([n,v,w,c,tip])=>`<div class="brow" data-tip="${tip}"><div class="b-top"><b>${n}</b><span class="${v<0?'down':''}">${v<0?'− ':'+ '}${M(v)}</span></div><div class="track"><div class="fill ${c}" style="width:${w}%"></div></div></div>`).join('')}
-     </div>
-     <table style="margin-top:18px"><tbody>
-      <tr data-tip="d_sum"><td>Сумма по направлениям</td><td class="r">186 000 ₽</td></tr>
-      <tr data-tip="o_obl"><td>Обязательства и амортизация<div class="meta">общие, к направлениям не относятся</div></td><td class="r down">− 33 400 ₽</td></tr>
-      <tr data-tip="o_net"><td><b>Чистая прибыль клиники</b></td><td class="r up">152 600 ₽</td></tr></tbody></table>
-     <p class="note">Аренда разнесена по площади, зарплата — по графику смен.</p></div>`);
+  ? structBar('Куда уходит выручка',segs)
+   + `<div class="card" style="margin-top:16px">${rows.map(([k,n,v,p,tip])=>`<div class="pl ${k}" data-tip="${tip}"><div class="bar"><b>${n}</b></div><div class="n">${v}</div><div class="p">${p}</div></div>`).join('')}
+     <p class="note">Выручка − переменные − постоянные − налоги и взносы − обязательства и амортизация = чистая прибыль: 1 240 000 − 632 000 − 376 000 − 46 000 − 33 400 = 152 600 ₽. Амортизация не списывает деньги со счёта, но уменьшает прибыль.</p></div>`
+  : structBar('Из чего состоит выручка',[['Услуги','61,0%','d_srv_rev'],['Товары','39,0%','d_gds_rev']])
+   + `<div class="card" style="margin-top:16px"><div class="klabel">Выручка и маржа</div>
+     <table><thead><tr><th>Направление</th><th class="r">Выручка</th><th class="r">Доля</th><th class="r">Прямые расходы</th><th class="r">Маржа</th><th class="r">Маржа, %</th></tr></thead><tbody>
+     ${dir.map(r=>`<tr><td><b style="font-weight:600">${r[0]}</b></td><td class="r"><button type="button" class="tb" data-tip="${r[6]}">${r[1]}</button></td><td class="r">${r[2]}</td><td class="r"><button type="button" class="tb" data-tip="${r[7]}">${r[3]}</button></td><td class="r"><button type="button" class="tb" data-tip="${r[8]}"><b>${r[4]}</b></button></td><td class="r">${r[5]}</td></tr>`).join('')}
+     <tr><td>Общие переменные расходы<div class="meta">не относятся ни к услугам, ни к товарам</div></td><td class="r">—</td><td class="r">—</td><td class="r"><button type="button" class="tb" data-tip="d_cmn">−24 800 ₽</button></td><td class="r"><button type="button" class="tb" data-tip="d_cmn">−24 800 ₽</button></td><td class="r">—</td></tr>
+     <tr class="tot"><td><b>Маржинальная прибыль</b></td><td class="r">1 240 000 ₽</td><td class="r">100%</td><td class="r">−632 000 ₽</td><td class="r"><button type="button" class="tb" data-tip="d_bridge"><b>608 000 ₽</b></button></td><td class="r">49,0%</td></tr></tbody></table>
+     <p class="note">Закупка препаратов отнесена к товарам целиком, комиссия эквайринга общая. Распределять общие расходы и постоянные по направлениям мы пока не умеем: это будет отдельным отчётом.</p></div>
+     <div class="card" style="margin-top:16px"><div class="klabel">От маржи до чистой прибыли</div>
+     ${[['sum','Маржинальная прибыль','608 000 ₽','49,0%','o_marg'],['exp','Постоянные расходы','−376 000 ₽','30,3%','o_fix'],['exp','Налоги и взносы','−46 000 ₽','3,7%','o_tax'],['exp','Обязательства и амортизация','−33 400 ₽','2,7%','o_obl'],['tot','Чистая прибыль','152 600 ₽','12,3%','o_net']].map(([k,n,v,p,tip])=>`<div class="pl ${k}" data-tip="${tip}"><div class="bar"><b>${n}</b></div><div class="n">${v}</div><div class="p">${p}</div></div>`).join('')}</div>`);
 }
-const NORM=[['ФОТ врачей','22–28%',24.6,22,28,'ok','n_fot'],['Препараты и расходники','20–25%',27.4,20,25,'bad','n_med'],
- ['Аренда и коммуналка','5–10%',6.9,5,10,'ok','n_rent'],['Лаборатории','3–6%',3.8,3,6,'ok','n_lab'],
- ['Списание по сроку','до 0,8%',1.9,0,0.8,'bad','n_exp'],['Эквайринг','1,5–2,5%',2.0,1.5,2.5,'ok','n_acq'],
- ['Маркетинг','3–7%',2.1,3,7,'warn','n_mkt'],['Чистая прибыль','12–20%',12.3,12,20,'ok','n_net']];
-const vNorm=()=>head('Норма','Август 2026 · ваши показатели против нормы ветклиник на 2–6 врачей')
- + `<div class="card"><table><thead><tr><th>Статья</th><th style="width:110px">Норма</th><th style="width:210px">Где вы</th><th class="r" style="width:78px">Ваше</th><th class="r" style="width:110px">Отклонение</th></tr></thead><tbody>
- ${NORM.map(([n,b,v,lo,hi,k,tip])=>{const mx=Math.max(hi*1.6,v*1.25);
-  const dev=v<lo?`−${(lo-v).toFixed(1).replace('.',',')} п.п.`:v>hi?`+${(v-hi).toFixed(1).replace('.',',')} п.п.`:'в норме';
-  return `<tr data-tip="${tip}"><td><b style="font-weight:600">${n}</b></td><td><span class="pill gr">${b}</span></td>
-  <td><div class="gauge"><div class="gz" style="left:${lo/mx*100}%;width:${(hi-lo)/mx*100}%"></div><div class="gm ${k==='bad'?'bad':k==='warn'?'warn':''}" style="left:${v/mx*100}%"></div></div></td>
-  <td class="r">${v.toFixed(1).replace('.',',')}%</td><td class="r"><span class="pill ${k==='bad'?'red':k==='warn'?'':'grn'}">${dev}</span></td></tr>`;}).join('')}
- </tbody></table><p class="note">Зелёная зона — норма отрасли, чёрточка — ваше значение. Наведите на строку, чтобы увидеть отклонение в рублях.</p></div>`;
-const vSklad=()=>head('Склад и сроки','Деньги, которые лежат на полке и тают')
+/* Норма: [статья, норма, доля %, мин, макс, тон (good|warn|bad), подсказка, слова отклонения, отклонение в рублях] */
+const NORM=[['ФОТ врачей','22–28%',24.6,22,28,'good','n_fot','в норме','—'],['Препараты и расходники','20–25%',27.4,20,25,'bad','n_med','выше нормы на 2,4 п.п.','+29 800 ₽'],
+ ['Аренда и коммуналка','5–10%',6.9,5,10,'good','n_rent','в норме','—'],['Лаборатории','3–6%',3.8,3,6,'good','n_lab','в норме','—'],
+ ['Списание по сроку','до 0,8%',1.9,0,0.8,'bad','n_exp','выше нормы на 1,1 п.п.','+13 480 ₽','memo'],['Эквайринг','1,0–2,0%',2.0,1,2,'good','n_acq','в норме','—'],
+ ['Маркетинг','3–7%',2.1,3,7,'warn','n_mkt','ниже нормы на 0,9 п.п.','−11 200 ₽'],['Остальные статьи','нормы нет',21.0,null,null,'neutral','n_rest','—','—'],
+ ['Чистая прибыль','12–20%',12.3,12,20,'good','n_net','в норме','—']];
+const vNorm=()=>head('Норма','Август 2026 · ваши показатели против нормы ветклиник на 2–6 врачей',EXPORT_BTNS)
+ + monthBar('месяц закрыт')
+ + `<p class="verdict">Выше нормы одна статья: препараты и расходники (+29 800 ₽). Отдельно: списание по сроку выше нормы на 13 480 ₽, в расходы месяца оно не входит.</p>`
+ + `<div class="card"><table class="normtbl"><thead><tr><th>Статья</th><th style="width:110px">Норма</th><th style="width:200px">Где вы</th><th class="r" style="width:84px">Ваша доля</th><th style="width:190px">Отклонение</th><th class="r" style="width:100px">В рублях</th></tr></thead><tbody>
+ ${NORM.map(([n,b,v,lo,hi,k,tip,dev,rub,memo])=>{
+  const noNorm=lo===null; const mx=noNorm?0:Math.max(hi*1.6,v*1.25);
+  const pill=k==='bad'?'red':k==='warn'?'':k==='good'?'grn':'gr';
+  const gauge=noNorm?'<span class="faint">—</span>':`<div class="gauge" role="img" aria-label="Норма ${b}, у вас ${v.toFixed(1).replace('.',',')}%: ${dev}"><div class="gz ${lo===0?'l0':''}" style="left:${lo/mx*100}%;width:${(hi-lo)/mx*100}%"></div><div class="gm ${k==='bad'?'bad':k==='warn'?'warn':''}" style="left:${v/mx*100}%"></div></div>`;
+  return `<tr data-tip="${tip}"${noNorm?' class="muted"':''}><td class="t-name"><b style="font-weight:600">${n}</b>${memo?'<div class="meta">справочно, в сумму долей не входит</div>':''}</td><td class="t-norm"><span class="pill gr">${b}</span></td>
+  <td class="t-gauge">${gauge}</td>
+  <td class="r t-share" data-l="Ваша доля">${v.toFixed(1).replace('.',',')}%</td><td class="t-dev">${dev==='—'?'':`<span class="pill ${pill}">${dev}</span>`}</td><td class="r t-rub" data-l="В рублях">${rub}</td></tr>`;}).join('')}
+ </tbody></table><p class="note">Зелёная зона на шкале — норма отрасли, чёрточка — ваше значение. Наведите на строку, чтобы увидеть, из чего собрана статья. Доли округлены до десятых, поэтому их сумма может отличаться от 100% на 0,1.</p></div>`;
+const STK_TABS=[['all','Все от 60 дней',1840],['60','60–89 дней',912],['90','90–179 дней',604],['180','От 180 дней',324]];
+const STK_IDLE=[['Шампунь Бофар, 12 шт','30 июня',71,7800,'60'],['Корм Хиллс Light, 4 уп','10 июля',61,12400,'60'],['Ошейник Бейфар S, 15 шт','3 июля',68,6300,'60'],
+ ['Бравекто 250 мг, 6 шт','20 апреля',142,15900,'90'],['Лежанка M, 5 шт','2 июня',99,9000,'90'],['Рентгеноконтраст, 2 фл','28 мая',104,8400,'90'],
+ ['Имплант титановый, 3 шт','15 января',237,22500,'180'],['Игла ортопедическая, 20 шт','30 ноября 2025',283,7000,'180'],['Антисептик, 8 фл','20 февраля',201,3280,'180']];
+function vSklad(){
+ const rows=STK_IDLE.filter(r=>stkTab==='all'||r[4]===stkTab).sort((a,b)=>b[3]-a[3]).slice(0,5);
+ return head('Склад и сроки','Остатки на утро 9 сентября 2026 · данные склада из Ветменеджера',EXPORT_BTNS)
+ + `<p class="verdict">Может уйти в списание 8 225 ₽: Кетофен 10% не успеем израсходовать до 24 октября. Ещё 387 000 ₽ лежат без движения.</p>`
  + `<div class="mrow" style="margin-bottom:16px">
-  <div class="mcard"><div class="em" aria-hidden="true">📦</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_frozen"><span class="t">Заморожено</span><span class="v">387 000 ₽</span></button><span class="s">1 840 позиций</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">⏳</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_burn"><span class="t">Сгорит за 60 дней</span><span class="v">41 000 ₽</span></button><span class="s bad">4 позиции в риске</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">🗑️</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_wo"><span class="t">Списано в августе</span><span class="v">23 400 ₽</span></button><span class="s bad">норма — до 9 900 ₽</span></div></div></div>
- <div class="card"><div class="klabel">Сгорит в ближайшие 60 дней</div>
- <table><thead><tr><th>Позиция</th><th>Осталось</th><th class="r">Сумма</th></tr></thead><tbody>
- ${[['Кетофен 10%, 8 уп.','до 24 октября',9400,'red','45 дней','s_ket'],['Royal Canin Renal, 6 шт','до 2 ноября',11800,'','54 дня','s_rc'],
-    ['Синулокс 250 мг, 12 уп.','до 5 ноября',8600,'','57 дней','s_sin'],['Вакцина Нобивак, 9 доз','до 8 ноября',11200,'','60 дней','s_nob']]
-  .map(([n,d,v,c,t,tip])=>`<tr data-tip="${tip}"><td><b style="font-weight:600">${n}</b><div class="meta">${d}</div></td><td><span class="pill ${c}">${t}</span></td><td class="r">${M(v)}</td></tr>`).join('')}
- </tbody></table><p class="note">Оборачиваемость склада 74 дня при норме 45.</p></div>`;
+  <div class="mcard"><div class="em" aria-hidden="true">📦</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_frozen"><span class="t">Без движения от 60 дней</span><span class="v">387 000 ₽</span></button><span class="s">1 840 позиций</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">⏳</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_burn"><span class="t">Срок истекает за 60 дней</span><span class="v">41 000 ₽</span></button><span class="s bad">4 партии, может уйти в списание 8 225 ₽</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">🗑️</div><div class="mc-body"><button type="button" class="tb" data-tip="sk_wo"><span class="t">Списано в августе</span><span class="v">23 400 ₽</span></button><button type="button" class="tb s bad" data-tip="sk_wo">норма — до 9 920 ₽</button></div></div></div>
+ <div class="card"><div class="klabel">Срок годности истекает в ближайшие 60 дней</div>
+ <table><thead><tr><th>Позиция</th><th>Осталось</th><th>Успеем израсходовать?</th><th class="r">Сумма</th></tr></thead><tbody>
+ ${[['Кетофен 10%, 8 уп.','до 24 октября',9400,'red','45 дней','s_ket','нет: может уйти в списание 7 уп. на 8 225 ₽'],['Royal Canin Renal, 5 шт','до 2 ноября',11800,'gr','54 дня','s_rc','да'],
+    ['Синулокс 250 мг, 10 уп.','до 5 ноября',8600,'gr','57 дней','s_sin','да'],['Вакцина Нобивак, 8 доз','до 8 ноября',11200,'gr','60 дней','s_nob','да']]
+  .map(([n,d,v,c,t,tip,ok])=>`<tr data-tip="${tip}"><td><b style="font-weight:600">${n}</b><div class="meta">${d}</div></td><td><span class="pill ${c}">${t}</span></td><td class="${c==='red'?'down':''}">${ok}</td><td class="r">${M(v)}</td></tr>`).join('')}
+ </tbody></table><p class="note"><button type="button" class="tb" data-tip="sk_turn" style="text-decoration:underline dotted">Оборачиваемость склада 74 дня</button> при норме 45.</p></div>
+ <div class="card" style="margin-top:16px"><div class="klabel">Товары без движения</div>
+ <div class="seg" role="tablist">${STK_TABS.map(([k,t,c])=>`<button type="button" role="tab" aria-selected="${stkTab===k}" class="${stkTab===k?'on':''}" data-stk="${k}">${t} <span class="cnt" style="font-weight:800;margin-left:6px;${stkTab===k?'color:#F29BB8':'color:var(--accent)'}">${c}</span></button>`).join('')}</div>
+ <table><thead><tr><th>Позиция</th><th>Последнее движение</th><th class="r">Дней без движения</th><th class="r">Сумма</th></tr></thead><tbody>
+ ${rows.map(([n,d,days,v])=>`<tr data-tip="sk_idle"><td><b style="font-weight:600">${n}</b></td><td>${d}</td><td class="r">${days}</td><td class="r">${M(v)}</td></tr>`).join('')}
+ </tbody></table><p class="note">Показаны ${rows.length} позиций с наибольшей суммой. Полный список — в файле Excel.</p></div>
+ <div class="card" style="margin-top:16px"><div class="klabel">Что списали в августе</div>
+ <table><thead><tr><th>Позиция</th><th>Дата</th><th>Причина</th><th class="r">Сумма</th></tr></thead><tbody>
+ ${[['Мелоксидил 1,5 мг/мл, 3 фл','12 августа',8700],['Цефтриаксон 1 г, 40 фл','18 августа',6400],['Гель для дёсен, 5 туб','21 августа',5100],['Шприцы 5 мл, 160 шт','28 августа',3200]]
+  .map(([n,d,v])=>`<tr data-tip="sk_wo"><td><b style="font-weight:600">${n}</b></td><td>${d}</td><td>истёк срок годности</td><td class="r">${M(v)}</td></tr>`).join('')}
+ </tbody></table></div>`;
+}
 
 /* ================= ПЛАНИРОВАНИЕ ================= */
 function calAlert(){
@@ -1009,15 +1132,19 @@ const SET={
   <div class="srow"><div><span class="dot off"></span><b style="font-weight:600">Вторая касса</b><div class="meta" style="margin-left:17px">не используется</div></div><span class="faint">—</span></div>
   <p class="note">Остаток по счетам: 341 300 + 71 500 = 412 800 ₽. Счета пока заводит команда ВетФинанс.</p></div>`,
  cat:`<div class="card"><div class="klabel">Статьи доходов и расходов</div><table><tbody>
-  <tr><td><b style="font-weight:600">Закупка препаратов</b><div class="meta">переменная · 248 800 ₽ в месяц</div></td><td class="r"><span class="pill gr">20–25%</span></td></tr>
-  <tr><td><b style="font-weight:600">Товары для перепродажи</b><div class="meta">переменная · 118 400 ₽</div></td><td class="r"><span class="pill gr">—</span></td></tr>
-  <tr><td><b style="font-weight:600">Проценты врачам</b><div class="meta">переменная · 218 000 ₽</div></td><td class="r"><span class="pill gr">22–28%</span></td></tr>
+  <tr><td><b style="font-weight:600">Закупка препаратов</b><div class="meta">переменная · 248 800 ₽ в месяц · входит в «Препараты и расходники»</div></td><td class="r"><span class="pill gr">20–25%</span></td></tr>
+  <tr><td><b style="font-weight:600">Товары для перепродажи</b><div class="meta">переменная · 93 600 ₽</div></td><td class="r"><span class="pill gr">—</span></td></tr>
+  <tr><td><b style="font-weight:600">Проценты врачам</b><div class="meta">переменная · 218 000 ₽ · входит в «ФОТ врачей»</div></td><td class="r"><span class="pill gr">22–28%</span></td></tr>
   <tr><td><b style="font-weight:600">Лаборатории</b><div class="meta">переменная · 46 800 ₽</div></td><td class="r"><span class="pill gr">3–6%</span></td></tr>
-  <tr><td><b style="font-weight:600">Оклады</b><div class="meta">постоянная · 228 000 ₽</div></td><td class="r"><span class="pill gr">22–28%</span></td></tr>
+  <tr><td><b style="font-weight:600">Комиссия эквайринга</b><div class="meta">переменная · 24 800 ₽</div></td><td class="r"><span class="pill gr">1,0–2,0%</span></td></tr>
+  <tr><td><b style="font-weight:600">Оклады врачей</b><div class="meta">постоянная · 87 000 ₽ · входит в «ФОТ врачей»</div></td><td class="r"><span class="pill gr">22–28%</span></td></tr>
+  <tr><td><b style="font-weight:600">Оклады персонала</b><div class="meta">постоянная · 50 000 ₽</div></td><td class="r"><span class="pill gr">—</span></td></tr>
+  <tr><td><b style="font-weight:600">Расходные материалы</b><div class="meta">постоянная · 91 000 ₽ · входит в «Препараты и расходники»</div></td><td class="r"><span class="pill gr">20–25%</span></td></tr>
   <tr><td><b style="font-weight:600">Аренда и коммуналка</b><div class="meta">постоянная · 85 000 ₽</div></td><td class="r"><span class="pill gr">5–10%</span></td></tr>
   <tr><td><b style="font-weight:600">Маркетинг</b><div class="meta">постоянная · 26 000 ₽</div></td><td class="r"><span class="pill gr">3–7%</span></td></tr>
+  <tr><td><b style="font-weight:600">Связь и прочее</b><div class="meta">постоянная · 37 000 ₽</div></td><td class="r"><span class="pill gr">—</span></td></tr>
   <tr><td><b style="font-weight:600">Обязательства и амортизация</b><div class="meta">постоянная · 33 400 ₽ · из раздела «Обязательства»</div></td><td class="r"><span class="pill gr">—</span></td></tr>
- </tbody></table><p class="note">Норма подставляется автоматически по отрасли. Статьи с нормой попадают в отчёт «Норма».</p></div>`,
+ </tbody></table><p class="note">Норма подставляется автоматически по отрасли. Статьи с нормой попадают в отчёт «Норма». Списание по сроку годности не статья расходов: деньги ушли при закупке, поэтому оно берётся со склада и показано в «Норме» справочно.</p></div>`,
  dir:`<div class="card"><div class="klabel">Направления клиники</div><table><tbody>
   <tr><td><b style="font-weight:600">Терапия</b><div class="meta">2 врача · 2 кабинета</div></td><td class="r">287 000 ₽</td></tr>
   <tr><td><b style="font-weight:600">Хирургия</b><div class="meta">1 врач · операционная</div></td><td class="r">214 000 ₽</td></tr>
@@ -1086,12 +1213,14 @@ function draw(keep){
  closeTip();
  const m=document.getElementById('main'), y=window.scrollY;
  const ak=document.activeElement; let sel=null;
- if(keep&&ak&&ak.dataset){for(const k of ['q','tx','om','sc','set','cm','st','cd']){if(ak.dataset[k]!==undefined){sel=`[data-${k}="${ak.dataset[k]}"]`;break;}}}
+ if(keep&&ak&&ak.dataset){for(const k of ['q','tx','om','stk','sc','set','cm','st','cd']){if(ak.dataset[k]!==undefined){sel=`[data-${k}="${ak.dataset[k]}"]`;break;}}}
  m.innerHTML=`<div class="view">${(V[view]||vDash)()}</div>`;
  document.title=`${({dash:'Рабочий стол',tx:'Транзакции',price:'Прайс услуг',opiu:'Прибыль и убытки',norm:'Норма',sklad:'Склад и сроки',cal:'Платёжный календарь',oblig:'Обязательства',anal:'Финмодель и прогноз',eff:'Эффективность клиники',set:'Настройки'})[view]||'Рабочий стол'} · ВетФинанс`;
  window.scrollTo(0,keep?y:0);
  m.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{open1=open1===b.dataset.q?null:b.dataset.q;draw(true);});
  m.querySelectorAll('[data-om]').forEach(b=>b.onclick=()=>{opiuMode=b.dataset.om;draw(true);});
+ m.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{view=b.dataset.go;open1=null;drawNav();draw(false);});
+ m.querySelectorAll('[data-stk]').forEach(b=>b.onclick=()=>{stkTab=b.dataset.stk;draw(true);});
  m.querySelectorAll('[data-tx]').forEach(b=>b.onclick=()=>{txTab=b.dataset.tx;draw(true);});
  m.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{scen=b.dataset.sc;open1=null;draw(true);});
  m.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{setTab=b.dataset.set;draw(true);});

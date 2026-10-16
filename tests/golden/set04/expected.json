@@ -1,0 +1,3190 @@
+{
+ "months": [
+  "2026-07",
+  "2026-08",
+  "2026-09",
+  "2026-06"
+ ],
+ "open_cases": [
+  {
+   "key": "2026-09@2026-09-15",
+   "month": "2026-09",
+   "as_of": "2026-09-15"
+  },
+  {
+   "key": "2026-09@2026-09-05",
+   "month": "2026-09",
+   "as_of": "2026-09-05"
+  }
+ ],
+ "pnl": {
+  "2026-07": {
+   "month": "2026-07",
+   "as_of": null,
+   "period": {
+    "month": "2026-07",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rows": [
+    {
+     "key": "revenue",
+     "label": "Выручка",
+     "kind": "revenue",
+     "amount": {
+      "value": 107114645,
+      "breakdown": {
+       "Услуги": 59924035,
+       "Товары": 47190610
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 100.0
+     }
+    },
+    {
+     "key": "variable",
+     "label": "Переменные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 54273177,
+      "breakdown": {
+       "Препараты и расходники": 23588040,
+       "Проценты врачам": 15200000,
+       "Корма для перепродажи": 9654000,
+       "Лаборатории": 4461525,
+       "Комиссия эквайринга": 1369612
+      },
+      "source": [
+       "bank",
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 50.7
+     }
+    },
+    {
+     "key": "marginal_profit",
+     "label": "Маржинальная прибыль",
+     "kind": "subtotal",
+     "amount": {
+      "value": 52841468,
+      "breakdown": {
+       "Выручка": 107114645,
+       "Переменные расходы": -54273177
+      },
+      "source": [
+       "bank",
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 49.3
+     }
+    },
+    {
+     "key": "fixed",
+     "label": "Постоянные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 30306090,
+      "breakdown": {
+       "ФОТ (оклады)": 13700000,
+       "Аренда и прочие постоянные": 16606090
+      },
+      "source": [
+       "bank",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 28.3
+     },
+     "children": [
+      {
+       "key": "fixed_payroll",
+       "label": "ФОТ (оклады)",
+       "kind": "child",
+       "amount": {
+        "value": 13700000,
+        "breakdown": {
+         "Оклады врачей": 8700000,
+         "Оклады персонала": 5000000
+        },
+        "source": [
+         "bank"
+        ]
+       },
+       "share_pct": {
+        "value": 12.8
+       }
+      },
+      {
+       "key": "fixed_other",
+       "label": "Аренда и прочие постоянные",
+       "kind": "child",
+       "amount": {
+        "value": 16606090,
+        "breakdown": {
+         "Аренда": 8500000,
+         "Реклама": 3800000,
+         "Коммунальные и связь": 2431860,
+         "Прочие расходы": 1874230
+        },
+        "source": [
+         "bank",
+         "manual"
+        ]
+       },
+       "share_pct": {
+        "value": 15.5
+       }
+      }
+     ]
+    },
+    {
+     "key": "taxes",
+     "label": "Налоги и взносы",
+     "kind": "expense",
+     "amount": {
+      "value": 5245000,
+      "breakdown": {
+       "Налоги и взносы": 5245000
+      },
+      "source": [
+       "bank"
+      ]
+     },
+     "share_pct": {
+      "value": 4.9
+     }
+    },
+    {
+     "key": "obligations",
+     "label": "Обязательства и амортизация",
+     "kind": "expense",
+     "amount": {
+      "value": 4064166,
+      "breakdown": {
+       "Лизинг рентген-аппарата": 1200000,
+       "Амортизация: Аппарат УЗИ": 1120000,
+       "Кредит на аппарат УЗИ": 723333,
+       "Амортизация: Рентген-аппарат": 630000,
+       "Амортизация: Анализатор крови": 390833
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 3.8
+     }
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "total",
+     "amount": {
+      "value": 13226212,
+      "breakdown": {
+       "Выручка": 107114645,
+       "Переменные расходы": -54273177,
+       "Постоянные расходы": -30306090,
+       "Налоги и взносы": -5245000,
+       "Обязательства и амортизация": -4064166
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 12.3
+     }
+    }
+   ],
+   "revenue": 107114645,
+   "variable": 54273177,
+   "marginal": 52841468,
+   "fixed": 30306090,
+   "tax": 5245000,
+   "obligations": 4064166,
+   "net_profit": 13226212,
+   "commission": 1369612,
+   "unclassified": {
+    "count": 0,
+    "amount": 0
+   },
+   "by_category": {
+    "Аренда": 8500000,
+    "Коммунальные и связь": 2431860,
+    "Корма для перепродажи": 9654000,
+    "Лаборатории": 4461525,
+    "Налоги и взносы": 5245000,
+    "Оклады врачей": 8700000,
+    "Оклады персонала": 5000000,
+    "Платежи по кредитам и лизингу": 3850000,
+    "Покупка оборудования": 8500000,
+    "Препараты и расходники": 23588040,
+    "Проценты врачам": 15200000,
+    "Прочие расходы": 1874230,
+    "Реклама": 3800000
+   },
+   "headline_numbers": {
+    "net_profit": 13226212,
+    "share_pct": 12.3,
+    "norm_min": 12.0,
+    "norm_max": 20.0
+   }
+  },
+  "2026-08": {
+   "month": "2026-08",
+   "as_of": null,
+   "period": {
+    "month": "2026-08",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rows": [
+    {
+     "key": "revenue",
+     "label": "Выручка",
+     "kind": "revenue",
+     "amount": {
+      "value": 114798705,
+      "breakdown": {
+       "Услуги": 63257520,
+       "Товары": 51541185
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 100.0
+     }
+    },
+    {
+     "key": "variable",
+     "label": "Переменные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 71410059,
+      "breakdown": {
+       "Препараты и расходники": 39216095,
+       "Проценты врачам": 15900000,
+       "Корма для перепродажи": 10120000,
+       "Лаборатории": 4798000,
+       "Комиссия эквайринга": 1375964
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot"
+      ]
+     },
+     "share_pct": {
+      "value": 62.2
+     }
+    },
+    {
+     "key": "marginal_profit",
+     "label": "Маржинальная прибыль",
+     "kind": "subtotal",
+     "amount": {
+      "value": 43388646,
+      "breakdown": {
+       "Выручка": 114798705,
+       "Переменные расходы": -71410059
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot"
+      ]
+     },
+     "share_pct": {
+      "value": 37.8
+     }
+    },
+    {
+     "key": "fixed",
+     "label": "Постоянные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 31676525,
+      "breakdown": {
+       "ФОТ (оклады)": 14250000,
+       "Аренда и прочие постоянные": 17426525
+      },
+      "source": [
+       "bank",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 27.6
+     },
+     "children": [
+      {
+       "key": "fixed_payroll",
+       "label": "ФОТ (оклады)",
+       "kind": "child",
+       "amount": {
+        "value": 14250000,
+        "breakdown": {
+         "Оклады врачей": 9000000,
+         "Оклады персонала": 5250000
+        },
+        "source": [
+         "bank"
+        ]
+       },
+       "share_pct": {
+        "value": 12.4
+       }
+      },
+      {
+       "key": "fixed_other",
+       "label": "Аренда и прочие постоянные",
+       "kind": "child",
+       "amount": {
+        "value": 17426525,
+        "breakdown": {
+         "Аренда": 8500000,
+         "Реклама": 4100000,
+         "Коммунальные и связь": 2510475,
+         "Прочие расходы": 2103000,
+         "Без статьи": 213050
+        },
+        "source": [
+         "bank",
+         "manual"
+        ]
+       },
+       "share_pct": {
+        "value": 15.2
+       }
+      }
+     ]
+    },
+    {
+     "key": "taxes",
+     "label": "Налоги и взносы",
+     "kind": "expense",
+     "amount": {
+      "value": 5532000,
+      "breakdown": {
+       "Налоги и взносы": 5532000
+      },
+      "source": [
+       "bank"
+      ]
+     },
+     "share_pct": {
+      "value": 4.8
+     }
+    },
+    {
+     "key": "obligations",
+     "label": "Обязательства и амортизация",
+     "kind": "expense",
+     "amount": {
+      "value": 4277800,
+      "breakdown": {
+       "Лизинг рентген-аппарата": 1200000,
+       "Амортизация: Аппарат УЗИ": 1120000,
+       "Кредит на аппарат УЗИ": 700856,
+       "Амортизация: Рентген-аппарат": 630000,
+       "Амортизация: Анализатор крови": 390833,
+       "Амортизация: Центрифуга": 236111
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 3.7
+     }
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "total",
+     "amount": {
+      "value": 1902321,
+      "breakdown": {
+       "Выручка": 114798705,
+       "Переменные расходы": -71410059,
+       "Постоянные расходы": -31676525,
+       "Налоги и взносы": -5532000,
+       "Обязательства и амортизация": -4277800
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 1.7
+     }
+    }
+   ],
+   "revenue": 114798705,
+   "variable": 71410059,
+   "marginal": 43388646,
+   "fixed": 31676525,
+   "tax": 5532000,
+   "obligations": 4277800,
+   "net_profit": 1902321,
+   "commission": 1375964,
+   "unclassified": {
+    "count": 1,
+    "amount": 213050
+   },
+   "by_category": {
+    "Аренда": 8500000,
+    "Без статьи": 213050,
+    "Вывод средств владельца": 15000000,
+    "Коммунальные и связь": 2510475,
+    "Корма для перепродажи": 10120000,
+    "Лаборатории": 4798000,
+    "Налоги и взносы": 5532000,
+    "Оклады врачей": 9000000,
+    "Оклады персонала": 5250000,
+    "Платежи по кредитам и лизингу": 3850000,
+    "Препараты и расходники": 39216095,
+    "Проценты врачам": 15900000,
+    "Прочие расходы": 2103000,
+    "Реклама": 4100000
+   },
+   "headline_numbers": {
+    "net_profit": 1902321,
+    "share_pct": 1.7,
+    "norm_min": 12.0,
+    "norm_max": 20.0
+   }
+  },
+  "2026-09": {
+   "month": "2026-09",
+   "as_of": null,
+   "period": {
+    "month": "2026-09",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rows": [
+    {
+     "key": "revenue",
+     "label": "Выручка",
+     "kind": "revenue",
+     "amount": {
+      "value": 109815610,
+      "breakdown": {
+       "Услуги": 64132070,
+       "Товары": 45683540
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 100.0
+     }
+    },
+    {
+     "key": "variable",
+     "label": "Переменные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 56215002,
+      "breakdown": {
+       "Препараты и расходники": 24500000,
+       "Проценты врачам": 17000000,
+       "Корма для перепродажи": 8000000,
+       "Лаборатории": 5200000,
+       "Комиссия эквайринга": 1515002
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot"
+      ]
+     },
+     "share_pct": {
+      "value": 51.2
+     }
+    },
+    {
+     "key": "marginal_profit",
+     "label": "Маржинальная прибыль",
+     "kind": "subtotal",
+     "amount": {
+      "value": 53600608,
+      "breakdown": {
+       "Выручка": 109815610,
+       "Переменные расходы": -56215002
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot"
+      ]
+     },
+     "share_pct": {
+      "value": 48.8
+     }
+    },
+    {
+     "key": "fixed",
+     "label": "Постоянные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 31291055,
+      "breakdown": {
+       "ФОТ (оклады)": 14800000,
+       "Аренда и прочие постоянные": 16491055
+      },
+      "source": [
+       "bank",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 28.5
+     },
+     "children": [
+      {
+       "key": "fixed_payroll",
+       "label": "ФОТ (оклады)",
+       "kind": "child",
+       "amount": {
+        "value": 14800000,
+        "breakdown": {
+         "Оклады врачей": 9300000,
+         "Оклады персонала": 5500000
+        },
+        "source": [
+         "bank"
+        ]
+       },
+       "share_pct": {
+        "value": 13.5
+       }
+      },
+      {
+       "key": "fixed_other",
+       "label": "Аренда и прочие постоянные",
+       "kind": "child",
+       "amount": {
+        "value": 16491055,
+        "breakdown": {
+         "Аренда": 8500000,
+         "Коммунальные и связь": 2641040,
+         "Реклама": 2310000,
+         "Без статьи": 1840000,
+         "Прочие расходы": 1200015
+        },
+        "source": [
+         "bank",
+         "manual"
+        ]
+       },
+       "share_pct": {
+        "value": 15.0
+       }
+      }
+     ]
+    },
+    {
+     "key": "taxes",
+     "label": "Налоги и взносы",
+     "kind": "expense",
+     "amount": {
+      "value": 5200000,
+      "breakdown": {
+       "Налоги и взносы": 5200000
+      },
+      "source": [
+       "bank"
+      ]
+     },
+     "share_pct": {
+      "value": 4.7
+     }
+    },
+    {
+     "key": "obligations",
+     "label": "Обязательства и амортизация",
+     "kind": "expense",
+     "amount": {
+      "value": 4255060,
+      "breakdown": {
+       "Лизинг рентген-аппарата": 1200000,
+       "Амортизация: Аппарат УЗИ": 1120000,
+       "Кредит на аппарат УЗИ": 678116,
+       "Амортизация: Рентген-аппарат": 630000,
+       "Амортизация: Анализатор крови": 390833,
+       "Амортизация: Центрифуга": 236111
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 3.9
+     }
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "total",
+     "amount": {
+      "value": 12854493,
+      "breakdown": {
+       "Выручка": 109815610,
+       "Переменные расходы": -56215002,
+       "Постоянные расходы": -31291055,
+       "Налоги и взносы": -5200000,
+       "Обязательства и амортизация": -4255060
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 11.7
+     }
+    }
+   ],
+   "revenue": 109815610,
+   "variable": 56215002,
+   "marginal": 53600608,
+   "fixed": 31291055,
+   "tax": 5200000,
+   "obligations": 4255060,
+   "net_profit": 12854493,
+   "commission": 1515002,
+   "unclassified": {
+    "count": 1,
+    "amount": 1840000
+   },
+   "by_category": {
+    "Аренда": 8500000,
+    "Без статьи": 1840000,
+    "Коммунальные и связь": 2641040,
+    "Корма для перепродажи": 8000000,
+    "Лаборатории": 5200000,
+    "Налоги и взносы": 5200000,
+    "Оклады врачей": 9300000,
+    "Оклады персонала": 5500000,
+    "Платежи по кредитам и лизингу": 3850000,
+    "Препараты и расходники": 24500000,
+    "Проценты врачам": 17000000,
+    "Прочие расходы": 1200015,
+    "Реклама": 2310000
+   },
+   "headline_numbers": {
+    "net_profit": 12854493,
+    "share_pct": 11.7,
+    "norm_min": 12.0,
+    "norm_max": 20.0
+   }
+  },
+  "2026-06": {
+   "month": "2026-06",
+   "as_of": null,
+   "period": {
+    "month": "2026-06",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "empty",
+   "partial_reasons": [],
+   "rows": [
+    {
+     "key": "revenue",
+     "label": "Выручка",
+     "kind": "revenue",
+     "amount": {
+      "value": 0,
+      "breakdown": {
+       "Услуги": 0,
+       "Товары": 0
+      },
+      "source": [
+       "manual"
+      ]
+     }
+    },
+    {
+     "key": "variable",
+     "label": "Переменные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 0,
+      "breakdown": {},
+      "source": [
+       "manual"
+      ]
+     }
+    },
+    {
+     "key": "marginal_profit",
+     "label": "Маржинальная прибыль",
+     "kind": "subtotal",
+     "amount": {
+      "value": 0,
+      "breakdown": {
+       "Выручка": 0,
+       "Переменные расходы": 0
+      },
+      "source": [
+       "manual"
+      ]
+     }
+    },
+    {
+     "key": "fixed",
+     "label": "Постоянные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 0,
+      "breakdown": {
+       "ФОТ (оклады)": 0,
+       "Аренда и прочие постоянные": 0
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "children": [
+      {
+       "key": "fixed_payroll",
+       "label": "ФОТ (оклады)",
+       "kind": "child",
+       "amount": {
+        "value": 0,
+        "breakdown": {},
+        "source": [
+         "manual"
+        ]
+       }
+      },
+      {
+       "key": "fixed_other",
+       "label": "Аренда и прочие постоянные",
+       "kind": "child",
+       "amount": {
+        "value": 0,
+        "breakdown": {},
+        "source": [
+         "manual"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "key": "taxes",
+     "label": "Налоги и взносы",
+     "kind": "expense",
+     "amount": {
+      "value": 0,
+      "breakdown": {},
+      "source": [
+       "manual"
+      ]
+     }
+    },
+    {
+     "key": "obligations",
+     "label": "Обязательства и амортизация",
+     "kind": "expense",
+     "amount": {
+      "value": 0,
+      "breakdown": {},
+      "source": [
+       "manual"
+      ]
+     }
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "total",
+     "amount": {
+      "value": 0,
+      "breakdown": {
+       "Выручка": 0,
+       "Переменные расходы": 0,
+       "Постоянные расходы": 0,
+       "Налоги и взносы": 0,
+       "Обязательства и амортизация": 0
+      },
+      "source": [
+       "manual"
+      ]
+     }
+    }
+   ],
+   "revenue": 0,
+   "variable": 0,
+   "marginal": 0,
+   "fixed": 0,
+   "tax": 0,
+   "obligations": 0,
+   "net_profit": 0,
+   "commission": 0,
+   "unclassified": {
+    "count": 0,
+    "amount": 0
+   },
+   "by_category": {},
+   "headline_numbers": {
+    "net_profit": 0,
+    "share_pct": null,
+    "norm_min": 12.0,
+    "norm_max": 20.0
+   }
+  },
+  "2026-09@2026-09-15": {
+   "month": "2026-09",
+   "as_of": "2026-09-15",
+   "period": {
+    "month": "2026-09",
+    "status": "open",
+    "to": "2026-09-15",
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rows": [
+    {
+     "key": "revenue",
+     "label": "Выручка",
+     "kind": "revenue",
+     "amount": {
+      "value": 52811967,
+      "breakdown": {
+       "Услуги": 32930958,
+       "Товары": 19881009
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 100.0
+     }
+    },
+    {
+     "key": "variable",
+     "label": "Переменные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 19557557,
+      "breakdown": {
+       "Препараты и расходники": 12240000,
+       "Корма для перепродажи": 4000000,
+       "Лаборатории": 2600000,
+       "Комиссия эквайринга": 717557
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot"
+      ]
+     },
+     "share_pct": {
+      "value": 37.0
+     }
+    },
+    {
+     "key": "marginal_profit",
+     "label": "Маржинальная прибыль",
+     "kind": "subtotal",
+     "amount": {
+      "value": 33254410,
+      "breakdown": {
+       "Выручка": 52811967,
+       "Переменные расходы": -19557557
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot"
+      ]
+     },
+     "share_pct": {
+      "value": 63.0
+     }
+    },
+    {
+     "key": "fixed",
+     "label": "Постоянные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 20561055,
+      "breakdown": {
+       "ФОТ (оклады)": 7100000,
+       "Аренда и прочие постоянные": 13461055
+      },
+      "source": [
+       "bank",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 38.9
+     },
+     "children": [
+      {
+       "key": "fixed_payroll",
+       "label": "ФОТ (оклады)",
+       "kind": "child",
+       "amount": {
+        "value": 7100000,
+        "breakdown": {
+         "Оклады врачей": 4500000,
+         "Оклады персонала": 2600000
+        },
+        "source": [
+         "bank"
+        ]
+       },
+       "share_pct": {
+        "value": 13.4
+       }
+      },
+      {
+       "key": "fixed_other",
+       "label": "Аренда и прочие постоянные",
+       "kind": "child",
+       "amount": {
+        "value": 13461055,
+        "breakdown": {
+         "Аренда": 8500000,
+         "Реклама": 2310000,
+         "Коммунальные и связь": 2141040,
+         "Прочие расходы": 510015
+        },
+        "source": [
+         "bank",
+         "manual"
+        ]
+       },
+       "share_pct": {
+        "value": 25.5
+       }
+      }
+     ]
+    },
+    {
+     "key": "taxes",
+     "label": "Налоги и взносы",
+     "kind": "expense",
+     "amount": {
+      "value": 0,
+      "breakdown": {},
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 0.0
+     }
+    },
+    {
+     "key": "obligations",
+     "label": "Обязательства и амортизация",
+     "kind": "expense",
+     "amount": {
+      "value": 4255060,
+      "breakdown": {
+       "Лизинг рентген-аппарата": 1200000,
+       "Амортизация: Аппарат УЗИ": 1120000,
+       "Кредит на аппарат УЗИ": 678116,
+       "Амортизация: Рентген-аппарат": 630000,
+       "Амортизация: Анализатор крови": 390833,
+       "Амортизация: Центрифуга": 236111
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 8.1
+     }
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "total",
+     "amount": {
+      "value": 8438295,
+      "breakdown": {
+       "Выручка": 52811967,
+       "Переменные расходы": -19557557,
+       "Постоянные расходы": -20561055,
+       "Налоги и взносы": 0,
+       "Обязательства и амортизация": -4255060
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "bot",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 16.0
+     }
+    }
+   ],
+   "revenue": 52811967,
+   "variable": 19557557,
+   "marginal": 33254410,
+   "fixed": 20561055,
+   "tax": 0,
+   "obligations": 4255060,
+   "net_profit": 8438295,
+   "commission": 717557,
+   "unclassified": {
+    "count": 0,
+    "amount": 0
+   },
+   "by_category": {
+    "Аренда": 8500000,
+    "Коммунальные и связь": 2141040,
+    "Корма для перепродажи": 4000000,
+    "Лаборатории": 2600000,
+    "Оклады врачей": 4500000,
+    "Оклады персонала": 2600000,
+    "Платежи по кредитам и лизингу": 3850000,
+    "Препараты и расходники": 12240000,
+    "Прочие расходы": 510015,
+    "Реклама": 2310000
+   },
+   "headline_numbers": {
+    "net_profit": 8438295,
+    "share_pct": 16.0,
+    "norm_min": 12.0,
+    "norm_max": 20.0
+   }
+  },
+  "2026-09@2026-09-05": {
+   "month": "2026-09",
+   "as_of": "2026-09-05",
+   "period": {
+    "month": "2026-09",
+    "status": "open",
+    "to": "2026-09-05",
+    "first_month": "2026-07"
+   },
+   "status": "partial",
+   "partial_reasons": [
+    "short_period"
+   ],
+   "rows": [
+    {
+     "key": "revenue",
+     "label": "Выручка",
+     "kind": "revenue",
+     "amount": {
+      "value": 19771003,
+      "breakdown": {
+       "Услуги": 10756818,
+       "Товары": 9014185
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 100.0
+     }
+    },
+    {
+     "key": "variable",
+     "label": "Переменные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 6257079,
+      "breakdown": {
+       "Препараты и расходники": 6000000,
+       "Комиссия эквайринга": 257079
+      },
+      "source": [
+       "bank",
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 31.6
+     }
+    },
+    {
+     "key": "marginal_profit",
+     "label": "Маржинальная прибыль",
+     "kind": "subtotal",
+     "amount": {
+      "value": 13513924,
+      "breakdown": {
+       "Выручка": 19771003,
+       "Переменные расходы": -6257079
+      },
+      "source": [
+       "bank",
+       "vetmanager"
+      ]
+     },
+     "share_pct": {
+      "value": 68.4
+     }
+    },
+    {
+     "key": "fixed",
+     "label": "Постоянные расходы",
+     "kind": "expense",
+     "amount": {
+      "value": 9010015,
+      "breakdown": {
+       "ФОТ (оклады)": 0,
+       "Аренда и прочие постоянные": 9010015
+      },
+      "source": [
+       "bank",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 45.6
+     },
+     "children": [
+      {
+       "key": "fixed_payroll",
+       "label": "ФОТ (оклады)",
+       "kind": "child",
+       "amount": {
+        "value": 0,
+        "breakdown": {},
+        "source": [
+         "manual"
+        ]
+       },
+       "share_pct": {
+        "value": 0.0
+       }
+      },
+      {
+       "key": "fixed_other",
+       "label": "Аренда и прочие постоянные",
+       "kind": "child",
+       "amount": {
+        "value": 9010015,
+        "breakdown": {
+         "Аренда": 8500000,
+         "Прочие расходы": 510015
+        },
+        "source": [
+         "bank",
+         "manual"
+        ]
+       },
+       "share_pct": {
+        "value": 45.6
+       }
+      }
+     ]
+    },
+    {
+     "key": "taxes",
+     "label": "Налоги и взносы",
+     "kind": "expense",
+     "amount": {
+      "value": 0,
+      "breakdown": {},
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 0.0
+     }
+    },
+    {
+     "key": "obligations",
+     "label": "Обязательства и амортизация",
+     "kind": "expense",
+     "amount": {
+      "value": 4255060,
+      "breakdown": {
+       "Лизинг рентген-аппарата": 1200000,
+       "Амортизация: Аппарат УЗИ": 1120000,
+       "Кредит на аппарат УЗИ": 678116,
+       "Амортизация: Рентген-аппарат": 630000,
+       "Амортизация: Анализатор крови": 390833,
+       "Амортизация: Центрифуга": 236111
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 21.5
+     }
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "total",
+     "amount": {
+      "value": 248849,
+      "breakdown": {
+       "Выручка": 19771003,
+       "Переменные расходы": -6257079,
+       "Постоянные расходы": -9010015,
+       "Налоги и взносы": 0,
+       "Обязательства и амортизация": -4255060
+      },
+      "source": [
+       "bank",
+       "vetmanager",
+       "manual"
+      ]
+     },
+     "share_pct": {
+      "value": 1.3
+     }
+    }
+   ],
+   "revenue": 19771003,
+   "variable": 6257079,
+   "marginal": 13513924,
+   "fixed": 9010015,
+   "tax": 0,
+   "obligations": 4255060,
+   "net_profit": 248849,
+   "commission": 257079,
+   "unclassified": {
+    "count": 0,
+    "amount": 0
+   },
+   "by_category": {
+    "Аренда": 8500000,
+    "Препараты и расходники": 6000000,
+    "Прочие расходы": 510015
+   },
+   "headline_numbers": {
+    "net_profit": 248849,
+    "share_pct": 1.3,
+    "norm_min": 12.0,
+    "norm_max": 20.0
+   }
+  }
+ },
+ "direction": {
+  "2026-07": {
+   "month": "2026-07",
+   "directions": [
+    {
+     "direction": "services",
+     "label": "Услуги",
+     "revenue": {
+      "value": 59924035,
+      "breakdown": {
+       "Услуги": 59924035
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 19661525,
+     "direct_costs_breakdown": {
+      "Проценты врачам": 15200000,
+      "Лаборатории": 4461525
+     },
+     "margin": 40262510,
+     "revenue_share_pct": 55.9,
+     "margin_pct": 67.2
+    },
+    {
+     "direction": "goods",
+     "label": "Товары",
+     "revenue": {
+      "value": 47190610,
+      "breakdown": {
+       "Товары": 47190610
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 33242040,
+     "direct_costs_breakdown": {
+      "Препараты и расходники": 23588040,
+      "Корма для перепродажи": 9654000
+     },
+     "margin": 13948570,
+     "revenue_share_pct": 44.1,
+     "margin_pct": 29.6
+    }
+   ],
+   "common_variable": {
+    "value": 1369612,
+    "breakdown": {
+     "Комиссия эквайринга": 1369612
+    }
+   },
+   "variable": 54273177,
+   "marginal": 52841468,
+   "revenue": 107114645
+  },
+  "2026-08": {
+   "month": "2026-08",
+   "directions": [
+    {
+     "direction": "services",
+     "label": "Услуги",
+     "revenue": {
+      "value": 63257520,
+      "breakdown": {
+       "Услуги": 63257520
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 20698000,
+     "direct_costs_breakdown": {
+      "Проценты врачам": 15900000,
+      "Лаборатории": 4798000
+     },
+     "margin": 42559520,
+     "revenue_share_pct": 55.1,
+     "margin_pct": 67.3
+    },
+    {
+     "direction": "goods",
+     "label": "Товары",
+     "revenue": {
+      "value": 51541185,
+      "breakdown": {
+       "Товары": 51541185
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 49336095,
+     "direct_costs_breakdown": {
+      "Препараты и расходники": 39216095,
+      "Корма для перепродажи": 10120000
+     },
+     "margin": 2205090,
+     "revenue_share_pct": 44.9,
+     "margin_pct": 4.3
+    }
+   ],
+   "common_variable": {
+    "value": 1375964,
+    "breakdown": {
+     "Комиссия эквайринга": 1375964
+    }
+   },
+   "variable": 71410059,
+   "marginal": 43388646,
+   "revenue": 114798705
+  },
+  "2026-09": {
+   "month": "2026-09",
+   "directions": [
+    {
+     "direction": "services",
+     "label": "Услуги",
+     "revenue": {
+      "value": 64132070,
+      "breakdown": {
+       "Услуги": 64132070
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 22200000,
+     "direct_costs_breakdown": {
+      "Проценты врачам": 17000000,
+      "Лаборатории": 5200000
+     },
+     "margin": 41932070,
+     "revenue_share_pct": 58.4,
+     "margin_pct": 65.4
+    },
+    {
+     "direction": "goods",
+     "label": "Товары",
+     "revenue": {
+      "value": 45683540,
+      "breakdown": {
+       "Товары": 45683540
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 32500000,
+     "direct_costs_breakdown": {
+      "Препараты и расходники": 24500000,
+      "Корма для перепродажи": 8000000
+     },
+     "margin": 13183540,
+     "revenue_share_pct": 41.6,
+     "margin_pct": 28.9
+    }
+   ],
+   "common_variable": {
+    "value": 1515002,
+    "breakdown": {
+     "Комиссия эквайринга": 1515002
+    }
+   },
+   "variable": 56215002,
+   "marginal": 53600608,
+   "revenue": 109815610
+  },
+  "2026-06": {
+   "month": "2026-06",
+   "directions": [
+    {
+     "direction": "services",
+     "label": "Услуги",
+     "revenue": {
+      "value": 0,
+      "breakdown": {
+       "Услуги": 0
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "direct_costs": 0,
+     "direct_costs_breakdown": {},
+     "margin": 0
+    },
+    {
+     "direction": "goods",
+     "label": "Товары",
+     "revenue": {
+      "value": 0,
+      "breakdown": {
+       "Товары": 0
+      },
+      "source": [
+       "manual"
+      ]
+     },
+     "direct_costs": 0,
+     "direct_costs_breakdown": {},
+     "margin": 0
+    }
+   ],
+   "common_variable": {
+    "value": 0,
+    "breakdown": {}
+   },
+   "variable": 0,
+   "marginal": 0,
+   "revenue": 0
+  },
+  "2026-09@2026-09-15": {
+   "month": "2026-09",
+   "directions": [
+    {
+     "direction": "services",
+     "label": "Услуги",
+     "revenue": {
+      "value": 32930958,
+      "breakdown": {
+       "Услуги": 32930958
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 2600000,
+     "direct_costs_breakdown": {
+      "Лаборатории": 2600000
+     },
+     "margin": 30330958,
+     "revenue_share_pct": 62.4,
+     "margin_pct": 92.1
+    },
+    {
+     "direction": "goods",
+     "label": "Товары",
+     "revenue": {
+      "value": 19881009,
+      "breakdown": {
+       "Товары": 19881009
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 16240000,
+     "direct_costs_breakdown": {
+      "Препараты и расходники": 12240000,
+      "Корма для перепродажи": 4000000
+     },
+     "margin": 3641009,
+     "revenue_share_pct": 37.6,
+     "margin_pct": 18.3
+    }
+   ],
+   "common_variable": {
+    "value": 717557,
+    "breakdown": {
+     "Комиссия эквайринга": 717557
+    }
+   },
+   "variable": 19557557,
+   "marginal": 33254410,
+   "revenue": 52811967
+  },
+  "2026-09@2026-09-05": {
+   "month": "2026-09",
+   "directions": [
+    {
+     "direction": "services",
+     "label": "Услуги",
+     "revenue": {
+      "value": 10756818,
+      "breakdown": {
+       "Услуги": 10756818
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 0,
+     "direct_costs_breakdown": {},
+     "margin": 10756818,
+     "revenue_share_pct": 54.4,
+     "margin_pct": 100.0
+    },
+    {
+     "direction": "goods",
+     "label": "Товары",
+     "revenue": {
+      "value": 9014185,
+      "breakdown": {
+       "Товары": 9014185
+      },
+      "source": [
+       "vetmanager"
+      ]
+     },
+     "direct_costs": 6000000,
+     "direct_costs_breakdown": {
+      "Препараты и расходники": 6000000
+     },
+     "margin": 3014185,
+     "revenue_share_pct": 45.6,
+     "margin_pct": 33.4
+    }
+   ],
+   "common_variable": {
+    "value": 257079,
+    "breakdown": {
+     "Комиссия эквайринга": 257079
+    }
+   },
+   "variable": 6257079,
+   "marginal": 13513924,
+   "revenue": 19771003
+  }
+ },
+ "norm": {
+  "2026-07": {
+   "month": "2026-07",
+   "as_of": null,
+   "period": {
+    "month": "2026-07",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rated": true,
+   "revenue": 107114645,
+   "items": [
+    {
+     "key": "payroll",
+     "label": "ФОТ врачей",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 22.0,
+      "max_pct": 28.0,
+      "source": "industry"
+     },
+     "amount": 23900000,
+     "amount_breakdown": {
+      "Проценты врачам": 15200000,
+      "Оклады врачей": 8700000
+     },
+     "actual_pct": 22.3,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "drugs",
+     "label": "Препараты и расходники",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 20.0,
+      "max_pct": 25.0,
+      "source": "industry"
+     },
+     "amount": 23588040,
+     "amount_breakdown": {
+      "Препараты и расходники": 23588040
+     },
+     "actual_pct": 22.0,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "rent",
+     "label": "Аренда и коммуналка",
+     "kind": "expense",
+     "memo": false,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 5.0,
+      "max_pct": 10.0,
+      "source": "industry"
+     },
+     "amount": 10931860,
+     "amount_breakdown": {
+      "Аренда": 8500000,
+      "Коммунальные и связь": 2431860
+     },
+     "actual_pct": 10.2,
+     "bound": 10711465,
+     "deviation_rub": 220395,
+     "deviation_pp": 0.2
+    },
+    {
+     "key": "lab",
+     "label": "Лаборатории",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 3.0,
+      "max_pct": 6.0,
+      "source": "industry"
+     },
+     "amount": 4461525,
+     "amount_breakdown": {
+      "Лаборатории": 4461525
+     },
+     "actual_pct": 4.2,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "writeoff",
+     "label": "Списание по сроку",
+     "kind": "expense",
+     "memo": true,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 0.0,
+      "max_pct": 0.8,
+      "source": "industry"
+     },
+     "amount": 640000,
+     "amount_breakdown": {
+      "Списано по сроку годности": 640000
+     },
+     "actual_pct": 0.6,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "acquiring",
+     "label": "Эквайринг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 1.0,
+      "max_pct": 2.0,
+      "source": "industry"
+     },
+     "amount": 1369612,
+     "amount_breakdown": {
+      "Комиссия эквайринга": 1369612
+     },
+     "actual_pct": 1.3,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "marketing",
+     "label": "Маркетинг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 2.0,
+      "max_pct": 6.0,
+      "source": "clinic"
+     },
+     "amount": 3800000,
+     "amount_breakdown": {
+      "Реклама": 3800000
+     },
+     "actual_pct": 3.5,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "other",
+     "label": "Остальные статьи",
+     "kind": "other",
+     "memo": false,
+     "status": "no_norm",
+     "tone": "neutral",
+     "norm": null,
+     "amount": 25837396,
+     "amount_breakdown": {
+      "Корма для перепродажи": 9654000,
+      "Налоги и взносы": 5245000,
+      "Оклады персонала": 5000000,
+      "Обязательства и амортизация": 4064166,
+      "Прочие расходы": 1874230
+     },
+     "actual_pct": 24.1
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "profit",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 12.0,
+      "max_pct": 20.0,
+      "source": "industry"
+     },
+     "amount": 13226212,
+     "amount_breakdown": {
+      "Чистая прибыль": 13226212
+     },
+     "actual_pct": 12.3,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    }
+   ],
+   "headline_numbers": {
+    "above": {
+     "Аренда и коммуналка": 220395
+    },
+    "above_total": 220395
+   }
+  },
+  "2026-08": {
+   "month": "2026-08",
+   "as_of": null,
+   "period": {
+    "month": "2026-08",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rated": true,
+   "revenue": 114798705,
+   "items": [
+    {
+     "key": "payroll",
+     "label": "ФОТ врачей",
+     "kind": "expense",
+     "memo": false,
+     "status": "below",
+     "tone": "warn",
+     "norm": {
+      "min_pct": 22.0,
+      "max_pct": 28.0,
+      "source": "industry"
+     },
+     "amount": 24900000,
+     "amount_breakdown": {
+      "Проценты врачам": 15900000,
+      "Оклады врачей": 9000000
+     },
+     "actual_pct": 21.7,
+     "bound": 25255715,
+     "deviation_rub": -355715,
+     "deviation_pp": -0.3
+    },
+    {
+     "key": "drugs",
+     "label": "Препараты и расходники",
+     "kind": "expense",
+     "memo": false,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 20.0,
+      "max_pct": 25.0,
+      "source": "industry"
+     },
+     "amount": 39216095,
+     "amount_breakdown": {
+      "Препараты и расходники": 39216095
+     },
+     "actual_pct": 34.2,
+     "bound": 28699676,
+     "deviation_rub": 10516419,
+     "deviation_pp": 9.2
+    },
+    {
+     "key": "rent",
+     "label": "Аренда и коммуналка",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 5.0,
+      "max_pct": 10.0,
+      "source": "industry"
+     },
+     "amount": 11010475,
+     "amount_breakdown": {
+      "Аренда": 8500000,
+      "Коммунальные и связь": 2510475
+     },
+     "actual_pct": 9.6,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "lab",
+     "label": "Лаборатории",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 3.0,
+      "max_pct": 6.0,
+      "source": "industry"
+     },
+     "amount": 4798000,
+     "amount_breakdown": {
+      "Лаборатории": 4798000
+     },
+     "actual_pct": 4.2,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "writeoff",
+     "label": "Списание по сроку",
+     "kind": "expense",
+     "memo": true,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 0.0,
+      "max_pct": 0.8,
+      "source": "industry"
+     },
+     "amount": 890000,
+     "amount_breakdown": {
+      "Списано по сроку годности": 890000
+     },
+     "actual_pct": 0.8,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "acquiring",
+     "label": "Эквайринг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 1.0,
+      "max_pct": 2.0,
+      "source": "industry"
+     },
+     "amount": 1375964,
+     "amount_breakdown": {
+      "Комиссия эквайринга": 1375964
+     },
+     "actual_pct": 1.2,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "marketing",
+     "label": "Маркетинг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 2.0,
+      "max_pct": 6.0,
+      "source": "clinic"
+     },
+     "amount": 4100000,
+     "amount_breakdown": {
+      "Реклама": 4100000
+     },
+     "actual_pct": 3.6,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "other",
+     "label": "Остальные статьи",
+     "kind": "other",
+     "memo": false,
+     "status": "no_norm",
+     "tone": "neutral",
+     "norm": null,
+     "amount": 27495850,
+     "amount_breakdown": {
+      "Корма для перепродажи": 10120000,
+      "Налоги и взносы": 5532000,
+      "Оклады персонала": 5250000,
+      "Обязательства и амортизация": 4277800,
+      "Прочие расходы": 2103000,
+      "Без статьи": 213050
+     },
+     "actual_pct": 24.0
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "profit",
+     "memo": false,
+     "status": "below",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 12.0,
+      "max_pct": 20.0,
+      "source": "industry"
+     },
+     "amount": 1902321,
+     "amount_breakdown": {
+      "Чистая прибыль": 1902321
+     },
+     "actual_pct": 1.7,
+     "bound": 13775845,
+     "deviation_rub": -11873524,
+     "deviation_pp": -10.3
+    }
+   ],
+   "headline_numbers": {
+    "above": {
+     "Препараты и расходники": 10516419
+    },
+    "above_total": 10516419
+   }
+  },
+  "2026-09": {
+   "month": "2026-09",
+   "as_of": null,
+   "period": {
+    "month": "2026-09",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rated": true,
+   "revenue": 109815610,
+   "items": [
+    {
+     "key": "payroll",
+     "label": "ФОТ врачей",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 22.0,
+      "max_pct": 28.0,
+      "source": "industry"
+     },
+     "amount": 26300000,
+     "amount_breakdown": {
+      "Проценты врачам": 17000000,
+      "Оклады врачей": 9300000
+     },
+     "actual_pct": 23.9,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "drugs",
+     "label": "Препараты и расходники",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 20.0,
+      "max_pct": 25.0,
+      "source": "industry"
+     },
+     "amount": 24500000,
+     "amount_breakdown": {
+      "Препараты и расходники": 24500000
+     },
+     "actual_pct": 22.3,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "rent",
+     "label": "Аренда и коммуналка",
+     "kind": "expense",
+     "memo": false,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 5.0,
+      "max_pct": 10.0,
+      "source": "industry"
+     },
+     "amount": 11141040,
+     "amount_breakdown": {
+      "Аренда": 8500000,
+      "Коммунальные и связь": 2641040
+     },
+     "actual_pct": 10.1,
+     "bound": 10981561,
+     "deviation_rub": 159479,
+     "deviation_pp": 0.1
+    },
+    {
+     "key": "lab",
+     "label": "Лаборатории",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 3.0,
+      "max_pct": 6.0,
+      "source": "industry"
+     },
+     "amount": 5200000,
+     "amount_breakdown": {
+      "Лаборатории": 5200000
+     },
+     "actual_pct": 4.7,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "writeoff",
+     "label": "Списание по сроку",
+     "kind": "expense",
+     "memo": true,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 0.0,
+      "max_pct": 0.8,
+      "source": "industry"
+     },
+     "amount": 2990000,
+     "amount_breakdown": {
+      "Списано по сроку годности": 2990000
+     },
+     "actual_pct": 2.7,
+     "bound": 878525,
+     "deviation_rub": 2111475,
+     "deviation_pp": 1.9
+    },
+    {
+     "key": "acquiring",
+     "label": "Эквайринг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 1.0,
+      "max_pct": 2.0,
+      "source": "industry"
+     },
+     "amount": 1515002,
+     "amount_breakdown": {
+      "Комиссия эквайринга": 1515002
+     },
+     "actual_pct": 1.4,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "marketing",
+     "label": "Маркетинг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 2.0,
+      "max_pct": 6.0,
+      "source": "clinic"
+     },
+     "amount": 2310000,
+     "amount_breakdown": {
+      "Реклама": 2310000
+     },
+     "actual_pct": 2.1,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "other",
+     "label": "Остальные статьи",
+     "kind": "other",
+     "memo": false,
+     "status": "no_norm",
+     "tone": "neutral",
+     "norm": null,
+     "amount": 25995075,
+     "amount_breakdown": {
+      "Корма для перепродажи": 8000000,
+      "Оклады персонала": 5500000,
+      "Налоги и взносы": 5200000,
+      "Обязательства и амортизация": 4255060,
+      "Без статьи": 1840000,
+      "Прочие расходы": 1200015
+     },
+     "actual_pct": 23.7
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "profit",
+     "memo": false,
+     "status": "below",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 12.0,
+      "max_pct": 20.0,
+      "source": "industry"
+     },
+     "amount": 12854493,
+     "amount_breakdown": {
+      "Чистая прибыль": 12854493
+     },
+     "actual_pct": 11.7,
+     "bound": 13177873,
+     "deviation_rub": -323380,
+     "deviation_pp": -0.3
+    }
+   ],
+   "headline_numbers": {
+    "above": {
+     "Аренда и коммуналка": 159479,
+     "Списание по сроку": 2111475
+    },
+    "above_total": 2270954
+   }
+  },
+  "2026-06": {
+   "month": "2026-06",
+   "as_of": null,
+   "period": {
+    "month": "2026-06",
+    "status": "closed",
+    "to": null,
+    "first_month": "2026-07"
+   },
+   "status": "empty",
+   "partial_reasons": [],
+   "rated": true,
+   "items": []
+  },
+  "2026-09@2026-09-15": {
+   "month": "2026-09",
+   "as_of": "2026-09-15",
+   "period": {
+    "month": "2026-09",
+    "status": "open",
+    "to": "2026-09-15",
+    "first_month": "2026-07"
+   },
+   "status": "ok",
+   "partial_reasons": [],
+   "rated": false,
+   "headline_open": "К 15 сентября доли статей посчитаны от выручки за 15 дней. Сравним с нормой, когда месяц закончится.",
+   "revenue": 52811967,
+   "items": [
+    {
+     "key": "payroll",
+     "label": "ФОТ врачей",
+     "kind": "expense",
+     "memo": false,
+     "status": "below",
+     "tone": "warn",
+     "norm": {
+      "min_pct": 22.0,
+      "max_pct": 28.0,
+      "source": "industry"
+     },
+     "amount": 4500000,
+     "amount_breakdown": {
+      "Оклады врачей": 4500000,
+      "Проценты врачам": 0
+     },
+     "actual_pct": 8.5,
+     "bound": 11618633,
+     "deviation_rub": -7118633,
+     "deviation_pp": -13.5
+    },
+    {
+     "key": "drugs",
+     "label": "Препараты и расходники",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 20.0,
+      "max_pct": 25.0,
+      "source": "industry"
+     },
+     "amount": 12240000,
+     "amount_breakdown": {
+      "Препараты и расходники": 12240000
+     },
+     "actual_pct": 23.2,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "rent",
+     "label": "Аренда и коммуналка",
+     "kind": "expense",
+     "memo": false,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 5.0,
+      "max_pct": 10.0,
+      "source": "industry"
+     },
+     "amount": 10641040,
+     "amount_breakdown": {
+      "Аренда": 8500000,
+      "Коммунальные и связь": 2141040
+     },
+     "actual_pct": 20.1,
+     "bound": 5281197,
+     "deviation_rub": 5359843,
+     "deviation_pp": 10.1
+    },
+    {
+     "key": "lab",
+     "label": "Лаборатории",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 3.0,
+      "max_pct": 6.0,
+      "source": "industry"
+     },
+     "amount": 2600000,
+     "amount_breakdown": {
+      "Лаборатории": 2600000
+     },
+     "actual_pct": 4.9,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "writeoff",
+     "label": "Списание по сроку",
+     "kind": "expense",
+     "memo": true,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 0.0,
+      "max_pct": 0.8,
+      "source": "industry"
+     },
+     "amount": 705000,
+     "amount_breakdown": {
+      "Списано по сроку годности": 705000
+     },
+     "actual_pct": 1.3,
+     "bound": 422496,
+     "deviation_rub": 282504,
+     "deviation_pp": 0.5
+    },
+    {
+     "key": "acquiring",
+     "label": "Эквайринг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 1.0,
+      "max_pct": 2.0,
+      "source": "industry"
+     },
+     "amount": 717557,
+     "amount_breakdown": {
+      "Комиссия эквайринга": 717557
+     },
+     "actual_pct": 1.4,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "marketing",
+     "label": "Маркетинг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 2.0,
+      "max_pct": 6.0,
+      "source": "clinic"
+     },
+     "amount": 2310000,
+     "amount_breakdown": {
+      "Реклама": 2310000
+     },
+     "actual_pct": 4.4,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "other",
+     "label": "Остальные статьи",
+     "kind": "other",
+     "memo": false,
+     "status": "no_norm",
+     "tone": "neutral",
+     "norm": null,
+     "amount": 11365075,
+     "amount_breakdown": {
+      "Обязательства и амортизация": 4255060,
+      "Корма для перепродажи": 4000000,
+      "Оклады персонала": 2600000,
+      "Прочие расходы": 510015
+     },
+     "actual_pct": 21.5
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "profit",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 12.0,
+      "max_pct": 20.0,
+      "source": "industry"
+     },
+     "amount": 8438295,
+     "amount_breakdown": {
+      "Чистая прибыль": 8438295
+     },
+     "actual_pct": 16.0,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    }
+   ],
+   "headline_numbers": {
+    "above": {
+     "Аренда и коммуналка": 5359843,
+     "Списание по сроку": 282504
+    },
+    "above_total": 5642347
+   }
+  },
+  "2026-09@2026-09-05": {
+   "month": "2026-09",
+   "as_of": "2026-09-05",
+   "period": {
+    "month": "2026-09",
+    "status": "open",
+    "to": "2026-09-05",
+    "first_month": "2026-07"
+   },
+   "status": "partial",
+   "partial_reasons": [
+    "short_period"
+   ],
+   "rated": false,
+   "headline_open": "К 5 сентября доли статей посчитаны от выручки за 5 дней. Сравним с нормой, когда месяц закончится.",
+   "revenue": 19771003,
+   "items": [
+    {
+     "key": "payroll",
+     "label": "ФОТ врачей",
+     "kind": "expense",
+     "memo": false,
+     "status": "below",
+     "tone": "warn",
+     "norm": {
+      "min_pct": 22.0,
+      "max_pct": 28.0,
+      "source": "industry"
+     },
+     "amount": 0,
+     "amount_breakdown": {
+      "Оклады врачей": 0,
+      "Проценты врачам": 0
+     },
+     "actual_pct": 0.0,
+     "bound": 4349621,
+     "deviation_rub": -4349621,
+     "deviation_pp": -22.0
+    },
+    {
+     "key": "drugs",
+     "label": "Препараты и расходники",
+     "kind": "expense",
+     "memo": false,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 20.0,
+      "max_pct": 25.0,
+      "source": "industry"
+     },
+     "amount": 6000000,
+     "amount_breakdown": {
+      "Препараты и расходники": 6000000
+     },
+     "actual_pct": 30.3,
+     "bound": 4942751,
+     "deviation_rub": 1057249,
+     "deviation_pp": 5.3
+    },
+    {
+     "key": "rent",
+     "label": "Аренда и коммуналка",
+     "kind": "expense",
+     "memo": false,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 5.0,
+      "max_pct": 10.0,
+      "source": "industry"
+     },
+     "amount": 8500000,
+     "amount_breakdown": {
+      "Аренда": 8500000,
+      "Коммунальные и связь": 0
+     },
+     "actual_pct": 43.0,
+     "bound": 1977100,
+     "deviation_rub": 6522900,
+     "deviation_pp": 33.0
+    },
+    {
+     "key": "lab",
+     "label": "Лаборатории",
+     "kind": "expense",
+     "memo": false,
+     "status": "below",
+     "tone": "warn",
+     "norm": {
+      "min_pct": 3.0,
+      "max_pct": 6.0,
+      "source": "industry"
+     },
+     "amount": 0,
+     "amount_breakdown": {
+      "Лаборатории": 0
+     },
+     "actual_pct": 0.0,
+     "bound": 593130,
+     "deviation_rub": -593130,
+     "deviation_pp": -3.0
+    },
+    {
+     "key": "writeoff",
+     "label": "Списание по сроку",
+     "kind": "expense",
+     "memo": true,
+     "status": "above",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 0.0,
+      "max_pct": 0.8,
+      "source": "industry"
+     },
+     "amount": 705000,
+     "amount_breakdown": {
+      "Списано по сроку годности": 705000
+     },
+     "actual_pct": 3.6,
+     "bound": 158168,
+     "deviation_rub": 546832,
+     "deviation_pp": 2.8
+    },
+    {
+     "key": "acquiring",
+     "label": "Эквайринг",
+     "kind": "expense",
+     "memo": false,
+     "status": "ok",
+     "tone": "good",
+     "norm": {
+      "min_pct": 1.0,
+      "max_pct": 2.0,
+      "source": "industry"
+     },
+     "amount": 257079,
+     "amount_breakdown": {
+      "Комиссия эквайринга": 257079
+     },
+     "actual_pct": 1.3,
+     "bound": null,
+     "deviation_rub": 0,
+     "deviation_pp": 0.0
+    },
+    {
+     "key": "marketing",
+     "label": "Маркетинг",
+     "kind": "expense",
+     "memo": false,
+     "status": "below",
+     "tone": "warn",
+     "norm": {
+      "min_pct": 2.0,
+      "max_pct": 6.0,
+      "source": "clinic"
+     },
+     "amount": 0,
+     "amount_breakdown": {
+      "Реклама": 0
+     },
+     "actual_pct": 0.0,
+     "bound": 395420,
+     "deviation_rub": -395420,
+     "deviation_pp": -2.0
+    },
+    {
+     "key": "other",
+     "label": "Остальные статьи",
+     "kind": "other",
+     "memo": false,
+     "status": "no_norm",
+     "tone": "neutral",
+     "norm": null,
+     "amount": 4765075,
+     "amount_breakdown": {
+      "Обязательства и амортизация": 4255060,
+      "Прочие расходы": 510015
+     },
+     "actual_pct": 24.1
+    },
+    {
+     "key": "net_profit",
+     "label": "Чистая прибыль",
+     "kind": "profit",
+     "memo": false,
+     "status": "below",
+     "tone": "bad",
+     "norm": {
+      "min_pct": 12.0,
+      "max_pct": 20.0,
+      "source": "industry"
+     },
+     "amount": 248849,
+     "amount_breakdown": {
+      "Чистая прибыль": 248849
+     },
+     "actual_pct": 1.3,
+     "bound": 2372520,
+     "deviation_rub": -2123671,
+     "deviation_pp": -10.7
+    }
+   ],
+   "headline_numbers": {
+    "above": {
+     "Препараты и расходники": 1057249,
+     "Аренда и коммуналка": 6522900,
+     "Списание по сроку": 546832
+    },
+    "above_total": 8126981
+   }
+  }
+ },
+ "stock": {
+  "as_of": "2026-09-30",
+  "stock_value": {
+   "value": 55354600,
+   "positions": 15
+  },
+  "frozen": {
+   "value": 37827000,
+   "breakdown": {
+    "Без движения 60–89 дней": 14980000,
+    "Без движения 90–179 дней": 5807000,
+    "Без движения от 180 дней": 17040000
+   }
+  },
+  "frozen_items": [
+   {
+    "item": "Рентген-плёнка 35x43",
+    "qty": 10,
+    "amount": 14800000,
+    "idle_days": 199,
+    "bucket": "180+"
+   },
+   {
+    "item": "Корм Hill's Prescription Diet 3 кг",
+    "qty": 40,
+    "amount": 11560000,
+    "idle_days": 89,
+    "bucket": "60-89"
+   },
+   {
+    "item": "Ошейник от блох",
+    "qty": 120,
+    "amount": 5400000,
+    "idle_days": 90,
+    "bucket": "90-179"
+   },
+   {
+    "item": "Система для капельницы",
+    "qty": 1200,
+    "amount": 3420000,
+    "idle_days": 60,
+    "bucket": "60-89"
+   },
+   {
+    "item": "Лежак средний",
+    "qty": 20,
+    "amount": 2240000,
+    "idle_days": 180,
+    "bucket": "180+"
+   },
+   {
+    "item": "Хлоргексидин 0,05%, флакон",
+    "qty": 22,
+    "amount": 407000,
+    "idle_days": 97,
+    "bucket": "90-179"
+   }
+  ],
+  "expiring_60d": {
+   "value": 9292850,
+   "breakdown": {
+    "Корм Royal Canin Renal 2 кг": 5550000,
+    "Вакцина Нобивак Rabies, доза": 1120050,
+    "Кетофен 10%, флакон": 940000,
+    "Синулокс 250 мг, упаковка": 859800,
+    "Мелоксикам 5 мг/мл, флакон": 416000,
+    "Хлоргексидин 0,05%, флакон": 407000
+   },
+   "rows": [
+    {
+     "item": "Мелоксикам 5 мг/мл, флакон",
+     "expires_on": "2026-09-30",
+     "days_left": 0,
+     "qty": 3,
+     "amount": 156000
+    },
+    {
+     "item": "Мелоксикам 5 мг/мл, флакон",
+     "expires_on": "2026-10-01",
+     "days_left": 1,
+     "qty": 5,
+     "amount": 260000
+    },
+    {
+     "item": "Кетофен 10%, флакон",
+     "expires_on": "2026-10-24",
+     "days_left": 24,
+     "qty": 8,
+     "amount": 940000
+    },
+    {
+     "item": "Хлоргексидин 0,05%, флакон",
+     "expires_on": "2026-11-05",
+     "days_left": 36,
+     "qty": 22,
+     "amount": 407000
+    },
+    {
+     "item": "Синулокс 250 мг, упаковка",
+     "expires_on": "2026-11-14",
+     "days_left": 45,
+     "qty": 12,
+     "amount": 859800
+    },
+    {
+     "item": "Вакцина Нобивак Rabies, доза",
+     "expires_on": "2026-11-28",
+     "days_left": 59,
+     "qty": 9,
+     "amount": 1120050
+    },
+    {
+     "item": "Корм Royal Canin Renal 2 кг",
+     "expires_on": "2026-11-29",
+     "days_left": 60,
+     "qty": 30,
+     "amount": 5550000
+    }
+   ]
+  },
+  "expired_on_hand": {
+   "value": 55500,
+   "breakdown": {
+    "Цефтриаксон, флакон": 55500
+   },
+   "rows": [
+    {
+     "item": "Цефтриаксон, флакон",
+     "expires_on": "2026-09-25",
+     "days_left": -5,
+     "qty": 15,
+     "amount": 55500
+    }
+   ]
+  },
+  "written_off_month": {
+   "value": 3410000,
+   "breakdown": {
+    "Истёк срок годности": 2990000,
+    "Брак и бой": 420000
+   }
+  },
+  "written_off_items": [
+   {
+    "item": "Вакцина Нобивак DHPPi, доза",
+    "date": "2026-09-17",
+    "qty": 11,
+    "reason": "expired",
+    "amount": 1368950
+   },
+   {
+    "item": "Капли глазные, флакон",
+    "date": "2026-09-26",
+    "qty": 25,
+    "reason": "expired",
+    "amount": 805050
+   },
+   {
+    "item": "Кетофен 10%, флакон",
+    "date": "2026-09-03",
+    "qty": 6,
+    "reason": "expired",
+    "amount": 705000
+   },
+   {
+    "item": "Стекло предметное, упаковка",
+    "date": "2026-09-12",
+    "qty": 4,
+    "reason": "damaged",
+    "amount": 420000
+   },
+   {
+    "item": "Цефтриаксон, флакон",
+    "date": "2026-09-26",
+    "qty": 30,
+    "reason": "expired",
+    "amount": 111000
+   }
+  ],
+  "written_off_norm": {
+   "value": 878525,
+   "norm_pct": 0.8,
+   "month": "2026-09",
+   "revenue": 109815610,
+   "expired": 2990000,
+   "over_norm": 2111475
+  },
+  "frozen_positions": {
+   "value": 6,
+   "breakdown_values": [
+    2,
+    2,
+    2
+   ]
+  },
+  "idle_buckets": [
+   {
+    "key": "60_89",
+    "amount": 14980000,
+    "positions": 2
+   },
+   {
+    "key": "90_179",
+    "amount": 5807000,
+    "positions": 2
+   },
+   {
+    "key": "180_plus",
+    "amount": 17040000,
+    "positions": 2
+   }
+  ],
+  "idle_pages": [
+   {
+    "bucket": "all",
+    "limit": 10,
+    "total": 6,
+    "pages": [
+     {
+      "items": [
+       {
+        "item": "Рентген-плёнка 35x43",
+        "last_movement_on": "2026-03-15",
+        "idle_days": 199,
+        "bucket": "180_plus",
+        "qty": 10,
+        "amount": 14800000
+       },
+       {
+        "item": "Корм Hill's Prescription Diet 3 кг",
+        "last_movement_on": "2026-07-03",
+        "idle_days": 89,
+        "bucket": "60_89",
+        "qty": 40,
+        "amount": 11560000
+       },
+       {
+        "item": "Ошейник от блох",
+        "last_movement_on": "2026-07-02",
+        "idle_days": 90,
+        "bucket": "90_179",
+        "qty": 120,
+        "amount": 5400000
+       },
+       {
+        "item": "Система для капельницы",
+        "last_movement_on": "2026-08-01",
+        "idle_days": 60,
+        "bucket": "60_89",
+        "qty": 1200,
+        "amount": 3420000
+       },
+       {
+        "item": "Лежак средний",
+        "last_movement_on": "2026-04-03",
+        "idle_days": 180,
+        "bucket": "180_plus",
+        "qty": 20,
+        "amount": 2240000
+       },
+       {
+        "item": "Хлоргексидин 0,05%, флакон",
+        "last_movement_on": "2026-06-25",
+        "idle_days": 97,
+        "bucket": "90_179",
+        "qty": 22,
+        "amount": 407000
+       }
+      ],
+      "has_next": false
+     }
+    ]
+   },
+   {
+    "bucket": "all",
+    "limit": 2,
+    "total": 6,
+    "pages": [
+     {
+      "items": [
+       {
+        "item": "Рентген-плёнка 35x43",
+        "last_movement_on": "2026-03-15",
+        "idle_days": 199,
+        "bucket": "180_plus",
+        "qty": 10,
+        "amount": 14800000
+       },
+       {
+        "item": "Корм Hill's Prescription Diet 3 кг",
+        "last_movement_on": "2026-07-03",
+        "idle_days": 89,
+        "bucket": "60_89",
+        "qty": 40,
+        "amount": 11560000
+       }
+      ],
+      "has_next": true
+     },
+     {
+      "items": [
+       {
+        "item": "Ошейник от блох",
+        "last_movement_on": "2026-07-02",
+        "idle_days": 90,
+        "bucket": "90_179",
+        "qty": 120,
+        "amount": 5400000
+       },
+       {
+        "item": "Система для капельницы",
+        "last_movement_on": "2026-08-01",
+        "idle_days": 60,
+        "bucket": "60_89",
+        "qty": 1200,
+        "amount": 3420000
+       }
+      ],
+      "has_next": true
+     },
+     {
+      "items": [
+       {
+        "item": "Лежак средний",
+        "last_movement_on": "2026-04-03",
+        "idle_days": 180,
+        "bucket": "180_plus",
+        "qty": 20,
+        "amount": 2240000
+       },
+       {
+        "item": "Хлоргексидин 0,05%, флакон",
+        "last_movement_on": "2026-06-25",
+        "idle_days": 97,
+        "bucket": "90_179",
+        "qty": 22,
+        "amount": 407000
+       }
+      ],
+      "has_next": false
+     }
+    ]
+   },
+   {
+    "bucket": "60_89",
+    "limit": 10,
+    "total": 2,
+    "pages": [
+     {
+      "items": [
+       {
+        "item": "Корм Hill's Prescription Diet 3 кг",
+        "last_movement_on": "2026-07-03",
+        "idle_days": 89,
+        "bucket": "60_89",
+        "qty": 40,
+        "amount": 11560000
+       },
+       {
+        "item": "Система для капельницы",
+        "last_movement_on": "2026-08-01",
+        "idle_days": 60,
+        "bucket": "60_89",
+        "qty": 1200,
+        "amount": 3420000
+       }
+      ],
+      "has_next": false
+     }
+    ]
+   },
+   {
+    "bucket": "90_179",
+    "limit": 10,
+    "total": 2,
+    "pages": [
+     {
+      "items": [
+       {
+        "item": "Ошейник от блох",
+        "last_movement_on": "2026-07-02",
+        "idle_days": 90,
+        "bucket": "90_179",
+        "qty": 120,
+        "amount": 5400000
+       },
+       {
+        "item": "Хлоргексидин 0,05%, флакон",
+        "last_movement_on": "2026-06-25",
+        "idle_days": 97,
+        "bucket": "90_179",
+        "qty": 22,
+        "amount": 407000
+       }
+      ],
+      "has_next": false
+     }
+    ]
+   },
+   {
+    "bucket": "180_plus",
+    "limit": 10,
+    "total": 2,
+    "pages": [
+     {
+      "items": [
+       {
+        "item": "Рентген-плёнка 35x43",
+        "last_movement_on": "2026-03-15",
+        "idle_days": 199,
+        "bucket": "180_plus",
+        "qty": 10,
+        "amount": 14800000
+       },
+       {
+        "item": "Лежак средний",
+        "last_movement_on": "2026-04-03",
+        "idle_days": 180,
+        "bucket": "180_plus",
+        "qty": 20,
+        "amount": 2240000
+       }
+      ],
+      "has_next": false
+     }
+    ]
+   },
+   {
+    "bucket": "180_plus",
+    "limit": 1,
+    "total": 2,
+    "pages": [
+     {
+      "items": [
+       {
+        "item": "Рентген-плёнка 35x43",
+        "last_movement_on": "2026-03-15",
+        "idle_days": 199,
+        "bucket": "180_plus",
+        "qty": 10,
+        "amount": 14800000
+       }
+      ],
+      "has_next": true
+     },
+     {
+      "items": [
+       {
+        "item": "Лежак средний",
+        "last_movement_on": "2026-04-03",
+        "idle_days": 180,
+        "bucket": "180_plus",
+        "qty": 20,
+        "amount": 2240000
+       }
+      ],
+      "has_next": false
+     }
+    ]
+   }
+  ],
+  "turnover_days": {
+   "value": 59,
+   "breakdown_values": [
+    55354600,
+    84802035,
+    90
+   ]
+  },
+  "norm_turnover_days": 45
+ },
+ "alternatives": {
+  "dashboard_profit": {
+   "2026-07": 6309990,
+   "2026-08": -11293915,
+   "2026-09": 14774555
+  },
+  "pnl_net_profit": {
+   "2026-07": 13226212,
+   "2026-08": 1902321,
+   "2026-09": 12854493
+  },
+  "pnl_net_profit_with_expired_writeoffs": {
+   "2026-07": 12586212,
+   "2026-08": 1012321,
+   "2026-09": 9864493
+  },
+  "aug_net_profit_without_prepaid_purchase": 19902321,
+  "aug_prepaid_purchase": 18000000
+ }
+}

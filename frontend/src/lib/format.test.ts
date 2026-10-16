@@ -5,7 +5,10 @@ import {
   formatClockTime,
   formatDays,
   formatDeltaAware,
+  formatExpense,
   formatMoney,
+  formatNormRange,
+  formatPp,
   formatPercent,
   formatRunway,
   formatSigned,
@@ -97,5 +100,26 @@ describe('formatRunway', () => {
     expect(formatRunway(21)).toBe(`21${NBSP}день`)
     expect(formatRunway(365)).toBe(`365${NBSP}дней`)
     expect(formatRunway(366)).toBe('больше года')
+  })
+})
+
+describe('report formats', () => {
+  it('formats percentage points, with a sign for a change', () => {
+    expect(formatPp(2.4)).toBe(`2,4${NBSP}п.п.`)
+    expect(formatByUnit(0.9, 'pp')).toBe(`0,9${NBSP}п.п.`)
+    expect(formatSigned(2.4, 'pp')).toBe(`+2,4${NBSP}п.п.`)
+    expect(formatDeltaAware({ value: -0.9, unit: 'pp', delta: true })).toBe(`${MINUS}0,9${NBSP}п.п.`)
+  })
+
+  it('shows an expense with the minus sign and zero without it', () => {
+    expect(formatExpense(63200000)).toBe(`${MINUS}632${NBSP}000${NBSP}₽`)
+    expect(formatExpense(0)).toBe(`0${NBSP}₽`)
+  })
+
+  it('formats the corridor of a norm', () => {
+    expect(formatNormRange(22, 28)).toBe('22–28%')
+    expect(formatNormRange(0, 0.8)).toBe(`до${NBSP}0,8%`)
+    expect(formatNormRange(12, null)).toBe(`от${NBSP}12%`)
+    expect(formatNormRange(null, null)).toBeNull()
   })
 })

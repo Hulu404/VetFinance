@@ -30,6 +30,20 @@ MONTHS_NOMINATIVE = (
     "ноябрь",
     "декабрь",
 )
+MONTHS_PREPOSITIONAL = (
+    "январе",
+    "феврале",
+    "марте",
+    "апреле",
+    "мае",
+    "июне",
+    "июле",
+    "августе",
+    "сентябре",
+    "октябре",
+    "ноябре",
+    "декабре",
+)
 MONTHS_SHORT = (
     "янв",
     "фев",
@@ -69,6 +83,11 @@ def month_name(year: int, month: int) -> str:
 def month_genitive(month: int) -> str:
     """'сентября' (for 'в сентябре' use month_prepositional)."""
     return MONTHS_GENITIVE[month - 1]
+
+
+def month_prepositional(month: int) -> str:
+    """'сентябре' for 'в сентябре'."""
+    return MONTHS_PREPOSITIONAL[month - 1]
 
 
 def plural(n: int, one: str, few: str, many: str) -> str:

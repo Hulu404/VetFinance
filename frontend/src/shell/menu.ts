@@ -23,12 +23,12 @@ export const MENU: MenuItem[] = [
     id: 'reports',
     label: 'Отчёты',
     icon: 'ic-report',
-    status: 'soon',
+    status: 'ready',
     dividerBefore: true,
     children: [
-      { id: 'pnl', label: 'Прибыль и убытки', path: '/reports/pnl', status: 'soon' },
-      { id: 'norm', label: 'Норма', path: '/reports/norm', status: 'soon' },
-      { id: 'stock', label: 'Склад и сроки', path: '/reports/stock', status: 'soon' },
+      { id: 'pnl', label: 'Прибыль и убытки', path: '/reports/pnl', status: 'ready' },
+      { id: 'norm', label: 'Норма', path: '/reports/norm', status: 'ready' },
+      { id: 'stock', label: 'Склад и сроки', path: '/reports/stock', status: 'ready' },
     ],
   },
   {

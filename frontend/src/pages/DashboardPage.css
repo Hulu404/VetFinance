@@ -22,6 +22,9 @@
   color: var(--color-ink-soft);
 }
 .dash-month .dash-row { margin-bottom: 26px; }
+.dash-month .dash-row:has(+ .dash-profit-hint) { margin-bottom: 10px; }
+.dash-profit-hint { margin: 0 0 26px; font-size: var(--fs-sm); color: var(--color-ink-soft); }
+.dash-profit-hint a { color: var(--color-accent-dark); text-decoration: underline; }
 
 /* The sub-line inside a detailed card sits under the number */
 .dash-sub--bad { color: var(--color-bad); }

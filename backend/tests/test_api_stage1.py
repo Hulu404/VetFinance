@@ -315,7 +315,45 @@ def test_delete_rule(client: TestClient, repo: MemoryRepo, ids: dict[str, str]) 
 def test_categories_list(client: TestClient, ids: dict[str, str]) -> None:
     body = client.get("/v1/categories", headers=AUTH).json()
     assert [c["name"] for c in body["items"]] == ["Выручка", "Аренда"]
-    assert set(body["items"][0]) == {"id", "name", "type", "norm_min_pct", "norm_max_pct"}
+    assert set(body["items"][0]) == {
+        "id",
+        "name",
+        "type",
+        "norm_min_pct",
+        "norm_max_pct",
+        "norm_key",
+        "direction",
+        "payroll",
+    }
+
+
+def test_categories_carry_the_report_attributes_in_the_contract_order(
+    client: TestClient, repo: MemoryRepo
+) -> None:
+    repo.add_category("Оборудование", "capex")
+    repo.add_category("Вывод владельца", "owner_draw")
+    repo.add_category("Платежи по кредиту", "obligation")
+    repo.add_category("Налоги", "tax")
+    repo.add_category("Оклады врачей", "fixed", norm_key="payroll", payroll=True)
+    repo.add_category(
+        "Проценты врачам", "variable", norm_key="payroll", direction="services", payroll=True
+    )
+    repo.add_category("Реклама", "fixed", norm_key="marketing", norm_min_pct=2.0, norm_max_pct=6.0)
+    items = client.get("/v1/categories", headers=AUTH).json()["items"]
+    types = [c["type"] for c in items]
+    order = ["income", "variable", "fixed", "tax", "obligation", "capex", "owner_draw"]
+    assert types == sorted(types, key=order.index)
+    by_name = {c["name"]: c for c in items}
+    assert by_name["Проценты врачам"]["direction"] == "services"
+    assert (
+        by_name["Проценты врачам"]["norm_key"] == "payroll"
+        and by_name["Проценты врачам"]["payroll"]
+    )
+    assert by_name["Реклама"]["norm_min_pct"] == 2.0 and by_name["Реклама"]["direction"] is None
+    assert (
+        by_name["Оборудование"]["norm_key"] is None and by_name["Оборудование"]["payroll"] is False
+    )
+    assert "Списание по сроку годности" not in by_name  # a stock fact, not an expense article
 
 
 def test_suggestion_from_rule_and_from_history(

@@ -24,14 +24,14 @@ def _is_empty(value: object) -> bool:
 
 class FigureItemOut(BaseModel):
     label: str
-    value: int
-    unit: Literal["rub", "pct", "count", "days"] = "rub"
+    value: int | float  # float only for pct and pp
+    unit: Literal["rub", "pct", "pp", "count", "days"] = "rub"
     delta: bool | None = Field(default=None, exclude_if=_is_empty)  # a change; key omitted if not
 
 
 class FigureOut(BaseModel):
-    value: int | float  # int for rub/count/days, a number with one decimal for pct
-    unit: Literal["rub", "pct", "count", "days"]
+    value: int | float  # int for rub/count/days, a number with one decimal for pct and pp
+    unit: Literal["rub", "pct", "pp", "count", "days"]
     breakdown: list[FigureItemOut]
     source: list[Literal["bank", "vetmanager", "bot", "manual", "calc"]]
     note: str
@@ -40,7 +40,8 @@ class FigureOut(BaseModel):
 
 
 def _item_data(i: FigureItem) -> dict[str, Any]:
-    return {"label": i.label, "value": i.value, "unit": i.unit, "delta": i.delta or None}
+    value = float(i.value) if isinstance(i.value, Decimal) else i.value
+    return {"label": i.label, "value": value, "unit": i.unit, "delta": i.delta or None}
 
 
 def figure_out(f: EngineFigure) -> FigureOut:

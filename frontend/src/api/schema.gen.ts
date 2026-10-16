@@ -346,6 +346,91 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/reports/pnl": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Pnl */
+        get: operations["pnl_v1_reports_pnl_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/norm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Norm */
+        get: operations["norm_v1_reports_norm_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/stock": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stock */
+        get: operations["stock_v1_reports_stock_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/stock/idle": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Stock Idle */
+        get: operations["stock_idle_v1_reports_stock_idle_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/reports/{name}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Export */
+        get: operations["export_v1_reports__name__export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -501,6 +586,12 @@ export interface components {
             text: string;
             why: components["schemas"]["WhyOut"];
         };
+        /** AtRiskOut */
+        AtRiskOut: {
+            /** Qty */
+            qty: number;
+            amount: components["schemas"]["FigureOut"];
+        };
         /** BankAccountStatusOut */
         BankAccountStatusOut: {
             account: components["schemas"]["NamedRefOut"];
@@ -536,11 +627,17 @@ export interface components {
              * Type
              * @enum {string}
              */
-            type: "income" | "variable" | "fixed";
+            type: "income" | "variable" | "fixed" | "tax" | "obligation" | "capex" | "owner_draw";
             /** Norm Min Pct */
             norm_min_pct: number | null;
             /** Norm Max Pct */
             norm_max_pct: number | null;
+            /** Norm Key */
+            norm_key: ("payroll" | "drugs" | "rent" | "lab" | "writeoff" | "acquiring" | "marketing") | null;
+            /** Direction */
+            direction: ("services" | "goods") | null;
+            /** Payroll */
+            payroll: boolean;
         };
         /** CategoryRuleOut */
         CategoryRuleOut: {
@@ -940,7 +1037,7 @@ export interface components {
          *             "bot",
          *             "manual"
          *           ],
-         *           "note": "Выручка минус уже заплаченные расходы за 1–9 сентября 2026. Налоги и амортизацию считает отчёт «Прибыль и убытки» при закрытии месяца, поэтому число может отличаться от чистой прибыли отчёта."
+         *           "note": "Прибыль по деньгам: выручка минус все деньги расходов за 1–9 сентября 2026. Налоги, амортизация и комиссия эквайринга здесь не начислены, поэтому число может отличаться от «Чистой прибыли» отчёта."
          *         },
          *         "profit_margin_pct": {
          *           "value": 1.3,
@@ -1164,6 +1261,22 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /** ExpiringRowOut */
+        ExpiringRowOut: {
+            /** Item */
+            item: string;
+            /**
+             * Expires On
+             * Format: date
+             */
+            expires_on: string;
+            /** Days Left */
+            days_left: number;
+            /** Qty */
+            qty: number;
+            amount: components["schemas"]["FigureOut"];
+            at_risk?: components["schemas"]["AtRiskOut"] | null;
+        };
         /** FigureItemOut */
         FigureItemOut: {
             /** Label */
@@ -1175,7 +1288,7 @@ export interface components {
              * @default rub
              * @enum {string}
              */
-            unit: "rub" | "pct" | "count" | "days";
+            unit: "rub" | "pct" | "pp" | "count" | "days";
             /** Delta */
             delta?: boolean | null;
         };
@@ -1187,7 +1300,7 @@ export interface components {
              * Unit
              * @enum {string}
              */
-            unit: "rub" | "pct" | "count" | "days";
+            unit: "rub" | "pct" | "pp" | "count" | "days";
             /** Breakdown */
             breakdown: components["schemas"]["FigureItemOut"][];
             /** Source */
@@ -1199,12 +1312,44 @@ export interface components {
             /** Details */
             details?: components["schemas"]["FigureItemOut"][] | null;
         };
+        /** IdleBucketOut */
+        IdleBucketOut: {
+            /**
+             * Key
+             * @enum {string}
+             */
+            key: "60_89" | "90_179" | "180_plus";
+            /** Label */
+            label: string;
+            amount: components["schemas"]["FigureOut"];
+            positions: components["schemas"]["FigureOut"];
+        };
+        /** IdleItemOut */
+        IdleItemOut: {
+            /** Item */
+            item: string;
+            /**
+             * Last Movement On
+             * Format: date
+             */
+            last_movement_on: string;
+            /** Idle Days */
+            idle_days: number;
+            /**
+             * Bucket
+             * @enum {string}
+             */
+            bucket: "60_89" | "90_179" | "180_plus";
+            /** Qty */
+            qty: number;
+            amount: components["schemas"]["FigureOut"];
+        };
         /** ImportOut */
         ImportOut: {
             /** Import Id */
             import_id: string;
             account: components["schemas"]["NamedRefOut"];
-            period: components["schemas"]["PeriodOut"];
+            period: components["schemas"]["app__schemas_tx__PeriodOut"];
             /** Loaded */
             loaded: number;
             /** Duplicates */
@@ -1223,18 +1368,1671 @@ export interface components {
             /** Name */
             name: string;
         };
-        /** PeriodOut */
-        PeriodOut: {
+        /** NormBoundsOut */
+        NormBoundsOut: {
+            /** Min Pct */
+            min_pct: number | null;
+            /** Max Pct */
+            max_pct: number | null;
             /**
-             * From
+             * Source
+             * @enum {string}
+             */
+            source: "industry" | "clinic";
+            /** Breakdown */
+            breakdown?: components["schemas"]["FigureItemOut"][] | null;
+            /** Note */
+            note?: string | null;
+        };
+        /** NormItemOut */
+        NormItemOut: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "expense" | "other" | "profit";
+            /** Memo */
+            memo: boolean;
+            /** Status */
+            status?: ("ok" | "above" | "below" | "no_norm") | null;
+            /** Tone */
+            tone?: ("good" | "warn" | "bad" | "neutral") | null;
+            norm?: components["schemas"]["NormBoundsOut"] | null;
+            actual_pct: components["schemas"]["FigureOut"];
+            deviation_pp?: components["schemas"]["FigureOut"] | null;
+            deviation_rub?: components["schemas"]["FigureOut"] | null;
+        };
+        /**
+         * NormOut
+         * @example {
+         *       "month": "2026-09",
+         *       "as_of": "2026-10-01",
+         *       "data_as_of": "2026-10-01T04:12:00+03:00",
+         *       "period": {
+         *         "month": "2026-09",
+         *         "status": "closed",
+         *         "from": "2026-09-01",
+         *         "to": null,
+         *         "first_month": "2026-07"
+         *       },
+         *       "status": "ok",
+         *       "partial_reasons": [],
+         *       "headline": "Выше нормы одна статья: аренда и коммуналка (+1 594,79 ₽). Отдельно: списание по сроку выше нормы на 21 114,75 ₽, в расходы месяца оно не входит. Вместе со статьями выше нормы это 22 709,54 ₽. Чистая прибыль ниже нормы на 0,3 п.п.: не хватает 3 233,80 ₽ до 12% выручки.",
+         *       "items": [
+         *         {
+         *           "key": "payroll",
+         *           "label": "ФОТ врачей",
+         *           "kind": "expense",
+         *           "memo": false,
+         *           "status": "ok",
+         *           "tone": "good",
+         *           "norm": {
+         *             "min_pct": 22,
+         *             "max_pct": 28,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 22,0%",
+         *                 "value": 24159434,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 28,0%",
+         *                 "value": 30748371,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 23.9,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Проценты врачам",
+         *                 "value": 17000000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Оклады врачей",
+         *                 "value": 9300000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "263 000 ₽ ÷ 1 098 156,10 ₽ = 23,9%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 0,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 23.9,
+         *                 "unit": "pct"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля в пределах нормы.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 0,
+         *             "unit": "rub",
+         *             "breakdown": [],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Расход в пределах нормы.",
+         *             "delta": true,
+         *             "details": [
+         *               {
+         *                 "label": "Запас до верхней границы",
+         *                 "value": 4448371,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "key": "drugs",
+         *           "label": "Препараты и расходники",
+         *           "kind": "expense",
+         *           "memo": false,
+         *           "status": "ok",
+         *           "tone": "good",
+         *           "norm": {
+         *             "min_pct": 20,
+         *             "max_pct": 25,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 20,0%",
+         *                 "value": 21963122,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 25,0%",
+         *                 "value": 27453903,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 22.3,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Препараты и расходники",
+         *                 "value": 24500000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "245 000 ₽ ÷ 1 098 156,10 ₽ = 22,3%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 0,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 22.3,
+         *                 "unit": "pct"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля в пределах нормы.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 0,
+         *             "unit": "rub",
+         *             "breakdown": [],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Расход в пределах нормы.",
+         *             "delta": true,
+         *             "details": [
+         *               {
+         *                 "label": "Запас до верхней границы",
+         *                 "value": 2953903,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "key": "rent",
+         *           "label": "Аренда и коммуналка",
+         *           "kind": "expense",
+         *           "memo": false,
+         *           "status": "above",
+         *           "tone": "bad",
+         *           "norm": {
+         *             "min_pct": 5,
+         *             "max_pct": 10,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 5,0%",
+         *                 "value": 5490781,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 10,0%",
+         *                 "value": 10981561,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 10.1,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Аренда",
+         *                 "value": 8500000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Коммунальные и связь",
+         *                 "value": 2641040,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "111 410,40 ₽ ÷ 1 098 156,10 ₽ = 10,1%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 0.1,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 10.1,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Граница нормы",
+         *                 "value": 10,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Отклонение",
+         *                 "value": 0.1,
+         *                 "unit": "pp",
+         *                 "delta": true
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля выше границы нормы на 0,1 п.п.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 159479,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваш расход",
+         *                 "value": 11141040,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Граница нормы, 10,0%",
+         *                 "value": -10981561,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Сумма выше границы нормы. Граница считается от выручки месяца 1 098 156,10 ₽.",
+         *             "delta": true
+         *           }
+         *         },
+         *         {
+         *           "key": "lab",
+         *           "label": "Лаборатории",
+         *           "kind": "expense",
+         *           "memo": false,
+         *           "status": "ok",
+         *           "tone": "good",
+         *           "norm": {
+         *             "min_pct": 3,
+         *             "max_pct": 6,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 3,0%",
+         *                 "value": 3294468,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 6,0%",
+         *                 "value": 6588937,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 4.7,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Лаборатории",
+         *                 "value": 5200000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "52 000 ₽ ÷ 1 098 156,10 ₽ = 4,7%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 0,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 4.7,
+         *                 "unit": "pct"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля в пределах нормы.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 0,
+         *             "unit": "rub",
+         *             "breakdown": [],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Расход в пределах нормы.",
+         *             "delta": true,
+         *             "details": [
+         *               {
+         *                 "label": "Запас до верхней границы",
+         *                 "value": 1388937,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "key": "writeoff",
+         *           "label": "Списание по сроку",
+         *           "kind": "expense",
+         *           "memo": true,
+         *           "status": "above",
+         *           "tone": "bad",
+         *           "norm": {
+         *             "min_pct": 0,
+         *             "max_pct": 0.8,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 0,0%",
+         *                 "value": 0,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 0,8%",
+         *                 "value": 878525,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 2.7,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Списано по сроку годности",
+         *                 "value": 2990000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "29 900 ₽ ÷ 1 098 156,10 ₽ = 2,7%. Справочно: в сумму долей не входит.",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 1.9,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 2.7,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Граница нормы",
+         *                 "value": 0.8,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Отклонение",
+         *                 "value": 1.9,
+         *                 "unit": "pp",
+         *                 "delta": true
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля выше границы нормы на 1,9 п.п.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 2111475,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваш расход",
+         *                 "value": 2990000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Граница нормы, 0,8%",
+         *                 "value": -878525,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Сумма выше границы нормы. Граница считается от выручки месяца 1 098 156,10 ₽.",
+         *             "delta": true
+         *           }
+         *         },
+         *         {
+         *           "key": "acquiring",
+         *           "label": "Эквайринг",
+         *           "kind": "expense",
+         *           "memo": false,
+         *           "status": "ok",
+         *           "tone": "good",
+         *           "norm": {
+         *             "min_pct": 1,
+         *             "max_pct": 2,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 1,0%",
+         *                 "value": 1098156,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 2,0%",
+         *                 "value": 2196312,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 1.4,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Комиссия эквайринга",
+         *                 "value": 1515002,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "15 150,02 ₽ ÷ 1 098 156,10 ₽ = 1,4%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 0,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 1.4,
+         *                 "unit": "pct"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля в пределах нормы.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 0,
+         *             "unit": "rub",
+         *             "breakdown": [],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Расход в пределах нормы.",
+         *             "delta": true,
+         *             "details": [
+         *               {
+         *                 "label": "Запас до верхней границы",
+         *                 "value": 681310,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "key": "marketing",
+         *           "label": "Маркетинг",
+         *           "kind": "expense",
+         *           "memo": false,
+         *           "status": "ok",
+         *           "tone": "good",
+         *           "norm": {
+         *             "min_pct": 2,
+         *             "max_pct": 6,
+         *             "source": "clinic",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 2,0%",
+         *                 "value": 2196312,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 6,0%",
+         *                 "value": 6588937,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма вашей клиники, заданная в настройках статьи."
+         *           },
+         *           "actual_pct": {
+         *             "value": 2.1,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Реклама",
+         *                 "value": 2310000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "23 100 ₽ ÷ 1 098 156,10 ₽ = 2,1%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": 0,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 2.1,
+         *                 "unit": "pct"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля в пределах нормы.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": 0,
+         *             "unit": "rub",
+         *             "breakdown": [],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Расход в пределах нормы.",
+         *             "delta": true,
+         *             "details": [
+         *               {
+         *                 "label": "Запас до верхней границы",
+         *                 "value": 4278937,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "key": "other",
+         *           "label": "Остальные статьи",
+         *           "kind": "other",
+         *           "memo": false,
+         *           "status": "no_norm",
+         *           "tone": "neutral",
+         *           "actual_pct": {
+         *             "value": 23.7,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Корма для перепродажи",
+         *                 "value": 8000000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Оклады персонала",
+         *                 "value": 5500000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Налоги и взносы",
+         *                 "value": 5200000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Обязательства и амортизация",
+         *                 "value": 4255060,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Без статьи",
+         *                 "value": 1840000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Прочие расходы",
+         *                 "value": 1200015,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "bot",
+         *               "manual"
+         *             ],
+         *             "note": "259 950,75 ₽ ÷ 1 098 156,10 ₽ = 23,7%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "key": "net_profit",
+         *           "label": "Чистая прибыль",
+         *           "kind": "profit",
+         *           "memo": false,
+         *           "status": "below",
+         *           "tone": "bad",
+         *           "norm": {
+         *             "min_pct": 12,
+         *             "max_pct": 20,
+         *             "source": "industry",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Нижняя граница, 12,0%",
+         *                 "value": 13177873,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Верхняя граница, 20,0%",
+         *                 "value": 21963122,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "note": "Норма отрасли для ветклиник на 2–6 врачей. Оценка по прототипу, заменим данными отраслевых опросов."
+         *           },
+         *           "actual_pct": {
+         *             "value": 11.7,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Чистая прибыль",
+         *                 "value": 12854493,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot",
+         *               "manual"
+         *             ],
+         *             "note": "128 544,93 ₽ ÷ 1 098 156,10 ₽ = 11,7%",
+         *             "details": [
+         *               {
+         *                 "label": "Выручка месяца",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ]
+         *           },
+         *           "deviation_pp": {
+         *             "value": -0.3,
+         *             "unit": "pp",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша доля",
+         *                 "value": 11.7,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Граница нормы",
+         *                 "value": 12,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Отклонение",
+         *                 "value": -0.3,
+         *                 "unit": "pp",
+         *                 "delta": true
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Доля ниже границы нормы на 0,3 п.п.",
+         *             "delta": true
+         *           },
+         *           "deviation_rub": {
+         *             "value": -323380,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Ваша прибыль",
+         *                 "value": 12854493,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Граница нормы, 12,0%",
+         *                 "value": -13177873,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "calc"
+         *             ],
+         *             "note": "Сумма ниже границы нормы. Граница считается от выручки месяца 1 098 156,10 ₽.",
+         *             "delta": true
+         *           }
+         *         }
+         *       ]
+         *     }
+         */
+        NormOut: {
+            /** Month */
+            month: string;
+            /**
+             * As Of
              * Format: date
              */
-            from: string;
+            as_of: string;
+            /** Data As Of */
+            data_as_of: string | null;
+            period: components["schemas"]["app__schemas_reports__PeriodOut"];
             /**
-             * To
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "partial" | "empty";
+            /** Partial Reasons */
+            partial_reasons: ("no_vetmanager" | "bank_gap" | "short_period" | "no_obligations" | "no_benchmark" | "missing_expiry" | "short_history" | "stale_stock")[];
+            /** Headline */
+            headline?: string | null;
+            /** Items */
+            items: components["schemas"]["NormItemOut"][];
+        };
+        /** PnlDirectionOut */
+        PnlDirectionOut: {
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "services" | "goods";
+            /** Label */
+            label: string;
+            revenue: components["schemas"]["FigureOut"];
+            revenue_share_pct: components["schemas"]["FigureOut"];
+            direct_costs: components["schemas"]["FigureOut"];
+            margin: components["schemas"]["FigureOut"];
+            margin_pct: components["schemas"]["FigureOut"];
+        };
+        /**
+         * PnlOut
+         * @example {
+         *       "month": "2026-09",
+         *       "view": "direction",
+         *       "as_of": "2026-10-01",
+         *       "data_as_of": "2026-10-01T04:12:00+03:00",
+         *       "period": {
+         *         "month": "2026-09",
+         *         "status": "closed",
+         *         "from": "2026-09-01",
+         *         "to": null,
+         *         "first_month": "2026-07"
+         *       },
+         *       "status": "ok",
+         *       "partial_reasons": [],
+         *       "headline": "Клиника заработала 128 544,93 ₽ чистыми: 11,7% выручки, ниже нормы 12–20%.",
+         *       "rows": [
+         *         {
+         *           "key": "revenue",
+         *           "label": "Выручка",
+         *           "kind": "revenue",
+         *           "amount": {
+         *             "value": 109815610,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Услуги",
+         *                 "value": 64132070,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Товары",
+         *                 "value": 45683540,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Закрытые счета Ветменеджера за сентябрь 2026, черновики не входят. Деньги на счетах (наличные, зачисления эквайринга) выручкой не считаются."
+         *           },
+         *           "share_pct": {
+         *             "value": 100,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "1 098 156,10 ₽ ÷ 1 098 156,10 ₽"
+         *           }
+         *         },
+         *         {
+         *           "key": "variable",
+         *           "label": "Переменные расходы",
+         *           "kind": "expense",
+         *           "amount": {
+         *             "value": 56215002,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Препараты и расходники",
+         *                 "value": 24500000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Проценты врачам",
+         *                 "value": 17000000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Корма для перепродажи",
+         *                 "value": 8000000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Лаборатории",
+         *                 "value": 5200000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Комиссия эквайринга",
+         *                 "value": 1515002,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot"
+         *             ],
+         *             "note": "Деньги, заплаченные за месяц: закупка впрок целиком попадает в месяц оплаты. Комиссия эквайринга считается по тарифу клиники с оплат картой."
+         *           },
+         *           "share_pct": {
+         *             "value": 51.2,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 56215002,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot"
+         *             ],
+         *             "note": "562 150,02 ₽ ÷ 1 098 156,10 ₽"
+         *           }
+         *         },
+         *         {
+         *           "key": "marginal_profit",
+         *           "label": "Маржинальная прибыль",
+         *           "kind": "subtotal",
+         *           "amount": {
+         *             "value": 53600608,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Переменные расходы",
+         *                 "value": -56215002,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot"
+         *             ],
+         *             "note": "Выручка минус переменные расходы."
+         *           },
+         *           "share_pct": {
+         *             "value": 48.8,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 53600608,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot"
+         *             ],
+         *             "note": "536 006,08 ₽ ÷ 1 098 156,10 ₽"
+         *           }
+         *         },
+         *         {
+         *           "key": "fixed",
+         *           "label": "Постоянные расходы",
+         *           "kind": "expense",
+         *           "amount": {
+         *             "value": 31291055,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "ФОТ (оклады)",
+         *                 "value": 14800000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Аренда и прочие постоянные",
+         *                 "value": 16491055,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "manual"
+         *             ],
+         *             "note": "ФОТ (оклады) и аренда с прочими постоянными. Проценты врачам учтены в переменных. Операций без статьи: 1 на 18 400 ₽, они идут строкой «Без статьи» в «Аренда и прочие постоянные»."
+         *           },
+         *           "share_pct": {
+         *             "value": 28.5,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 31291055,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "manual"
+         *             ],
+         *             "note": "312 910,55 ₽ ÷ 1 098 156,10 ₽"
+         *           },
+         *           "children": [
+         *             {
+         *               "key": "fixed_payroll",
+         *               "label": "ФОТ (оклады)",
+         *               "kind": "child",
+         *               "amount": {
+         *                 "value": 14800000,
+         *                 "unit": "rub",
+         *                 "breakdown": [
+         *                   {
+         *                     "label": "Оклады врачей",
+         *                     "value": 9300000,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Оклады персонала",
+         *                     "value": 5500000,
+         *                     "unit": "rub"
+         *                   }
+         *                 ],
+         *                 "source": [
+         *                   "bank"
+         *                 ],
+         *                 "note": "Оклады врачей и персонала. Проценты врачам учтены в переменных расходах, полный ФОТ врачей показывает отчёт «Норма»."
+         *               },
+         *               "share_pct": {
+         *                 "value": 13.5,
+         *                 "unit": "pct",
+         *                 "breakdown": [
+         *                   {
+         *                     "label": "Сумма строки",
+         *                     "value": 14800000,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Выручка",
+         *                     "value": 109815610,
+         *                     "unit": "rub"
+         *                   }
+         *                 ],
+         *                 "source": [
+         *                   "bank"
+         *                 ],
+         *                 "note": "148 000 ₽ ÷ 1 098 156,10 ₽"
+         *               }
+         *             },
+         *             {
+         *               "key": "fixed_other",
+         *               "label": "Аренда и прочие постоянные",
+         *               "kind": "child",
+         *               "amount": {
+         *                 "value": 16491055,
+         *                 "unit": "rub",
+         *                 "breakdown": [
+         *                   {
+         *                     "label": "Аренда",
+         *                     "value": 8500000,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Коммунальные и связь",
+         *                     "value": 2641040,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Реклама",
+         *                     "value": 2310000,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Без статьи",
+         *                     "value": 1840000,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Прочие расходы",
+         *                     "value": 1200015,
+         *                     "unit": "rub"
+         *                   }
+         *                 ],
+         *                 "source": [
+         *                   "bank",
+         *                   "manual"
+         *                 ],
+         *                 "note": "Аренда, коммунальные услуги, реклама, прочие расходы кассы и операции без статьи."
+         *               },
+         *               "share_pct": {
+         *                 "value": 15,
+         *                 "unit": "pct",
+         *                 "breakdown": [
+         *                   {
+         *                     "label": "Сумма строки",
+         *                     "value": 16491055,
+         *                     "unit": "rub"
+         *                   },
+         *                   {
+         *                     "label": "Выручка",
+         *                     "value": 109815610,
+         *                     "unit": "rub"
+         *                   }
+         *                 ],
+         *                 "source": [
+         *                   "bank",
+         *                   "manual"
+         *                 ],
+         *                 "note": "164 910,55 ₽ ÷ 1 098 156,10 ₽"
+         *               }
+         *             }
+         *           ]
+         *         },
+         *         {
+         *           "key": "taxes",
+         *           "label": "Налоги и взносы",
+         *           "kind": "expense",
+         *           "amount": {
+         *             "value": 5200000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Налоги и взносы",
+         *                 "value": 5200000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "Налоги и взносы, уплаченные в месяце."
+         *           },
+         *           "share_pct": {
+         *             "value": 4.7,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 5200000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "52 000 ₽ ÷ 1 098 156,10 ₽"
+         *           }
+         *         },
+         *         {
+         *           "key": "obligations",
+         *           "label": "Обязательства и амортизация",
+         *           "kind": "expense",
+         *           "amount": {
+         *             "value": 4255060,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Лизинг рентген-аппарата",
+         *                 "value": 1200000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Амортизация: Аппарат УЗИ",
+         *                 "value": 1120000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Кредит на аппарат УЗИ",
+         *                 "value": 678116,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Амортизация: Рентген-аппарат",
+         *                 "value": 630000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Амортизация: Анализатор крови",
+         *                 "value": 390833,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Амортизация: Центрифуга",
+         *                 "value": 236111,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "manual"
+         *             ],
+         *             "note": "Проценты по кредиту, лизинг и амортизация оборудования за весь месяц. Платёж по кредиту и лизингу 38 500 ₽ расходом не считается: основной долг не расход, проценты уже учтены здесь."
+         *           },
+         *           "share_pct": {
+         *             "value": 3.9,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 4255060,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "manual"
+         *             ],
+         *             "note": "42 550,60 ₽ ÷ 1 098 156,10 ₽"
+         *           }
+         *         },
+         *         {
+         *           "key": "net_profit",
+         *           "label": "Чистая прибыль",
+         *           "kind": "total",
+         *           "amount": {
+         *             "value": 12854493,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Переменные расходы",
+         *                 "value": -56215002,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Постоянные расходы",
+         *                 "value": -31291055,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Налоги и взносы",
+         *                 "value": -5200000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Обязательства и амортизация",
+         *                 "value": -4255060,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot",
+         *               "manual"
+         *             ],
+         *             "note": "Выручка 1 098 156,10 ₽ − переменные 562 150,02 ₽ − постоянные 312 910,55 ₽ − налоги и взносы 52 000 ₽ − обязательства и амортизация 42 550,60 ₽ = 128 544,93 ₽.",
+         *             "details": [
+         *               {
+         *                 "label": "Норма отрасли, от",
+         *                 "value": 12,
+         *                 "unit": "pct"
+         *               },
+         *               {
+         *                 "label": "Норма отрасли, до",
+         *                 "value": 20,
+         *                 "unit": "pct"
+         *               }
+         *             ]
+         *           },
+         *           "share_pct": {
+         *             "value": 11.7,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Сумма строки",
+         *                 "value": 12854493,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot",
+         *               "manual"
+         *             ],
+         *             "note": "128 544,93 ₽ ÷ 1 098 156,10 ₽"
+         *           }
+         *         }
+         *       ],
+         *       "unclassified": {
+         *         "value": 1840000,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Без статьи",
+         *             "value": 1840000,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "bank"
+         *         ],
+         *         "note": "Операции без статьи (1) учтены в «Аренда и прочие постоянные». Разнесите их на экране «Транзакции», и отчёт уточнится."
+         *       },
+         *       "unclassified_count": 1,
+         *       "directions": [
+         *         {
+         *           "direction": "services",
+         *           "label": "Услуги",
+         *           "revenue": {
+         *             "value": 64132070,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Услуги",
+         *                 "value": 64132070,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Закрытые счета Ветменеджера, строки вида «услуги»."
+         *           },
+         *           "revenue_share_pct": {
+         *             "value": 58.4,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Выручка направления",
+         *                 "value": 64132070,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка клиники",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "641 320,70 ₽ ÷ 1 098 156,10 ₽"
+         *           },
+         *           "direct_costs": {
+         *             "value": 22200000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Проценты врачам",
+         *                 "value": 17000000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Лаборатории",
+         *                 "value": 5200000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank"
+         *             ],
+         *             "note": "Переменные статьи, закреплённые за направлением. Постоянные расходы к направлениям не относятся."
+         *           },
+         *           "margin": {
+         *             "value": 41932070,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 64132070,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Прямые расходы",
+         *                 "value": -22200000,
+         *                 "unit": "rub",
+         *                 "delta": true
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager"
+         *             ],
+         *             "note": "Выручка направления минус его прямые расходы."
+         *           },
+         *           "margin_pct": {
+         *             "value": 65.4,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Маржа",
+         *                 "value": 41932070,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка направления",
+         *                 "value": 64132070,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "419 320,70 ₽ ÷ 641 320,70 ₽"
+         *           }
+         *         },
+         *         {
+         *           "direction": "goods",
+         *           "label": "Товары",
+         *           "revenue": {
+         *             "value": 45683540,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Товары",
+         *                 "value": 45683540,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Закрытые счета Ветменеджера, строки вида «товары»."
+         *           },
+         *           "revenue_share_pct": {
+         *             "value": 41.6,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Выручка направления",
+         *                 "value": 45683540,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка клиники",
+         *                 "value": 109815610,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "456 835,40 ₽ ÷ 1 098 156,10 ₽"
+         *           },
+         *           "direct_costs": {
+         *             "value": 32500000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Препараты и расходники",
+         *                 "value": 24500000,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Корма для перепродажи",
+         *                 "value": 8000000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "bot"
+         *             ],
+         *             "note": "Переменные статьи, закреплённые за направлением. Постоянные расходы к направлениям не относятся."
+         *           },
+         *           "margin": {
+         *             "value": 13183540,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Выручка",
+         *                 "value": 45683540,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Прямые расходы",
+         *                 "value": -32500000,
+         *                 "unit": "rub",
+         *                 "delta": true
+         *               }
+         *             ],
+         *             "source": [
+         *               "bank",
+         *               "vetmanager",
+         *               "bot"
+         *             ],
+         *             "note": "Выручка направления минус его прямые расходы."
+         *           },
+         *           "margin_pct": {
+         *             "value": 28.9,
+         *             "unit": "pct",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Маржа",
+         *                 "value": 13183540,
+         *                 "unit": "rub"
+         *               },
+         *               {
+         *                 "label": "Выручка направления",
+         *                 "value": 45683540,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "131 835,40 ₽ ÷ 456 835,40 ₽"
+         *           }
+         *         }
+         *       ],
+         *       "common_variable": {
+         *         "value": 1515002,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Комиссия эквайринга",
+         *             "value": 1515002,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Комиссия эквайринга по тарифу клиники с оплат картой: её нельзя отнести ни к услугам, ни к товарам."
+         *       }
+         *     }
+         */
+        PnlOut: {
+            /** Month */
+            month: string;
+            /**
+             * View
+             * @enum {string}
+             */
+            view: "clinic" | "direction";
+            /**
+             * As Of
              * Format: date
              */
-            to: string;
+            as_of: string;
+            /** Data As Of */
+            data_as_of: string | null;
+            period: components["schemas"]["app__schemas_reports__PeriodOut"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "partial" | "empty";
+            /** Partial Reasons */
+            partial_reasons: ("no_vetmanager" | "bank_gap" | "short_period" | "no_obligations" | "no_benchmark" | "missing_expiry" | "short_history" | "stale_stock")[];
+            /** Headline */
+            headline?: string | null;
+            /** Rows */
+            rows: components["schemas"]["PnlRowOut"][];
+            unclassified: components["schemas"]["FigureOut"];
+            /** Unclassified Count */
+            unclassified_count: number;
+            /** Directions */
+            directions?: components["schemas"]["PnlDirectionOut"][] | null;
+            common_variable?: components["schemas"]["FigureOut"] | null;
+        };
+        /** PnlRowOut */
+        PnlRowOut: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "revenue" | "expense" | "subtotal" | "total" | "child";
+            amount: components["schemas"]["FigureOut"];
+            share_pct?: components["schemas"]["FigureOut"] | null;
+            /** Warning */
+            warning?: "no_obligations" | null;
+            /** Children */
+            children?: components["schemas"]["PnlRowOut"][] | null;
         };
         /** ResolveDuplicateBody */
         ResolveDuplicateBody: {
@@ -1296,6 +3094,865 @@ export interface components {
             min: number;
             /** Max */
             max: number;
+        };
+        /**
+         * StockIdleOut
+         * @example {
+         *       "items": [
+         *         {
+         *           "item": "Рентген-плёнка 35x43",
+         *           "last_movement_on": "2026-03-15",
+         *           "idle_days": 199,
+         *           "bucket": "180_plus",
+         *           "qty": 10,
+         *           "amount": {
+         *             "value": 14800000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "10 × 14 800 ₽",
+         *                 "value": 14800000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиции по закупочной цене. Движение: продажа или списание на приём.",
+         *             "details": [
+         *               {
+         *                 "label": "Дней без движения",
+         *                 "value": 199,
+         *                 "unit": "days"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "item": "Корм Hill's Prescription Diet 3 кг",
+         *           "last_movement_on": "2026-07-03",
+         *           "idle_days": 89,
+         *           "bucket": "60_89",
+         *           "qty": 40,
+         *           "amount": {
+         *             "value": 11560000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "40 × 2 890 ₽",
+         *                 "value": 11560000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиции по закупочной цене. Движение: продажа или списание на приём.",
+         *             "details": [
+         *               {
+         *                 "label": "Дней без движения",
+         *                 "value": 89,
+         *                 "unit": "days"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "item": "Ошейник от блох",
+         *           "last_movement_on": "2026-07-02",
+         *           "idle_days": 90,
+         *           "bucket": "90_179",
+         *           "qty": 120,
+         *           "amount": {
+         *             "value": 5400000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "120 × 450 ₽",
+         *                 "value": 5400000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиции по закупочной цене. Движение: продажа или списание на приём.",
+         *             "details": [
+         *               {
+         *                 "label": "Дней без движения",
+         *                 "value": 90,
+         *                 "unit": "days"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "item": "Система для капельницы",
+         *           "last_movement_on": "2026-08-01",
+         *           "idle_days": 60,
+         *           "bucket": "60_89",
+         *           "qty": 1200,
+         *           "amount": {
+         *             "value": 3420000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "1200 × 28,50 ₽",
+         *                 "value": 3420000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиции по закупочной цене. Движение: продажа или списание на приём.",
+         *             "details": [
+         *               {
+         *                 "label": "Дней без движения",
+         *                 "value": 60,
+         *                 "unit": "days"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "item": "Лежак средний",
+         *           "last_movement_on": "2026-04-03",
+         *           "idle_days": 180,
+         *           "bucket": "180_plus",
+         *           "qty": 20,
+         *           "amount": {
+         *             "value": 2240000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "20 × 1 120 ₽",
+         *                 "value": 2240000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиции по закупочной цене. Движение: продажа или списание на приём.",
+         *             "details": [
+         *               {
+         *                 "label": "Дней без движения",
+         *                 "value": 180,
+         *                 "unit": "days"
+         *               }
+         *             ]
+         *           }
+         *         },
+         *         {
+         *           "item": "Хлоргексидин 0,05%, флакон",
+         *           "last_movement_on": "2026-06-25",
+         *           "idle_days": 97,
+         *           "bucket": "90_179",
+         *           "qty": 22,
+         *           "amount": {
+         *             "value": 407000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "22 × 185 ₽",
+         *                 "value": 407000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиции по закупочной цене. Движение: продажа или списание на приём.",
+         *             "details": [
+         *               {
+         *                 "label": "Дней без движения",
+         *                 "value": 97,
+         *                 "unit": "days"
+         *               }
+         *             ]
+         *           }
+         *         }
+         *       ],
+         *       "next_cursor": null,
+         *       "total": {
+         *         "value": 6,
+         *         "unit": "count",
+         *         "breakdown": [
+         *           {
+         *             "label": "Позиций",
+         *             "value": 6,
+         *             "unit": "count"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Позиции с остатком, без продаж и списаний на приём: от 60 дней."
+         *       }
+         *     }
+         */
+        StockIdleOut: {
+            /** Items */
+            items: components["schemas"]["IdleItemOut"][];
+            /** Next Cursor */
+            next_cursor: string | null;
+            total: components["schemas"]["FigureOut"];
+        };
+        /**
+         * StockOut
+         * @example {
+         *       "as_of": "2026-09-30",
+         *       "data_as_of": "2026-10-01T04:12:00+03:00",
+         *       "month": "2026-09",
+         *       "status": "ok",
+         *       "partial_reasons": [],
+         *       "headline": "На полке лежат партии с истёкшим сроком на 555 ₽. Их стоит списать. Срок годности истекает у 7 партий на 92 928,50 ₽. Ещё 378 270 ₽ лежат без движения.",
+         *       "stock_value": {
+         *         "value": 55354600,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Остаток на складе по закупочной цене",
+         *             "value": 55354600,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Количество на остатке, умноженное на закупочную цену партии.",
+         *         "details": [
+         *           {
+         *             "label": "Позиций",
+         *             "value": 15,
+         *             "unit": "count"
+         *           }
+         *         ]
+         *       },
+         *       "frozen": {
+         *         "value": 37827000,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Без движения 60–89 дней",
+         *             "value": 14980000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Без движения 90–179 дней",
+         *             "value": 5807000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Без движения от 180 дней",
+         *             "value": 17040000,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Позиции, по которым не было ни продажи, ни списания на приём. Считаем с последнего движения; интервалы не пересекаются."
+         *       },
+         *       "frozen_positions": {
+         *         "value": 6,
+         *         "unit": "count",
+         *         "breakdown": [
+         *           {
+         *             "label": "60–89 дней",
+         *             "value": 2,
+         *             "unit": "count"
+         *           },
+         *           {
+         *             "label": "90–179 дней",
+         *             "value": 2,
+         *             "unit": "count"
+         *           },
+         *           {
+         *             "label": "От 180 дней",
+         *             "value": 2,
+         *             "unit": "count"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Число позиций с остатком, у которых с последнего движения прошло 60 дней и больше."
+         *       },
+         *       "idle_buckets": [
+         *         {
+         *           "key": "60_89",
+         *           "label": "60–89 дней",
+         *           "amount": {
+         *             "value": 14980000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "60–89 дней",
+         *                 "value": 14980000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиций без движения этого интервала по закупочной цене."
+         *           },
+         *           "positions": {
+         *             "value": 2,
+         *             "unit": "count",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Позиций",
+         *                 "value": 2,
+         *                 "unit": "count"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Позиции с остатком, без продаж и списаний на приём: 60–89 дней."
+         *           }
+         *         },
+         *         {
+         *           "key": "90_179",
+         *           "label": "90–179 дней",
+         *           "amount": {
+         *             "value": 5807000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "90–179 дней",
+         *                 "value": 5807000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиций без движения этого интервала по закупочной цене."
+         *           },
+         *           "positions": {
+         *             "value": 2,
+         *             "unit": "count",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Позиций",
+         *                 "value": 2,
+         *                 "unit": "count"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Позиции с остатком, без продаж и списаний на приём: 90–179 дней."
+         *           }
+         *         },
+         *         {
+         *           "key": "180_plus",
+         *           "label": "От 180 дней",
+         *           "amount": {
+         *             "value": 17040000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "От 180 дней",
+         *                 "value": 17040000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток позиций без движения этого интервала по закупочной цене."
+         *           },
+         *           "positions": {
+         *             "value": 2,
+         *             "unit": "count",
+         *             "breakdown": [
+         *               {
+         *                 "label": "Позиций",
+         *                 "value": 2,
+         *                 "unit": "count"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Позиции с остатком, без продаж и списаний на приём: от 180 дней."
+         *           }
+         *         }
+         *       ],
+         *       "expiring_60d": {
+         *         "value": 9292850,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Корм Royal Canin Renal 2 кг",
+         *             "value": 5550000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Вакцина Нобивак Rabies, доза",
+         *             "value": 1120050,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Кетофен 10%, флакон",
+         *             "value": 940000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Синулокс 250 мг, упаковка",
+         *             "value": 859800,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Мелоксикам 5 мг/мл, флакон",
+         *             "value": 416000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Хлоргексидин 0,05%, флакон",
+         *             "value": 407000,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Партии с остатком и сроком годности не позже чем через 60 дней (включая сегодняшний день). Просроченные на полке считаются отдельно."
+         *       },
+         *       "expiring": [
+         *         {
+         *           "item": "Мелоксикам 5 мг/мл, флакон",
+         *           "expires_on": "2026-09-30",
+         *           "days_left": 0,
+         *           "qty": 3,
+         *           "amount": {
+         *             "value": 156000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "3 × 520 ₽",
+         *                 "value": 156000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         },
+         *         {
+         *           "item": "Мелоксикам 5 мг/мл, флакон",
+         *           "expires_on": "2026-10-01",
+         *           "days_left": 1,
+         *           "qty": 5,
+         *           "amount": {
+         *             "value": 260000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "5 × 520 ₽",
+         *                 "value": 260000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         },
+         *         {
+         *           "item": "Кетофен 10%, флакон",
+         *           "expires_on": "2026-10-24",
+         *           "days_left": 24,
+         *           "qty": 8,
+         *           "amount": {
+         *             "value": 940000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "8 × 1 175 ₽",
+         *                 "value": 940000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         },
+         *         {
+         *           "item": "Хлоргексидин 0,05%, флакон",
+         *           "expires_on": "2026-11-05",
+         *           "days_left": 36,
+         *           "qty": 22,
+         *           "amount": {
+         *             "value": 407000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "22 × 185 ₽",
+         *                 "value": 407000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         },
+         *         {
+         *           "item": "Синулокс 250 мг, упаковка",
+         *           "expires_on": "2026-11-14",
+         *           "days_left": 45,
+         *           "qty": 12,
+         *           "amount": {
+         *             "value": 859800,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "12 × 716,50 ₽",
+         *                 "value": 859800,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         },
+         *         {
+         *           "item": "Вакцина Нобивак Rabies, доза",
+         *           "expires_on": "2026-11-28",
+         *           "days_left": 59,
+         *           "qty": 9,
+         *           "amount": {
+         *             "value": 1120050,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "9 × 1 244,50 ₽",
+         *                 "value": 1120050,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         },
+         *         {
+         *           "item": "Корм Royal Canin Renal 2 кг",
+         *           "expires_on": "2026-11-29",
+         *           "days_left": 60,
+         *           "qty": 30,
+         *           "amount": {
+         *             "value": 5550000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "30 × 1 850 ₽",
+         *                 "value": 5550000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         }
+         *       ],
+         *       "expired_on_hand": {
+         *         "value": 55500,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Цефтриаксон, флакон",
+         *             "value": 55500,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Партии с истёкшим сроком, которые ещё числятся на складе.",
+         *         "details": [
+         *           {
+         *             "label": "Самая давняя: срок истёк 25 сентября",
+         *             "value": 5,
+         *             "unit": "days"
+         *           }
+         *         ]
+         *       },
+         *       "expired_items": [
+         *         {
+         *           "item": "Цефтриаксон, флакон",
+         *           "expires_on": "2026-09-25",
+         *           "days_left": -5,
+         *           "qty": 15,
+         *           "amount": {
+         *             "value": 55500,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "15 × 37 ₽",
+         *                 "value": 55500,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Остаток партии по закупочной цене партии."
+         *           }
+         *         }
+         *       ],
+         *       "written_off_month": {
+         *         "value": 3410000,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Истёк срок годности",
+         *             "value": 2990000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Брак и бой",
+         *             "value": 420000,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager"
+         *         ],
+         *         "note": "Списания сентября 2026 по закупочной цене, по причинам."
+         *       },
+         *       "written_off_norm": {
+         *         "value": 878525,
+         *         "unit": "rub",
+         *         "breakdown": [
+         *           {
+         *             "label": "Норма, 0,8% выручки",
+         *             "value": 0.8,
+         *             "unit": "pct"
+         *           },
+         *           {
+         *             "label": "Выручка сентября",
+         *             "value": 109815610,
+         *             "unit": "rub"
+         *           }
+         *         ],
+         *         "source": [
+         *           "calc"
+         *         ],
+         *         "note": "Та же норма, что в отчёте «Норма»: списание по сроку до 0,8% выручки того же месяца.",
+         *         "details": [
+         *           {
+         *             "label": "Списано по сроку",
+         *             "value": 2990000,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Сверх нормы",
+         *             "value": 2111475,
+         *             "unit": "rub"
+         *           }
+         *         ]
+         *       },
+         *       "written_off_items": [
+         *         {
+         *           "item": "Вакцина Нобивак DHPPi, доза",
+         *           "date": "2026-09-17",
+         *           "qty": 11,
+         *           "reason": "expired",
+         *           "amount": {
+         *             "value": 1368950,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "11 × 1 244,50 ₽",
+         *                 "value": 1368950,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Списание по закупочной цене."
+         *           }
+         *         },
+         *         {
+         *           "item": "Капли глазные, флакон",
+         *           "date": "2026-09-26",
+         *           "qty": 25,
+         *           "reason": "expired",
+         *           "amount": {
+         *             "value": 805050,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "25 × 322,02 ₽",
+         *                 "value": 805050,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Списание по закупочной цене."
+         *           }
+         *         },
+         *         {
+         *           "item": "Кетофен 10%, флакон",
+         *           "date": "2026-09-03",
+         *           "qty": 6,
+         *           "reason": "expired",
+         *           "amount": {
+         *             "value": 705000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "6 × 1 175 ₽",
+         *                 "value": 705000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Списание по закупочной цене."
+         *           }
+         *         },
+         *         {
+         *           "item": "Стекло предметное, упаковка",
+         *           "date": "2026-09-12",
+         *           "qty": 4,
+         *           "reason": "damaged",
+         *           "amount": {
+         *             "value": 420000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "4 × 1 050 ₽",
+         *                 "value": 420000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Списание по закупочной цене."
+         *           }
+         *         },
+         *         {
+         *           "item": "Цефтриаксон, флакон",
+         *           "date": "2026-09-26",
+         *           "qty": 30,
+         *           "reason": "expired",
+         *           "amount": {
+         *             "value": 111000,
+         *             "unit": "rub",
+         *             "breakdown": [
+         *               {
+         *                 "label": "30 × 37 ₽",
+         *                 "value": 111000,
+         *                 "unit": "rub"
+         *               }
+         *             ],
+         *             "source": [
+         *               "vetmanager"
+         *             ],
+         *             "note": "Списание по закупочной цене."
+         *           }
+         *         }
+         *       ],
+         *       "turnover_days": {
+         *         "value": 59,
+         *         "unit": "days",
+         *         "breakdown": [
+         *           {
+         *             "label": "Запас на складе",
+         *             "value": 55354600,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Расход за 90 дней",
+         *             "value": 84802035,
+         *             "unit": "rub"
+         *           },
+         *           {
+         *             "label": "Окно расчёта",
+         *             "value": 90,
+         *             "unit": "days"
+         *           }
+         *         ],
+         *         "source": [
+         *           "vetmanager",
+         *           "calc"
+         *         ],
+         *         "note": "553 546 ₽ × 90 ÷ 848 020,35 ₽ = 59 дн. Расход: продажи и использование на приёме по закупочной цене.",
+         *         "details": [
+         *           {
+         *             "label": "Норма",
+         *             "value": 45,
+         *             "unit": "days"
+         *           }
+         *         ]
+         *       },
+         *       "norm_turnover_days": 45
+         *     }
+         */
+        StockOut: {
+            /**
+             * As Of
+             * Format: date
+             */
+            as_of: string;
+            /** Data As Of */
+            data_as_of: string | null;
+            /** Month */
+            month: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "partial" | "empty";
+            /** Partial Reasons */
+            partial_reasons: ("no_vetmanager" | "bank_gap" | "short_period" | "no_obligations" | "no_benchmark" | "missing_expiry" | "short_history" | "stale_stock")[];
+            /** Headline */
+            headline?: string | null;
+            stock_value: components["schemas"]["FigureOut"];
+            frozen: components["schemas"]["FigureOut"];
+            frozen_positions: components["schemas"]["FigureOut"];
+            /** Idle Buckets */
+            idle_buckets: components["schemas"]["IdleBucketOut"][];
+            expiring_60d: components["schemas"]["FigureOut"];
+            expiring_at_risk?: components["schemas"]["FigureOut"] | null;
+            /** Expiring */
+            expiring: components["schemas"]["ExpiringRowOut"][];
+            expired_on_hand: components["schemas"]["FigureOut"];
+            /** Expired Items */
+            expired_items: components["schemas"]["ExpiringRowOut"][];
+            written_off_month: components["schemas"]["FigureOut"];
+            written_off_norm: components["schemas"]["FigureOut"];
+            /** Written Off Items */
+            written_off_items: components["schemas"]["WrittenOffRowOut"][];
+            turnover_days: components["schemas"]["FigureOut"];
+            /** Norm Turnover Days */
+            norm_turnover_days: number;
+            /** Missing Expiry Count */
+            missing_expiry_count?: number | null;
         };
         /** SuggestionOut */
         SuggestionOut: {
@@ -1539,6 +4196,59 @@ export interface components {
             steps: string[];
             /** Sources */
             sources: string[];
+        };
+        /** WrittenOffRowOut */
+        WrittenOffRowOut: {
+            /** Item */
+            item: string;
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Qty */
+            qty: number;
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "expired" | "damaged" | "other";
+            amount: components["schemas"]["FigureOut"];
+        };
+        /**
+         * PeriodOut
+         * @description `to` is null for a closed month; for a running month it is the last day of the data (`as_of`).
+         */
+        app__schemas_reports__PeriodOut: {
+            /** Month */
+            month: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "closed" | "open";
+            /**
+             * From
+             * Format: date
+             */
+            from: string;
+            /** To */
+            to: string | null;
+            /** First Month */
+            first_month: string | null;
+        };
+        /** PeriodOut */
+        app__schemas_tx__PeriodOut: {
+            /**
+             * From
+             * Format: date
+             */
+            from: string;
+            /**
+             * To
+             * Format: date
+             */
+            to: string;
         };
     };
     responses: never;
@@ -2731,6 +5441,282 @@ export interface operations {
             };
             /** @description Конфликт состояния (`conflict`). */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Слишком часто (`rate_limited`), заголовок `Retry-After`. */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    pnl_v1_reports_pnl_get: {
+        parameters: {
+            query?: {
+                month?: string | null;
+                view?: "clinic" | "direction";
+                as_of?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PnlOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    norm_v1_reports_norm_get: {
+        parameters: {
+            query?: {
+                month?: string | null;
+                as_of?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NormOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    stock_v1_reports_stock_get: {
+        parameters: {
+            query?: {
+                month?: string | null;
+                as_of?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    stock_idle_v1_reports_stock_idle_get: {
+        parameters: {
+            query?: {
+                bucket?: "all" | "60_89" | "90_179" | "180_plus";
+                cursor?: string | null;
+                limit?: number;
+                as_of?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StockIdleOut"];
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Ошибка валидации (`validation`): `details.fields` или `details.reason`. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+        };
+    };
+    export_v1_reports__name__export_get: {
+        parameters: {
+            query: {
+                format: "xlsx" | "pdf";
+                month?: string | null;
+                as_of?: string | null;
+            };
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Файл отчёта: те же цифры, что в JSON отчёта. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": unknown;
+                    "application/pdf": unknown;
+                };
+            };
+            /** @description Нет или недействительный токен (`unauthorized`). */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Пользователь не привязан к клинике (`forbidden`). */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorBodyOut"];
+                };
+            };
+            /** @description Не найдено или чужое (`not_found`). */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

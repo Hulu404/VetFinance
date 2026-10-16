@@ -154,6 +154,22 @@
   --advice-gap: 11px;                       /* между карточками советов */
   --advice-bar: 3px;                        /* рамка слева: alert = accent, warning = warn, good = ok */
 
+  /* ---------- Этап 3: отчёты (ОПиУ, Норма, Склад). Новых цветов нет ---------- */
+  --report-row-padding: 13px 14px;          /* v6 .pl: строка отчёта */
+  --report-row-gap: 12px;                   /* v6 .pl: зазор между колонками строки */
+  --report-sub-indent: 28px;                /* отступ дочерней строки (ФОТ, аренда и прочие постоянные) */
+  --gauge-height: 24px;                     /* v6 .gauge: шкала нормы */
+  --gauge-marker-width: 3px;                /* v6 .gm: чёрточка «ваше значение» */
+  --gauge-zone-edge: 2px;                   /* границы зоны нормы (новое: зона ok-soft на track не набирает 3:1) */
+  --structure-bar-height: 14px;             /* полоса структуры: v6 .track (10px), выше ради подписей-цветов */
+  --structure-gap: 2px;                     /* белый зазор между сегментами */
+  --color-structure-1: var(--color-accent-dark);   /* сегменты полосы структуры по порядку; цвет не единственный носитель смысла: легенда с числами */
+  --color-structure-2: var(--color-accent);
+  --color-structure-3: var(--color-accent-mid);
+  --color-structure-4: var(--color-accent-light);
+  --color-structure-5: var(--color-accent-soft);
+  --color-structure-6: var(--color-sidebar);       /* прибыль / итог */
+
   /* ---------- Фокус ---------- */
   --focus-ring: 2.5px solid var(--color-accent-dark);
   --focus-ring-on-dark: 2.5px solid #FFFFFF;   /* бордовый на тёмном меню не виден (1,9:1) */

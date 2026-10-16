@@ -6,6 +6,11 @@ export interface TabDef<Id extends string> {
   label: string
   /** Number of the list under the tab; null hides it, 'loading' shows a placeholder. */
   count?: number | null | 'loading'
+  /** Accessible name when the visible text and the count read badly together ("60–89 дней, 912"). */
+  ariaLabel?: string
+  /** `data-testid` and `data-*` attributes of the tab button (e2e). */
+  testId?: string
+  data?: Record<`data-${string}`, string>
 }
 
 export function tabElementId(prefix: string, id: string): string {
@@ -68,6 +73,9 @@ export function Tabs<Id extends string>({ prefix, label, tabs, value, onChange }
             role="tab"
             id={tabElementId(prefix, tab.id)}
             aria-selected={selected}
+            aria-label={tab.ariaLabel}
+            data-testid={tab.testId}
+            {...tab.data}
             aria-controls={panelElementId(prefix, tab.id)}
             tabIndex={selected ? 0 : -1}
             className={selected ? 'seg__btn seg__btn--on' : 'seg__btn'}
@@ -91,6 +99,7 @@ export function Tabs<Id extends string>({ prefix, label, tabs, value, onChange }
 interface SegmentedOption<Id extends string> {
   id: Id
   label: string
+  testId?: string
 }
 
 interface SegmentedProps<Id extends string> {
@@ -131,6 +140,7 @@ export function Segmented<Id extends string>({ label, options, value, onChange, 
             key={option.id}
             type="button"
             role="radio"
+            data-testid={option.testId}
             aria-checked={selected}
             tabIndex={selected ? 0 : -1}
             disabled={disabled}

@@ -573,6 +573,47 @@ describe('DashboardPage: month sub-lines', () => {
   })
 })
 
+describe('DashboardPage: profit by cash', () => {
+  it('calls the profit "Прибыль по деньгам" in the card and in the tip', async () => {
+    const user = userEvent.setup()
+    renderWithQuery(<DashboardPage />)
+    await loaded()
+
+    expect(within(screen.getByTestId('month-profit')).getByText('Прибыль по деньгам')).toBeInTheDocument()
+    await user.hover(within(screen.getByTestId('month-profit')).getAllByTestId('figure-tip-trigger')[0] as HTMLElement)
+    const tip = await screen.findByTestId('figure-tip')
+    expect(tip).toHaveTextContent('Прибыль по деньгам · сентябрь')
+    expect(within(tip).getByTestId('figure-tip-note')).toHaveTextContent('Налоги, амортизация и комиссия эквайринга здесь не начислены')
+  })
+
+  it('explains under the cards that this profit is by cash and links to the report of the month', async () => {
+    renderWithQuery(<DashboardPage />)
+    await loaded()
+
+    const hint = screen.getByTestId('month-profit-hint')
+    expect(hint).toHaveTextContent('Прибыль здесь считается по деньгам: выручка минус уже заплаченное.')
+    expect(hint).toHaveTextContent('Прибыль месяца с налогами и амортизацией — в отчёте Прибыль и убытки.')
+    expect(hint.textContent).not.toMatch(/\d/)
+    expect(screen.getByTestId('month-profit-link')).toHaveAttribute('href', '/reports/pnl?month=2026-09')
+  })
+
+  it('keeps the reference date of the address in the link', async () => {
+    server.use(http.get('*/v1/dashboard', ({ request }) => HttpResponse.json({ ...dashboardA, as_of: new URL(request.url).searchParams.get('as_of') ?? dashboardA.as_of })))
+    renderWithQuery(<DashboardPage />, { path: '/?as_of=2026-09-10' })
+    await loaded()
+
+    expect(screen.getByTestId('month-profit-link')).toHaveAttribute('href', '/reports/pnl?month=2026-09&as_of=2026-09-10')
+  })
+
+  it('shows no hint when the month has no data yet', async () => {
+    setMockScenario('emptymonth')
+    renderWithQuery(<DashboardPage />)
+    await loaded()
+
+    expect(screen.queryByTestId('month-profit-hint')).not.toBeInTheDocument()
+  })
+})
+
 describe('DashboardPage: ?as_of=', () => {
   it('passes the date from the address to the API and shows it', async () => {
     let requested: string | null = null

@@ -24,6 +24,14 @@ export type MockScenario =
   | 'noadvice' // advice: []
   | 'fewdata' // 3 days of history: short chart, no week change, no advice
   | 'norunway' // runway_days is absent
+  // Stage 3 (reports)
+  | 'reportopen' // the reference date is 9 September: the month is open
+  | 'reportloss' // P&L: a loss
+  | 'reportzero' // P&L: expenses but no revenue, no shares
+  | 'reportpartial' // all reasons of partial data
+  | 'reportempty' // no data in any report
+  | 'reportcalm' // stock: nothing expires, nothing idle
+  | 'exportfail' // export answers 501 (backend step 1)
 
 const SCENARIOS: readonly string[] = [
   'default',
@@ -48,6 +56,13 @@ const SCENARIOS: readonly string[] = [
   'noadvice',
   'fewdata',
   'norunway',
+  'reportopen',
+  'reportloss',
+  'reportzero',
+  'reportpartial',
+  'reportempty',
+  'reportcalm',
+  'exportfail',
 ]
 const STORAGE_KEY = 'vf-mock-scenario'
 

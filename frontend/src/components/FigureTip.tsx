@@ -38,11 +38,16 @@ export interface FigureTipTriggerProps {
   'data-testid': string
 }
 
+/** What the tip needs of a Figure. The source is a plain string so that a norm can name its own origin (industry, clinic). */
+export type TipFigure = Omit<Figure, 'source'> & { source: readonly string[] }
+
 interface FigureTipProps {
-  figure: Figure
+  figure: TipFigure
   /** Name of the metric, shown as the label in the tip (the Figure has no title of its own). */
   title: string
   emoji?: string
+  /** Replaces the formatted value in the tip header ("−632 000 ₽ · 51,0%", "22–28%"). The figure keeps the rows. */
+  valueText?: string
   /** Element the tip is placed next to, when it is not the trigger itself (a point inside a chart). */
   anchorRef?: RefObject<HTMLElement | null>
   /** Changes when the tip must be placed again while open (another point of the chart). */
@@ -73,7 +78,7 @@ function computePosition(anchor: DOMRect, tip: DOMRect): Position {
   return { top, left }
 }
 
-export function FigureTip({ figure, title, emoji, anchorRef, placeKey, children }: FigureTipProps) {
+export function FigureTip({ figure, title, emoji, valueText, anchorRef, placeKey, children }: FigureTipProps) {
   const tipId = useId()
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const tipRef = useRef<HTMLDivElement | null>(null)
@@ -226,7 +231,7 @@ export function FigureTip({ figure, title, emoji, anchorRef, placeKey, children 
             onPointerEnter={() => window.clearTimeout(closeTimer.current)}
             onPointerLeave={(event) => event.pointerType !== 'touch' && scheduleClose()}
           >
-            <TipBody figure={figure} title={title} emoji={emoji} />
+            <TipBody figure={figure} title={title} emoji={emoji} valueText={valueText} />
           </div>,
           // A modal dialog sits in the top layer, above any z-index: inside a dialog the tip is drawn in it.
           triggerRef.current?.closest('dialog') ?? document.body,
@@ -254,7 +259,7 @@ function TipRows({ rows, testId }: { rows: FigureItem[]; testId?: string }) {
   )
 }
 
-function TipBody({ figure, title, emoji }: { figure: Figure; title: string; emoji?: string }) {
+function TipBody({ figure, title, emoji, valueText }: { figure: TipFigure; title: string; emoji?: string; valueText?: string }) {
   const breakdown = figure.breakdown ?? []
   const details = figure.details ?? []
   const sources = figure.source ?? []
@@ -264,7 +269,7 @@ function TipBody({ figure, title, emoji }: { figure: Figure; title: string; emoj
       <span className="figure-tip__tag">{title}</span>
       <p className="figure-tip__value">
         {emoji ? <span aria-hidden="true">{emoji} </span> : null}
-        {formatDeltaAware(figure)}
+        {valueText ?? formatDeltaAware(figure)}
       </p>
       {breakdown.length > 0 && <TipRows rows={breakdown} testId="figure-tip-row" />}
       {details.length > 0 && (

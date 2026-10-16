@@ -113,7 +113,7 @@ def _cash_runway(ctx: AdviceContext) -> Advice | None:
 def _drugs(ctx: AdviceContext) -> int:
     for item in ctx.month.expenses.breakdown:
         if item.label == ctx.norms.drugs_category:
-            return item.value
+            return int(item.value)
     return 0
 
 
@@ -223,18 +223,18 @@ def _margin_ok(ctx: AdviceContext) -> Advice | None:
         icon="📈",
         title=f"Рентабельность месяца {pct}%, не ниже нормы {minimum}%",
         text=(
-            f"За {period} прибыль {format_rub(profit)} при выручке {format_rub(revenue)}. "
-            "Налоги и амортизацию учтёт отчёт при закрытии месяца."
+            f"Прибыль по деньгам за {period} {format_rub(profit)} при выручке "
+            f"{format_rub(revenue)}. Налоги и амортизацию покажет отчёт «Прибыль и убытки»."
         ),
         why=Why(
             summary=(
-                f"Прибыль {format_rub(profit)} от выручки {format_rub(revenue)}: рентабельность "
+                f"Прибыль по деньгам {format_rub(profit)} от выручки {format_rub(revenue)}: рентабельность "
                 f"{pct}%, нижняя граница нормы {minimum}%."
             ),
             steps=(
                 f"Выручка за {period}: {format_rub(revenue)}.",
                 f"Расходы за тот же период: {format_rub(expenses)}.",
-                f"Прибыль, выручка минус расходы: {format_rub(profit)}.",
+                f"Прибыль по деньгам, выручка минус расходы: {format_rub(profit)}.",
                 f"Рентабельность {pct}% (прибыль ÷ выручка), нижняя граница нормы {minimum}%.",
             ),
             sources=(

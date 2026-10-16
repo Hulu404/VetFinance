@@ -1,0 +1,62 @@
+/* Statement variant of ReportTable (design/components.md, section 18; v6 .pl). */
+.stmt { margin-bottom: var(--section-gap); }
+.stmt__table { width: 100%; border-collapse: separate; border-spacing: 0 2px; }
+.stmt__row { font-size: var(--fs-base); transition: background var(--dur-fast) var(--ease); }
+.stmt__row > * { padding: 0; font-weight: inherit; text-align: inherit; vertical-align: middle; }
+.stmt__row:hover { background: var(--color-accent-faint); }
+.stmt__row > :first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+.stmt__row > :last-child { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+
+.stmt__name { padding: var(--report-row-padding); padding-right: 0; width: auto; text-align: left; }
+.stmt__amount { width: 160px; padding: 0; text-align: right; font-weight: var(--fw-bold); white-space: nowrap; }
+.stmt__share { width: 68px; padding: 0 14px 0 var(--report-row-gap); text-align: right; font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--color-ink-soft); white-space: nowrap; }
+.stmt__row .figbtn { min-height: 40px; padding: 0 6px; }
+.stmt__amount .figbtn { justify-content: flex-end; }
+.stmt__share .figbtn { justify-content: flex-end; }
+
+.stmt__bar { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); padding-left: 11px; border-left: 3px solid var(--color-ink-faint); font-weight: var(--fw-semibold); }
+.stmt__warn { display: inline-flex; }
+
+.stmt__row--subtotal { background: var(--color-accent-faint); font-weight: var(--fw-bold); }
+.stmt__row--subtotal .stmt__bar { border-color: var(--color-accent); font-weight: var(--fw-bold); }
+.stmt__row--total { background: var(--color-ok-soft); font-weight: var(--fw-bold); }
+.stmt__row--total .stmt__bar { border-color: var(--color-ok); font-weight: var(--fw-bold); }
+.stmt__row--total.stmt__row--neg { background: var(--color-bad-soft); }
+.stmt__row--total.stmt__row--neg .stmt__bar { border-color: var(--color-bad); }
+.stmt__row--subtotal:hover, .stmt__row--total:hover { background: inherit; }
+.stmt__row--subtotal:hover { background: var(--color-accent-faint); }
+.stmt__row--total:hover { background: var(--color-ok-soft); }
+.stmt__row--total.stmt__row--neg:hover { background: var(--color-bad-soft); }
+
+.stmt__row--child { font-size: var(--fs-sm); }
+.stmt__row--child .stmt__bar { padding-left: var(--report-sub-indent); border-left: 0; font-weight: var(--fw-medium); }
+.stmt__row--child .stmt__amount { font-weight: var(--fw-semibold); }
+
+.stmt__row .figbtn:hover { text-decoration-color: currentColor; }
+
+.stmt--loading { display: flex; flex-direction: column; gap: 2px; }
+.stmt__skeleton-row { display: grid; grid-template-columns: 1fr 160px 68px; gap: var(--report-row-gap); align-items: center; padding: var(--report-row-padding); }
+.skel { display: block; height: 14px; border-radius: 6px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+.skel--name { width: 40%; }
+.skel--amount { width: 100px; justify-self: end; }
+.skel--share { width: 40px; height: 12px; justify-self: end; }
+
+@media (max-width: 560px) {
+  .stmt__table, .stmt__table tbody { display: block; }
+  .stmt__row { display: grid; grid-template-columns: 1fr auto; align-items: center; margin-bottom: 2px; border-radius: var(--radius-md); }
+  .stmt__row > :first-child, .stmt__row > :last-child { border-radius: 0; }
+  .stmt__name { grid-column: 1; grid-row: 1; padding-bottom: 0; }
+  .stmt__amount { grid-column: 2; grid-row: 1; width: auto; padding-right: 8px; }
+  .stmt__share { grid-column: 1 / -1; grid-row: 2; width: auto; padding: 0 14px 6px 14px; text-align: left; }
+  .stmt__share .figbtn { justify-content: flex-start; min-height: var(--touch-min); }
+  .stmt__row--child .stmt__share { padding-left: var(--report-sub-indent); }
+  .stmt__row .figbtn { min-height: var(--touch-min); }
+  .stmt__skeleton-row { grid-template-columns: 1fr 100px; }
+  .skel--share { display: none; }
+}
+@media (max-width: 820px) {
+  .stmt__row .figbtn { min-height: var(--touch-min); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stmt__row { transition: none; }
+}

@@ -9,7 +9,7 @@ SOURCE_ORDER = ("bank", "vetmanager", "bot", "manual", "calc")
 @dataclass(frozen=True)
 class FigureItem:
     label: str
-    value: int
+    value: int | Decimal  # Decimal with one decimal for pct and pp
     unit: str = "rub"
     delta: bool = False  # the value is a change, not a summand of the total
 

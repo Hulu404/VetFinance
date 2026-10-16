@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-UNITS = {"rub", "pct", "count", "days"}
+UNITS = {"rub", "pct", "pp", "count", "days"}  # `pp` (percentage points) joined the contract at stage 3
 SOURCES = {"bank", "vetmanager", "bot", "manual", "calc"}
 ERROR_CODES = {"unauthorized", "forbidden", "not_found", "validation", "conflict", "sync_failed"}
 GOLDEN = Path(__file__).resolve().parents[1] / "golden" / "set01"

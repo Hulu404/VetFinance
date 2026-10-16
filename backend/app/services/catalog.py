@@ -35,11 +35,12 @@ async def list_categories(repo: Repository) -> CategoriesOut:
             CategoryOut(
                 id=c.id,
                 name=c.name,
-                type="income"
-                if c.type == "income"
-                else ("variable" if c.type == "variable" else "fixed"),
+                type=c.type,
                 norm_min_pct=c.norm_min_pct,
                 norm_max_pct=c.norm_max_pct,
+                norm_key=c.norm_key,
+                direction=c.direction,
+                payroll=c.payroll,
             )
             for c in await repo.list_categories()
         ]

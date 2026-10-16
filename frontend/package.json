@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "gen:api": "openapi-typescript ../backend/openapi.json -o src/api/schema.gen.ts",
-    "sync:design": "node scripts/sync-design.mjs"
+    "sync:design": "node scripts/sync-design.mjs",
+    "sync:mocks": "node scripts/sync-mocks.mjs"
   },
   "dependencies": {
     "@fontsource/onest": "^5.3.1",

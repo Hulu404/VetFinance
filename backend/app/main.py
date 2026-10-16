@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.deps import NowDep, RepoDep
 from app.errors import error_responses, install_error_handlers
-from app.routes import acquiring, connections, transactions
+from app.routes import acquiring, connections, reports, transactions
 from app.schemas import AccountOut, AccountsOut, ClinicOut, ClinicPatch
 from app.schemas_dash import DashboardOut, dashboard_out
 from app.services.connections import data_is_stale
@@ -90,6 +90,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(transactions.router)
     app.include_router(acquiring.router)
     app.include_router(connections.router)
+    app.include_router(reports.router)
     return app
 
 

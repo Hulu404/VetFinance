@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { useInfiniteQuery, useQuery, type QueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useInfiniteQuery, useQuery, type QueryClient } from '@tanstack/react-query'
 import { useLocation } from 'react-router-dom'
 import { asOfFromSearch } from '../lib/asOf'
 import { lastDayOfMonth } from '../lib/dates'
@@ -13,6 +13,12 @@ import type {
   Clinic,
   ConnectionList,
   Dashboard,
+  NormReport,
+  PnlReport,
+  PnlView,
+  StockIdleKey,
+  StockIdlePage,
+  StockReport,
   TransactionCounts,
   TransactionList,
   TransactionSummary,
@@ -38,6 +44,10 @@ export const queryKeys = {
   acquiring: ['acquiring'] as const,
   acquiringMonth: (month: string) => ['acquiring', month] as const,
   acquiringDay: (date: string) => ['acquiring', 'day', date] as const,
+  pnl: ['pnl'] as const,
+  norm: ['norm'] as const,
+  stock: ['stock'] as const,
+  stockIdle: ['stock-idle'] as const,
 }
 
 /** Shared by the dashboard and the header balance. `?as_of=` in the address is passed through (golden-data checks). */
@@ -149,12 +159,58 @@ export function useAcquiringDay(date: string, enabled: boolean) {
   })
 }
 
+function reportQuery(path: string, params: Record<string, string | null | undefined>): string {
+  const search = new URLSearchParams()
+  for (const [name, value] of Object.entries(params)) {
+    if (value) search.set(name, value)
+  }
+  const text = search.toString()
+  return text ? `${path}?${text}` : path
+}
+
+/** P&L; `month` null asks for the last closed month. The previous answer stays on screen while a new month loads. */
+export function usePnl(month: string | null, view: PnlView, asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.pnl, month ?? 'default', view, asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<PnlReport>(reportQuery('/v1/reports/pnl', { month, view, as_of: asOf }), signal),
+    placeholderData: keepPreviousData,
+  })
+}
+
+export function useNorm(month: string | null, asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.norm, month ?? 'default', asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<NormReport>(reportQuery('/v1/reports/norm', { month, as_of: asOf }), signal),
+    placeholderData: keepPreviousData,
+  })
+}
+
+export function useStock(asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.stock, asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<StockReport>(reportQuery('/v1/reports/stock', { as_of: asOf }), signal),
+  })
+}
+
+/** One interval of "Товары без движения", ten rows per page. */
+export function useStockIdle(bucket: StockIdleKey, asOf: string | null) {
+  return useInfiniteQuery({
+    queryKey: [...queryKeys.stockIdle, bucket, asOf ?? 'today'],
+    initialPageParam: null as string | null,
+    queryFn: ({ pageParam, signal }) =>
+      apiGet<StockIdlePage>(reportQuery('/v1/reports/stock/idle', { bucket, cursor: pageParam, as_of: asOf }), signal),
+    getNextPageParam: (last) => last.next_cursor,
+  })
+}
+
 /** After anything that changes operations: lists, counters, month totals, balance in the header, reconciliation. */
 export function invalidateAfterOperationChange(queryClient: QueryClient): Promise<unknown> {
   return Promise.all([
     queryClient.invalidateQueries({ queryKey: queryKeys.transactions }),
     queryClient.invalidateQueries({ queryKey: queryKeys.dashboard }),
     queryClient.invalidateQueries({ queryKey: queryKeys.acquiring }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.pnl }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.norm }),
     queryClient.invalidateQueries({ queryKey: queryKeys.categoryRules }),
     queryClient.invalidateQueries({ queryKey: queryKeys.connections }),
   ])

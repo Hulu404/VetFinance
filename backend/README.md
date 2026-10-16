@@ -40,7 +40,15 @@ Backend подключается к Postgres по `DATABASE_URL` (пользов
 
 - `engine/` чистые функции (`money.py` единственное место округления, `balance.py`, `figure.py`).
 - `app/` FastAPI: `main.py` (эндпоинты), `auth.py`, `repo.py` (слой данных, подменяется в тестах), `schemas.py`, `errors.py`.
-- `openapi.json` схема этапа 0 (выгрузка `app.openapi()`); контракт: `docs/api-contract.md`.
+- `openapi.json` схема этапов 0–3 с примерами отчётов на наборе №4; экспорт: `python scripts/export_openapi.py`, контракт: `docs/api-contract.md`.
+
+## Проверка отчётов (этап 3)
+
+Локальная связка браузер → API → Excel/PDF и подготовка сида для Postgres
+описаны в [`tests/README.md`](../tests/README.md). Локальный стенд запускается
+из корня репозитория командой `.venv` Python: `backend/.venv/Scripts/python.exe tests/run_reports_local.py`.
+Склад пока заполняется эталоном №4; загрузчик склада Ветменеджера отложен
+до появления тестового аккаунта (решение владельца от 2026-10-14).
 
 ## Деплой (Railway)
 

@@ -60,6 +60,46 @@ export function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> {
   return request<T>('GET', path, { signal })
 }
 
+export interface DownloadedFile {
+  blob: Blob
+  filename: string | null
+}
+
+/** File name from `Content-Disposition: attachment; filename="vetfinance-pnl-2026-09.xlsx"`. */
+export function filenameFromDisposition(header: string | null): string | null {
+  if (!header) return null
+  const encoded = /filename\*=UTF-8''([^;]+)/i.exec(header)
+  if (encoded?.[1]) {
+    try {
+      return decodeURIComponent(encoded[1])
+    } catch {
+      return encoded[1]
+    }
+  }
+  const plain = /filename="?([^";]+)"?/i.exec(header)
+  return plain?.[1]?.trim() ?? null
+}
+
+/** GET of a file with the Bearer token (a plain link cannot carry it). Errors are the same ApiError as for JSON. */
+export async function apiDownload(path: string, signal?: AbortSignal): Promise<DownloadedFile> {
+  const headers = await authHeaders()
+  headers.Accept = '*/*'
+  let response: Response
+  try {
+    response = await fetch(buildUrl(path), { method: 'GET', headers, signal })
+  } catch (cause) {
+    if (cause instanceof DOMException && cause.name === 'AbortError') throw cause
+    throw networkError(cause)
+  }
+  if (!response.ok) {
+    const error = await errorFromResponse(response)
+    if (error.kind === 'unauthorized') unauthorizedHandler()
+    throw error
+  }
+  const blob = await response.blob()
+  return { blob, filename: filenameFromDisposition(response.headers.get('Content-Disposition')) }
+}
+
 export function apiPost<T>(path: string, json?: unknown): Promise<T> {
   return request<T>('POST', path, { json: json ?? {} })
 }

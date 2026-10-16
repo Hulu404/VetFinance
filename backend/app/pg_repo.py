@@ -9,6 +9,7 @@ import json
 import uuid
 from collections.abc import Collection, Mapping, Sequence
 from datetime import date, datetime
+from decimal import Decimal
 from typing import Any
 
 from sqlalchemy import text
@@ -31,6 +32,14 @@ from app.rows import (
 from engine.balance import AccountInput, TransactionInput
 from engine.dashboard_inputs import NormsInput, SaleInput, SaleLineInput, VisitInput
 from engine.dedup import TxRef
+from engine.reports_inputs import (
+    BenchmarkInput,
+    ConsumptionInput,
+    ObligationChargeInput,
+    StockBatchInput,
+    StockItemInput,
+    WriteoffInput,
+)
 from engine.vetmanager import Payment, Sale, Visit
 
 _CLINIC_COLS = "id::text, name, legal_entity, tax_regime, timezone, safe_balance"
@@ -57,6 +66,8 @@ _TAB_FILTERS = {
     "check": " and t.status = 'check'",
     "duplicates": " and t.status = 'duplicate' and coalesce(t.duplicate_state, 'pending') = 'pending'",
 }
+# a clinic whose doctors are not loaded yet is assumed to be of the smallest size the norms are made for
+_ASSUMED_DOCTORS = 2
 _RUN_COLS = "id::text, connection_id::text, status, started_at, finished_at, error_code, counts"
 _NEW_TX_COLS = (
     "id, clinic_id, account_id, date, description, amount, kind, source, external_id, dedup_hash, "
@@ -227,13 +238,108 @@ class PgRepository:
         cid = await self._clinic()
         res = await self._conn.execute(
             text(
-                "select id::text, name, type, norm_min_pct::float8, norm_max_pct::float8 "
-                "from categories where clinic_id = :cid "
-                "order by case type when 'income' then 0 when 'variable' then 1 else 2 end, name"
+                "select id::text, name, type, norm_min_pct::float8, norm_max_pct::float8, "
+                "norm_key, direction, payroll from categories where clinic_id = :cid "
+                "order by case type when 'income' then 0 when 'variable' then 1 when 'fixed' then 2 "
+                "when 'tax' then 3 when 'obligation' then 4 when 'capex' then 5 "
+                "when 'owner_draw' then 6 else 7 end, name"
             ),
             {"cid": cid},
         )
         return [CategoryRow(*r) for r in res.all()]
+
+    # ------------------------------------------------------------ reports (stage 3)
+    async def list_obligation_charges(self) -> list[ObligationChargeInput]:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select to_char(c.month, 'YYYY-MM'), c.obligation_id::text, o.name, c.kind, c.amount "
+                "from obligation_charges c "
+                "join obligations o on o.id = c.obligation_id and o.clinic_id = c.clinic_id "
+                "where c.clinic_id = :cid order by c.month, o.name, c.kind"
+            ),
+            {"cid": cid},
+        )
+        return [ObligationChargeInput(*r) for r in res.all()]
+
+    async def list_benchmarks(self) -> list[BenchmarkInput]:
+        """Industry norms for the size of the clinic; the clinic's own row of a key beats the industry one."""
+        cid = await self._clinic()
+        doctors = (
+            await self._conn.execute(
+                text("select count(*) from doctors where clinic_id = :cid"), {"cid": cid}
+            )
+        ).scalar_one()
+        res = await self._conn.execute(
+            text(
+                "select key, label, kind, min_pct::float8, max_pct::float8, source, sort "
+                "from benchmarks where clinic_id = :cid "
+                "or (clinic_id is null and :size between doctors_min and doctors_max) "
+                "order by key, (clinic_id is not null) desc"
+            ),
+            {"cid": cid, "size": int(doctors) or _ASSUMED_DOCTORS},
+        )
+        chosen: dict[str, BenchmarkInput] = {}
+        for key, label, kind, low, high, source, sort in res.all():
+            chosen.setdefault(
+                key,
+                BenchmarkInput(
+                    key=key,
+                    label=label,
+                    kind=kind,
+                    min_pct=None if low is None else Decimal(str(low)),
+                    max_pct=None if high is None else Decimal(str(high)),
+                    source=source,
+                    sort=sort,
+                ),
+            )
+        return sorted(chosen.values(), key=lambda b: (b.sort, b.key))
+
+    async def list_stock_items(self) -> list[StockItemInput]:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select id::text, name, last_movement_on from stock_items "
+                "where clinic_id = :cid order by name, id"
+            ),
+            {"cid": cid},
+        )
+        return [StockItemInput(*r) for r in res.all()]
+
+    async def list_stock_batches(self) -> list[StockBatchInput]:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select item_id::text, qty::bigint, unit_cost, expires_on from stock_batches "
+                "where clinic_id = :cid and qty > 0 order by expires_on nulls last, id"
+            ),
+            {"cid": cid},
+        )
+        return [StockBatchInput(*r) for r in res.all()]
+
+    async def list_writeoffs(self, first: date, last: date) -> list[WriteoffInput]:
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select date, item_name, qty::bigint, amount, reason from stock_writeoffs "
+                "where clinic_id = :cid and date between :first and :last order by date, id"
+            ),
+            {"cid": cid, "first": first, "last": last},
+        )
+        return [WriteoffInput(*r) for r in res.all()]
+
+    async def list_stock_consumption(self, first: date, last: date) -> list[ConsumptionInput]:
+        """Day totals at the purchase price (sales and use at visits)."""
+        cid = await self._clinic()
+        res = await self._conn.execute(
+            text(
+                "select date, amount from stock_consumption "
+                "where clinic_id = :cid and kind = 'total' and date between :first and :last "
+                "order by date"
+            ),
+            {"cid": cid, "first": first, "last": last},
+        )
+        return [ConsumptionInput(*r) for r in res.all()]
 
     _RULE_SELECT = (
         "select r.id::text, r.match, r.value, r.display_name, r.direction, r.category_id::text, "

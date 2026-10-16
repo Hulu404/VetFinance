@@ -1,0 +1,12 @@
+.export-buttons { display: flex; flex-direction: column; gap: var(--space-1); }
+.export-buttons__row { display: flex; gap: var(--space-2); }
+.export-btn { min-width: 138px; }
+.export-btn[aria-disabled='true'] { background: var(--color-track); color: var(--color-ink-soft); cursor: default; }
+.export-btn[aria-disabled='true']:hover { background: var(--color-track); border-color: var(--color-control-border); }
+.export-btn[aria-busy='true'] { cursor: progress; }
+.export-buttons__slow { font-size: var(--fs-xs); color: var(--color-ink-soft); }
+
+@media (max-width: 560px) {
+  .export-buttons, .export-buttons__row { width: 100%; }
+  .export-btn { flex: 1 1 50%; min-width: 0; }
+}

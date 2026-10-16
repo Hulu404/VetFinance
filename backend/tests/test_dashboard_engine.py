@@ -225,6 +225,23 @@ def test_margin_ok_is_good_and_comes_last() -> None:
     assert [(a.id, a.severity) for a in result.advice][-1] == ("margin_ok", "good")
 
 
+def test_profit_and_margin_advice_say_the_profit_is_by_money() -> None:
+    """Owner decision 2026-10-14: the dashboard profit is cash based and is named so everywhere."""
+    as_of = date(2026, 9, 20)
+    result = run([tx(date(2026, 9, 5), -1_000_000)], [sale(date(2026, 9, 5), 90_000_000)], as_of)
+    note = result.month.profit.note
+    assert note.startswith("Прибыль по деньгам:")
+    assert "все деньги расходов" in note
+    assert "Налоги, амортизация и комиссия эквайринга здесь не начислены" in note
+    assert "«Чистой прибыли» отчёта" in note
+    advice = next(a for a in result.advice if a.id == "margin_ok")
+    texts = [advice.text, advice.why.summary, *advice.why.steps]
+    assert advice.text.startswith("Прибыль по деньгам за ")
+    assert all("Прибыль по деньгам" in t for t in (advice.text, advice.why.summary))
+    assert any("Прибыль по деньгам, выручка минус расходы" in t for t in texts)
+    assert len(advice.text) <= 200 and len(advice.title) <= 80
+
+
 def test_inputs_are_not_mutated_and_order_does_not_matter() -> None:
     as_of = date(2026, 9, 12)
     txs = [tx(date(2026, 9, d), -d * 1_000, category="Аренда") for d in range(1, 12)]

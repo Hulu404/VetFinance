@@ -25,6 +25,28 @@ export function formatPercent(value: number): string {
   return `${value < 0 ? MINUS : ''}${text}%`
 }
 
+/** Percentage points: "2,4 п.п."; the sign comes from `formatSigned` when the API marked the figure as a change. */
+export function formatPp(value: number): string {
+  const text = Math.abs(value).toFixed(1).replace('.', ',')
+  return `${value < 0 ? MINUS : ''}${text}${NBSP}п.п.`
+}
+
+/** An expense is stored as a positive number and shown with a minus: 632000 -> "−632 000 ₽". Zero has no sign. */
+export function formatExpense(kopecks: number): string {
+  return kopecks === 0 ? formatMoney(0) : `${MINUS}${formatMoney(Math.abs(kopecks))}`
+}
+
+/** Corridor of a norm for display: "22–28%", "до 0,8%", "от 12%"; null when neither bound is given. */
+export function formatNormRange(minPct: number | null | undefined, maxPct: number | null | undefined): string | null {
+  const bound = (value: number) => (Number.isInteger(value) ? String(value) : value.toFixed(1).replace('.', ','))
+  const hasMin = minPct !== null && minPct !== undefined && minPct > 0
+  const hasMax = maxPct !== null && maxPct !== undefined
+  if (hasMin && hasMax) return `${bound(minPct)}–${bound(maxPct)}%`
+  if (hasMax) return `до${NBSP}${bound(maxPct)}%`
+  if (hasMin) return `от${NBSP}${bound(minPct)}%`
+  return null
+}
+
 export function formatCount(value: number): string {
   return `${value < 0 ? MINUS : ''}${groupThousands(String(Math.abs(Math.trunc(value))))}`
 }
@@ -65,6 +87,8 @@ export function formatByUnit(value: number | null | undefined, unit: FigureUnit)
       return formatCount(value)
     case 'days':
       return formatDays(value)
+    case 'pp':
+      return formatPp(value)
     default:
       return String(value)
   }
@@ -100,6 +124,8 @@ const SOURCE_LABELS: Record<string, string> = {
   manual: 'Внесено вручную',
   calc: 'Расчёт',
   bot: 'Бот',
+  industry: 'Отраслевая норма',
+  clinic: 'Норма клиники',
 }
 
 export function sourceLabel(source: string): string {

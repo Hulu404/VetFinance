@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     vetmanager_host_suffixes: str = "vetmanager.ru,vetmanager.cloud,vetmanager2.ru"
     # Service endpoint that loads raw Vetmanager responses without a live account (tests, manual load)
     vetmanager_import_enabled: bool = False
+    # Exports of reports (xlsx, pdf) per clinic per minute; raise it only in test environments
+    export_limit_per_minute: int = 10
 
 
 @lru_cache

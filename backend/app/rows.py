@@ -30,9 +30,12 @@ class AccountRow:
 class CategoryRow:
     id: str
     name: str
-    type: str  # "income" | "variable" | "fixed"
+    type: str  # income | variable | fixed | tax | obligation | capex | owner_draw
     norm_min_pct: float | None
     norm_max_pct: float | None
+    norm_key: str | None = None  # row of the norm report the article belongs to
+    direction: str | None = None  # services | goods: direct costs of a direction
+    payroll: bool = False  # salaries of employees
 
 
 @dataclass(frozen=True)

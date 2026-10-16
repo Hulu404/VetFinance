@@ -92,7 +92,7 @@ def _week_change(
         return None, None
     now, before = _balances_at(accounts, grouped, as_of), _balances_at(accounts, grouped, prev_day)
     items = tuple(FigureItem(a.name, now[a.id] - before[a.id], "rub", delta=True) for a in accounts)
-    change = sum(i.value for i in items)
+    change = sum(now[a.id] - before[a.id] for a in accounts)
     previous, current = sum(before.values()), sum(now.values())
     sources = ordered_sources({t.source for t in counted if t.date > prev_day}) or (SOURCE_MANUAL,)
     then_label = f"Неделю назад ({format_day_month(prev_day)})"

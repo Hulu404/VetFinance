@@ -12,6 +12,7 @@
 }
 .banner--warning { background: var(--color-warn-soft); color: var(--color-warn-ink); }
 .banner--danger { background: var(--color-bad-soft); color: var(--color-bad); }
+.banner--info { background: var(--color-track); color: var(--color-ink); }
 
 .banner__action {
   display: inline-flex;

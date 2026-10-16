@@ -50,8 +50,8 @@ def assert_figure_v2(fig, where):
     assert isinstance(fig, dict), where
     assert fig.get("unit") in UNITS, f"{where}.unit"
     value = fig.get("value")
-    if fig["unit"] == "pct":
-        assert type(value) in (int, float), f"{where}.value must be a JSON number for pct, got {value!r}"
+    if fig["unit"] in ("pct", "pp"):
+        assert type(value) in (int, float), f"{where}.value must be a JSON number for pct/pp, got {value!r}"
         assert round(value, 1) == value, f"{where}.value must have at most one decimal"
     else:
         assert type(value) is int, f"{where}.value must be int, got {value!r}"
@@ -61,8 +61,9 @@ def assert_figure_v2(fig, where):
     for i, b in enumerate(bd):
         assert isinstance(b.get("label"), str) and b["label"], f"{where}.breakdown[{i}].label"
         assert b.get("unit") in UNITS, f"{where}.breakdown[{i}].unit"
-        if b["unit"] == "pct":
+        if b["unit"] in ("pct", "pp"):
             assert type(b.get("value")) in (int, float)
+            assert round(b["value"], 1) == b["value"], f"{where}.breakdown[{i}].value must have at most one decimal"
         else:
             assert type(b.get("value")) is int, f"{where}.breakdown[{i}].value must be int"
     src = fig.get("source")

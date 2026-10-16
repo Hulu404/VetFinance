@@ -53,6 +53,26 @@ export type AcquiringStatus = AcquiringDay['status']
 export type AcquiringReconciliation = Schemas['AcquiringOut']
 export type AcquiringDayDetails = Schemas['AcquiringDayOut']
 
+export type PnlReport = Schemas['PnlOut']
+export type PnlRow = Schemas['PnlRowOut']
+export type PnlDirection = Schemas['PnlDirectionOut']
+export type PnlView = PnlReport['view']
+export type ReportPeriod = Schemas['app__schemas_reports__PeriodOut']
+export type ReportStatus = PnlReport['status']
+export type PartialReason = PnlReport['partial_reasons'][number]
+export type NormReport = Schemas['NormOut']
+export type NormItem = Schemas['NormItemOut']
+export type NormBounds = Schemas['NormBoundsOut']
+export type StockReport = Schemas['StockOut']
+export type StockExpiringRow = Schemas['ExpiringRowOut']
+export type StockWrittenOffRow = Schemas['WrittenOffRowOut']
+export type StockIdleBucket = Schemas['IdleBucketOut']
+export type StockIdleKey = StockIdleBucket['key'] | 'all'
+export type StockIdlePage = Schemas['StockIdleOut']
+export type StockIdleItem = Schemas['IdleItemOut']
+export type ReportName = 'pnl' | 'norm' | 'stock'
+export type ExportFormat = 'xlsx' | 'pdf'
+
 /** Error codes from docs/api-contract.md. */
 export type ApiErrorCode =
   | 'unauthorized'

@@ -19,6 +19,7 @@ npm run dev        # http://localhost:5173, mock-сервер включён, в
 | `npm run lint` | ESLint (flat config, `jsx-a11y`, `react-hooks`) |
 | `npm test` | Vitest + Testing Library + MSW |
 | `npm run gen:api` | Типы API из `../backend/openapi.json` в `src/api/schema.gen.ts` |
+| `npm run sync:mocks` | Примеры отчётов из `../backend/openapi.json` в `src/mocks/data/reports_set04.json` |
 | `npm run sync:design` | Копирует `design/tokens.css` и `design/icons.svg` в `src/` |
 
 Node 20+ (проверено на Node 24, npm 11).

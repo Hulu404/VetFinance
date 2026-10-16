@@ -7,6 +7,10 @@ const GROUPS: { type: CategoryType; label: string }[] = [
   { type: 'income', label: 'Доходы' },
   { type: 'variable', label: 'Переменные расходы' },
   { type: 'fixed', label: 'Постоянные расходы' },
+  { type: 'tax', label: 'Налоги и взносы' },
+  { type: 'obligation', label: 'Обязательства' },
+  { type: 'capex', label: 'Оборудование' },
+  { type: 'owner_draw', label: 'Вывод владельца' },
 ]
 
 function normalize(text: string): string {

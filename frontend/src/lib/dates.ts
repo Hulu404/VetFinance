@@ -12,6 +12,10 @@ const MONTHS_GENITIVE = [
   'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
   'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
 ]
+const MONTHS_PREPOSITIONAL = [
+  'январе', 'феврале', 'марте', 'апреле', 'мае', 'июне',
+  'июле', 'августе', 'сентябре', 'октябре', 'ноябре', 'декабре',
+]
 const MONTHS_SHORT = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек']
 
 export interface CalendarDate {
@@ -95,6 +99,12 @@ export function formatMonthTitle(month: string): string {
 export function monthNameLower(month: string): string {
   const number = Number(month.split('-')[1])
   return MONTHS_NOMINATIVE[number - 1] ?? month
+}
+
+/** "2026-09" -> "сентябре" (for "Списано в сентябре"). */
+export function monthNamePrepositional(month: string): string {
+  const number = Number(month.split('-')[1])
+  return MONTHS_PREPOSITIONAL[number - 1] ?? month
 }
 
 /** "2026-09" -> "Сентябрь" (a heading). */

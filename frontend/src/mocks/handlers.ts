@@ -15,6 +15,7 @@ import {
 import { acquiringHandlers } from './acquiringHandlers'
 import { connectionHandlers } from './connectionHandlers'
 import { errorResponse, guard } from './guard'
+import { reportsHandlers } from './reportsHandlers'
 import { getMockScenario, type MockScenario } from './scenario'
 import { transactionHandlers } from './transactionHandlers'
 
@@ -60,4 +61,5 @@ export const handlers = [
   ...transactionHandlers,
   ...connectionHandlers,
   ...acquiringHandlers,
+  ...reportsHandlers,
 ]

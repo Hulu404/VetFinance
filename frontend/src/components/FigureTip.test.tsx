@@ -18,10 +18,10 @@ const figure: Figure = {
   note: 'Примечание от backend.',
 }
 
-function Harness({ value = figure }: { value?: Figure }) {
+function Harness({ value = figure, valueText }: { value?: Figure; valueText?: string }) {
   return (
     <div>
-      <FigureTip figure={value} title="Остаток на счетах" emoji="💰">
+      <FigureTip figure={value} title="Остаток на счетах" emoji="💰" valueText={valueText}>
         {(props) => (
           <button type="button" {...props}>
             Сумма
@@ -159,5 +159,27 @@ describe('FigureTip', () => {
     expect(screen.getByTestId('figure-tip-detail')).toHaveTextContent('Приёмов154')
     expect(screen.getByTestId('figure-tip-note')).toHaveTextContent('Сравниваем остаток')
     expect(screen.getByTestId('figure-tip-source')).toHaveTextContent('Банк')
+  })
+
+  it('shows the given header value instead of the formatted figure, keeping the rows and the source', async () => {
+    const user = userEvent.setup()
+    render(<Harness valueText="−632 000 ₽ · 51,0%" />)
+
+    await user.tab()
+
+    const tip = await screen.findByRole('tooltip')
+    expect(tip).toHaveTextContent('−632 000 ₽ · 51,0%')
+    expect(tip.querySelector('.figure-tip__value')).not.toHaveTextContent('412')
+    expect(screen.getAllByTestId('figure-tip-row')).toHaveLength(2)
+    expect(screen.getByTestId('figure-tip-source')).toHaveTextContent('Банк')
+  })
+
+  it('names the origin of a norm in the source line', async () => {
+    const user = userEvent.setup()
+    render(<Harness value={{ ...figure, source: ['industry'] } as unknown as Figure} />)
+
+    await user.tab()
+
+    expect(await screen.findByTestId('figure-tip-source')).toHaveTextContent('Отраслевая норма')
   })
 })

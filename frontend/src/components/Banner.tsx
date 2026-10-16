@@ -10,13 +10,16 @@ interface BannerAction {
 }
 
 interface BannerProps {
-  variant: 'warning' | 'danger'
+  variant: 'warning' | 'danger' | 'info'
   children: ReactNode
   action?: BannerAction
   testId?: string
 }
 
-/** Message strip above a screen (design/components.md, section 12). It disappears when its cause is gone. */
+/**
+ * Message strip above a screen (design/components.md, section 12). It disappears when its cause is gone.
+ * `info` is for the open month of "Норма" (design/screens/norm.md): neutral colours, nothing to fear.
+ */
 export function Banner({ variant, children, action, testId }: BannerProps) {
   return (
     <div className={`banner banner--${variant}`} role={variant === 'danger' ? 'alert' : 'status'} data-testid={testId}>

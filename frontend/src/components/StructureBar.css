@@ -1,0 +1,30 @@
+.structure { margin-bottom: var(--section-gap); padding: var(--card-padding); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.structure__caption { margin-bottom: var(--space-3); font-size: var(--fs-2xs); font-weight: var(--fw-bold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-ink-soft); }
+.structure__bar { display: flex; gap: var(--structure-gap); height: var(--structure-bar-height); margin-bottom: var(--space-3); }
+.structure__seg { display: block; flex-basis: 0; min-width: 3px; height: 100%; border-radius: var(--radius-xs); }
+.structure__seg--c1, .structure__dot--c1 { background: var(--color-structure-1); }
+.structure__seg--c2, .structure__dot--c2 { background: var(--color-structure-2); }
+.structure__seg--c3, .structure__dot--c3 { background: var(--color-structure-3); }
+.structure__seg--c4, .structure__dot--c4 { background: var(--color-structure-4); }
+.structure__seg--c5, .structure__dot--c5 { background: var(--color-structure-5); }
+.structure__seg--c6, .structure__dot--c6 { background: var(--color-structure-6); }
+.structure__seg--light, .structure__dot--c4, .structure__dot--c5 { box-shadow: inset 0 0 0 1px var(--color-accent-mid); }
+
+.structure__legend { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin: 0; padding: 0; list-style: none; }
+.structure__item { display: flex; }
+.structure__btn { gap: var(--space-2); min-height: 32px; padding: 0 6px; font-size: var(--fs-sm); white-space: nowrap; }
+.structure__item:hover .structure__btn { background: var(--color-accent-faint); }
+.structure__dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.structure__name { font-weight: var(--fw-semibold); }
+.structure__pct { font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--color-ink-soft); }
+
+.structure__bar--skeleton { background: var(--color-track); border-radius: var(--radius-xs); animation: vf-skeleton 1.4s ease-in-out infinite; }
+.structure__skeleton-item { width: 120px; height: 13px; border-radius: 6px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+
+@media (max-width: 560px) {
+  .structure { padding: 16px; }
+  .structure__legend { flex-direction: column; gap: 0; }
+  .structure__item { width: 100%; }
+  .structure__btn { min-height: var(--touch-min); width: 100%; white-space: normal; }
+  .structure__pct { margin-left: auto; }
+}
