@@ -719,7 +719,10 @@ DOWNLOADS = os.environ.get("VF_E2E_DOWNLOADS")
 @pytest.mark.skipif(not DOWNLOADS, reason="VF_E2E_DOWNLOADS (folder with files saved by tests/e2e/reports.spec.ts) is not set")
 def test_files_downloaded_by_e2e_equal_the_api(client_a, client_e):
     """File names written by the e2e: <report>-<month>.xlsx / .pdf, clinic from VF_E2E_DOWNLOADS_CLINIC (default A)."""
-    client = client_e if os.environ.get("VF_E2E_DOWNLOADS_CLINIC") == "E" else client_a
+    golden = os.environ.get("VF_E2E_DOWNLOADS_CLINIC") == "E"
+    client = client_e if golden else client_a
+    # the e2e opens the stock of the golden clinic at STOCK_AS_OF (reports.spec.ts), not at today
+    stock_params = {"as_of": "2026-09-30"} if golden else {}
     folder = Path(DOWNLOADS)
     files = sorted(folder.glob("*.xlsx")) + sorted(folder.glob("*.pdf"))
     assert files, f"no exports found in {folder}"
@@ -727,7 +730,7 @@ def test_files_downloaded_by_e2e_equal_the_api(client_a, client_e):
         m = re.fullmatch(r"(pnl|norm|stock)-(\d{4}-\d{2}|current)\.(xlsx|pdf)", f.name)
         assert m, f"unexpected file name {f.name}"
         name, month, fmt = m.groups()
-        params = {} if name == "stock" or month == "current" else {"month": month}
+        params = stock_params if name == "stock" else {} if month == "current" else {"month": month}
         d = ok(client, f"/v1/reports/{name}", **params)
         if fmt == "xlsx":
             XLSX_CHECKS[name](ex.load_xlsx(f.read_bytes()), d)
