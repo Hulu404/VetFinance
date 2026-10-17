@@ -35,10 +35,10 @@ export const MENU: MenuItem[] = [
     id: 'planning',
     label: 'Планирование',
     icon: 'ic-plan',
-    status: 'soon',
+    status: 'ready',
     children: [
-      { id: 'calendar', label: 'Платёжный календарь', path: '/planning/calendar', status: 'soon' },
-      { id: 'obligations', label: 'Обязательства', path: '/planning/obligations', status: 'soon' },
+      { id: 'calendar', label: 'Платёжный календарь', path: '/planning/calendar', status: 'ready' },
+      { id: 'obligations', label: 'Обязательства', path: '/planning/obligations', status: 'ready' },
     ],
   },
   {

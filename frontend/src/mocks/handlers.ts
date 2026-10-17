@@ -1,7 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import {
   accountListA,
-  clinicA,
   dashboardA,
   dashboardEmptyMonth,
   dashboardFewData,
@@ -15,6 +14,8 @@ import {
 import { acquiringHandlers } from './acquiringHandlers'
 import { connectionHandlers } from './connectionHandlers'
 import { errorResponse, guard } from './guard'
+import { clinicNow, planningHandlers } from './planningHandlers'
+import { buildCalendar, cashGapAdvice, cashGapFromCalendar } from './planningStore'
 import { reportsHandlers } from './reportsHandlers'
 import { getMockScenario, type MockScenario } from './scenario'
 import { transactionHandlers } from './transactionHandlers'
@@ -37,13 +38,17 @@ function dashboardFor(scenario: MockScenario) {
       return dashboardFewData
     case 'norunway':
       return dashboardNoRunway
+    case 'cashgap': {
+      const advice = cashGapFromCalendar(buildCalendar('default', null)) ?? cashGapAdvice
+      return { ...dashboardA, advice: [advice, ...(dashboardA.advice ?? [])] }
+    }
     default:
       return dashboardA
   }
 }
 
 export const handlers = [
-  http.get('*/v1/clinic', async ({ request }) => (await guard(request)) ?? HttpResponse.json(clinicA)),
+  http.get('*/v1/clinic', async ({ request }) => (await guard(request)) ?? HttpResponse.json(clinicNow())),
   http.get('*/v1/accounts', async ({ request }) => (await guard(request)) ?? HttpResponse.json(accountListA)),
   http.get('*/v1/dashboard', async ({ request }) => {
     const blocked = await guard(request)
@@ -62,4 +67,5 @@ export const handlers = [
   ...connectionHandlers,
   ...acquiringHandlers,
   ...reportsHandlers,
+  ...planningHandlers,
 ]

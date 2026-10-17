@@ -16,6 +16,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.errors import forbidden
+from app.pg_planning import PgPlanning
 from app.rows import (
     AccountRow,
     CardPaymentRow,
@@ -88,7 +89,7 @@ def _opt_uuid(value: str | None) -> uuid.UUID | None:
     return uuid.UUID(value) if value else None
 
 
-class PgRepository:
+class PgRepository(PgPlanning):
     """`clinic_id=None`: the clinic is the user's first membership (user request, RLS applies).
     With `clinic_id` and `service=True` the connection is a trusted background job of that clinic."""
 
@@ -176,7 +177,8 @@ class PgRepository:
         cid = await self._clinic()
         res = await self._conn.execute(
             text(
-                "select t.account_id::text, t.date, t.amount, t.status, t.source, t.kind, c.name "
+                "select t.account_id::text, t.date, t.amount, t.status, t.source, t.kind, c.name, "
+                "coalesce(t.counterparty_inn, ''), coalesce(t.counterparty_name, '') "
                 "from transactions t left join categories c on c.id = t.category_id "
                 "where t.clinic_id = :cid and t.date <= :as_of and t.status <> 'duplicate'"
             ),

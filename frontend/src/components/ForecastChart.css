@@ -1,0 +1,102 @@
+/* ForecastChart (design/components.md, section 23): balance at the end of each day, drawn in pixels. */
+.fchart { position: relative; }
+.fchart__area {
+  position: relative;
+  height: var(--cal-chart-height);
+}
+.fchart__svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fchart__line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: var(--chart-stroke);
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.fchart__zero {
+  stroke: var(--color-border);
+  stroke-width: 1px;
+}
+.fchart__safe-line {
+  stroke: var(--color-bad);
+  stroke-width: 1.4px;
+  stroke-dasharray: var(--cal-safe-dash);
+}
+.fchart__stop--top { stop-color: var(--color-accent); stop-opacity: var(--chart-area-opacity); }
+.fchart__stop--bottom { stop-color: var(--color-accent); stop-opacity: 0; }
+/* The element e2e looks for: an invisible strip over the dashed line, so that the line has a box. */
+.fchart__safe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  margin-top: -1px;
+  pointer-events: none;
+}
+
+.fchart__points { position: absolute; inset: 0; }
+.fchart__point {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: help;
+}
+.fchart__point:focus-visible { outline: var(--focus-ring); outline-offset: 0; }
+.fchart__dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  box-sizing: border-box;
+  width: calc(var(--chart-point-r) * 2);
+  height: calc(var(--chart-point-r) * 2);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid var(--color-surface);
+  background: var(--color-accent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.fchart__point--first .fchart__dot,
+.fchart__point--on .fchart__dot,
+.fchart__point:hover .fchart__dot,
+.fchart__point:focus-visible .fchart__dot { opacity: 1; }
+.fchart__point--on .fchart__dot { box-shadow: 0 0 0 2px var(--color-accent-soft); }
+/* A red day: always visible, a word in the caption and in the label says what it is. */
+.fchart__point--bad .fchart__dot {
+  width: calc(var(--cal-bad-point-r) * 2);
+  height: calc(var(--cal-bad-point-r) * 2);
+  background: var(--color-bad);
+  opacity: 1;
+}
+
+.fchart__captions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px var(--space-4);
+  margin-top: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--color-ink-soft);
+}
+.fchart__legend { text-align: center; }
+.fchart__legend a { color: var(--color-accent-dark); font-weight: var(--fw-semibold); }
+.fchart__legend .figbtn { font-weight: var(--fw-semibold); color: var(--color-ink); }
+
+@media (max-width: 560px) {
+  .fchart__area { height: 160px; }
+  .fchart__legend { order: 3; flex-basis: 100%; text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fchart__dot { transition: none; }
+}

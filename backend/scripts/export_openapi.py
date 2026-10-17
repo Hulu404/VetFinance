@@ -101,6 +101,44 @@ def example_reports() -> dict[str, dict[str, object]]:
     return asyncio.run(build())
 
 
+def example_planning() -> dict[str, dict[str, object]]:
+    """Calendar, obligations, a manual payment, a counterparty and the `cash_gap` advice for golden set 5."""
+    from app.planning_out import manual_payment_out
+    from app.schemas_planning import CounterpartyOut
+    from app.services import planning as planning_service
+    from tests.set05_loader import load_set05
+
+    repo = load_set05()
+    as_of = date(2026, 10, 7)
+    data_as_of = datetime(2026, 10, 7, 4, 12, tzinfo=timezone(timedelta(hours=3)))
+
+    async def build() -> dict[str, dict[str, object]]:
+        calendar = (await planning_service.build_calendar(repo, as_of)).model_copy(
+            update={"data_as_of": data_as_of}
+        )
+        gap = await planning_service.cash_gap(repo, as_of)
+        categories = {c.name: c.id for c in await repo.list_categories()}
+        manual = manual_payment_out(repo.planned[0], categories)
+        terms = repo.terms["5003012345"]
+        counterparty = CounterpartyOut(
+            id=terms.inn, name=terms.name, max_deferral_days=terms.max_deferral_days
+        )
+        assert gap is not None  # noqa: S101 (the example has a gap)
+        models = {
+            "calendar": calendar,
+            "obligations": await planning_service.build_obligations(repo, as_of),
+            "manual_payment": manual,
+            "counterparty": counterparty,
+            "cash_gap": gap,
+        }
+        return {
+            k: v.model_dump(mode="json", by_alias=True, exclude_none=False)
+            for k, v in models.items()
+        }
+
+    return asyncio.run(build())
+
+
 def main() -> None:
     schema = create_app().openapi()
     schema["info"]["description"] = "Generated from the code. Contract: docs/api-contract.md"
@@ -109,6 +147,13 @@ def main() -> None:
     # Stage 3 reports: the answers of the real services for golden set 4, see example_reports()
     for name, example in example_reports().items():
         schemas[name]["example"] = example
+    # Stage 4: the answers of the real services for golden set 5 (tests/golden/set05), as_of 2026-10-07
+    planning = example_planning()
+    schemas["CalendarOut"]["example"] = planning["calendar"]
+    schemas["ObligationsOut"]["example"] = planning["obligations"]
+    schemas["ManualPaymentOut"]["example"] = planning["manual_payment"]
+    schemas["CounterpartyOut"]["example"] = planning["counterparty"]
+    schemas["AdviceOut"]["example"] = planning["cash_gap"]
     OUT.write_text(json.dumps(schema, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {OUT} ({len(schema['paths'])} paths)")
 

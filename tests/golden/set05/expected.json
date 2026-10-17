@@ -1,0 +1,3161 @@
+{
+ "as_of": "2026-10-07",
+ "calendar": {
+  "main": {
+   "key": "main",
+   "as_of": "2026-10-07",
+   "window": {
+    "from": "2026-10-07",
+    "to": "2026-10-28",
+    "days": 22
+   },
+   "safe_balance": 15000000,
+   "opening": {
+    "value": 54357728,
+    "breakdown": [
+     {
+      "label": "Расчётный счёт",
+      "value": 52325696
+     },
+     {
+      "label": "Касса",
+      "value": 2032032
+     }
+    ]
+   },
+   "income_profile": {
+    "from": "2026-07-15",
+    "to": "2026-10-06",
+    "weeks": 12,
+    "by_weekday": [
+     {
+      "weekday": 0,
+      "label": "пн",
+      "sum": 97255297,
+      "days": 12,
+      "average": 8104608
+     },
+     {
+      "weekday": 1,
+      "label": "вт",
+      "sum": 49117786,
+      "days": 12,
+      "average": 4093149
+     },
+     {
+      "weekday": 2,
+      "label": "ср",
+      "sum": 51448143,
+      "days": 12,
+      "average": 4287345
+     },
+     {
+      "weekday": 3,
+      "label": "чт",
+      "sum": 48418971,
+      "days": 12,
+      "average": 4034914
+     },
+     {
+      "weekday": 4,
+      "label": "пт",
+      "sum": 56789171,
+      "days": 12,
+      "average": 4732431
+     },
+     {
+      "weekday": 5,
+      "label": "сб",
+      "sum": 24904829,
+      "days": 12,
+      "average": 2075402
+     },
+     {
+      "weekday": 6,
+      "label": "вс",
+      "sum": 17246237,
+      "days": 12,
+      "average": 1437186
+     }
+    ],
+    "excluded": [
+     {
+      "id": "S5-t0484",
+      "date": "2026-08-26",
+      "amount": 1250000,
+      "reason": "not_revenue"
+     },
+     {
+      "id": "S5-t0486",
+      "date": "2026-09-08",
+      "amount": 3127081,
+      "reason": "duplicate"
+     },
+     {
+      "id": "S5-t0485",
+      "date": "2026-09-16",
+      "amount": 870000,
+      "reason": "not_revenue"
+     }
+    ]
+   },
+   "recurring": [
+    {
+     "key": "5003012345|Препараты и расходники",
+     "inn": "5003012345",
+     "name": "ООО «Зоовет»",
+     "category": "Препараты и расходники",
+     "type": "variable",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 7,
+       "amount": 10850000,
+       "last_amounts": [
+        10412300,
+        11230000,
+        10850000
+       ],
+       "days_seen": [
+        7,
+        7,
+        5,
+        7,
+        7,
+        7
+       ]
+      },
+      {
+       "slot": 2,
+       "day": 21,
+       "amount": 10230000,
+       "last_amounts": [
+        10230000,
+        9940500,
+        10480000
+       ],
+       "days_seen": [
+        21,
+        21,
+        19,
+        21,
+        21,
+        21
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 5
+    },
+    {
+     "key": "7701234500|Коммунальные и связь",
+     "inn": "7701234500",
+     "name": "АО «Горэнерго»",
+     "category": "Коммунальные и связь",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 12,
+       "amount": 1603377,
+       "last_amounts": [
+        1552090,
+        1603377,
+        1748912
+       ],
+       "days_seen": [
+        10,
+        12,
+        12,
+        10,
+        12,
+        11
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7707049388|Коммунальные и связь",
+     "inn": "7707049388",
+     "name": "ПАО «Ростелеком»",
+     "category": "Коммунальные и связь",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 18,
+       "amount": 730000,
+       "last_amounts": [
+        730000,
+        730000,
+        730000
+       ],
+       "days_seen": [
+        17,
+        18,
+        18,
+        17,
+        18,
+        18
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7707083893|Оклады",
+     "inn": "7707083893",
+     "name": "Сбербанк (зарплатный проект)",
+     "category": "Оклады",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 10,
+       "amount": 29050000,
+       "last_amounts": [
+        28750000,
+        29600000,
+        29050000
+       ],
+       "days_seen": [
+        10,
+        8,
+        10,
+        10,
+        10,
+        10
+       ]
+      },
+      {
+       "slot": 2,
+       "day": 25,
+       "amount": 12200000,
+       "last_amounts": [
+        12100000,
+        12300000,
+        12200000
+       ],
+       "days_seen": [
+        24,
+        25,
+        25,
+        24,
+        25,
+        25
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7714556677|Препараты и расходники",
+     "inn": "7714556677",
+     "name": "ООО «ВетПрепарат»",
+     "category": "Препараты и расходники",
+     "type": "variable",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 20,
+       "amount": 6040000,
+       "last_amounts": [
+        6040000,
+        5760000,
+        6310000
+       ],
+       "days_seen": [
+        20,
+        20,
+        19,
+        20,
+        21,
+        18
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 3
+    },
+    {
+     "key": "7720112244|",
+     "inn": "7720112244",
+     "name": "ЧОП «Щит»",
+     "category": null,
+     "type": null,
+     "slots": [
+      {
+       "slot": 1,
+       "day": 16,
+       "amount": 600000,
+       "last_amounts": [
+        600000,
+        600000,
+        600000
+       ],
+       "days_seen": [
+        16,
+        15,
+        16,
+        16,
+        14,
+        16
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7727406020|Налоги и взносы",
+     "inn": "7727406020",
+     "name": "УФК (ФНС России), ЕНП",
+     "category": "Налоги и взносы",
+     "type": "tax",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 28,
+       "amount": 6125000,
+       "last_amounts": [
+        5840000,
+        6310000,
+        6125000
+       ],
+       "days_seen": [
+        28,
+        28,
+        29,
+        28,
+        28,
+        28
+       ]
+      }
+     ],
+     "shift": "next",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "772800112233|Аренда",
+     "inn": "772800112233",
+     "name": "ИП Кравцов А. В.",
+     "category": "Аренда",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 8,
+       "amount": 14000000,
+       "last_amounts": [
+        14000000,
+        14000000,
+        14000000
+       ],
+       "days_seen": [
+        8,
+        8,
+        8,
+        8,
+        7,
+        8
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7728990011|Хозяйственные расходы",
+     "inn": "7728990011",
+     "name": "ООО «Чистый дом»",
+     "category": "Хозяйственные расходы",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 8,
+       "amount": 905300,
+       "last_amounts": [
+        905300,
+        871000,
+        940200
+       ],
+       "days_seen": [
+        8,
+        8,
+        8,
+        8,
+        7,
+        8
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 3
+    },
+    {
+     "key": "7810443322|Лаборатории",
+     "inn": "7810443322",
+     "name": "ООО «Шанс Био»",
+     "category": "Лаборатории",
+     "type": "variable",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 13,
+       "amount": 3540000,
+       "last_amounts": [
+        3620000,
+        3350000,
+        3540000
+       ],
+       "days_seen": [
+        13,
+        13,
+        12,
+        13,
+        13,
+        11
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    }
+   ],
+   "not_recurring": [
+    {
+     "key": [
+      "5012345678",
+      "Корма для перепродажи"
+     ],
+     "name": "АО «Роял Канин»",
+     "reason": "not_every_month",
+     "months": [
+      "2026-07",
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    {
+     "key": [
+      "7716998877",
+      "Ремонт оборудования"
+     ],
+     "name": "ООО «Медтехсервис»",
+     "reason": "not_every_month",
+     "months": [
+      "2026-07",
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    {
+     "key": [
+      "7725667788",
+      "Программы и сервисы"
+     ],
+     "name": "ООО «ВетКлауд»",
+     "reason": "not_every_month",
+     "months": [
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    {
+     "key": [
+      "7736207543",
+      "Реклама"
+     ],
+     "name": "ООО «Яндекс»",
+     "reason": "amount_varies",
+     "slot": 1,
+     "last_amounts": [
+      2200000,
+      900000,
+      3500000
+     ]
+    }
+   ],
+   "days": [
+    {
+     "date": "2026-10-07",
+     "weekday": "ср",
+     "opening": 54357728,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-07",
+       "nominal_date": "2026-10-07",
+       "name": "ООО «Зоовет»",
+       "amount": 10850000,
+       "source": "recurring",
+       "category": "Препараты и расходники",
+       "series": "5003012345|Препараты и расходники",
+       "slot": 1,
+       "max_deferral_days": 5,
+       "balance_after": 43507728
+      }
+     ],
+     "closing": 47795073,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-08",
+     "weekday": "чт",
+     "opening": 47795073,
+     "income_forecast": 4034914,
+     "payments": [
+      {
+       "date": "2026-10-08",
+       "nominal_date": "2026-10-08",
+       "name": "ИП Кравцов А. В.",
+       "amount": 14000000,
+       "source": "recurring",
+       "category": "Аренда",
+       "series": "772800112233|Аренда",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 33795073
+      },
+      {
+       "date": "2026-10-08",
+       "nominal_date": "2026-10-08",
+       "name": "Кредит на аппарат УЗИ",
+       "amount": 5273500,
+       "source": "obligation",
+       "category": null,
+       "obligation_id": "S5-loan",
+       "max_deferral_days": 0,
+       "balance_after": 28521573
+      },
+      {
+       "date": "2026-10-08",
+       "nominal_date": "2026-10-08",
+       "name": "ООО «Чистый дом»",
+       "amount": 905300,
+       "source": "recurring",
+       "category": "Хозяйственные расходы",
+       "series": "7728990011|Хозяйственные расходы",
+       "slot": 1,
+       "max_deferral_days": 3,
+       "balance_after": 27616273
+      }
+     ],
+     "closing": 31651187,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-09",
+     "weekday": "пт",
+     "opening": 31651187,
+     "income_forecast": 4732431,
+     "payments": [
+      {
+       "date": "2026-10-09",
+       "nominal_date": "2026-10-10",
+       "name": "Сбербанк (зарплатный проект)",
+       "amount": 29050000,
+       "source": "recurring",
+       "category": "Оклады",
+       "series": "7707083893|Оклады",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 2601187
+      }
+     ],
+     "closing": 7333618,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-10",
+     "weekday": "сб",
+     "opening": 7333618,
+     "income_forecast": 2075402,
+     "payments": [],
+     "closing": 9409020,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-11",
+     "weekday": "вс",
+     "opening": 9409020,
+     "income_forecast": 1437186,
+     "payments": [],
+     "closing": 10846206,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-12",
+     "weekday": "пн",
+     "opening": 10846206,
+     "income_forecast": 8104608,
+     "payments": [
+      {
+       "date": "2026-10-12",
+       "nominal_date": "2026-10-12",
+       "name": "АО «Горэнерго»",
+       "amount": 1603377,
+       "source": "recurring",
+       "category": "Коммунальные и связь",
+       "series": "7701234500|Коммунальные и связь",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 9242829
+      }
+     ],
+     "closing": 17347437,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-13",
+     "weekday": "вт",
+     "opening": 17347437,
+     "income_forecast": 4093149,
+     "payments": [
+      {
+       "date": "2026-10-13",
+       "nominal_date": "2026-10-13",
+       "name": "ООО «Шанс Био»",
+       "amount": 3540000,
+       "source": "recurring",
+       "category": "Лаборатории",
+       "series": "7810443322|Лаборатории",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 13807437
+      }
+     ],
+     "closing": 17900586,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-14",
+     "weekday": "ср",
+     "opening": 17900586,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-14",
+       "nominal_date": "2026-10-14",
+       "name": "Ремонт кондиционера",
+       "amount": 4500000,
+       "source": "manual",
+       "category": null,
+       "planned_id": "S5-plan-1",
+       "max_deferral_days": 0,
+       "balance_after": 13400586
+      }
+     ],
+     "closing": 17687931,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-15",
+     "weekday": "чт",
+     "opening": 17687931,
+     "income_forecast": 4034914,
+     "payments": [
+      {
+       "date": "2026-10-15",
+       "nominal_date": "2026-10-15",
+       "name": "Лизинг рентген-аппарата",
+       "amount": 2500000,
+       "source": "obligation",
+       "category": null,
+       "obligation_id": "S5-lease",
+       "max_deferral_days": 0,
+       "balance_after": 15187931
+      }
+     ],
+     "closing": 19222845,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-16",
+     "weekday": "пт",
+     "opening": 19222845,
+     "income_forecast": 4732431,
+     "payments": [
+      {
+       "date": "2026-10-16",
+       "nominal_date": "2026-10-16",
+       "name": "ЧОП «Щит»",
+       "amount": 600000,
+       "source": "recurring",
+       "category": null,
+       "series": "7720112244|",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 18622845
+      }
+     ],
+     "closing": 23355276,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-17",
+     "weekday": "сб",
+     "opening": 23355276,
+     "income_forecast": 2075402,
+     "payments": [],
+     "closing": 25430678,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-18",
+     "weekday": "вс",
+     "opening": 25430678,
+     "income_forecast": 1437186,
+     "payments": [],
+     "closing": 26867864,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-19",
+     "weekday": "пн",
+     "opening": 26867864,
+     "income_forecast": 8104608,
+     "payments": [],
+     "closing": 34972472,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-20",
+     "weekday": "вт",
+     "opening": 34972472,
+     "income_forecast": 4093149,
+     "payments": [
+      {
+       "date": "2026-10-20",
+       "nominal_date": "2026-10-20",
+       "name": "ООО «ВетПрепарат»",
+       "amount": 6040000,
+       "source": "recurring",
+       "category": "Препараты и расходники",
+       "series": "7714556677|Препараты и расходники",
+       "slot": 1,
+       "max_deferral_days": 3,
+       "balance_after": 28932472
+      }
+     ],
+     "closing": 33025621,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-21",
+     "weekday": "ср",
+     "opening": 33025621,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-21",
+       "nominal_date": "2026-10-21",
+       "name": "ООО «Зоовет»",
+       "amount": 10230000,
+       "source": "recurring",
+       "category": "Препараты и расходники",
+       "series": "5003012345|Препараты и расходники",
+       "slot": 2,
+       "max_deferral_days": 5,
+       "balance_after": 22795621
+      }
+     ],
+     "closing": 27082966,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-22",
+     "weekday": "чт",
+     "opening": 27082966,
+     "income_forecast": 4034914,
+     "payments": [],
+     "closing": 31117880,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-23",
+     "weekday": "пт",
+     "opening": 31117880,
+     "income_forecast": 4732431,
+     "payments": [
+      {
+       "date": "2026-10-23",
+       "nominal_date": "2026-10-25",
+       "name": "Сбербанк (зарплатный проект)",
+       "amount": 12200000,
+       "source": "recurring",
+       "category": "Оклады",
+       "series": "7707083893|Оклады",
+       "slot": 2,
+       "max_deferral_days": 0,
+       "balance_after": 18917880
+      }
+     ],
+     "closing": 23650311,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-24",
+     "weekday": "сб",
+     "opening": 23650311,
+     "income_forecast": 2075402,
+     "payments": [],
+     "closing": 25725713,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-25",
+     "weekday": "вс",
+     "opening": 25725713,
+     "income_forecast": 1437186,
+     "payments": [],
+     "closing": 27162899,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-26",
+     "weekday": "пн",
+     "opening": 27162899,
+     "income_forecast": 8104608,
+     "payments": [],
+     "closing": 35267507,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-27",
+     "weekday": "вт",
+     "opening": 35267507,
+     "income_forecast": 4093149,
+     "payments": [],
+     "closing": 39360656,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-28",
+     "weekday": "ср",
+     "opening": 39360656,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-28",
+       "nominal_date": "2026-10-28",
+       "name": "УФК (ФНС России), ЕНП",
+       "amount": 6125000,
+       "source": "recurring",
+       "category": "Налоги и взносы",
+       "series": "7727406020|Налоги и взносы",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 33235656
+      }
+     ],
+     "closing": 37523001,
+     "status": "ok",
+     "below_safe": false
+    }
+   ],
+   "summary": {
+    "income": 90582450,
+    "expense": 107417177,
+    "payments_count": 14,
+    "lowest": {
+     "date": "2026-10-09",
+     "balance": 7333618
+    },
+    "income_by_week": [
+     {
+      "label": "7–11 октября",
+      "value": 16567278
+     },
+     {
+      "label": "12–18 октября",
+      "value": 28765035
+     },
+     {
+      "label": "19–25 октября",
+      "value": 28765035
+     },
+     {
+      "label": "26–28 октября",
+      "value": 16485102
+     }
+    ],
+    "expense_by_week": [
+     {
+      "label": "7–11 октября",
+      "value": 60078800
+     },
+     {
+      "label": "12–18 октября",
+      "value": 12743377
+     },
+     {
+      "label": "19–25 октября",
+      "value": 28470000
+     },
+     {
+      "label": "26–28 октября",
+      "value": 6125000
+     }
+    ]
+   },
+   "alerts": [
+    {
+     "date": "2026-10-09",
+     "end_date": "2026-10-11",
+     "severity": "warning",
+     "icon": "📅",
+     "lowest_date": "2026-10-09",
+     "lowest": 7333618,
+     "shortfall": 7666382,
+     "title": "9 октября: остаток ниже безопасного запаса на 76 663,82 ₽",
+     "text": "Вечером 9 октября останется 73 336,18 ₽ при запасе 150 000 ₽. Перенесите платёж ООО «Зоовет» на 108 500 ₽ с 7 октября на 12 октября: разрыва не будет.",
+     "days_below": [
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11"
+     ],
+     "candidates": [
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-08",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 7333618,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-09",
+       "shift_days": 2,
+       "closes_gap": false,
+       "episode_min_after": 7333618,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-12",
+       "shift_days": 5,
+       "closes_gap": true,
+       "episode_min_after": 18183618,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Чистый дом»",
+       "source": "recurring",
+       "amount": 905300,
+       "from": "2026-10-08",
+       "to": "2026-10-09",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 7333618,
+       "new_below_safe": []
+      }
+     ],
+     "suggestion": {
+      "name": "ООО «Зоовет»",
+      "source": "recurring",
+      "amount": 10850000,
+      "from": "2026-10-07",
+      "to": "2026-10-12",
+      "shift_days": 5,
+      "closes_gap": true,
+      "text": "Перенесите платёж ООО «Зоовет» на 108 500 ₽ с 7 октября на 12 октября: разрыва не будет."
+     },
+     "after": [
+      {
+       "date": "2026-10-07",
+       "closing": 58645073,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-08",
+       "closing": 42501187,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-09",
+       "closing": 18183618,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-10",
+       "closing": 20259020,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-11",
+       "closing": 21696206,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-12",
+       "closing": 17347437,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-13",
+       "closing": 17900586,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-14",
+       "closing": 17687931,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-15",
+       "closing": 19222845,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-16",
+       "closing": 23355276,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-17",
+       "closing": 25430678,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-18",
+       "closing": 26867864,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-19",
+       "closing": 34972472,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-20",
+       "closing": 33025621,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-21",
+       "closing": 27082966,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-22",
+       "closing": 31117880,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-23",
+       "closing": 23650311,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-24",
+       "closing": 25725713,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-25",
+       "closing": 27162899,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-26",
+       "closing": 35267507,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-27",
+       "closing": 39360656,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-28",
+       "closing": 37523001,
+       "below_safe": false
+      }
+     ],
+     "after_lowest": {
+      "date": "2026-10-12",
+      "closing": 17347437
+     }
+    }
+   ]
+  },
+  "high_safe": {
+   "key": "high_safe",
+   "as_of": "2026-10-07",
+   "window": {
+    "from": "2026-10-07",
+    "to": "2026-10-28",
+    "days": 22
+   },
+   "safe_balance": 25000000,
+   "opening": {
+    "value": 54357728,
+    "breakdown": [
+     {
+      "label": "Расчётный счёт",
+      "value": 52325696
+     },
+     {
+      "label": "Касса",
+      "value": 2032032
+     }
+    ]
+   },
+   "income_profile": {
+    "from": "2026-07-15",
+    "to": "2026-10-06",
+    "weeks": 12,
+    "by_weekday": [
+     {
+      "weekday": 0,
+      "label": "пн",
+      "sum": 97255297,
+      "days": 12,
+      "average": 8104608
+     },
+     {
+      "weekday": 1,
+      "label": "вт",
+      "sum": 49117786,
+      "days": 12,
+      "average": 4093149
+     },
+     {
+      "weekday": 2,
+      "label": "ср",
+      "sum": 51448143,
+      "days": 12,
+      "average": 4287345
+     },
+     {
+      "weekday": 3,
+      "label": "чт",
+      "sum": 48418971,
+      "days": 12,
+      "average": 4034914
+     },
+     {
+      "weekday": 4,
+      "label": "пт",
+      "sum": 56789171,
+      "days": 12,
+      "average": 4732431
+     },
+     {
+      "weekday": 5,
+      "label": "сб",
+      "sum": 24904829,
+      "days": 12,
+      "average": 2075402
+     },
+     {
+      "weekday": 6,
+      "label": "вс",
+      "sum": 17246237,
+      "days": 12,
+      "average": 1437186
+     }
+    ],
+    "excluded": [
+     {
+      "id": "S5-t0484",
+      "date": "2026-08-26",
+      "amount": 1250000,
+      "reason": "not_revenue"
+     },
+     {
+      "id": "S5-t0486",
+      "date": "2026-09-08",
+      "amount": 3127081,
+      "reason": "duplicate"
+     },
+     {
+      "id": "S5-t0485",
+      "date": "2026-09-16",
+      "amount": 870000,
+      "reason": "not_revenue"
+     }
+    ]
+   },
+   "recurring": [
+    {
+     "key": "5003012345|Препараты и расходники",
+     "inn": "5003012345",
+     "name": "ООО «Зоовет»",
+     "category": "Препараты и расходники",
+     "type": "variable",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 7,
+       "amount": 10850000,
+       "last_amounts": [
+        10412300,
+        11230000,
+        10850000
+       ],
+       "days_seen": [
+        7,
+        7,
+        5,
+        7,
+        7,
+        7
+       ]
+      },
+      {
+       "slot": 2,
+       "day": 21,
+       "amount": 10230000,
+       "last_amounts": [
+        10230000,
+        9940500,
+        10480000
+       ],
+       "days_seen": [
+        21,
+        21,
+        19,
+        21,
+        21,
+        21
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 5
+    },
+    {
+     "key": "7701234500|Коммунальные и связь",
+     "inn": "7701234500",
+     "name": "АО «Горэнерго»",
+     "category": "Коммунальные и связь",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 12,
+       "amount": 1603377,
+       "last_amounts": [
+        1552090,
+        1603377,
+        1748912
+       ],
+       "days_seen": [
+        10,
+        12,
+        12,
+        10,
+        12,
+        11
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7707049388|Коммунальные и связь",
+     "inn": "7707049388",
+     "name": "ПАО «Ростелеком»",
+     "category": "Коммунальные и связь",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 18,
+       "amount": 730000,
+       "last_amounts": [
+        730000,
+        730000,
+        730000
+       ],
+       "days_seen": [
+        17,
+        18,
+        18,
+        17,
+        18,
+        18
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7707083893|Оклады",
+     "inn": "7707083893",
+     "name": "Сбербанк (зарплатный проект)",
+     "category": "Оклады",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 10,
+       "amount": 29050000,
+       "last_amounts": [
+        28750000,
+        29600000,
+        29050000
+       ],
+       "days_seen": [
+        10,
+        8,
+        10,
+        10,
+        10,
+        10
+       ]
+      },
+      {
+       "slot": 2,
+       "day": 25,
+       "amount": 12200000,
+       "last_amounts": [
+        12100000,
+        12300000,
+        12200000
+       ],
+       "days_seen": [
+        24,
+        25,
+        25,
+        24,
+        25,
+        25
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7714556677|Препараты и расходники",
+     "inn": "7714556677",
+     "name": "ООО «ВетПрепарат»",
+     "category": "Препараты и расходники",
+     "type": "variable",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 20,
+       "amount": 6040000,
+       "last_amounts": [
+        6040000,
+        5760000,
+        6310000
+       ],
+       "days_seen": [
+        20,
+        20,
+        19,
+        20,
+        21,
+        18
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 3
+    },
+    {
+     "key": "7720112244|",
+     "inn": "7720112244",
+     "name": "ЧОП «Щит»",
+     "category": null,
+     "type": null,
+     "slots": [
+      {
+       "slot": 1,
+       "day": 16,
+       "amount": 600000,
+       "last_amounts": [
+        600000,
+        600000,
+        600000
+       ],
+       "days_seen": [
+        16,
+        15,
+        16,
+        16,
+        14,
+        16
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7727406020|Налоги и взносы",
+     "inn": "7727406020",
+     "name": "УФК (ФНС России), ЕНП",
+     "category": "Налоги и взносы",
+     "type": "tax",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 28,
+       "amount": 6125000,
+       "last_amounts": [
+        5840000,
+        6310000,
+        6125000
+       ],
+       "days_seen": [
+        28,
+        28,
+        29,
+        28,
+        28,
+        28
+       ]
+      }
+     ],
+     "shift": "next",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "772800112233|Аренда",
+     "inn": "772800112233",
+     "name": "ИП Кравцов А. В.",
+     "category": "Аренда",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 8,
+       "amount": 14000000,
+       "last_amounts": [
+        14000000,
+        14000000,
+        14000000
+       ],
+       "days_seen": [
+        8,
+        8,
+        8,
+        8,
+        7,
+        8
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    },
+    {
+     "key": "7728990011|Хозяйственные расходы",
+     "inn": "7728990011",
+     "name": "ООО «Чистый дом»",
+     "category": "Хозяйственные расходы",
+     "type": "fixed",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 8,
+       "amount": 905300,
+       "last_amounts": [
+        905300,
+        871000,
+        940200
+       ],
+       "days_seen": [
+        8,
+        8,
+        8,
+        8,
+        7,
+        8
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 3
+    },
+    {
+     "key": "7810443322|Лаборатории",
+     "inn": "7810443322",
+     "name": "ООО «Шанс Био»",
+     "category": "Лаборатории",
+     "type": "variable",
+     "slots": [
+      {
+       "slot": 1,
+       "day": 13,
+       "amount": 3540000,
+       "last_amounts": [
+        3620000,
+        3350000,
+        3540000
+       ],
+       "days_seen": [
+        13,
+        13,
+        12,
+        13,
+        13,
+        11
+       ]
+      }
+     ],
+     "shift": "prev",
+     "max_deferral_days": 0
+    }
+   ],
+   "not_recurring": [
+    {
+     "key": [
+      "5012345678",
+      "Корма для перепродажи"
+     ],
+     "name": "АО «Роял Канин»",
+     "reason": "not_every_month",
+     "months": [
+      "2026-07",
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    {
+     "key": [
+      "7716998877",
+      "Ремонт оборудования"
+     ],
+     "name": "ООО «Медтехсервис»",
+     "reason": "not_every_month",
+     "months": [
+      "2026-07",
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    {
+     "key": [
+      "7725667788",
+      "Программы и сервисы"
+     ],
+     "name": "ООО «ВетКлауд»",
+     "reason": "not_every_month",
+     "months": [
+      "2026-04",
+      "2026-05",
+      "2026-06",
+      "2026-07",
+      "2026-08",
+      "2026-09"
+     ]
+    },
+    {
+     "key": [
+      "7736207543",
+      "Реклама"
+     ],
+     "name": "ООО «Яндекс»",
+     "reason": "amount_varies",
+     "slot": 1,
+     "last_amounts": [
+      2200000,
+      900000,
+      3500000
+     ]
+    }
+   ],
+   "days": [
+    {
+     "date": "2026-10-07",
+     "weekday": "ср",
+     "opening": 54357728,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-07",
+       "nominal_date": "2026-10-07",
+       "name": "ООО «Зоовет»",
+       "amount": 10850000,
+       "source": "recurring",
+       "category": "Препараты и расходники",
+       "series": "5003012345|Препараты и расходники",
+       "slot": 1,
+       "max_deferral_days": 5,
+       "balance_after": 43507728
+      }
+     ],
+     "closing": 47795073,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-08",
+     "weekday": "чт",
+     "opening": 47795073,
+     "income_forecast": 4034914,
+     "payments": [
+      {
+       "date": "2026-10-08",
+       "nominal_date": "2026-10-08",
+       "name": "ИП Кравцов А. В.",
+       "amount": 14000000,
+       "source": "recurring",
+       "category": "Аренда",
+       "series": "772800112233|Аренда",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 33795073
+      },
+      {
+       "date": "2026-10-08",
+       "nominal_date": "2026-10-08",
+       "name": "Кредит на аппарат УЗИ",
+       "amount": 5273500,
+       "source": "obligation",
+       "category": null,
+       "obligation_id": "S5-loan",
+       "max_deferral_days": 0,
+       "balance_after": 28521573
+      },
+      {
+       "date": "2026-10-08",
+       "nominal_date": "2026-10-08",
+       "name": "ООО «Чистый дом»",
+       "amount": 905300,
+       "source": "recurring",
+       "category": "Хозяйственные расходы",
+       "series": "7728990011|Хозяйственные расходы",
+       "slot": 1,
+       "max_deferral_days": 3,
+       "balance_after": 27616273
+      }
+     ],
+     "closing": 31651187,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-09",
+     "weekday": "пт",
+     "opening": 31651187,
+     "income_forecast": 4732431,
+     "payments": [
+      {
+       "date": "2026-10-09",
+       "nominal_date": "2026-10-10",
+       "name": "Сбербанк (зарплатный проект)",
+       "amount": 29050000,
+       "source": "recurring",
+       "category": "Оклады",
+       "series": "7707083893|Оклады",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 2601187
+      }
+     ],
+     "closing": 7333618,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-10",
+     "weekday": "сб",
+     "opening": 7333618,
+     "income_forecast": 2075402,
+     "payments": [],
+     "closing": 9409020,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-11",
+     "weekday": "вс",
+     "opening": 9409020,
+     "income_forecast": 1437186,
+     "payments": [],
+     "closing": 10846206,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-12",
+     "weekday": "пн",
+     "opening": 10846206,
+     "income_forecast": 8104608,
+     "payments": [
+      {
+       "date": "2026-10-12",
+       "nominal_date": "2026-10-12",
+       "name": "АО «Горэнерго»",
+       "amount": 1603377,
+       "source": "recurring",
+       "category": "Коммунальные и связь",
+       "series": "7701234500|Коммунальные и связь",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 9242829
+      }
+     ],
+     "closing": 17347437,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-13",
+     "weekday": "вт",
+     "opening": 17347437,
+     "income_forecast": 4093149,
+     "payments": [
+      {
+       "date": "2026-10-13",
+       "nominal_date": "2026-10-13",
+       "name": "ООО «Шанс Био»",
+       "amount": 3540000,
+       "source": "recurring",
+       "category": "Лаборатории",
+       "series": "7810443322|Лаборатории",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 13807437
+      }
+     ],
+     "closing": 17900586,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-14",
+     "weekday": "ср",
+     "opening": 17900586,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-14",
+       "nominal_date": "2026-10-14",
+       "name": "Ремонт кондиционера",
+       "amount": 4500000,
+       "source": "manual",
+       "category": null,
+       "planned_id": "S5-plan-1",
+       "max_deferral_days": 0,
+       "balance_after": 13400586
+      }
+     ],
+     "closing": 17687931,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-15",
+     "weekday": "чт",
+     "opening": 17687931,
+     "income_forecast": 4034914,
+     "payments": [
+      {
+       "date": "2026-10-15",
+       "nominal_date": "2026-10-15",
+       "name": "Лизинг рентген-аппарата",
+       "amount": 2500000,
+       "source": "obligation",
+       "category": null,
+       "obligation_id": "S5-lease",
+       "max_deferral_days": 0,
+       "balance_after": 15187931
+      }
+     ],
+     "closing": 19222845,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-16",
+     "weekday": "пт",
+     "opening": 19222845,
+     "income_forecast": 4732431,
+     "payments": [
+      {
+       "date": "2026-10-16",
+       "nominal_date": "2026-10-16",
+       "name": "ЧОП «Щит»",
+       "amount": 600000,
+       "source": "recurring",
+       "category": null,
+       "series": "7720112244|",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 18622845
+      }
+     ],
+     "closing": 23355276,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-17",
+     "weekday": "сб",
+     "opening": 23355276,
+     "income_forecast": 2075402,
+     "payments": [],
+     "closing": 25430678,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-18",
+     "weekday": "вс",
+     "opening": 25430678,
+     "income_forecast": 1437186,
+     "payments": [],
+     "closing": 26867864,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-19",
+     "weekday": "пн",
+     "opening": 26867864,
+     "income_forecast": 8104608,
+     "payments": [],
+     "closing": 34972472,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-20",
+     "weekday": "вт",
+     "opening": 34972472,
+     "income_forecast": 4093149,
+     "payments": [
+      {
+       "date": "2026-10-20",
+       "nominal_date": "2026-10-20",
+       "name": "ООО «ВетПрепарат»",
+       "amount": 6040000,
+       "source": "recurring",
+       "category": "Препараты и расходники",
+       "series": "7714556677|Препараты и расходники",
+       "slot": 1,
+       "max_deferral_days": 3,
+       "balance_after": 28932472
+      }
+     ],
+     "closing": 33025621,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-21",
+     "weekday": "ср",
+     "opening": 33025621,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-21",
+       "nominal_date": "2026-10-21",
+       "name": "ООО «Зоовет»",
+       "amount": 10230000,
+       "source": "recurring",
+       "category": "Препараты и расходники",
+       "series": "5003012345|Препараты и расходники",
+       "slot": 2,
+       "max_deferral_days": 5,
+       "balance_after": 22795621
+      }
+     ],
+     "closing": 27082966,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-22",
+     "weekday": "чт",
+     "opening": 27082966,
+     "income_forecast": 4034914,
+     "payments": [],
+     "closing": 31117880,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-23",
+     "weekday": "пт",
+     "opening": 31117880,
+     "income_forecast": 4732431,
+     "payments": [
+      {
+       "date": "2026-10-23",
+       "nominal_date": "2026-10-25",
+       "name": "Сбербанк (зарплатный проект)",
+       "amount": 12200000,
+       "source": "recurring",
+       "category": "Оклады",
+       "series": "7707083893|Оклады",
+       "slot": 2,
+       "max_deferral_days": 0,
+       "balance_after": 18917880
+      }
+     ],
+     "closing": 23650311,
+     "status": "below_safe",
+     "below_safe": true
+    },
+    {
+     "date": "2026-10-24",
+     "weekday": "сб",
+     "opening": 23650311,
+     "income_forecast": 2075402,
+     "payments": [],
+     "closing": 25725713,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-25",
+     "weekday": "вс",
+     "opening": 25725713,
+     "income_forecast": 1437186,
+     "payments": [],
+     "closing": 27162899,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-26",
+     "weekday": "пн",
+     "opening": 27162899,
+     "income_forecast": 8104608,
+     "payments": [],
+     "closing": 35267507,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-27",
+     "weekday": "вт",
+     "opening": 35267507,
+     "income_forecast": 4093149,
+     "payments": [],
+     "closing": 39360656,
+     "status": "ok",
+     "below_safe": false
+    },
+    {
+     "date": "2026-10-28",
+     "weekday": "ср",
+     "opening": 39360656,
+     "income_forecast": 4287345,
+     "payments": [
+      {
+       "date": "2026-10-28",
+       "nominal_date": "2026-10-28",
+       "name": "УФК (ФНС России), ЕНП",
+       "amount": 6125000,
+       "source": "recurring",
+       "category": "Налоги и взносы",
+       "series": "7727406020|Налоги и взносы",
+       "slot": 1,
+       "max_deferral_days": 0,
+       "balance_after": 33235656
+      }
+     ],
+     "closing": 37523001,
+     "status": "ok",
+     "below_safe": false
+    }
+   ],
+   "summary": {
+    "income": 90582450,
+    "expense": 107417177,
+    "payments_count": 14,
+    "lowest": {
+     "date": "2026-10-09",
+     "balance": 7333618
+    },
+    "income_by_week": [
+     {
+      "label": "7–11 октября",
+      "value": 16567278
+     },
+     {
+      "label": "12–18 октября",
+      "value": 28765035
+     },
+     {
+      "label": "19–25 октября",
+      "value": 28765035
+     },
+     {
+      "label": "26–28 октября",
+      "value": 16485102
+     }
+    ],
+    "expense_by_week": [
+     {
+      "label": "7–11 октября",
+      "value": 60078800
+     },
+     {
+      "label": "12–18 октября",
+      "value": 12743377
+     },
+     {
+      "label": "19–25 октября",
+      "value": 28470000
+     },
+     {
+      "label": "26–28 октября",
+      "value": 6125000
+     }
+    ]
+   },
+   "alerts": [
+    {
+     "date": "2026-10-09",
+     "end_date": "2026-10-16",
+     "severity": "warning",
+     "icon": "📅",
+     "lowest_date": "2026-10-09",
+     "lowest": 7333618,
+     "shortfall": 17666382,
+     "title": "9 октября: остаток ниже безопасного запаса на 176 663,82 ₽",
+     "text": "Вечером 9 октября останется 73 336,18 ₽ при запасе 250 000 ₽. Перенос платежа ООО «Зоовет» на 108 500 ₽ с 7 октября на 12 октября уменьшит разрыв, но не закроет его.",
+     "days_below": [
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16"
+     ],
+     "candidates": [
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-08",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 7333618,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-09",
+       "shift_days": 2,
+       "closes_gap": false,
+       "episode_min_after": 7333618,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-12",
+       "shift_days": 5,
+       "closes_gap": false,
+       "episode_min_after": 17347437,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Чистый дом»",
+       "source": "recurring",
+       "amount": 905300,
+       "from": "2026-10-08",
+       "to": "2026-10-09",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 7333618,
+       "new_below_safe": []
+      }
+     ],
+     "suggestion": {
+      "name": "ООО «Зоовет»",
+      "source": "recurring",
+      "amount": 10850000,
+      "from": "2026-10-07",
+      "to": "2026-10-12",
+      "shift_days": 5,
+      "closes_gap": false,
+      "text": "Перенос платежа ООО «Зоовет» на 108 500 ₽ с 7 октября на 12 октября уменьшит разрыв, но не закроет его."
+     },
+     "after": [
+      {
+       "date": "2026-10-07",
+       "closing": 58645073,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-08",
+       "closing": 42501187,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-09",
+       "closing": 18183618,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-10",
+       "closing": 20259020,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-11",
+       "closing": 21696206,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-12",
+       "closing": 17347437,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-13",
+       "closing": 17900586,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-14",
+       "closing": 17687931,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-15",
+       "closing": 19222845,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-16",
+       "closing": 23355276,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-17",
+       "closing": 25430678,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-18",
+       "closing": 26867864,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-19",
+       "closing": 34972472,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-20",
+       "closing": 33025621,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-21",
+       "closing": 27082966,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-22",
+       "closing": 31117880,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-23",
+       "closing": 23650311,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-24",
+       "closing": 25725713,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-25",
+       "closing": 27162899,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-26",
+       "closing": 35267507,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-27",
+       "closing": 39360656,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-28",
+       "closing": 37523001,
+       "below_safe": false
+      }
+     ],
+     "after_lowest": {
+      "date": "2026-10-12",
+      "closing": 17347437
+     }
+    },
+    {
+     "date": "2026-10-23",
+     "end_date": "2026-10-23",
+     "severity": "warning",
+     "icon": "📅",
+     "lowest_date": "2026-10-23",
+     "lowest": 23650311,
+     "shortfall": 1349689,
+     "title": "23 октября: остаток ниже безопасного запаса на 13 496,89 ₽",
+     "text": "Вечером 23 октября останется 236 503,11 ₽ при запасе 250 000 ₽. Перенесите платёж ООО «Зоовет» на 102 300 ₽ с 21 октября на 26 октября: разрыва не будет.",
+     "days_below": [
+      "2026-10-23"
+     ],
+     "candidates": [
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-08",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-09",
+       "shift_days": 2,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10850000,
+       "from": "2026-10-07",
+       "to": "2026-10-12",
+       "shift_days": 5,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Чистый дом»",
+       "source": "recurring",
+       "amount": 905300,
+       "from": "2026-10-08",
+       "to": "2026-10-09",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «ВетПрепарат»",
+       "source": "recurring",
+       "amount": 6040000,
+       "from": "2026-10-20",
+       "to": "2026-10-21",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «ВетПрепарат»",
+       "source": "recurring",
+       "amount": 6040000,
+       "from": "2026-10-20",
+       "to": "2026-10-22",
+       "shift_days": 2,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «ВетПрепарат»",
+       "source": "recurring",
+       "amount": 6040000,
+       "from": "2026-10-20",
+       "to": "2026-10-23",
+       "shift_days": 3,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10230000,
+       "from": "2026-10-21",
+       "to": "2026-10-22",
+       "shift_days": 1,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10230000,
+       "from": "2026-10-21",
+       "to": "2026-10-23",
+       "shift_days": 2,
+       "closes_gap": false,
+       "episode_min_after": 23650311,
+       "new_below_safe": []
+      },
+      {
+       "name": "ООО «Зоовет»",
+       "source": "recurring",
+       "amount": 10230000,
+       "from": "2026-10-21",
+       "to": "2026-10-26",
+       "shift_days": 5,
+       "closes_gap": true,
+       "episode_min_after": 33880311,
+       "new_below_safe": []
+      }
+     ],
+     "suggestion": {
+      "name": "ООО «Зоовет»",
+      "source": "recurring",
+      "amount": 10230000,
+      "from": "2026-10-21",
+      "to": "2026-10-26",
+      "shift_days": 5,
+      "closes_gap": true,
+      "text": "Перенесите платёж ООО «Зоовет» на 102 300 ₽ с 21 октября на 26 октября: разрыва не будет."
+     },
+     "after": [
+      {
+       "date": "2026-10-07",
+       "closing": 47795073,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-08",
+       "closing": 31651187,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-09",
+       "closing": 7333618,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-10",
+       "closing": 9409020,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-11",
+       "closing": 10846206,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-12",
+       "closing": 17347437,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-13",
+       "closing": 17900586,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-14",
+       "closing": 17687931,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-15",
+       "closing": 19222845,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-16",
+       "closing": 23355276,
+       "below_safe": true
+      },
+      {
+       "date": "2026-10-17",
+       "closing": 25430678,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-18",
+       "closing": 26867864,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-19",
+       "closing": 34972472,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-20",
+       "closing": 33025621,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-21",
+       "closing": 37312966,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-22",
+       "closing": 41347880,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-23",
+       "closing": 33880311,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-24",
+       "closing": 35955713,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-25",
+       "closing": 37392899,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-26",
+       "closing": 35267507,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-27",
+       "closing": 39360656,
+       "below_safe": false
+      },
+      {
+       "date": "2026-10-28",
+       "closing": 37523001,
+       "below_safe": false
+      }
+     ],
+     "after_lowest": {
+      "date": "2026-10-09",
+      "closing": 7333618
+     }
+    }
+   ]
+  }
+ },
+ "obligations": {
+  "as_of": "2026-10-07",
+  "month": "2026-10",
+  "debt_total": 126492301,
+  "monthly_payment": 7773500,
+  "amortization_month": 2652778,
+  "charges_month": {
+   "month": "2026-10",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1486564
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    },
+    {
+     "obligation_id": "S5-eq-centr",
+     "name": "Центрифуга",
+     "kind": "amortization",
+     "amount": 236111
+    }
+   ],
+   "total": 6639342
+  },
+  "loans": [
+   {
+    "id": "S5-loan",
+    "kind": "loan",
+    "name": "Кредит на аппарат УЗИ",
+    "lender": "Сбербанк",
+    "until": "2028-10",
+    "paid_pct": 25.7,
+    "remaining": 111492301,
+    "payment": 5273500,
+    "payment_day": 8,
+    "next_payment_date": "2026-10-08",
+    "payments_made": 11,
+    "payments_total": 36
+   },
+   {
+    "id": "S5-lease",
+    "kind": "lease",
+    "name": "Лизинг рентген-аппарата",
+    "lender": "АО «Европлан»",
+    "until": "2027-03",
+    "paid_pct": 83.3,
+    "remaining": 15000000,
+    "payment": 2500000,
+    "payment_day": 15,
+    "next_payment_date": "2026-10-15",
+    "payments_made": 30,
+    "payments_total": 36
+   }
+  ],
+  "equipment": [
+   {
+    "id": "S5-eq-us",
+    "name": "Аппарат УЗИ",
+    "cost": 168000000,
+    "life_years": 7,
+    "monthly": 2000000,
+    "in_service": "2025-10-20",
+    "amortization_from": "2025-11",
+    "amortization_to": "2032-10",
+    "this_month": 2000000
+   },
+   {
+    "id": "S5-eq-blood",
+    "name": "Анализатор крови",
+    "cost": 25000000,
+    "life_years": 5,
+    "monthly": 416667,
+    "in_service": "2024-02-10",
+    "amortization_from": "2024-03",
+    "amortization_to": "2029-02",
+    "this_month": 416667
+   },
+   {
+    "id": "S5-eq-centr",
+    "name": "Центрифуга",
+    "cost": 8500000,
+    "life_years": 3,
+    "monthly": 236111,
+    "in_service": "2026-09-14",
+    "amortization_from": "2026-10",
+    "amortization_to": "2029-09",
+    "this_month": 236111
+   },
+   {
+    "id": "S5-eq-autoclave",
+    "name": "Автоклав",
+    "cost": 11800000,
+    "life_years": 5,
+    "monthly": 196667,
+    "in_service": "2021-04-05",
+    "amortization_from": "2021-05",
+    "amortization_to": "2026-04",
+    "this_month": 0
+   }
+  ]
+ },
+ "charges_by_month": {
+  "2026-04": {
+   "month": "2026-04",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1775869
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    },
+    {
+     "obligation_id": "S5-eq-autoclave",
+     "name": "Автоклав",
+     "kind": "amortization",
+     "amount": 196647
+    }
+   ],
+   "total": 6889183
+  },
+  "2026-05": {
+   "month": "2026-05",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1729234
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    }
+   ],
+   "total": 6645901
+  },
+  "2026-06": {
+   "month": "2026-06",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1681977
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    }
+   ],
+   "total": 6598644
+  },
+  "2026-07": {
+   "month": "2026-07",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1634090
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    }
+   ],
+   "total": 6550757
+  },
+  "2026-08": {
+   "month": "2026-08",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1585565
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    }
+   ],
+   "total": 6502232
+  },
+  "2026-09": {
+   "month": "2026-09",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1536392
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    }
+   ],
+   "total": 6453059
+  },
+  "2026-10": {
+   "month": "2026-10",
+   "items": [
+    {
+     "obligation_id": "S5-loan",
+     "name": "Кредит на аппарат УЗИ",
+     "kind": "loan_interest",
+     "amount": 1486564
+    },
+    {
+     "obligation_id": "S5-lease",
+     "name": "Лизинг рентген-аппарата",
+     "kind": "lease",
+     "amount": 2500000
+    },
+    {
+     "obligation_id": "S5-eq-us",
+     "name": "Аппарат УЗИ",
+     "kind": "amortization",
+     "amount": 2000000
+    },
+    {
+     "obligation_id": "S5-eq-blood",
+     "name": "Анализатор крови",
+     "kind": "amortization",
+     "amount": 416667
+    },
+    {
+     "obligation_id": "S5-eq-centr",
+     "name": "Центрифуга",
+     "kind": "amortization",
+     "amount": 236111
+    }
+   ],
+   "total": 6639342
+  }
+ },
+ "loan_schedule": [
+  {
+   "month": "2025-11",
+   "date": "2025-11-07",
+   "payment": 5273500,
+   "interest": 2000000,
+   "principal": 3273500,
+   "balance_before": 150000000,
+   "balance_after": 146726500
+  },
+  {
+   "month": "2025-12",
+   "date": "2025-12-08",
+   "payment": 5273500,
+   "interest": 1956353,
+   "principal": 3317147,
+   "balance_before": 146726500,
+   "balance_after": 143409353
+  },
+  {
+   "month": "2026-01",
+   "date": "2026-01-08",
+   "payment": 5273500,
+   "interest": 1912125,
+   "principal": 3361375,
+   "balance_before": 143409353,
+   "balance_after": 140047978
+  },
+  {
+   "month": "2026-02",
+   "date": "2026-02-06",
+   "payment": 5273500,
+   "interest": 1867306,
+   "principal": 3406194,
+   "balance_before": 140047978,
+   "balance_after": 136641784
+  },
+  {
+   "month": "2026-03",
+   "date": "2026-03-06",
+   "payment": 5273500,
+   "interest": 1821890,
+   "principal": 3451610,
+   "balance_before": 136641784,
+   "balance_after": 133190174
+  },
+  {
+   "month": "2026-04",
+   "date": "2026-04-08",
+   "payment": 5273500,
+   "interest": 1775869,
+   "principal": 3497631,
+   "balance_before": 133190174,
+   "balance_after": 129692543
+  },
+  {
+   "month": "2026-05",
+   "date": "2026-05-08",
+   "payment": 5273500,
+   "interest": 1729234,
+   "principal": 3544266,
+   "balance_before": 129692543,
+   "balance_after": 126148277
+  },
+  {
+   "month": "2026-06",
+   "date": "2026-06-08",
+   "payment": 5273500,
+   "interest": 1681977,
+   "principal": 3591523,
+   "balance_before": 126148277,
+   "balance_after": 122556754
+  },
+  {
+   "month": "2026-07",
+   "date": "2026-07-08",
+   "payment": 5273500,
+   "interest": 1634090,
+   "principal": 3639410,
+   "balance_before": 122556754,
+   "balance_after": 118917344
+  },
+  {
+   "month": "2026-08",
+   "date": "2026-08-07",
+   "payment": 5273500,
+   "interest": 1585565,
+   "principal": 3687935,
+   "balance_before": 118917344,
+   "balance_after": 115229409
+  },
+  {
+   "month": "2026-09",
+   "date": "2026-09-08",
+   "payment": 5273500,
+   "interest": 1536392,
+   "principal": 3737108,
+   "balance_before": 115229409,
+   "balance_after": 111492301
+  },
+  {
+   "month": "2026-10",
+   "date": "2026-10-08",
+   "payment": 5273500,
+   "interest": 1486564,
+   "principal": 3786936,
+   "balance_before": 111492301,
+   "balance_after": 107705365
+  },
+  {
+   "month": "2026-11",
+   "date": "2026-11-06",
+   "payment": 5273500,
+   "interest": 1436072,
+   "principal": 3837428,
+   "balance_before": 107705365,
+   "balance_after": 103867937
+  },
+  {
+   "month": "2026-12",
+   "date": "2026-12-08",
+   "payment": 5273500,
+   "interest": 1384906,
+   "principal": 3888594,
+   "balance_before": 103867937,
+   "balance_after": 99979343
+  }
+ ],
+ "pnl_obligations_row": {
+  "2026-04": 6889183,
+  "2026-05": 6645901,
+  "2026-06": 6598644,
+  "2026-07": 6550757,
+  "2026-08": 6502232,
+  "2026-09": 6453059,
+  "2026-10": 6639342
+ },
+ "dashboard_balance_at_as_of": 54357728,
+ "alternatives": {
+  "window_from_tomorrow": {
+   "window": {
+    "from": "2026-10-08",
+    "to": "2026-10-29",
+    "days": 22
+   },
+   "opening": 54357728,
+   "red_days": [
+    "2026-10-09"
+   ],
+   "closings": [
+    {
+     "date": "2026-10-08",
+     "closing": 38213842
+    },
+    {
+     "date": "2026-10-09",
+     "closing": 13896273
+    },
+    {
+     "date": "2026-10-10",
+     "closing": 15971675
+    },
+    {
+     "date": "2026-10-11",
+     "closing": 17408861
+    },
+    {
+     "date": "2026-10-12",
+     "closing": 23910092
+    },
+    {
+     "date": "2026-10-13",
+     "closing": 24463241
+    },
+    {
+     "date": "2026-10-14",
+     "closing": 24250586
+    },
+    {
+     "date": "2026-10-15",
+     "closing": 25785500
+    },
+    {
+     "date": "2026-10-16",
+     "closing": 29917931
+    },
+    {
+     "date": "2026-10-17",
+     "closing": 31993333
+    },
+    {
+     "date": "2026-10-18",
+     "closing": 33430519
+    },
+    {
+     "date": "2026-10-19",
+     "closing": 41535127
+    },
+    {
+     "date": "2026-10-20",
+     "closing": 39588276
+    },
+    {
+     "date": "2026-10-21",
+     "closing": 33645621
+    },
+    {
+     "date": "2026-10-22",
+     "closing": 37680535
+    },
+    {
+     "date": "2026-10-23",
+     "closing": 30212966
+    },
+    {
+     "date": "2026-10-24",
+     "closing": 32288368
+    },
+    {
+     "date": "2026-10-25",
+     "closing": 33725554
+    },
+    {
+     "date": "2026-10-26",
+     "closing": 41830162
+    },
+    {
+     "date": "2026-10-27",
+     "closing": 45923311
+    },
+    {
+     "date": "2026-10-28",
+     "closing": 44085656
+    },
+    {
+     "date": "2026-10-29",
+     "closing": 48120570
+    }
+   ],
+   "lowest": {
+    "date": "2026-10-09",
+    "balance": 13896273
+   },
+   "payments_count": 13,
+   "alerts": [
+    {
+     "date": "2026-10-09",
+     "end_date": "2026-10-09",
+     "severity": "warning",
+     "shortfall": 1103727,
+     "suggestion": null
+    }
+   ],
+   "lost_payments": [
+    {
+     "date": "2026-10-07",
+     "name": "ООО «Зоовет»",
+     "amount": 10850000
+    }
+   ]
+  },
+  "income_profile_90_days_all_in": {
+   "from": "2026-07-10",
+   "to": "2026-10-07",
+   "by_weekday": [
+    {
+     "weekday": 0,
+     "label": "пн",
+     "sum": 105794606,
+     "days": 13,
+     "average": 8138047
+    },
+    {
+     "weekday": 1,
+     "label": "вт",
+     "sum": 53216972,
+     "days": 13,
+     "average": 4093613
+    },
+    {
+     "weekday": 2,
+     "label": "ср",
+     "sum": 53568143,
+     "days": 13,
+     "average": 4120626
+    },
+    {
+     "weekday": 3,
+     "label": "чт",
+     "sum": 48418971,
+     "days": 12,
+     "average": 4034914
+    },
+    {
+     "weekday": 4,
+     "label": "пт",
+     "sum": 61350101,
+     "days": 13,
+     "average": 4719239
+    },
+    {
+     "weekday": 5,
+     "label": "сб",
+     "sum": 26993637,
+     "days": 13,
+     "average": 2076434
+    },
+    {
+     "weekday": 6,
+     "label": "вс",
+     "sum": 18642399,
+     "days": 13,
+     "average": 1434031
+    }
+   ],
+   "window_income": 89971338
+  }
+ }
+}

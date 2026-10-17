@@ -27,15 +27,17 @@ interface TabsProps<Id extends string> {
   tabs: TabDef<Id>[]
   value: Id
   onChange: (id: Id) => void
+  /** Tabs stay visible but do nothing (the screen has no data to switch). */
+  disabled?: boolean
 }
 
 /** Tabs with automatic activation: arrows move and select, Home and End jump (design/components.md, section 6). */
-export function Tabs<Id extends string>({ prefix, label, tabs, value, onChange }: TabsProps<Id>) {
+export function Tabs<Id extends string>({ prefix, label, tabs, value, onChange, disabled = false }: TabsProps<Id>) {
   const refs = useRef(new Map<string, HTMLButtonElement>())
 
   const move = (index: number) => {
     const target = tabs[(index + tabs.length) % tabs.length]
-    if (!target) return
+    if (!target || disabled) return
     onChange(target.id)
     refs.current.get(target.id)?.focus()
   }
@@ -73,6 +75,7 @@ export function Tabs<Id extends string>({ prefix, label, tabs, value, onChange }
             role="tab"
             id={tabElementId(prefix, tab.id)}
             aria-selected={selected}
+            aria-disabled={disabled || undefined}
             aria-label={tab.ariaLabel}
             data-testid={tab.testId}
             {...tab.data}
@@ -83,7 +86,7 @@ export function Tabs<Id extends string>({ prefix, label, tabs, value, onChange }
               if (node) refs.current.set(tab.id, node)
               else refs.current.delete(tab.id)
             }}
-            onClick={() => onChange(tab.id)}
+            onClick={() => !disabled && onChange(tab.id)}
             onKeyDown={(event) => onKeyDown(event, index)}
           >
             {tab.label}

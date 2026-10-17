@@ -13,11 +13,13 @@ interface FieldProps {
   optional?: boolean
   hint?: ReactNode
   error?: string | null
+  /** `data-testid` of the error message (e2e). */
+  errorTestId?: string
   children: (control: FieldControlProps) => ReactNode
 }
 
 /** Label, control, hint and error message, wired through id and aria-describedby (design/components.md, section 5). */
-export function Field({ label, optional = false, hint, error, children }: FieldProps) {
+export function Field({ label, optional = false, hint, error, errorTestId, children }: FieldProps) {
   const id = useId()
   const messageId = `${id}-msg`
   const hasMessage = Boolean(error) || Boolean(hint)
@@ -33,7 +35,7 @@ export function Field({ label, optional = false, hint, error, children }: FieldP
         'aria-describedby': hasMessage ? messageId : undefined,
       })}
       {error ? (
-        <p id={messageId} className="fld__error">
+        <p id={messageId} className="fld__error" data-testid={errorTestId}>
           {error}
         </p>
       ) : hint ? (

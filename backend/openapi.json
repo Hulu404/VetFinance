@@ -1979,6 +1979,868 @@
           }
         }
       }
+    },
+    "/v1/calendar": {
+      "get": {
+        "summary": "Calendar",
+        "operationId": "calendar_v1_calendar_get",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "22",
+              "title": "Days"
+            }
+          },
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          },
+          {
+            "name": "preview",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Preview"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalendarOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/calendar/payments": {
+      "post": {
+        "summary": "Add Payment",
+        "operationId": "add_payment_v1_calendar_payments_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualPaymentBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ManualPaymentOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/calendar/payments/{payment_id}": {
+      "delete": {
+        "summary": "Delete Payment",
+        "operationId": "delete_payment_v1_calendar_payments__payment_id__delete",
+        "parameters": [
+          {
+            "name": "payment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Payment Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/counterparties/{counterparty_id}": {
+      "patch": {
+        "summary": "Patch Counterparty",
+        "description": "Deferral the counterparty allows, in days (0: payments are not moved).",
+        "operationId": "patch_counterparty_v1_counterparties__counterparty_id__patch",
+        "parameters": [
+          {
+            "name": "counterparty_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Counterparty Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CounterpartyPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CounterpartyOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/obligations": {
+      "get": {
+        "summary": "Obligations",
+        "operationId": "obligations_v1_obligations_get",
+        "parameters": [
+          {
+            "name": "as_of",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "As Of"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObligationsOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Obligation",
+        "operationId": "create_obligation_v1_obligations_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Body",
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "loan",
+                        "title": "Kind",
+                        "type": "string"
+                      },
+                      "name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "lender": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Lender"
+                      },
+                      "principal": {
+                        "title": "Principal",
+                        "type": "integer"
+                      },
+                      "remaining": {
+                        "title": "Remaining",
+                        "type": "integer"
+                      },
+                      "rate_pct": {
+                        "title": "Rate Pct",
+                        "type": "number"
+                      },
+                      "payment": {
+                        "title": "Payment",
+                        "type": "integer"
+                      },
+                      "payment_day": {
+                        "title": "Payment Day",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "principal",
+                      "remaining",
+                      "rate_pct",
+                      "payment",
+                      "payment_day"
+                    ],
+                    "title": "LoanBody",
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "lease",
+                        "title": "Kind",
+                        "type": "string"
+                      },
+                      "name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "lender": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Lender"
+                      },
+                      "principal": {
+                        "title": "Principal",
+                        "type": "integer"
+                      },
+                      "remaining": {
+                        "title": "Remaining",
+                        "type": "integer"
+                      },
+                      "payment": {
+                        "title": "Payment",
+                        "type": "integer"
+                      },
+                      "payment_day": {
+                        "title": "Payment Day",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "principal",
+                      "remaining",
+                      "payment",
+                      "payment_day"
+                    ],
+                    "title": "LeaseBody",
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "equipment",
+                        "title": "Kind",
+                        "type": "string"
+                      },
+                      "name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "cost": {
+                        "title": "Cost",
+                        "type": "integer"
+                      },
+                      "in_service_from": {
+                        "format": "date",
+                        "title": "In Service From",
+                        "type": "string"
+                      },
+                      "life_years": {
+                        "title": "Life Years",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "cost",
+                      "in_service_from",
+                      "life_years"
+                    ],
+                    "title": "EquipmentBody",
+                    "type": "object"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LoanOut"
+                    },
+                    {
+                      "$ref": "#/components/schemas/EquipmentOut"
+                    }
+                  ],
+                  "title": "Response Create Obligation V1 Obligations Post"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/obligations/{obligation_id}": {
+      "patch": {
+        "summary": "Patch Obligation",
+        "operationId": "patch_obligation_v1_obligations__obligation_id__patch",
+        "parameters": [
+          {
+            "name": "obligation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Obligation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Body",
+                "oneOf": [
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "loan",
+                        "title": "Kind",
+                        "type": "string"
+                      },
+                      "name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "lender": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Lender"
+                      },
+                      "principal": {
+                        "title": "Principal",
+                        "type": "integer"
+                      },
+                      "remaining": {
+                        "title": "Remaining",
+                        "type": "integer"
+                      },
+                      "rate_pct": {
+                        "title": "Rate Pct",
+                        "type": "number"
+                      },
+                      "payment": {
+                        "title": "Payment",
+                        "type": "integer"
+                      },
+                      "payment_day": {
+                        "title": "Payment Day",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "principal",
+                      "remaining",
+                      "rate_pct",
+                      "payment",
+                      "payment_day"
+                    ],
+                    "title": "LoanBody",
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "lease",
+                        "title": "Kind",
+                        "type": "string"
+                      },
+                      "name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "lender": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ],
+                        "title": "Lender"
+                      },
+                      "principal": {
+                        "title": "Principal",
+                        "type": "integer"
+                      },
+                      "remaining": {
+                        "title": "Remaining",
+                        "type": "integer"
+                      },
+                      "payment": {
+                        "title": "Payment",
+                        "type": "integer"
+                      },
+                      "payment_day": {
+                        "title": "Payment Day",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "principal",
+                      "remaining",
+                      "payment",
+                      "payment_day"
+                    ],
+                    "title": "LeaseBody",
+                    "type": "object"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "kind": {
+                        "const": "equipment",
+                        "title": "Kind",
+                        "type": "string"
+                      },
+                      "name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "cost": {
+                        "title": "Cost",
+                        "type": "integer"
+                      },
+                      "in_service_from": {
+                        "format": "date",
+                        "title": "In Service From",
+                        "type": "string"
+                      },
+                      "life_years": {
+                        "title": "Life Years",
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "cost",
+                      "in_service_from",
+                      "life_years"
+                    ],
+                    "title": "EquipmentBody",
+                    "type": "object"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/LoanOut"
+                    },
+                    {
+                      "$ref": "#/components/schemas/EquipmentOut"
+                    }
+                  ],
+                  "title": "Response Patch Obligation V1 Obligations  Obligation Id  Patch"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Close Obligation",
+        "description": "Closes the obligation from the current month; accruals of earlier months stay.",
+        "operationId": "close_obligation_v1_obligations__obligation_id__delete",
+        "parameters": [
+          {
+            "name": "obligation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Obligation Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Нет или недействительный токен (`unauthorized`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Пользователь не привязан к клинике (`forbidden`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации (`validation`): `details.fields` или `details.reason`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено или чужое (`not_found`).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBodyOut"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2342,6 +3204,31 @@
         ],
         "title": "AcquiringSummaryOut"
       },
+      "AdviceLinkOut": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "title": "AdviceLinkOut"
+      },
       "AdviceOut": {
         "properties": {
           "id": {
@@ -2371,6 +3258,16 @@
           },
           "why": {
             "$ref": "#/components/schemas/WhyOut"
+          },
+          "link": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AdviceLinkOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -2382,7 +3279,33 @@
           "text",
           "why"
         ],
-        "title": "AdviceOut"
+        "title": "AdviceOut",
+        "example": {
+          "id": "cash_gap",
+          "severity": "warning",
+          "icon": "📅",
+          "title": "9 октября: остаток ниже безопасного запаса на 76 663,82 ₽",
+          "text": "Вечером 9 октября останется 73 336,18 ₽ при запасе 150 000 ₽. Перенесите платёж ООО «Зоовет» на 108 500 ₽ с 7 октября на 12 октября: разрыва не будет.",
+          "why": {
+            "summary": "К этому дню платежи уходят быстрее, чем приходит выручка.",
+            "steps": [
+              "9 октября: на утро 316 511,87 ₽, к выплате 290 500 ₽.",
+              "Выручку дня, 47 324,31 ₽, считаем после платежей: к вечеру останется 73 336,18 ₽.",
+              "Безопасный запас 150 000 ₽: не хватает 76 663,82 ₽.",
+              "Разрыв длится 3 дня: с 9 октября по 11 октября.",
+              "Если перенести платёж ООО «Зоовет» на 12 октября, самый низкий остаток окна будет 173 474,37 ₽."
+            ],
+            "sources": [
+              "Платёжный календарь",
+              "Поступления за 12 недель",
+              "Отсрочка платежей поставщикам"
+            ]
+          },
+          "link": {
+            "path": "/planning/calendar",
+            "date": "2026-10-09"
+          }
+        }
       },
       "AtRiskOut": {
         "properties": {
@@ -2467,6 +3390,2919 @@
           "file"
         ],
         "title": "Body_import_bank_statement_v1_imports_bank_statement_post"
+      },
+      "CalendarAlertOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "date_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Date To"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "alert",
+              "warning"
+            ],
+            "title": "Severity"
+          },
+          "icon": {
+            "type": "string",
+            "title": "Icon"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "shortfall": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MoveSuggestionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "why": {
+            "$ref": "#/components/schemas/WhyOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "date_to",
+          "severity",
+          "icon",
+          "title",
+          "text",
+          "shortfall",
+          "suggestion",
+          "why"
+        ],
+        "title": "CalendarAlertOut"
+      },
+      "CalendarOut": {
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data As Of"
+          },
+          "window": {
+            "$ref": "#/components/schemas/WindowOut"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "partial",
+              "empty"
+            ],
+            "title": "Status"
+          },
+          "partial_reasons": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "short_history",
+                "obligations_missing",
+                "no_bank"
+              ]
+            },
+            "type": "array",
+            "title": "Partial Reasons"
+          },
+          "history_days": {
+            "type": "integer",
+            "title": "History Days"
+          },
+          "start_balance": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "safe_balance": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "safe_balance_set": {
+            "type": "boolean",
+            "title": "Safe Balance Set"
+          },
+          "preview": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PreviewOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "summary": {
+            "$ref": "#/components/schemas/CalendarSummaryOut"
+          },
+          "alerts": {
+            "items": {
+              "$ref": "#/components/schemas/CalendarAlertOut"
+            },
+            "type": "array",
+            "title": "Alerts"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/DayOut"
+            },
+            "type": "array",
+            "title": "Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "data_as_of",
+          "window",
+          "status",
+          "partial_reasons",
+          "history_days",
+          "start_balance",
+          "safe_balance",
+          "safe_balance_set",
+          "preview",
+          "summary",
+          "alerts",
+          "days"
+        ],
+        "title": "CalendarOut",
+        "example": {
+          "as_of": "2026-10-07",
+          "data_as_of": "2026-10-07T04:12:00+03:00",
+          "window": {
+            "from": "2026-10-07",
+            "to": "2026-10-28"
+          },
+          "status": "ok",
+          "partial_reasons": [],
+          "history_days": 190,
+          "start_balance": {
+            "value": 54357728,
+            "unit": "rub",
+            "breakdown": [
+              {
+                "label": "Расчётный счёт",
+                "value": 52325696,
+                "unit": "rub"
+              },
+              {
+                "label": "Касса",
+                "value": 2032032,
+                "unit": "rub"
+              }
+            ],
+            "source": [
+              "bank",
+              "vetmanager"
+            ],
+            "note": "Остаток на утро 7 октября: банк по вчерашний день и касса. Так же считается остаток на Рабочем столе."
+          },
+          "safe_balance": {
+            "value": 15000000,
+            "unit": "rub",
+            "breakdown": [
+              {
+                "label": "Задан в настройках",
+                "value": 15000000,
+                "unit": "rub"
+              }
+            ],
+            "source": [
+              "manual"
+            ],
+            "note": "Если остаток на вечер ниже этой суммы, день отмечается красным и подписью «ниже запаса»."
+          },
+          "safe_balance_set": true,
+          "preview": null,
+          "summary": {
+            "income": {
+              "value": 90582450,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "7–11 октября",
+                  "value": 16567278,
+                  "unit": "rub"
+                },
+                {
+                  "label": "12–18 октября",
+                  "value": 28765035,
+                  "unit": "rub"
+                },
+                {
+                  "label": "19–25 октября",
+                  "value": 28765035,
+                  "unit": "rub"
+                },
+                {
+                  "label": "26–28 октября",
+                  "value": 16485102,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "calc"
+              ],
+              "note": "Прогноз выручки: среднее поступлений по дню недели за последние 12 недель."
+            },
+            "expense": {
+              "value": 107417177,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "7–11 октября",
+                  "value": 60078800,
+                  "unit": "rub"
+                },
+                {
+                  "label": "12–18 октября",
+                  "value": 12743377,
+                  "unit": "rub"
+                },
+                {
+                  "label": "19–25 октября",
+                  "value": 28470000,
+                  "unit": "rub"
+                },
+                {
+                  "label": "26–28 октября",
+                  "value": 6125000,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "bank",
+                "manual"
+              ],
+              "note": "14 платежей: аренда, зарплата, поставщики, налоги, кредит и лизинг.",
+              "details": [
+                {
+                  "label": "Регулярные платежи",
+                  "value": 95143677,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Обязательства",
+                  "value": 7773500,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Внесено вручную",
+                  "value": 4500000,
+                  "unit": "rub"
+                }
+              ]
+            },
+            "payments_count": 14,
+            "lowest": {
+              "date": "2026-10-09",
+              "balance": {
+                "value": 7333618,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 31651187,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Сбербанк (зарплатный проект)",
+                    "value": -29050000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер ниже безопасного запаса на 76 663,82 ₽."
+              },
+              "status": "below_safe"
+            }
+          },
+          "alerts": [
+            {
+              "id": "gap_20261009",
+              "date": "2026-10-09",
+              "date_to": "2026-10-11",
+              "severity": "warning",
+              "icon": "📅",
+              "title": "9 октября: остаток ниже безопасного запаса на 76 663,82 ₽",
+              "text": "Вечером 9 октября останется 73 336,18 ₽ при запасе 150 000 ₽.",
+              "shortfall": {
+                "value": 7666382,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Безопасный запас",
+                    "value": 15000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Остаток на вечер 9 октября",
+                    "value": -7333618,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Сколько не хватает до безопасного запаса в самой низкой точке."
+              },
+              "suggestion": {
+                "id": "mv_rec_5003012345_b5f2b0_1_20261007_20261012",
+                "payment_id": "rec_5003012345_b5f2b0_1_20261007",
+                "payment_name": "ООО «Зоовет»",
+                "amount": {
+                  "value": 10850000,
+                  "unit": "rub",
+                  "breakdown": [
+                    {
+                      "label": "ООО «Зоовет»",
+                      "value": 10850000,
+                      "unit": "rub"
+                    }
+                  ],
+                  "source": [
+                    "calc"
+                  ],
+                  "note": "Платёж, который предлагаем перенести."
+                },
+                "from_date": "2026-10-07",
+                "to_date": "2026-10-12",
+                "delay_days": 5,
+                "closes_gap": true,
+                "lowest_after": {
+                  "value": 17347437,
+                  "unit": "rub",
+                  "breakdown": [
+                    {
+                      "label": "Остаток на вечер 12 октября",
+                      "value": 17347437,
+                      "unit": "rub"
+                    }
+                  ],
+                  "source": [
+                    "calc"
+                  ],
+                  "note": "Самый низкий остаток окна, если перенести платёж."
+                },
+                "text": "Перенесите платёж ООО «Зоовет» на 108 500 ₽ с 7 октября на 12 октября: разрыва не будет."
+              },
+              "why": {
+                "summary": "К этому дню платежи уходят быстрее, чем приходит выручка.",
+                "steps": [
+                  "9 октября: на утро 316 511,87 ₽, к выплате 290 500 ₽.",
+                  "Выручку дня, 47 324,31 ₽, считаем после платежей: к вечеру останется 73 336,18 ₽.",
+                  "Безопасный запас 150 000 ₽: не хватает 76 663,82 ₽.",
+                  "Разрыв длится 3 дня: с 9 октября по 11 октября.",
+                  "Если перенести платёж ООО «Зоовет» на 12 октября, самый низкий остаток окна будет 173 474,37 ₽."
+                ],
+                "sources": [
+                  "Платёжный календарь",
+                  "Поступления за 12 недель",
+                  "Отсрочка платежей поставщикам"
+                ]
+              }
+            }
+          ],
+          "days": [
+            {
+              "date": "2026-10-07",
+              "weekday": "ср",
+              "opening": {
+                "value": 54357728,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Расчётный счёт",
+                    "value": 52325696,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Касса",
+                    "value": 2032032,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "bank",
+                  "vetmanager"
+                ],
+                "note": "Остаток на утро 7 октября: банк по вчерашний день и касса. Так же считается остаток на Рабочем столе."
+              },
+              "income_forecast": {
+                "value": 4287345,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по средам",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "514 481,43 ₽ ÷ 12 = 42 873,45 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 51448143,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_5003012345_b5f2b0_1_20261007",
+                  "name": "ООО «Зоовет»",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000005",
+                    "name": "Препараты и расходники"
+                  },
+                  "counterparty": {
+                    "id": "5003012345",
+                    "name": "ООО «Зоовет»"
+                  },
+                  "amount": {
+                    "value": 10850000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ООО «Зоовет»",
+                        "value": 10850000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (7-е), сумма — средняя из трёх (медиана): 108 500 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 10412300,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 11230000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 10850000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 43507728,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 54357728,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ООО «Зоовет»",
+                        "value": -10850000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 5
+                }
+              ],
+              "closing": {
+                "value": 47795073,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 54357728,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ООО «Зоовет»",
+                    "value": -10850000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-08",
+              "weekday": "чт",
+              "opening": {
+                "value": 47795073,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 7 октября",
+                    "value": 47795073,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4034914,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по четвергам",
+                    "value": 4034914,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "484 189,71 ₽ ÷ 12 = 40 349,14 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 48418971,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_772800112233_e0e77a_1_20261008",
+                  "name": "ИП Кравцов А. В.",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000009",
+                    "name": "Аренда"
+                  },
+                  "counterparty": {
+                    "id": "772800112233",
+                    "name": "ИП Кравцов А. В."
+                  },
+                  "amount": {
+                    "value": 14000000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ИП Кравцов А. В.",
+                        "value": 14000000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (8-е), сумма — средняя из трёх (медиана): 140 000 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 14000000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 14000000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 14000000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 33795073,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 47795073,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ИП Кравцов А. В.",
+                        "value": -14000000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                },
+                {
+                  "id": "obl_S5-loan_20261008",
+                  "name": "Кредит на аппарат УЗИ",
+                  "category": null,
+                  "counterparty": null,
+                  "amount": {
+                    "value": 5273500,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "Кредит на аппарат УЗИ",
+                        "value": 5273500,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "manual"
+                    ],
+                    "note": "Платёж по графику из раздела «Обязательства».",
+                    "details": [
+                      {
+                        "label": "Проценты за октября",
+                        "value": 1486564,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Основной долг",
+                        "value": 3786936,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "obligation",
+                  "balance_after": {
+                    "value": 28521573,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 33795073,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Кредит на аппарат УЗИ",
+                        "value": -5273500,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                },
+                {
+                  "id": "rec_7728990011_a33373_1_20261008",
+                  "name": "ООО «Чистый дом»",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-00000000000b",
+                    "name": "Хозяйственные расходы"
+                  },
+                  "counterparty": {
+                    "id": "7728990011",
+                    "name": "ООО «Чистый дом»"
+                  },
+                  "amount": {
+                    "value": 905300,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ООО «Чистый дом»",
+                        "value": 905300,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (8-е), сумма — средняя из трёх (медиана): 9 053 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 905300,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 871000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 940200,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 27616273,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 28521573,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ООО «Чистый дом»",
+                        "value": -905300,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 3
+                }
+              ],
+              "closing": {
+                "value": 31651187,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 47795073,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ИП Кравцов А. В.",
+                    "value": -14000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Кредит на аппарат УЗИ",
+                    "value": -5273500,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ООО «Чистый дом»",
+                    "value": -905300,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4034914,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-09",
+              "weekday": "пт",
+              "opening": {
+                "value": 31651187,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 8 октября",
+                    "value": 31651187,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4732431,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по пятницам",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "567 891,71 ₽ ÷ 12 = 47 324,31 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 56789171,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7707083893_e9733d_1_20261009",
+                  "name": "Сбербанк (зарплатный проект)",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000008",
+                    "name": "Оклады"
+                  },
+                  "counterparty": {
+                    "id": "7707083893",
+                    "name": "Сбербанк (зарплатный проект)"
+                  },
+                  "amount": {
+                    "value": 29050000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "Сбербанк (зарплатный проект)",
+                        "value": 29050000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (10-е), сумма — средняя из трёх (медиана): 290 500 ₽. Выпал на выходной: налоги сдвигаем на понедельник, остальное на пятницу.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 28750000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 29600000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 29050000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 2601187,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 31651187,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сбербанк (зарплатный проект)",
+                        "value": -29050000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 7333618,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 31651187,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Сбербанк (зарплатный проект)",
+                    "value": -29050000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер ниже безопасного запаса на 76 663,82 ₽."
+              },
+              "status": "below_safe",
+              "note": "Остаток на вечер ниже безопасного запаса на 76 663,82 ₽."
+            },
+            {
+              "date": "2026-10-10",
+              "weekday": "сб",
+              "opening": {
+                "value": 7333618,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 9 октября",
+                    "value": 7333618,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 2075402,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по субботам",
+                    "value": 2075402,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "249 048,29 ₽ ÷ 12 = 20 754,02 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 24904829,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 9409020,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 7333618,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 2075402,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер ниже безопасного запаса на 55 909,80 ₽."
+              },
+              "status": "below_safe",
+              "note": "Остаток на вечер ниже безопасного запаса на 55 909,80 ₽."
+            },
+            {
+              "date": "2026-10-11",
+              "weekday": "вс",
+              "opening": {
+                "value": 9409020,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 10 октября",
+                    "value": 9409020,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 1437186,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по воскресеньям",
+                    "value": 1437186,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "172 462,37 ₽ ÷ 12 = 14 371,86 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 17246237,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 10846206,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 9409020,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 1437186,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер ниже безопасного запаса на 41 537,94 ₽."
+              },
+              "status": "below_safe",
+              "note": "Остаток на вечер ниже безопасного запаса на 41 537,94 ₽."
+            },
+            {
+              "date": "2026-10-12",
+              "weekday": "пн",
+              "opening": {
+                "value": 10846206,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 11 октября",
+                    "value": 10846206,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 8104608,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по понедельникам",
+                    "value": 8104608,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "972 552,97 ₽ ÷ 12 = 81 046,08 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 97255297,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7701234500_f0cbb7_1_20261012",
+                  "name": "АО «Горэнерго»",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-00000000000a",
+                    "name": "Коммунальные и связь"
+                  },
+                  "counterparty": {
+                    "id": "7701234500",
+                    "name": "АО «Горэнерго»"
+                  },
+                  "amount": {
+                    "value": 1603377,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "АО «Горэнерго»",
+                        "value": 1603377,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (12-е), сумма — средняя из трёх (медиана): 16 033,77 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 1552090,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 1603377,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 1748912,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 9242829,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 10846206,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "АО «Горэнерго»",
+                        "value": -1603377,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 17347437,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 10846206,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "АО «Горэнерго»",
+                    "value": -1603377,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 8104608,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-13",
+              "weekday": "вт",
+              "opening": {
+                "value": 17347437,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 12 октября",
+                    "value": 17347437,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4093149,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по вторникам",
+                    "value": 4093149,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "491 177,86 ₽ ÷ 12 = 40 931,49 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 49117786,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7810443322_e4cf3a_1_20261013",
+                  "name": "ООО «Шанс Био»",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000007",
+                    "name": "Лаборатории"
+                  },
+                  "counterparty": {
+                    "id": "7810443322",
+                    "name": "ООО «Шанс Био»"
+                  },
+                  "amount": {
+                    "value": 3540000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ООО «Шанс Био»",
+                        "value": 3540000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (13-е), сумма — средняя из трёх (медиана): 35 400 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 3620000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 3350000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 3540000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 13807437,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 17347437,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ООО «Шанс Био»",
+                        "value": -3540000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 17900586,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 17347437,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ООО «Шанс Био»",
+                    "value": -3540000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4093149,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-14",
+              "weekday": "ср",
+              "opening": {
+                "value": 17900586,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 13 октября",
+                    "value": 17900586,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4287345,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по средам",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "514 481,43 ₽ ÷ 12 = 42 873,45 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 51448143,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "S5-plan-1",
+                  "name": "Ремонт кондиционера",
+                  "category": null,
+                  "counterparty": null,
+                  "amount": {
+                    "value": 4500000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "Ремонт кондиционера",
+                        "value": 4500000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "manual"
+                    ],
+                    "note": "Платёж внесён вручную."
+                  },
+                  "source": "manual",
+                  "balance_after": {
+                    "value": 13400586,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 17900586,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Ремонт кондиционера",
+                        "value": -4500000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 17687931,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 17900586,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Ремонт кондиционера",
+                    "value": -4500000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-15",
+              "weekday": "чт",
+              "opening": {
+                "value": 17687931,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 14 октября",
+                    "value": 17687931,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4034914,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по четвергам",
+                    "value": 4034914,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "484 189,71 ₽ ÷ 12 = 40 349,14 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 48418971,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "obl_S5-lease_20261015",
+                  "name": "Лизинг рентген-аппарата",
+                  "category": null,
+                  "counterparty": null,
+                  "amount": {
+                    "value": 2500000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "Лизинг рентген-аппарата",
+                        "value": 2500000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "manual"
+                    ],
+                    "note": "Платёж по графику из раздела «Обязательства»."
+                  },
+                  "source": "obligation",
+                  "balance_after": {
+                    "value": 15187931,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 17687931,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Лизинг рентген-аппарата",
+                        "value": -2500000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 19222845,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 17687931,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Лизинг рентген-аппарата",
+                    "value": -2500000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4034914,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-16",
+              "weekday": "пт",
+              "opening": {
+                "value": 19222845,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 15 октября",
+                    "value": 19222845,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4732431,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по пятницам",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "567 891,71 ₽ ÷ 12 = 47 324,31 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 56789171,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7720112244_e3b0c4_1_20261016",
+                  "name": "ЧОП «Щит»",
+                  "category": null,
+                  "counterparty": {
+                    "id": "7720112244",
+                    "name": "ЧОП «Щит»"
+                  },
+                  "amount": {
+                    "value": 600000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ЧОП «Щит»",
+                        "value": 600000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (16-е), сумма — средняя из трёх (медиана): 6 000 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 600000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 600000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 600000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 18622845,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 19222845,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ЧОП «Щит»",
+                        "value": -600000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 23355276,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 19222845,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ЧОП «Щит»",
+                    "value": -600000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-17",
+              "weekday": "сб",
+              "opening": {
+                "value": 23355276,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 16 октября",
+                    "value": 23355276,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 2075402,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по субботам",
+                    "value": 2075402,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "249 048,29 ₽ ÷ 12 = 20 754,02 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 24904829,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 25430678,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 23355276,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 2075402,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-18",
+              "weekday": "вс",
+              "opening": {
+                "value": 25430678,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 17 октября",
+                    "value": 25430678,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 1437186,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по воскресеньям",
+                    "value": 1437186,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "172 462,37 ₽ ÷ 12 = 14 371,86 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 17246237,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 26867864,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 25430678,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 1437186,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-19",
+              "weekday": "пн",
+              "opening": {
+                "value": 26867864,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 18 октября",
+                    "value": 26867864,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 8104608,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по понедельникам",
+                    "value": 8104608,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "972 552,97 ₽ ÷ 12 = 81 046,08 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 97255297,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 34972472,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 26867864,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 8104608,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-20",
+              "weekday": "вт",
+              "opening": {
+                "value": 34972472,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 19 октября",
+                    "value": 34972472,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4093149,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по вторникам",
+                    "value": 4093149,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "491 177,86 ₽ ÷ 12 = 40 931,49 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 49117786,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7714556677_b5f2b0_1_20261020",
+                  "name": "ООО «ВетПрепарат»",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000005",
+                    "name": "Препараты и расходники"
+                  },
+                  "counterparty": {
+                    "id": "7714556677",
+                    "name": "ООО «ВетПрепарат»"
+                  },
+                  "amount": {
+                    "value": 6040000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ООО «ВетПрепарат»",
+                        "value": 6040000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (20-е), сумма — средняя из трёх (медиана): 60 400 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 6040000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 5760000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 6310000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 28932472,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 34972472,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ООО «ВетПрепарат»",
+                        "value": -6040000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 3
+                }
+              ],
+              "closing": {
+                "value": 33025621,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 34972472,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ООО «ВетПрепарат»",
+                    "value": -6040000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4093149,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-21",
+              "weekday": "ср",
+              "opening": {
+                "value": 33025621,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 20 октября",
+                    "value": 33025621,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4287345,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по средам",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "514 481,43 ₽ ÷ 12 = 42 873,45 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 51448143,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_5003012345_b5f2b0_2_20261021",
+                  "name": "ООО «Зоовет»",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000005",
+                    "name": "Препараты и расходники"
+                  },
+                  "counterparty": {
+                    "id": "5003012345",
+                    "name": "ООО «Зоовет»"
+                  },
+                  "amount": {
+                    "value": 10230000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "ООО «Зоовет»",
+                        "value": 10230000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (21-е), сумма — средняя из трёх (медиана): 102 300 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 10230000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 9940500,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 10480000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 22795621,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 33025621,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "ООО «Зоовет»",
+                        "value": -10230000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 5
+                }
+              ],
+              "closing": {
+                "value": 27082966,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 33025621,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "ООО «Зоовет»",
+                    "value": -10230000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-22",
+              "weekday": "чт",
+              "opening": {
+                "value": 27082966,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 21 октября",
+                    "value": 27082966,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4034914,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по четвергам",
+                    "value": 4034914,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "484 189,71 ₽ ÷ 12 = 40 349,14 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 48418971,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 31117880,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 27082966,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4034914,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-23",
+              "weekday": "пт",
+              "opening": {
+                "value": 31117880,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 22 октября",
+                    "value": 31117880,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4732431,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по пятницам",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "567 891,71 ₽ ÷ 12 = 47 324,31 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 56789171,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7707083893_e9733d_2_20261023",
+                  "name": "Сбербанк (зарплатный проект)",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-000000000008",
+                    "name": "Оклады"
+                  },
+                  "counterparty": {
+                    "id": "7707083893",
+                    "name": "Сбербанк (зарплатный проект)"
+                  },
+                  "amount": {
+                    "value": 12200000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "Сбербанк (зарплатный проект)",
+                        "value": 12200000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (25-е), сумма — средняя из трёх (медиана): 122 000 ₽. Выпал на выходной: налоги сдвигаем на понедельник, остальное на пятницу.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 12100000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 12300000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 12200000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 18917880,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 31117880,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сбербанк (зарплатный проект)",
+                        "value": -12200000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 23650311,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 31117880,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Сбербанк (зарплатный проект)",
+                    "value": -12200000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4732431,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-24",
+              "weekday": "сб",
+              "opening": {
+                "value": 23650311,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 23 октября",
+                    "value": 23650311,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 2075402,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по субботам",
+                    "value": 2075402,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "249 048,29 ₽ ÷ 12 = 20 754,02 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 24904829,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 25725713,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 23650311,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 2075402,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-25",
+              "weekday": "вс",
+              "opening": {
+                "value": 25725713,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 24 октября",
+                    "value": 25725713,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 1437186,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по воскресеньям",
+                    "value": 1437186,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "172 462,37 ₽ ÷ 12 = 14 371,86 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 17246237,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 27162899,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 25725713,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 1437186,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-26",
+              "weekday": "пн",
+              "opening": {
+                "value": 27162899,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 25 октября",
+                    "value": 27162899,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 8104608,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по понедельникам",
+                    "value": 8104608,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "972 552,97 ₽ ÷ 12 = 81 046,08 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 97255297,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 35267507,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 27162899,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 8104608,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-27",
+              "weekday": "вт",
+              "opening": {
+                "value": 35267507,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 26 октября",
+                    "value": 35267507,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4093149,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по вторникам",
+                    "value": 4093149,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "491 177,86 ₽ ÷ 12 = 40 931,49 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 49117786,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [],
+              "closing": {
+                "value": 39360656,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 35267507,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4093149,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            },
+            {
+              "date": "2026-10-28",
+              "weekday": "ср",
+              "opening": {
+                "value": 39360656,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Остаток на вечер 27 октября",
+                    "value": 39360656,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Остаток на вечер предыдущего дня."
+              },
+              "income_forecast": {
+                "value": 4287345,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Среднее поступление по средам",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "514 481,43 ₽ ÷ 12 = 42 873,45 ₽. Только поступления со статьёй дохода: возвраты, операции «на проверку», дубли и переводы между счетами не входят.",
+                "details": [
+                  {
+                    "label": "Таких дней за 12 недель",
+                    "value": 12,
+                    "unit": "count"
+                  },
+                  {
+                    "label": "Поступило в эти дни",
+                    "value": 51448143,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "payments": [
+                {
+                  "id": "rec_7727406020_af675c_1_20261028",
+                  "name": "УФК (ФНС России), ЕНП",
+                  "category": {
+                    "id": "00000000-0000-0000-0000-00000000000f",
+                    "name": "Налоги и взносы"
+                  },
+                  "counterparty": {
+                    "id": "7727406020",
+                    "name": "УФК (ФНС России), ЕНП"
+                  },
+                  "amount": {
+                    "value": 6125000,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "УФК (ФНС России), ЕНП",
+                        "value": 6125000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "bank"
+                    ],
+                    "note": "Платёж был в каждом из трёх последних месяцев. День — самый частый день месяца (28-е), сумма — средняя из трёх (медиана): 61 250 ₽.",
+                    "details": [
+                      {
+                        "label": "Июль",
+                        "value": 5840000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Август",
+                        "value": 6310000,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "Сентябрь",
+                        "value": 6125000,
+                        "unit": "rub"
+                      }
+                    ]
+                  },
+                  "source": "recurring",
+                  "balance_after": {
+                    "value": 33235656,
+                    "unit": "rub",
+                    "breakdown": [
+                      {
+                        "label": "До платежа",
+                        "value": 39360656,
+                        "unit": "rub"
+                      },
+                      {
+                        "label": "УФК (ФНС России), ЕНП",
+                        "value": -6125000,
+                        "unit": "rub"
+                      }
+                    ],
+                    "source": [
+                      "calc"
+                    ],
+                    "note": "Выручку дня считаем после платежей: деньги приходят в течение дня."
+                  },
+                  "max_deferral_days": 0
+                }
+              ],
+              "closing": {
+                "value": 37523001,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "На утро",
+                    "value": 39360656,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "УФК (ФНС России), ЕНП",
+                    "value": -6125000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выручка, прогноз",
+                    "value": 4287345,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "Запас соблюдён: остаток выше 150 000 ₽."
+              },
+              "status": "ok",
+              "note": "Запас соблюдён: остаток выше 150 000 ₽."
+            }
+          ]
+        }
+      },
+      "CalendarSummaryOut": {
+        "properties": {
+          "income": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "expense": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "payments_count": {
+            "type": "integer",
+            "title": "Payments Count"
+          },
+          "lowest": {
+            "$ref": "#/components/schemas/LowestOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "income",
+          "expense",
+          "payments_count",
+          "lowest"
+        ],
+        "title": "CalendarSummaryOut"
       },
       "CategoriesOut": {
         "properties": {
@@ -2592,6 +6428,24 @@
           "payroll"
         ],
         "title": "CategoryOut"
+      },
+      "CategoryRefOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "CategoryRefOut"
       },
       "CategoryRuleOut": {
         "properties": {
@@ -2783,6 +6637,7 @@
             "anyOf": [
               {
                 "type": "integer",
+                "maximum": 10000000000.0,
                 "minimum": 0.0
               },
               {
@@ -2932,6 +6787,66 @@
           "items"
         ],
         "title": "ConnectionsOut"
+      },
+      "CounterpartyOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "max_deferral_days": {
+            "type": "integer",
+            "title": "Max Deferral Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "max_deferral_days"
+        ],
+        "title": "CounterpartyOut",
+        "example": {
+          "id": "5003012345",
+          "name": "ООО «Зоовет»",
+          "max_deferral_days": 5
+        }
+      },
+      "CounterpartyPatch": {
+        "properties": {
+          "max_deferral_days": {
+            "type": "integer",
+            "title": "Max Deferral Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "max_deferral_days"
+        ],
+        "title": "CounterpartyPatch"
+      },
+      "CounterpartyRefOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "CounterpartyRefOut"
       },
       "CreatedRuleOut": {
         "properties": {
@@ -3593,6 +7508,146 @@
           "advice_status": "ready"
         }
       },
+      "DayOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "weekday": {
+            "type": "string",
+            "enum": [
+              "пн",
+              "вт",
+              "ср",
+              "чт",
+              "пт",
+              "сб",
+              "вс"
+            ],
+            "title": "Weekday"
+          },
+          "opening": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "income_forecast": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "payments": {
+            "items": {
+              "$ref": "#/components/schemas/PaymentOut"
+            },
+            "type": "array",
+            "title": "Payments"
+          },
+          "closing": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "below_safe",
+              "below_zero"
+            ],
+            "title": "Status"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "weekday",
+          "opening",
+          "income_forecast",
+          "payments",
+          "closing",
+          "status",
+          "note"
+        ],
+        "title": "DayOut"
+      },
+      "EquipmentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "equipment",
+            "title": "Kind",
+            "default": "equipment"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "life_years": {
+            "type": "integer",
+            "title": "Life Years"
+          },
+          "in_service_from": {
+            "type": "string",
+            "format": "date",
+            "title": "In Service From"
+          },
+          "amortization_from": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+            "title": "Amortization From"
+          },
+          "amortization_to": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+            "title": "Amortization To"
+          },
+          "monthly": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "paid",
+              "closed"
+            ],
+            "title": "Status"
+          },
+          "closed_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closed From"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "cost",
+          "life_years",
+          "in_service_from",
+          "amortization_from",
+          "amortization_to",
+          "monthly",
+          "status"
+        ],
+        "title": "EquipmentOut"
+      },
       "ErrorBodyOut": {
         "properties": {
           "error": {
@@ -3925,6 +7980,319 @@
           "skipped"
         ],
         "title": "ImportOut"
+      },
+      "LoanOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "loan",
+              "lease"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "lender": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lender"
+          },
+          "principal": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "remaining": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "paid_pct": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "payment": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "rate_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rate Pct"
+          },
+          "payment_day": {
+            "type": "integer",
+            "title": "Payment Day"
+          },
+          "next_payment_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Payment Date"
+          },
+          "last_payment_month": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+            "title": "Last Payment Month"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "paid",
+              "closed"
+            ],
+            "title": "Status"
+          },
+          "closed_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closed From"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "lender",
+          "principal",
+          "remaining",
+          "paid_pct",
+          "payment",
+          "rate_pct",
+          "payment_day",
+          "next_payment_date",
+          "last_payment_month",
+          "status"
+        ],
+        "title": "LoanOut"
+      },
+      "LowestOut": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "below_safe",
+              "below_zero"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "balance",
+          "status"
+        ],
+        "title": "LowestOut"
+      },
+      "ManualPaymentBody": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "amount": {
+            "type": "integer",
+            "title": "Amount"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "category_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Id"
+          },
+          "max_deferral_days": {
+            "type": "integer",
+            "title": "Max Deferral Days",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "amount",
+          "date"
+        ],
+        "title": "ManualPaymentBody"
+      },
+      "ManualPaymentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CategoryRefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amount": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "source": {
+            "type": "string",
+            "const": "manual",
+            "title": "Source",
+            "default": "manual"
+          },
+          "max_deferral_days": {
+            "type": "integer",
+            "title": "Max Deferral Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "date",
+          "name",
+          "category",
+          "amount",
+          "max_deferral_days"
+        ],
+        "title": "ManualPaymentOut",
+        "example": {
+          "id": "S5-plan-1",
+          "date": "2026-10-14",
+          "name": "Ремонт кондиционера",
+          "category": null,
+          "amount": {
+            "value": 4500000,
+            "unit": "rub",
+            "breakdown": [
+              {
+                "label": "Ремонт кондиционера",
+                "value": 4500000,
+                "unit": "rub"
+              }
+            ],
+            "source": [
+              "manual"
+            ],
+            "note": "Платёж внесён вручную."
+          },
+          "source": "manual",
+          "max_deferral_days": 0
+        }
+      },
+      "MoveSuggestionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "payment_id": {
+            "type": "string",
+            "title": "Payment Id"
+          },
+          "payment_name": {
+            "type": "string",
+            "title": "Payment Name"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "from_date": {
+            "type": "string",
+            "format": "date",
+            "title": "From Date"
+          },
+          "to_date": {
+            "type": "string",
+            "format": "date",
+            "title": "To Date"
+          },
+          "delay_days": {
+            "type": "integer",
+            "title": "Delay Days"
+          },
+          "closes_gap": {
+            "type": "boolean",
+            "title": "Closes Gap"
+          },
+          "lowest_after": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "payment_id",
+          "payment_name",
+          "amount",
+          "from_date",
+          "to_date",
+          "delay_days",
+          "closes_gap",
+          "lowest_after",
+          "text"
+        ],
+        "title": "MoveSuggestionOut"
       },
       "NamedRefOut": {
         "properties": {
@@ -4974,6 +9342,629 @@
           ]
         }
       },
+      "ObligationsOut": {
+        "properties": {
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "debt_total": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "monthly_payment": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "monthly_payment_share_pct": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FigureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amortization_month": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "pnl_month": {
+            "$ref": "#/components/schemas/PnlMonthOut"
+          },
+          "loans": {
+            "items": {
+              "$ref": "#/components/schemas/LoanOut"
+            },
+            "type": "array",
+            "title": "Loans"
+          },
+          "equipment": {
+            "items": {
+              "$ref": "#/components/schemas/EquipmentOut"
+            },
+            "type": "array",
+            "title": "Equipment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "as_of",
+          "debt_total",
+          "monthly_payment",
+          "amortization_month",
+          "pnl_month",
+          "loans",
+          "equipment"
+        ],
+        "title": "ObligationsOut",
+        "example": {
+          "as_of": "2026-10-07",
+          "debt_total": {
+            "value": 126492301,
+            "unit": "rub",
+            "breakdown": [
+              {
+                "label": "Кредит на аппарат УЗИ",
+                "value": 111492301,
+                "unit": "rub"
+              },
+              {
+                "label": "Лизинг рентген-аппарата",
+                "value": 15000000,
+                "unit": "rub"
+              }
+            ],
+            "source": [
+              "manual"
+            ],
+            "note": "Остаток к выплате на сегодня: по кредиту основной долг без будущих процентов, по лизингу оставшиеся платежи."
+          },
+          "monthly_payment": {
+            "value": 7773500,
+            "unit": "rub",
+            "breakdown": [
+              {
+                "label": "Кредит на аппарат УЗИ",
+                "value": 5273500,
+                "unit": "rub"
+              },
+              {
+                "label": "Лизинг рентген-аппарата",
+                "value": 2500000,
+                "unit": "rub"
+              }
+            ],
+            "source": [
+              "manual"
+            ],
+            "note": "Платежи стоят в платёжном календаре в свой день."
+          },
+          "amortization_month": {
+            "value": 2652778,
+            "unit": "rub",
+            "breakdown": [
+              {
+                "label": "Анализатор крови",
+                "value": 416667,
+                "unit": "rub"
+              },
+              {
+                "label": "Аппарат УЗИ",
+                "value": 2000000,
+                "unit": "rub"
+              },
+              {
+                "label": "Центрифуга",
+                "value": 236111,
+                "unit": "rub"
+              }
+            ],
+            "source": [
+              "calc"
+            ],
+            "note": "Стоимость, делённая на срок службы в месяцах. Деньги со счёта не уходят, но входят в строку «Обязательства и амортизация» отчёта."
+          },
+          "pnl_month": {
+            "month": "2026-10",
+            "amount": {
+              "value": 6639342,
+              "unit": "rub",
+              "breakdown": [
+                {
+                  "label": "Проценты по кредиту",
+                  "value": 1486564,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Лизинг (платёж целиком)",
+                  "value": 2500000,
+                  "unit": "rub"
+                },
+                {
+                  "label": "Амортизация оборудования",
+                  "value": 2652778,
+                  "unit": "rub"
+                }
+              ],
+              "source": [
+                "calc"
+              ],
+              "note": "То же число в строке «Обязательства и амортизация» отчёта за октябрь 2026. Основной долг кредита расходом не считается."
+            }
+          },
+          "loans": [
+            {
+              "id": "S5-loan",
+              "kind": "loan",
+              "name": "Кредит на аппарат УЗИ",
+              "lender": "Сбербанк",
+              "principal": {
+                "value": 150000000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "По договору",
+                    "value": 150000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual"
+                ],
+                "note": "Внесено вручную."
+              },
+              "remaining": {
+                "value": 111492301,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "По договору",
+                    "value": 150000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выплачено",
+                    "value": -38507699,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual",
+                  "calc"
+                ],
+                "note": "Основной долг без будущих процентов.",
+                "details": [
+                  {
+                    "label": "После платежа 8 октября",
+                    "value": 107705365,
+                    "unit": "rub"
+                  }
+                ]
+              },
+              "paid_pct": {
+                "value": 25.7,
+                "unit": "pct",
+                "breakdown": [
+                  {
+                    "label": "Выплачено",
+                    "value": 38507699,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "По договору",
+                    "value": 150000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "385 076,99 ₽ ÷ 1 500 000 ₽ = 25,7%."
+              },
+              "payment": {
+                "value": 5273500,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Проценты за октября",
+                    "value": 1486564,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Основной долг",
+                    "value": 3786936,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual",
+                  "calc"
+                ],
+                "note": "Платёж по графику: проценты идут в расходы отчёта, основной долг нет."
+              },
+              "rate_pct": 16.0,
+              "payment_day": 8,
+              "next_payment_date": "2026-10-08",
+              "last_payment_month": "2028-10",
+              "status": "active",
+              "closed_from": null
+            },
+            {
+              "id": "S5-lease",
+              "kind": "lease",
+              "name": "Лизинг рентген-аппарата",
+              "lender": "АО «Европлан»",
+              "principal": {
+                "value": 90000000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "По договору",
+                    "value": 90000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual"
+                ],
+                "note": "Внесено вручную."
+              },
+              "remaining": {
+                "value": 15000000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "По договору",
+                    "value": 90000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Выплачено",
+                    "value": -75000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual",
+                  "calc"
+                ],
+                "note": "Сумма оставшихся платежей по договору."
+              },
+              "paid_pct": {
+                "value": 83.3,
+                "unit": "pct",
+                "breakdown": [
+                  {
+                    "label": "Выплачено",
+                    "value": 75000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "По договору",
+                    "value": 90000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "750 000 ₽ ÷ 900 000 ₽ = 83,3%."
+              },
+              "payment": {
+                "value": 2500000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Платёж по договору",
+                    "value": 2500000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual",
+                  "calc"
+                ],
+                "note": "В расходы отчёта «Прибыли и убытки» идёт целиком."
+              },
+              "rate_pct": null,
+              "payment_day": 15,
+              "next_payment_date": "2026-10-15",
+              "last_payment_month": "2027-03",
+              "status": "active",
+              "closed_from": null
+            }
+          ],
+          "equipment": [
+            {
+              "id": "S5-eq-blood",
+              "kind": "equipment",
+              "name": "Анализатор крови",
+              "cost": {
+                "value": 25000000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Стоимость при покупке",
+                    "value": 25000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual"
+                ],
+                "note": "Внесено вручную."
+              },
+              "life_years": 5,
+              "in_service_from": "2024-02-10",
+              "amortization_from": "2024-03",
+              "amortization_to": "2029-02",
+              "monthly": {
+                "value": 416667,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Анализатор крови",
+                    "value": 416667,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "250 000 ₽ ÷ 60 = 4 166,67 ₽ в месяц, с 2024-03 по 2029-02.",
+                "details": [
+                  {
+                    "label": "Стоимость",
+                    "value": 25000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Срок службы, месяцев",
+                    "value": 60,
+                    "unit": "count"
+                  }
+                ]
+              },
+              "status": "active",
+              "closed_from": null
+            },
+            {
+              "id": "S5-eq-us",
+              "kind": "equipment",
+              "name": "Аппарат УЗИ",
+              "cost": {
+                "value": 168000000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Стоимость при покупке",
+                    "value": 168000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual"
+                ],
+                "note": "Внесено вручную."
+              },
+              "life_years": 7,
+              "in_service_from": "2025-10-20",
+              "amortization_from": "2025-11",
+              "amortization_to": "2032-10",
+              "monthly": {
+                "value": 2000000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Аппарат УЗИ",
+                    "value": 2000000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "1 680 000 ₽ ÷ 84 = 20 000 ₽ в месяц, с 2025-11 по 2032-10.",
+                "details": [
+                  {
+                    "label": "Стоимость",
+                    "value": 168000000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Срок службы, месяцев",
+                    "value": 84,
+                    "unit": "count"
+                  }
+                ]
+              },
+              "status": "active",
+              "closed_from": null
+            },
+            {
+              "id": "S5-eq-centr",
+              "kind": "equipment",
+              "name": "Центрифуга",
+              "cost": {
+                "value": 8500000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Стоимость при покупке",
+                    "value": 8500000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual"
+                ],
+                "note": "Внесено вручную."
+              },
+              "life_years": 3,
+              "in_service_from": "2026-09-14",
+              "amortization_from": "2026-10",
+              "amortization_to": "2029-09",
+              "monthly": {
+                "value": 236111,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Центрифуга",
+                    "value": 236111,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "85 000 ₽ ÷ 36 = 2 361,11 ₽ в месяц, с 2026-10 по 2029-09.",
+                "details": [
+                  {
+                    "label": "Стоимость",
+                    "value": 8500000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Срок службы, месяцев",
+                    "value": 36,
+                    "unit": "count"
+                  }
+                ]
+              },
+              "status": "active",
+              "closed_from": null
+            },
+            {
+              "id": "S5-eq-autoclave",
+              "kind": "equipment",
+              "name": "Автоклав",
+              "cost": {
+                "value": 11800000,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Стоимость при покупке",
+                    "value": 11800000,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "manual"
+                ],
+                "note": "Внесено вручную."
+              },
+              "life_years": 5,
+              "in_service_from": "2021-04-05",
+              "amortization_from": "2021-05",
+              "amortization_to": "2026-04",
+              "monthly": {
+                "value": 196667,
+                "unit": "rub",
+                "breakdown": [
+                  {
+                    "label": "Автоклав",
+                    "value": 196667,
+                    "unit": "rub"
+                  }
+                ],
+                "source": [
+                  "calc"
+                ],
+                "note": "118 000 ₽ ÷ 60 = 1 966,67 ₽ в месяц, с 2021-05 по 2026-04.",
+                "details": [
+                  {
+                    "label": "Стоимость",
+                    "value": 11800000,
+                    "unit": "rub"
+                  },
+                  {
+                    "label": "Срок службы, месяцев",
+                    "value": 60,
+                    "unit": "count"
+                  }
+                ]
+              },
+              "status": "paid",
+              "closed_from": null
+            }
+          ]
+        }
+      },
+      "PaymentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CategoryRefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "counterparty": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CounterpartyRefOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "amount": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "recurring",
+              "obligation",
+              "manual"
+            ],
+            "title": "Source"
+          },
+          "balance_after": {
+            "$ref": "#/components/schemas/FigureOut"
+          },
+          "max_deferral_days": {
+            "type": "integer",
+            "title": "Max Deferral Days"
+          },
+          "moved_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Moved From"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "category",
+          "counterparty",
+          "amount",
+          "source",
+          "balance_after",
+          "max_deferral_days"
+        ],
+        "title": "PaymentOut"
+      },
       "PnlDirectionOut": {
         "properties": {
           "direction": {
@@ -5015,6 +10006,23 @@
           "margin_pct"
         ],
         "title": "PnlDirectionOut"
+      },
+      "PnlMonthOut": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "title": "Month"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/FigureOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "amount"
+        ],
+        "title": "PnlMonthOut"
       },
       "PnlOut": {
         "properties": {
@@ -5962,6 +10970,36 @@
           "amount"
         ],
         "title": "PnlRowOut"
+      },
+      "PreviewOut": {
+        "properties": {
+          "suggestion_id": {
+            "type": "string",
+            "title": "Suggestion Id"
+          },
+          "payment_id": {
+            "type": "string",
+            "title": "Payment Id"
+          },
+          "from_date": {
+            "type": "string",
+            "format": "date",
+            "title": "From Date"
+          },
+          "to_date": {
+            "type": "string",
+            "format": "date",
+            "title": "To Date"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suggestion_id",
+          "payment_id",
+          "from_date",
+          "to_date"
+        ],
+        "title": "PreviewOut"
       },
       "ResolveDuplicateBody": {
         "properties": {
@@ -7873,6 +12911,26 @@
           "sources"
         ],
         "title": "WhyOut"
+      },
+      "WindowOut": {
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date",
+            "title": "From"
+          },
+          "to": {
+            "type": "string",
+            "format": "date",
+            "title": "To"
+          }
+        },
+        "type": "object",
+        "required": [
+          "from",
+          "to"
+        ],
+        "title": "WindowOut"
       },
       "WrittenOffRowOut": {
         "properties": {

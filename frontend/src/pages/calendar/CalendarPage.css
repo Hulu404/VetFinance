@@ -1,0 +1,57 @@
+/* Payment calendar screen (design/screens/calendar.md). */
+.cal-card {
+  margin-top: var(--section-gap);
+  padding: 22px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.cal-card__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+.cal-card__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); margin-bottom: var(--space-3); }
+.cal-card__window { font-size: var(--fs-md); font-weight: var(--fw-bold); }
+.cal-card__phone { display: none; margin-bottom: var(--space-2); font-size: var(--fs-xs); color: var(--color-ink-soft); }
+.cal-card .footnote { margin: var(--space-3) 0 0; }
+
+.cal-legend { display: inline-flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-size: var(--fs-xs); color: var(--color-ink-soft); }
+.cal-legend__item { display: inline-flex; align-items: center; gap: 6px; }
+.cal-legend__sq { width: 12px; height: 12px; border-radius: 3px; }
+.cal-legend__sq--in { background: var(--color-ok-soft); border: 1px solid var(--color-ok-ink); }
+.cal-legend__sq--pay { background: var(--color-accent-soft); border-left: 3px solid var(--color-accent); }
+.cal-legend__sq--bad { background: var(--color-bad-soft); border: 1px solid var(--color-bad); }
+
+.cal-safe { margin-top: var(--space-2); font-size: var(--fs-sm); color: var(--color-ink-soft); }
+.cal-safe .figbtn { font-weight: var(--fw-semibold); color: var(--color-ink); }
+.cal-safe a { color: var(--color-accent-dark); font-weight: var(--fw-semibold); }
+
+.cal-actions { margin-top: var(--section-gap); }
+.cal-reasons { display: flex; flex-direction: column; gap: var(--space-1); }
+.cal-reasons__line { display: block; }
+
+.advice__link { margin-top: var(--space-2); text-decoration: none; }
+
+/* Loading */
+.cal-skeleton__head { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 2px; font-size: var(--fs-xs); color: var(--color-ink-soft); text-align: center; }
+.cal-skeleton__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-skeleton__cell { height: 90px; border-radius: 6px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+.cal-skeleton__chart { height: var(--cal-chart-height); margin-bottom: var(--space-3); border-radius: var(--radius-card); background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+.cal-skeleton__row { height: 44px; margin-bottom: 2px; border-radius: 12px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+
+@media (max-width: 820px) {
+  .cal-card { padding: 18px; }
+}
+@media (max-width: 560px) {
+  .cal-card__phone { display: block; }
+  .cal-actions .btn { width: 100%; min-height: var(--touch-min); }
+  .advice__link { width: 100%; min-height: var(--touch-min); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cal-skeleton__cell, .cal-skeleton__chart, .cal-skeleton__row { animation: none; }
+}

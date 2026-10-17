@@ -67,6 +67,9 @@ class ClinicOut(BaseModel):
     safe_balance: int
 
 
+SAFE_BALANCE_MAX = 10_000_000_000  # kopecks: 100 000 000 roubles
+
+
 class ClinicPatch(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -74,7 +77,7 @@ class ClinicPatch(BaseModel):
     legal_entity: str | None = Field(default=None, max_length=300)
     tax_regime: str | None = Field(default=None, max_length=100)
     timezone: str | None = None
-    safe_balance: StrictInt | None = Field(default=None, ge=0)
+    safe_balance: StrictInt | None = Field(default=None, ge=0, le=SAFE_BALANCE_MAX)
 
     @field_validator("timezone")
     @classmethod

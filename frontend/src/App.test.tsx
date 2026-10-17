@@ -75,7 +75,7 @@ describe('App: login and shell', () => {
     expect(within(nav).getByRole('link', { name: 'Рабочий стол' })).toHaveAttribute('aria-current', 'page')
     expect(within(nav).getByRole('link', { name: 'Транзакции' })).toHaveAttribute('href', '/transactions')
     expect(within(nav).getByRole('button', { name: /Прайс услуг/ })).toBeDisabled()
-    expect(within(nav).getByRole('button', { name: /Планирование/ })).toBeDisabled()
+    expect(within(nav).getByRole('button', { name: /Планирование/ })).toBeEnabled()
     expect(within(nav).getByRole('button', { name: /Аналитика/ })).toBeDisabled()
     expect(within(nav).getByRole('button', { name: /Отчёты/ })).toBeEnabled()
     expect(within(nav).queryByText('Врачи')).not.toBeInTheDocument()

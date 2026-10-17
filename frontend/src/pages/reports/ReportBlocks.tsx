@@ -18,6 +18,7 @@ interface PartialBannerSpec {
 }
 
 const CHECK_CONNECTIONS = { label: 'Проверить подключения', to: CONNECTIONS_ROUTE }
+const OBLIGATIONS_LINK = { label: 'Обязательства', to: '/planning/obligations' }
 const LOAD_STATEMENT = { label: 'Загрузить выписку', to: IMPORT_ROUTE }
 
 /** Texts of design/screens/pnl.md and norm.md ("Мало данных"). The date up to which the statement reaches is not in the answer yet. */
@@ -43,7 +44,9 @@ function reportReason(report: 'pnl' | 'norm', reason: PartialReason, month: stri
             : `В ${prepositional} меньше недели данных: доли за такой срок могут сильно скакать.`,
       }
     case 'no_obligations':
-      return report === 'pnl' ? { text: 'Не заполнены кредиты и оборудование: чистая прибыль может быть завышена.' } : null
+      return report === 'pnl'
+        ? { text: 'Не заполнены кредиты и оборудование: чистая прибыль может быть завышена.', action: OBLIGATIONS_LINK }
+        : null
     case 'no_benchmark':
       return report === 'norm' ? { text: 'Для клиники вашего размера нормы пока нет: показываем доли без сравнения.' } : null
     default:
@@ -91,7 +94,7 @@ function pluralBatches(count: number): string {
 
 interface ReportBannersProps {
   /** Prefix of the test ids: `${prefix}-partial-banner`, `-stale-banner`, `-refresh-banner`. */
-  prefix: 'pnl' | 'norm' | 'stock'
+  prefix: 'pnl' | 'norm' | 'stock' | 'calendar'
   reasons: PartialReason[]
   /** Month the texts speak about (pnl and norm). */
   month: string
@@ -107,7 +110,10 @@ export function ReportBanners({ prefix, reasons, month, stock, dataAsOf, refresh
   const clinic = useClinic()
   const timeZone = clinic.data?.timezone
   const specs = reasons
-    .map((reason) => (prefix === 'stock' ? stockReason(reason, stock ?? { missingExpiry: null, stockUpdatedOn: null }) : reportReason(prefix, reason, month)))
+    .map((reason) => {
+      if (prefix === 'calendar') return null
+      return prefix === 'stock' ? stockReason(reason, stock ?? { missingExpiry: null, stockUpdatedOn: null }) : reportReason(prefix, reason, month)
+    })
     .filter((spec): spec is PartialBannerSpec => spec !== null)
     .slice(0, MAX_PARTIAL_BANNERS)
   const stale = dashboard.data?.data_stale === true

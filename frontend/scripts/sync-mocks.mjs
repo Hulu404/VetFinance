@@ -31,3 +31,15 @@ const reports = {
 mkdirSync(dirname(to), { recursive: true })
 writeFileSync(to, JSON.stringify(reports, null, 2) + '\n')
 process.stdout.write('../backend/openapi.json -> src/mocks/data/reports_set04.json\n')
+
+// Stage 4: calendar, obligations, manual payment, counterparty and the `cash_gap` advice (golden set 5).
+const planning = {
+  calendar: example('CalendarOut'),
+  obligations: example('ObligationsOut'),
+  manual_payment: example('ManualPaymentOut'),
+  counterparty: example('CounterpartyOut'),
+  cash_gap_advice: example('AdviceOut'),
+}
+if (planning.cash_gap_advice.id !== 'cash_gap') throw new Error('AdviceOut.example must be the cash_gap advice')
+writeFileSync(resolve(root, 'src/mocks/data/planning_set05.json'), JSON.stringify(planning, null, 2) + '\n')
+process.stdout.write('../backend/openapi.json -> src/mocks/data/planning_set05.json\n')

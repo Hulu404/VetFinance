@@ -1,5 +1,5 @@
 // Single module for API types. Response shapes come from backend/openapi.json (npm run gen:api).
-import type { components } from './schema.gen'
+import type { components, paths } from './schema.gen'
 
 type Schemas = components['schemas']
 
@@ -72,6 +72,32 @@ export type StockIdlePage = Schemas['StockIdleOut']
 export type StockIdleItem = Schemas['IdleItemOut']
 export type ReportName = 'pnl' | 'norm' | 'stock'
 export type ExportFormat = 'xlsx' | 'pdf'
+
+// Stage 4: planning
+export type CalendarReport = Schemas['CalendarOut']
+export type CalendarDay = Schemas['DayOut']
+export type CalendarPayment = Schemas['PaymentOut']
+export type CalendarAlert = Schemas['CalendarAlertOut']
+export type MoveSuggestion = Schemas['MoveSuggestionOut']
+export type CalendarStatus = CalendarReport['status']
+export type CalendarPartialReason = CalendarReport['partial_reasons'][number]
+export type DayStatus = CalendarDay['status']
+export type PaymentSource = CalendarPayment['source']
+export type ManualPaymentBody = Schemas['ManualPaymentBody']
+export type ManualPayment = Schemas['ManualPaymentOut']
+export type CounterpartyRef = Schemas['CounterpartyRefOut']
+export type Counterparty = Schemas['CounterpartyOut']
+export type ClinicPatch = Schemas['ClinicPatch']
+export type ObligationsReport = Schemas['ObligationsOut']
+export type Loan = Schemas['LoanOut']
+export type Equipment = Schemas['EquipmentOut']
+export type ObligationStatus = Loan['status']
+export type ObligationBody = NonNullable<
+  paths['/v1/obligations']['post']['requestBody']
+>['content']['application/json']
+export type ObligationPatchBody = NonNullable<
+  paths['/v1/obligations/{obligation_id}']['patch']['requestBody']
+>['content']['application/json']
 
 /** Error codes from docs/api-contract.md. */
 export type ApiErrorCode =

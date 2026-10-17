@@ -1,9 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut } from './client'
-import { invalidateAfterOperationChange, queryKeys } from './queries'
+import { invalidateAfterCalendarChange, invalidateAfterObligationChange, invalidateAfterOperationChange, queryKeys } from './queries'
 import type {
   AcquiringDay,
+  Clinic,
+  ClinicPatch,
   Connection,
+  Counterparty,
+  Equipment,
+  Loan,
+  ManualPayment,
+  ManualPaymentBody,
+  ObligationBody,
+  ObligationPatchBody,
   CreateTransactionBody,
   ResolveDuplicateResult,
   RulePreview,
@@ -88,5 +97,64 @@ export function useReviewDay() {
     mutationFn: ({ date, note }: { date: string; note: string | null }) =>
       apiPost<AcquiringDay>(`/v1/acquiring/days/${date}/review`, { note }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.acquiring }),
+  })
+}
+
+export function useCreatePayment() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (body: ManualPaymentBody) => apiPost<ManualPayment>('/v1/calendar/payments', body),
+    onSuccess: () => invalidateAfterCalendarChange(queryClient),
+  })
+}
+
+export function useDeletePayment() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => apiDelete(`/v1/calendar/payments/${encodeURIComponent(id)}`),
+    onSuccess: () => invalidateAfterCalendarChange(queryClient),
+  })
+}
+
+export function useSetDeferral() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, days }: { id: string; days: number }) =>
+      apiPatch<Counterparty>(`/v1/counterparties/${encodeURIComponent(id)}`, { max_deferral_days: days }),
+    onSuccess: () => invalidateAfterCalendarChange(queryClient),
+  })
+}
+
+export function usePatchClinic() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (body: ClinicPatch) => apiPatch<Clinic>('/v1/clinic', body),
+    onSuccess: () => invalidateAfterCalendarChange(queryClient),
+  })
+}
+
+export function useCreateObligation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (body: ObligationBody) => apiPost<Loan | Equipment>('/v1/obligations', body),
+    onSuccess: () => invalidateAfterObligationChange(queryClient),
+  })
+}
+
+export function usePatchObligation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, body }: { id: string; body: ObligationPatchBody }) =>
+      apiPatch<Loan | Equipment>(`/v1/obligations/${encodeURIComponent(id)}`, body),
+    onSuccess: () => invalidateAfterObligationChange(queryClient),
+  })
+}
+
+/** "Delete" closes the obligation from the current month; the row stays in the list (decision of the owner, 2026-10-16). */
+export function useCloseObligation() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => apiDelete(`/v1/obligations/${encodeURIComponent(id)}`),
+    onSuccess: () => invalidateAfterObligationChange(queryClient),
   })
 }

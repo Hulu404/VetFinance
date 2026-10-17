@@ -7,12 +7,25 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.deps import NowDep, RepoDep
 from app.errors import error_responses, install_error_handlers
-from app.routes import acquiring, connections, reports, transactions
+from app.routes import acquiring, connections, planning, reports, transactions
 from app.schemas import AccountOut, AccountsOut, ClinicOut, ClinicPatch
-from app.schemas_dash import DashboardOut, dashboard_out
+from app.schemas_dash import AdviceOut, DashboardOut, dashboard_out
+from app.services import planning as planning_service
 from app.services.connections import data_is_stale
 from app.settings import Settings, get_settings
 from engine.dashboard import compute_dashboard, history_start
+
+MAX_ADVICE = 5
+
+
+def with_cash_gap(advice: list[AdviceOut], gap: AdviceOut | None) -> list[AdviceOut]:
+    """`cash_gap` goes first among the advice of its severity; the limit of 5 stays."""
+    if gap is None:
+        return advice
+    rank = {"alert": 0, "warning": 1, "good": 2}
+    index = sum(1 for a in advice if rank[a.severity] < rank[gap.severity])
+    return [*advice[:index], gap, *advice[index:]][:MAX_ADVICE]
+
 
 router = APIRouter(prefix="/v1", responses=error_responses(401, 403, 422))
 
@@ -64,11 +77,14 @@ async def dashboard(repo: RepoDep, now: NowDep, as_of: date | None = None) -> Da
         await repo.get_norms(),
         as_of,
     )
-    return dashboard_out(
+    out = dashboard_out(
         result,
         data_as_of=await repo.last_data_at(),
         data_stale=await data_is_stale(repo, now, today),
     )
+    if out.advice_status == "ready":
+        out.advice = with_cash_gap(out.advice, await planning_service.cash_gap(repo, as_of))
+    return out
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -91,6 +107,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(acquiring.router)
     app.include_router(connections.router)
     app.include_router(reports.router)
+    app.include_router(planning.router)
     return app
 
 

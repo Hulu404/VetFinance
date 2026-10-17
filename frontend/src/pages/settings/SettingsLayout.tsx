@@ -17,7 +17,7 @@ interface SettingsGroup {
 
 // Groups and items follow design/screens/connections.md, "Внутреннее меню" (no users, no bot).
 const GROUPS: SettingsGroup[] = [
-  { title: 'Клиника', items: [{ label: 'Основное' }, { label: 'Счета' }] },
+  { title: 'Клиника', items: [{ label: 'Основное', path: '/settings/main' }, { label: 'Счета' }] },
   { title: 'Справочники', items: [{ label: 'Категории' }, { label: 'Направления' }] },
   {
     title: 'Подключения',

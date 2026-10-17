@@ -101,6 +101,18 @@ export function monthNameLower(month: string): string {
   return MONTHS_NOMINATIVE[number - 1] ?? month
 }
 
+/** "2028-11" -> "ноября 2028" (after "до" and "с": "до ноября 2028", "с октября 2026"). */
+export function formatMonthGenitiveYear(month: string): string {
+  const [year, number] = month.split('-').map(Number)
+  return `${MONTHS_GENITIVE[(number ?? 1) - 1] ?? month}${NBSP}${year}`
+}
+
+/** "2025-09" -> "сентябрь 2025". */
+export function formatMonthYear(month: string): string {
+  const [year] = month.split('-').map(Number)
+  return `${monthNameLower(month)}${NBSP}${year}`
+}
+
 /** "2026-09" -> "сентябре" (for "Списано в сентябре"). */
 export function monthNamePrepositional(month: string): string {
   const number = Number(month.split('-')[1])

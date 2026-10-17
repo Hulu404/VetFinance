@@ -4,7 +4,10 @@ import { useAuth } from './auth/AuthProvider'
 import { IconSprite } from './components/Icon'
 import { DashboardPage } from './pages/DashboardPage'
 import { LoginPage } from './pages/LoginPage'
+import { CalendarPage } from './pages/calendar/CalendarPage'
+import { ObligationsPage } from './pages/obligations/ObligationsPage'
 import { BankSection } from './pages/settings/BankSection'
+import { MainSection } from './pages/settings/MainSection'
 import { SettingsLayout, SettingsSoon } from './pages/settings/SettingsLayout'
 import { VetmanagerSection } from './pages/settings/VetmanagerSection'
 import { NormPage } from './pages/reports/NormPage'
@@ -51,8 +54,11 @@ export function App() {
             <Route path="reports/pnl" element={<PnlPage />} />
             <Route path="reports/norm" element={<NormPage />} />
             <Route path="reports/stock" element={<StockPage />} />
+            <Route path="planning/calendar" element={<CalendarPage />} />
+            <Route path="planning/obligations" element={<ObligationsPage />} />
             <Route path="settings" element={<SettingsLayout />}>
               <Route index element={<Navigate to="connections/vetmanager" replace />} />
+              <Route path="main" element={<MainSection />} />
               <Route path="connections/vetmanager" element={<VetmanagerSection />} />
               <Route path="connections/bank" element={<BankSection />} />
               <Route path="*" element={<SettingsSoon />} />

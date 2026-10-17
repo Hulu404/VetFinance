@@ -5,6 +5,7 @@ import { server } from '../mocks/server'
 import { setMockScenario } from '../mocks/scenario'
 import { resetAcquiringState } from '../mocks/acquiringHandlers'
 import { resetConnectionState } from '../mocks/connectionHandlers'
+import { resetPlanningState } from '../mocks/planningStore'
 import { resetTxStore } from '../mocks/txStore'
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }))
@@ -15,6 +16,7 @@ afterEach(() => {
   resetTxStore()
   resetConnectionState()
   resetAcquiringState()
+  resetPlanningState()
   window.sessionStorage.clear()
 })
 afterAll(() => server.close())

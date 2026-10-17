@@ -27,6 +27,25 @@
   - Норма: эквайринг 1,0–2,0%; «Остальные статьи» 260 000 ₽ (21,0%); «Списание по сроку» справочно и не входит в вывод; вывод «Одна статья выше нормы»;
   - Склад: оборачиваемость = запас ÷ расход за 90 дней (740 000 × 90 ÷ 900 000 = 74 дня);
   - Рабочий стол: «Прибыль по деньгам» со ссылкой на отчёт «Прибыль и убытки»; «9 дней из 30» (days_passed = день as_of), «Хватит на» считается по окну 28 дней.
+  Правки этапа 4 (планирование; спецификации design/screens/calendar.md, obligations.md):
+  - платёжный календарь: скользящее окно 22 дня, первый день окна = as_of (9 – 30 сентября), сегодняшний день входит в окно; остаток на утро
+    9 сентября 412 800 ₽ = остаток Рабочего стола (банк по вчерашний день и касса); окно переходит через конец месяца; сетка с понедельника недели «сегодня», дни после окна «вне окна»;
+  - внутри дня сначала платежи (по убыванию суммы), выручка в конце; у каждого платежа «останется N ₽» или «не хватит N ₽» и источник словами
+    (регулярный, обязательство, внесён вручную); у регулярного платежа кнопка «отсрочка N дн.» (задаётся у контрагента, 0 = не переносится);
+  - платежи с выходных сдвинуты по правилам: зарплата, аренда и поставщики назад на пятницу, налоги вперёд на понедельник (11 и 21 сентября);
+  - прогноз выручки одинаковый для одного дня недели (среднее за 12 полных недель: пн 37 000 … вс 61 000 ₽); итоги 999 000 / 924 600 ₽, 15 платежей,
+    самый низкий остаток 16 000 ₽ 11 сентября; 412 800 + 999 000 − 924 600 = 487 200 ₽ на вечер 30 сентября;
+  - разрыв: «11 сентября не хватит 30 000 ₽ на платежи» (320 300 − 350 300), к вечеру ниже запаса на 44 000 ₽; перенос «Зоовет» с 10 на 14 сентября
+    (12–13 выходные, отсрочка до 5 дней) даёт самый низкий остаток 112 000 ₽, красных дней нет;
+  - красный день везде с подписью «ниже запаса» (ячейка, строка, разбор с плашкой); пунктир запаса без прозрачности; свёртка «ещё 1 платёж» без суммы
+    (клиент не складывает);
+  - обязательства: кредит 12% годовых (проценты сентября 6 200 ₽, основной долг 20 300 ₽, до ноября 2028, выплачено 34,0% из 940 000 ₽);
+    лизинг 720 000 ₽, осталось 216 000 ₽ = 18 × 12 000 (до февраля 2028, 70,0%); всего долг 836 000 ₽ (было 840 000 с невозможным сроком лизинга);
+    оборудование в лизинге не амортизируется (иначе двойной счёт с платежом по лизингу): амортизация 15 200 ₽ = УЗИ 940 800 ÷ 84 + анализатор 240 000 ÷ 60;
+    строка ОПиУ 33 400 ₽ = проценты 6 200 + лизинг 12 000 + амортизация 15 200 (итог и прибыль 152 600 ₽ прежние); подсказки у всех чисел; полосы выплаты одним цветом;
+  - кнопки «Добавить платёж», «Добавить кредит или лизинг», «Добавить оборудование», «Изменить», «отсрочка N дн.» у регулярного платежа и ссылка
+    «Открыть календарь» у совета о разрыве: решения владельца от 16.10.2026 приняты (docs/handoff.md); в прототипе кнопки не работают (диалоги описаны
+    в design/screens/calendar.md и obligations.md); удаление обязательства = «закрыть» с текущего месяца, прошлые начисления остаются.
   Шрифт Onest подключён с Google Fonts только для просмотра прототипа; в продукте он ставится из пакета @fontsource/onest.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -295,6 +314,13 @@ tr[data-tip]{cursor:help;transition:background .15s} tr[data-tip]:hover{backgrou
 .dayp td.r{text-align:right;font-weight:600;white-space:nowrap}
 .dayp tr.tot td{font-weight:700;border-bottom:0;padding-top:12px}
 .dayp.bad{border-left:3px solid var(--bad)}
+.dayp td.a{text-align:right;font-size:13px;color:var(--ink-soft);white-space:nowrap;padding-left:12px}
+.dayp td.a.down{color:var(--bad);font-weight:600}
+@media (max-width:1100px){ /* «Обязательства»: строки таблиц становятся карточками (в продукте отдельная разметка списка, obligations.md) */
+  .obtbl thead{display:none} .obtbl,.obtbl tbody{display:block;width:100%}
+  .obtbl tr{display:block;padding:12px 0;border-top:1px solid var(--border)} .obtbl td{display:block;padding:3px 0;border:0;text-align:left}
+  .obtbl td.pr .track{width:100% !important} .obtbl td[data-l]::before{content:attr(data-l) ' ';color:var(--ink-soft);font-size:12px;font-weight:600}
+}
 .warnline{margin-top:12px;padding:11px 14px;border-radius:12px;background:var(--bad-soft);color:var(--bad);font-size:13px;font-weight:600}
 
 #tip{position:fixed;z-index:99;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .18s var(--ease),transform .18s var(--ease);
@@ -391,7 +417,7 @@ const ICONS={
 };
 const ic=(n,s)=>`<svg class="i" aria-hidden="true" viewBox="0 0 24 24"${s?` style="font-size:${s}"`:''}>${ICONS[n]||''}</svg>`;
 
-let view='dash', open1=null, opiuMode='all', stkTab='all', txTab='all', setTab='main', scen='base', calMode='month', calSel=9;
+let view='dash', open1=null, opiuMode='all', stkTab='all', txTab='all', setTab='main', scen='base', calMode=(window.matchMedia&&matchMedia('(max-width:560px)').matches)?'list':'month', calSel=null;
 
 const NAV=[
  ['dash','ic-home','Рабочий стол'],
@@ -429,32 +455,47 @@ const D={
         ['3 сентября',405900],['4 сентября',402200],['5 сентября',409700],['6 сентября',407100],['7 сентября',414500],['8 сентября',410900],['9 сентября',412800]]
 };
 
-/* ================= ДАННЫЕ: платёжный календарь (окно 22 дня: 9–30 сентября) ================= */
-const SAFE=60000, TODAY=9, WIN_END=30;
+/* ================= ДАННЫЕ: платёжный календарь (скользящее окно 22 дня, первый день = as_of: 9 – 30 сентября) ================= */
+const SAFE=60000, WIN=22;
+const T0=new Date(2026,8,9);                 /* сегодня (as_of); остаток на утро этого дня = D.total (банк по вчерашний день и касса), с него начинается календарь */
 const WD=['вс','пн','вт','ср','чт','пт','сб'];
 const WDF=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-const INC={9:48000,10:41000,11:39000,12:44000,13:64000,14:37000,15:42000,16:40000,17:43000,18:47000,19:58000,
- 20:61000,21:36000,22:41000,23:40000,24:44000,25:49000,26:57000,27:60000,28:38000,29:42000,30:45000};
+const MG=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const MS=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+const key=dt=>dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+const dl=dt=>dt.getDate()+' '+MG[dt.getMonth()];
+const addD=(dt,n)=>new Date(dt.getFullYear(),dt.getMonth(),dt.getDate()+n);
+const INC_WD=[61000,37000,41000,42000,42000,46000,50000];  /* прогноз выручки по дню недели (вс…сб): среднее поступлений за 12 полных недель до as_of */
+const SRC={recurring:'регулярный',obligation:'обязательство',manual:'внесён вручную'};
+/* платежи по датам; внутри дня по убыванию суммы; 4-й элемент: отсрочка контрагента в днях (0 = не переносится); выходные сдвинуты: зарплата 12-го (сб) на пт 11-го, налоги 20-го (вс) на пн 21-го */
 const PAY={
- 9:[['Поставщик «ВетПрепарат»',62000]],
- 10:[['Поставщик «Зоовет»',96000],['Кредит на УЗИ',26500],['Лизинг рентгена',12000]],
- 11:[['Аренда за сентябрь',85000],['Лаборатория «Шанс Био»',34000],['Связь и интернет',7300]],
- 12:[['Зарплата сотрудникам',258000]],
- 15:[['Реагенты',14000]],
- 17:[['Хозтовары',9800]],
- 20:[['Налоги и взносы',61000]],
- 23:[['Закупка кормов',58000]],
- 25:[['Аванс сотрудникам',110000]],
- 28:[['Реклама',15000]],
- 30:[['Поставщик «Зоовет»',96000]]
+ '2026-09-09':[['ООО «ВетПрепарат»',42000,'recurring',3]],
+ '2026-09-10':[['ООО «Зоовет»',96000,'recurring',5],['Кредит на УЗИ',26500,'obligation',0],['Лизинг рентгена',12000,'obligation',0]],
+ '2026-09-11':[['Зарплата сотрудникам',258000,'recurring',0],['Аренда за сентябрь',85000,'recurring',0],['Связь и интернет',7300,'recurring',0]],
+ '2026-09-15':[['Лаборатория «Шанс Био»',34000,'recurring',0],['Реагенты',14000,'recurring',0]],
+ '2026-09-17':[['Хозтовары',9800,'recurring',0]],
+ '2026-09-21':[['Налоги и взносы',61000,'recurring',0]],
+ '2026-09-23':[['Закупка кормов',58000,'recurring',0]],
+ '2026-09-25':[['Аванс сотрудникам',110000,'recurring',0]],
+ '2026-09-28':[['Реклама',15000,'manual',0]],
+ '2026-09-30':[['ООО «Зоовет»',96000,'recurring',5]]
 };
 const DAYS=(()=>{let bal=D.total,out=[];
- for(let d=TODAY;d<=WIN_END;d++){const p=INC[d],pays=PAY[d]||[],m=pays.reduce((a,x)=>a+x[1],0),st=bal;bal+=p-m;
-  const wd=new Date(2026,8,d).getDay();out.push({d,p,pays,m,st,end:bal,w:WD[wd],wf:WDF[wd]});}
+ for(let i=0;i<WIN;i++){const dt=addD(T0,i),k=key(dt),p=INC_WD[dt.getDay()],st=bal;
+  const pays=(PAY[k]||[]).map(([n,a,s,df])=>{bal-=a;return {n,a,s,df,after:bal};});
+  const m=pays.reduce((a,x)=>a+x.a,0), neg=pays.some(x=>x.after<0); bal+=p;
+  out.push({k,dt,d:dt.getDate(),lbl:dl(dt),p,pays,m,st,end:bal,
+   status:(neg||bal<0)?'below_zero':(bal<SAFE?'below_safe':'ok'),w:WD[dt.getDay()],wf:WDF[dt.getDay()]});}
  return out;})();
-const DMAP=Object.fromEntries(DAYS.map(x=>[x.d,x]));
-const BAD=DAYS.find(x=>x.end<SAFE);
-const SHORT=BAD?(PAY[BAD.d].reduce((a,x)=>a+x[1],0)-BAD.st):0;   /* не хватает на утро дня разрыва */
+const isBad=x=>x.status!=='ok';
+const DMAP=Object.fromEntries(DAYS.map(x=>[x.k,x]));
+const BAD=DAYS.find(isBad);
+/* не хватает: до нуля в худшей точке дня (below_zero) или до запаса к вечеру (below_safe) */
+const SHORT=!BAD?0:(BAD.status==='below_zero'?-Math.min(...BAD.pays.map(p=>p.after),BAD.end):SAFE-BAD.end);
+const WIN_LBL=dl(DAYS[0].dt)+' – '+dl(DAYS[WIN-1].dt);
+const GAPFIX='Перенос платежа ООО «Зоовет» с 10 на 14 сентября закрывает разрыв.';
+const dayNote=x=>x.status==='below_zero'?`После платежей не хватит ${M(SHORT)}, к вечеру остаток ниже безопасного запаса на ${M(SAFE-x.end)}. ${GAPFIX}`
+ :x.status==='below_safe'?`Ниже безопасного запаса на ${M(SAFE-x.end)}.`:`Запас соблюдён: остаток выше ${M(SAFE)}.`;
 
 /* ================= ПОДСКАЗКИ (содержимое) ================= */
 const T={
@@ -484,8 +525,9 @@ const T={
   <div class="r"><span>УСН 6% с учётом взносов</span><b>37 200 ₽</b></div><div class="r"><span>Взносы</span><b>8 800 ₽</b></div>
   <div class="f">К уплате 20 числа следующего месяца.</div>`,
  o_obl:`<span class="tag">Обязательства и амортизация</span><h4>− 33 400 ₽ · 2,7%</h4>
-  <div class="r"><span>Амортизация оборудования</span><b>21 400 ₽</b></div><div class="r"><span>Проценты по кредиту и лизингу</span><b>12 000 ₽</b></div>
-  <div class="f">Платёж по кредиту и лизингу 38 500 ₽ в месяц: в расходы идут только проценты, основной долг расходом не считается. Амортизация не списывает деньги со счёта.</div>`,
+  <div class="r"><span>Амортизация оборудования</span><b>15 200 ₽</b></div><div class="r"><span>Лизинг (платёж целиком)</span><b>12 000 ₽</b></div>
+  <div class="r"><span>Проценты по кредиту</span><b>6 200 ₽</b></div>
+  <div class="f">Платёж по кредиту 26 500 ₽: в расходы идут только проценты, основной долг расходом не считается. Платёж по лизингу в расходах целиком. Амортизация не списывает деньги со счёта.</div>`,
  o_net:`<span class="tag">Чистая прибыль</span><h4>152 600 ₽ · 12,3%</h4>
   <div class="r"><span>Выручка</span><b>1 240 000 ₽</b></div><div class="r"><span>Переменные расходы</span><b class="bad">−632 000 ₽</b></div>
   <div class="r"><span>Постоянные расходы</span><b class="bad">−376 000 ₽</b></div><div class="r"><span>Налоги и взносы</span><b class="bad">−46 000 ₽</b></div>
@@ -590,15 +632,21 @@ const T={
   <div class="r"><span>Окно расчёта</span><b>90 дней</b></div>
   <div class="r" style="margin-top:8px"><span>Норма</span><b>45 дней</b></div>
   <div class="f">740 000 × 90 ÷ 900 000 = 74 дня. Расход: продажи и использование на приёмах по закупочной цене, в среднем 10 000 ₽ в день.<div class="srcs">Источник:<span class="tag">Ветменеджер</span><span class="tag">Расчёт</span></div></div>`,
- ob_debt:`<span class="tag">Всего долг</span><h4>🏦 840 000 ₽</h4>
-  <div class="r"><span>Кредит на аппарат УЗИ</span><b>620 000 ₽</b></div><div class="r"><span>Лизинг рентген-аппарата</span><b>220 000 ₽</b></div>
-  <div class="f">Остаток основного долга на сегодня.<div class="srcs">Источник:<span class="tag">Внесено вручную</span></div></div>`,
- ob_pay:`<span class="tag">Платёж в месяц</span><h4>📆 38 500 ₽</h4>
-  <div class="r"><span>Кредит на аппарат УЗИ</span><b>26 500 ₽</b></div><div class="r"><span>Лизинг рентген-аппарата</span><b>12 000 ₽</b></div>
-  <div class="f">3,1% выручки августа. Оба платежа стоят в платёжном календаре 10 сентября.<div class="srcs">Источник:<span class="tag">Внесено вручную</span></div></div>`,
- ob_am:`<span class="tag">Амортизация</span><h4>🔧 21 400 ₽ в месяц</h4>
-  <div class="r"><span>Аппарат УЗИ</span><b>11 200 ₽</b></div><div class="r"><span>Рентген</span><b>6 300 ₽</b></div><div class="r"><span>Анализатор крови</span><b>3 900 ₽</b></div>
-  <div class="f">Стоимость, делённая на срок службы. Деньги со счёта не уходят, но в отчёте «Прибыль и убытки» амортизация входит в строку «Обязательства и амортизация».<div class="srcs">Источник:<span class="tag">Расчёт</span></div></div>`,
+ ob_debt:tipH('Всего долг','🏦 836 000 ₽',[['Кредит на аппарат УЗИ','620 000 ₽'],['Лизинг рентген-аппарата','216 000 ₽']],'Остаток к выплате на сегодня: по кредиту основной долг без будущих процентов, по лизингу оставшиеся платежи.',['Внесено вручную']),
+ ob_pay:tipH('Платёж в месяц','📆 38 500 ₽',[['Кредит на аппарат УЗИ','26 500 ₽'],['Лизинг рентген-аппарата','12 000 ₽']],'Оба платежа стоят в платёжном календаре 10-го числа.',['Внесено вручную']),
+ ob_share:tipH('Платёж к выручке','3,1%',[['Платёж в месяц','38 500 ₽'],['Выручка августа','1 240 000 ₽']],'38 500 ÷ 1 240 000. Выручка последнего закрытого месяца.',['Расчёт']),
+ ob_am:tipH('Амортизация','🔧 15 200 ₽ в месяц',[['Аппарат УЗИ','11 200 ₽'],['Анализатор крови','4 000 ₽']],'Стоимость, делённая на срок службы в месяцах. Деньги со счёта не уходят, но в отчёте «Прибыль и убытки» амортизация входит в строку «Обязательства и амортизация». Рентген в лизинге не амортизируется: платёж по лизингу уже в расходах.',['Расчёт']),
+ ob_pnl:tipH('В «Прибыли и убытках» · сентябрь','33 400 ₽',[['Проценты по кредиту','6 200 ₽'],['Лизинг (платёж целиком)','12 000 ₽'],['Амортизация оборудования','15 200 ₽']],'То же число в строке «Обязательства и амортизация» отчёта за сентябрь. Основной долг кредита (20 300 ₽) расходом не считается.',['Расчёт']),
+ ob_p1:tipH('Кредит на аппарат УЗИ · выплачено','34,0%',[['Выплачено','320 000 ₽'],['По договору','940 000 ₽']],'320 000 ÷ 940 000 = 34,0%.',['Внесено вручную','Расчёт']),
+ ob_r1:tipH('Кредит на аппарат УЗИ · осталось','620 000 ₽',[['По договору','940 000 ₽'],['Выплачено','−320 000 ₽','bad'],'-',['После платежа 10 сентября','599 700 ₽']],'Основной долг без будущих процентов.',['Внесено вручную','Расчёт']),
+ ob_m1:tipH('Кредит на аппарат УЗИ · платёж','26 500 ₽',[['Проценты за сентябрь','6 200 ₽'],['Основной долг','20 300 ₽']],'620 000 × 12% ÷ 12 = 6 200 ₽. Последний платёж в ноябре 2028: 20 835,98 ₽.',['Внесено вручную','Расчёт']),
+ ob_p2:tipH('Лизинг рентген-аппарата · выплачено','70,0%',[['Выплачено','504 000 ₽'],['По договору','720 000 ₽']],'504 000 ÷ 720 000 = 70,0%.',['Внесено вручную','Расчёт']),
+ ob_r2:tipH('Лизинг рентген-аппарата · осталось','216 000 ₽',[['По договору','720 000 ₽'],['Выплачено','−504 000 ₽','bad']],'18 платежей по 12 000 ₽, последний в феврале 2028.',['Внесено вручную','Расчёт']),
+ ob_m2:tipH('Лизинг рентген-аппарата · платёж','12 000 ₽',[['Платёж по лизингу','12 000 ₽']],'В расходы отчёта «Прибыль и убытки» идёт целиком.',['Внесено вручную']),
+ ob_c1:tipH('Аппарат УЗИ · стоимость','940 800 ₽',[['Стоимость при покупке','940 800 ₽']],'Внесено вручную.',['Внесено вручную']),
+ ob_c2:tipH('Анализатор крови · стоимость','240 000 ₽',[['Стоимость при покупке','240 000 ₽']],'Внесено вручную.',['Внесено вручную']),
+ ob_e1:tipH('Аппарат УЗИ · амортизация','11 200 ₽ в месяц',[['Аппарат УЗИ','11 200 ₽'],'-',['Стоимость','940 800 ₽'],['Срок службы, месяцев','84']],'940 800 ÷ 84 = 11 200 ₽ в месяц, с сентября 2025 по август 2032.',['Расчёт']),
+ ob_e2:tipH('Анализатор крови · амортизация','4 000 ₽ в месяц',[['Анализатор крови','4 000 ₽'],'-',['Стоимость','240 000 ₽'],['Срок службы, месяцев','60']],'240 000 ÷ 60 = 4 000 ₽ в месяц, с марта 2024 по февраль 2029.',['Расчёт']),
  p_zp:`<h4>ЗП врача · 1 350 ₽</h4><div class="r"><span>Доля в цене</span><b>30%</b></div><div class="r"><span>Норма</span><b>22–28%</b></div>
   <div class="f">Процент выше нормы, но операция сложная — оправдано.</div>`,
  p_med:`<h4>Препараты · 630 ₽</h4><div class="r"><span>Доля в цене</span><b>14%</b></div><div class="r"><span>Позиций в техкарте</span><b>6</b></div>
@@ -635,31 +683,48 @@ Object.assign(T,{
  tx_bal:tipH('Сальдо · сентябрь','⚖️ 15 400 ₽',[['Доходы',Ms(296400),'good'],['Расходы',Ms(-281000),'bad']],'Доходы минус расходы за месяц. Это не остаток на счетах: переводы между счетами не входят.',[SCALC])
 });
 
-/* --- Календарь: подсказки дней --- */
+/* --- Календарь: подсказки (порядок как в разборе дня: утро, платежи, выручка) --- */
+const dayRows=x=>[['На утро',Mn(x.st)]].concat(x.pays.map(p=>[p.n,Ms(-p.a),'bad']),[['Выручка, прогноз',Ms(x.p),'good']]);
 DAYS.forEach(x=>{
- const bad=x.end<SAFE;
- T['c'+x.d]=tipH(`${x.d} сентября, ${x.w}`,`Остаток ${M(x.end)}`,
-  [['На утро',M(x.st)],['Выручка, прогноз',Ms(x.p),'good']].concat(x.pays.map(p=>[p[0],Ms(-p[1]),'bad'])),
-  bad?`<b class="bad">Ниже безопасного запаса.</b> Перенос «Зоовет» с 10-го на 13-е закрывает разрыв.`:'День проходит без риска.',[SCALC],bad?'bad':'');
+ const bad=isBad(x);
+ T['c'+x.k]=tipH(`${x.lbl}, ${x.w}`,`Остаток ${Mn(x.end)}`,dayRows(x),bad?`<b class="bad">${dayNote(x)}</b>`:'День проходит без риска.',[SCALC],bad?'bad':'');
+ T['ci'+x.k]=tipH('Выручка, прогноз · '+x.wf,Ms(x.p),[['Среднее поступление, '+x.wf,M(x.p)],'-',['Таких дней за 12 недель','12'],['Поступило в эти дни',M(x.p*12)]],
+  `${M(x.p*12)} ÷ 12 = ${M(x.p)}. Только поступления со статьёй дохода, без переводов между счетами, дублей и операций «на проверку».`,[SCALC],'good');
+ x.pays.forEach((p,j)=>{
+  T['cp'+x.k+'_'+j]=tipH(p.n+' · '+x.lbl,'−'+M(p.a),[[p.n,M(p.a)]],
+   p.n==='Кредит на УЗИ'?'Платёж по графику: проценты 6 200 ₽, основной долг 20 300 ₽. Из раздела «Обязательства».'
+   :p.s==='obligation'?'Платёж по графику из раздела «Обязательства». Выходной день сдвигается на предыдущий рабочий.':p.s==='manual'?'Разовый платёж, внесён вручную.':'Платёж был в каждом из трёх последних месяцев. День — самый частый, сумма — средняя из трёх (медиана). Выходной сдвигаем: налоги вперёд, остальное назад.',
+   [p.s==='recurring'?SBANK:SHAND]);
+  T['ca'+x.k+'_'+j]=tipH(p.n+(p.after<0?' · не хватит':' · останется'),Mn(p.after),[['До платежа',Mn(p.after+p.a)],[p.n,Ms(-p.a),'bad']],
+   'Выручку дня считаем после платежей: деньги приходят в течение дня.',[SCALC],p.after<0?'bad':'');
+ });
 });
 (function(){
- const wk=[[9,13],[14,20],[21,27],[28,30]];
- const sum=(a,b,f)=>DAYS.filter(x=>x.d>=a&&x.d<=b).reduce((s,x)=>s+f(x),0);
- const tin=DAYS.reduce((a,x)=>a+x.p,0), tout=DAYS.reduce((a,x)=>a+x.m,0), low=DAYS.reduce((a,x)=>x.end<a.end?x:a,DAYS[0]);
- T.cal_in=tipH('Поступит за 22 дня','📥 '+M(tin),wk.map(([a,b])=>[`${a}–${b} сентября`,M(sum(a,b,x=>x.p))]),'Прогноз выручки по последним 90 дням, с учётом дней недели.',[SCALC]);
- T.cal_out=tipH('Спишется за 22 дня','📤 '+M(tout),wk.map(([a,b])=>[`${a}–${b} сентября`,M(sum(a,b,x=>x.m))]),DAYS.reduce((a,x)=>a+x.pays.length,0)+' платежей: аренда, зарплата, поставщики, налоги, кредит и лизинг.',[SCALC]);
- T.cal_low=tipH('Самый низкий остаток','📉 '+M(low.end),[['На утро '+low.d+' сентября',M(low.st)],['Выручка, прогноз',Ms(low.p),'good']].concat(low.pays.map(p=>[p[0],Ms(-p[1]),'bad']),[['Безопасный запас',M(SAFE)]]),`Ниже запаса на ${M(SAFE-low.end)}.`,[SCALC],'bad');
+ const weeks=[];DAYS.forEach(x=>{const w=weeks[weeks.length-1];if(!w||x.dt.getDay()===1)weeks.push([x]);else w.push(x);});
+ const wl=w=>{const a=w[0].dt,b=w[w.length-1].dt;return a.getMonth()===b.getMonth()?`${a.getDate()}–${b.getDate()} ${MG[a.getMonth()]}`:`${dl(a)} – ${dl(b)}`;};
+ const sum=(arr,f)=>arr.reduce((s,x)=>s+f(x),0);
+ const tin=sum(DAYS,x=>x.p), tout=sum(DAYS,x=>x.m), low=DAYS.reduce((a,x)=>x.end<a.end?x:a,DAYS[0]);
+ const bySrc=s=>sum(DAYS,x=>sum(x.pays.filter(p=>p.s===s),p=>p.a));
+ T.cal_in=tipH('Поступит за 22 дня','📥 '+M(tin),weeks.map(w=>[wl(w),M(sum(w,x=>x.p))]),'Прогноз выручки: среднее поступлений по дню недели за 12 полных недель до сегодняшнего дня. Только поступления со статьёй дохода.',[SCALC]);
+ T.cal_out=tipH('Спишется за 22 дня','📤 '+M(tout),weeks.map(w=>[wl(w),M(sum(w,x=>x.m))]).concat(['-',['Регулярные платежи',M(bySrc('recurring'))],['Обязательства',M(bySrc('obligation'))],['Внесено вручную',M(bySrc('manual'))]]),
+  sum(DAYS,x=>x.pays.length)+' платежей: аренда, зарплата, поставщики, налоги, кредит и лизинг.',[SBANK,SHAND]);
+ T.cal_low=tipH('Самый низкий остаток','📉 '+Mn(low.end),dayRows(low).map((r,i)=>i===0?['На утро '+low.lbl,r[1]]:r).concat(['-',['Безопасный запас',M(SAFE)]]),
+  isBad(low)?`Ниже безопасного запаса на ${M(SAFE-low.end)}.`:'Выше безопасного запаса.',[SCALC],isBad(low)?'bad':'');
+ T.cal_safe=tipH('Безопасный запас',M(SAFE),[['Задан в настройках',M(SAFE)]],'Если остаток на вечер ниже этой суммы, день отмечается красным и подписью «ниже запаса».',[SHAND]);
+ T.cal_start=tipH('Остаток на утро · 9 сентября',M(D.total),[['Расчётный счёт · Т-Банк 7972',M(D.bank)],['Касса клиники',M(D.cash)]],'Банк по 8 сентября и касса: с этого остатка начинается календарь. Операции сегодняшнего дня, если они уже есть в выписке, входят в остаток, а прошедшие платежи дня в прогноз не попадают.',[SBANK,SHAND]);
 })();
 
 /* ================= СОВЕТЫ (поля как advice[] из контракта) ================= */
 const ADVICE=[
- {id:'cash-gap',sev:'alert',em:'📅',t:`${BAD.d} сентября не хватит ${M(SHORT)} на зарплату`,
-  p:`На утро будет ${M(BAD.st)}, к выплате ${M(258000)}. Если перенести платёж «Зоовет» с 10-го на 13-е, разрыва не будет.`,
-  why:{s:'Три крупных платежа подряд уходят быстрее, чем приходит выручка.',
-   steps:[`10 сентября: «Зоовет» ${M(96000)}, кредит и лизинг ${M(38500)}.`,`11 сентября: аренда, лаборатория и связь ${M(126300)}.`,`12 сентября: зарплата ${M(258000)}.`,
-    `Выручки за 10–12 сентября ожидаем ${M(41000+39000+44000)}, этого не хватает.`,
-    `Если перенести «Зоовет» на 13-е, на утро 12-го будет ${M(BAD.st+96000)}, после зарплаты останется ${M(BAD.st+96000+44000-258000)}. Договор допускает отсрочку до 5 дней.`],
-   src:'платёжный календарь; история поступлений за 90 дней; карточка контрагента'}},
+ {id:'cash_gap',sev:BAD.status==='below_zero'?'alert':'warning',em:'📅',t:`${BAD.lbl} не хватит ${M(SHORT)} на платежи`,
+  p:`На утро будет ${M(BAD.st)}, к выплате ${M(350300)}: зарплата и ещё 2 платежа. Перенесите платёж ООО «Зоовет» на ${M(96000)} с 10 сентября на 14 сентября: разрыва не будет.`,
+  why:{s:'Зарплата, аренда и связь уходят в один день и быстрее, чем приходит выручка.',
+   steps:[`9–10 сентября платежей ${M(176500)}: «ВетПрепарат», «Зоовет», кредит и лизинг; выручки ждём ${M(84000)}.`,
+    `11 сентября на утро будет ${M(BAD.st)}, к выплате ${M(350300)}: зарплата ${M(258000)}, аренда ${M(85000)}, связь ${M(7300)}. Не хватит ${M(SHORT)}. Выручку дня, ${M(BAD.p)}, считаем после платежей.`,
+    `К вечеру останется ${M(BAD.end)} при запасе ${M(SAFE)}: ниже запаса на ${M(SAFE-BAD.end)}. 12 сентября вечером ${M(66000)}, это уже выше запаса.`,
+    `Если перенести «Зоовет» на 14 сентября (12 и 13 сентября выходные), 11 сентября вечером будет ${M(BAD.end+96000)}, выше запаса ${M(SAFE)}; это самый низкий остаток окна.`,
+    `У «Зоовет» указана отсрочка до 5 дней, перенос укладывается в неё.`],
+   src:'платёжный календарь; поступления за 12 недель; отсрочка у контрагента'}},
  {id:'stationary-loss',sev:'alert',em:'🩸',t:'Стационар в минусе третий месяц',
   p:'Август −14 000 ₽, июль −11 000 ₽, июнь −9 000 ₽. Убыток растёт.',
   why:{s:'Минус даёт не выручка, а ночные смены.',
@@ -686,7 +751,7 @@ function adviceCard(a,k,opt){
  opt=opt||{};
  const cls=opt.plain?'gd':SEV[a.sev][0], on=open1===k;
  return `<li class="tip-card ${cls}" data-testid="advice-card" data-advice-id="${a.id}" data-severity="${a.sev}"><div class="tip-h"><div class="tip-l">
-   <div class="tip-em" aria-hidden="true">${a.em}</div><div class="tip-b">${opt.plain?'':`<span class="${SEV[a.sev][1]}" data-testid="advice-severity">${SEV[a.sev][2]}</span>`}<h3 data-testid="advice-title">${a.t}</h3><p>${a.p}</p></div></div>
+   <div class="tip-em" aria-hidden="true">${a.em}</div><div class="tip-b">${opt.plain?'':`<span class="${SEV[a.sev][1]}" data-testid="advice-severity">${SEV[a.sev][2]}</span>`}<h3 data-testid="advice-title">${a.t}</h3><p>${a.p}</p>${a.id==='cash_gap'&&!opt.cal?'<button type="button" class="why" data-go="cal" data-testid="advice-calendar-link" style="margin-top:10px">Открыть календарь</button>':''}</div></div>
    <button type="button" class="why ${on?'on':''}" data-q="${k}" aria-expanded="${on}" aria-controls="why-${k}" data-testid="advice-why">${on?'Свернуть':'Почему?'}</button></div>
    ${on?`<div class="ans" id="why-${k}" role="region" aria-labelledby="who-${k}" data-testid="advice-why-panel"><div class="who" id="who-${k}">Разбор</div>${a.why.s}
     <ol data-testid="advice-why-steps">${a.why.steps.map(s=>`<li>${s}</li>`).join('')}</ol><div class="src" data-testid="advice-why-sources">Источник: ${a.why.src}</div></div>`:''}</li>`;
@@ -915,99 +980,111 @@ function vSklad(){
 }
 
 /* ================= ПЛАНИРОВАНИЕ ================= */
+const LNK='background:none;border:0;padding:0;font:inherit;color:var(--accent-dark);text-decoration:underline;cursor:pointer;min-height:24px';
 function calAlert(){
  if(!BAD) return '';
- return `<ul class="advl">${adviceCard(ADVICE[0],'cal1')}</ul>`;
+ return `<ul class="advl" data-testid="calendar-alert-list">${adviceCard(ADVICE[0],'cal1',{cal:true})}</ul>`;
 }
+const calSelK=()=>DMAP[calSel]?calSel:(BAD?BAD.k:DAYS[0].k);
+const plural=(n,a,b,c)=>{const x=n%100,y=x%10;return x>10&&x<20?c:y===1?a:(y>1&&y<5)?b:c;};
 function calMonth(){
- const cells=[];
- for(let i=0;i<35;i++){
-  const dt=new Date(2026,7,31+i), d=dt.getDate(), inM=dt.getMonth()===8, wk=dt.getDay()===0||dt.getDay()===6;
-  const x=inM?DMAP[d]:null, past=inM&&d<TODAY;
-  const cls=['c',wk?'wk':'',!x&&!past?'out':'',past?'past':'',d===TODAY&&inM?'today':'',x&&x.end<SAFE?'bad':'',x&&calSel===d?'sel':''].join(' ');
+ const last=DAYS[WIN-1].dt, start=addD(T0,-((T0.getDay()+6)%7)), end=addD(last,(7-last.getDay())%7);
+ const cells=[], sel=calSelK(), today=key(T0);
+ for(let dt=start;dt<=end;dt=addD(dt,1)){
+  const k=key(dt), x=DMAP[k], d=dt.getDate(), wk=dt.getDay()===0||dt.getDay()===6;
+  const isToday=k===today, past=dt<T0, out=!x&&!past&&!isToday;
+  const cls=['c',wk?'wk':'',out?'out':'',past?'past':'',isToday?'today':'',x&&isBad(x)?'bad':'',x&&sel===k?'sel':''].join(' ');
   let body='';
   if(x){
    const shown=x.pays.slice(0,2), rest=x.pays.length-shown.length;
-   body=`<div class="ev in">+ ${M(x.p)}</div>`
-    + shown.map(p=>`<div class="ev pay"><b>${p[0]}</b><span>− ${M(p[1])}</span></div>`).join('')
-    + (rest?`<div class="ev more">ещё ${rest}: − ${M(x.pays.slice(2).reduce((a,p)=>a+p[1],0))}</div>`:'')
-    + (x.end<SAFE?`<div class="badt">ниже запаса</div>`:'')
-    + `<div class="cbal">остаток<b>${M(x.end)}</b></div>`;
-  } else if(past){ body=`<div class="cbal">прошёл</div>`; }
-  cells.push(`<div class="${cls}" ${x?`data-cd="${d}" data-tip="c${d}" role="button" tabindex="0" aria-label="${d} сентября, остаток ${M(x.end)}${x.end<SAFE?', ниже безопасного запаса':''}"`:''}>
-   <div class="n">${d===1&&inM?'1 сен':d===1?'1 окт':d}</div>${body}</div>`);
+   body=(isToday?`<div class="ev more" aria-hidden="true">сегодня</div>`:'')
+    + `<div class="ev in" aria-hidden="true">+ ${M(x.p)}</div>`
+    + shown.map(p=>`<div class="ev pay" aria-hidden="true"><b>${p.n}</b><span>− ${M(p.a)}</span></div>`).join('')
+    + (rest?`<div class="ev more" aria-hidden="true">ещё ${rest} ${plural(rest,'платёж','платежа','платежей')}</div>`:'')
+    + (isBad(x)?`<div class="badt">ниже запаса</div>`:'')
+    + `<div class="cbal">остаток<b>${Mn(x.end)}</b></div>`;
+  }
+  else if(past){ body=`<div class="cbal">прошёл</div>`; }
+  else { body=`<div class="cbal">вне окна</div>`; }
+  cells.push(`<div class="${cls}" ${x?`data-cd="${k}" data-tip="c${k}" role="button" tabindex="0" aria-pressed="${sel===k}" aria-label="${x.lbl}, ${x.wf}, остаток ${Mn(x.end)}${isBad(x)?', ниже безопасного запаса':''}"`:''}>
+   <div class="n">${d===1?'1 '+MS[dt.getMonth()]:d}</div>${body}</div>`);
  }
  return `<div class="card" style="padding:18px 18px 16px;margin-bottom:16px">
-  <div class="calbar"><b>9–30 сентября</b><span class="lg"><i class="li in"></i>выручка <i class="li pay"></i>платёж <i class="li bd"></i>ниже безопасного запаса</span></div>
+  <div class="calbar"><b>${WIN_LBL}</b><span class="lg"><i class="li in"></i>выручка <i class="li pay"></i>платёж <i class="li bd"></i>ниже безопасного запаса</span></div>
   <div class="calwrap"><div class="cal">${['Пн','Вт','Ср','Чт','Пт','Сб','Вс'].map(w=>`<div class="wh">${w}</div>`).join('')}${cells.join('')}</div></div>
-  <p class="note">Окно календаря — 22 дня вперёд от сегодняшнего дня. Нажмите на день, чтобы открыть его разбор ниже.</p></div>` + calDay();
+  <p class="note">Окно календаря — 22 дня, начиная с сегодняшнего. Нажмите на день, чтобы открыть его разбор ниже.</p>
+  <p class="note" style="margin-top:4px">Безопасный запас <b data-tip="cal_safe">${M(SAFE)}</b> · <button type="button" data-go="set" style="${LNK}">изменить в Настройках</button></p></div>` + calDay();
 }
 function calDay(){
- const x=DMAP[calSel]; if(!x) return '';
- const b=x.end<SAFE;
- return `<div class="card dayp ${b?'bad':''}"><div class="klabel">Разбор дня</div>
-  <h3>${x.d} сентября, ${x.wf}</h3>
+ const x=DMAP[calSelK()]; if(!x) return '';
+ const b=isBad(x), i=DAYS.indexOf(x), prevTip=i>0?'c'+DAYS[i-1].k:'cal_start';
+ return `<div class="card dayp ${b?'bad':''}" data-testid="calendar-day" data-date="${x.k}"><div class="klabel">Разбор дня</div>
+  <h3>${x.lbl}, ${x.wf}${b?' <span class="pill red" style="vertical-align:3px">ниже запаса</span>':''}</h3>
   <table><tbody>
-   <tr><td>Остаток на утро</td><td class="r">${M(x.st)}</td></tr>
-   <tr><td>Выручка, прогноз по последним 90 дням</td><td class="r up">+ ${M(x.p)}</td></tr>
-   ${x.pays.map(p=>`<tr><td>${p[0]}</td><td class="r down">− ${M(p[1])}</td></tr>`).join('')}
-   <tr class="tot"><td>Остаток на вечер</td><td class="r ${b?'down':''}">${M(x.end)}</td></tr>
+   <tr><td>Остаток на утро</td><td class="r" data-tip="${prevTip}">${Mn(x.st)}</td><td class="a"></td></tr>
+   ${x.pays.map((p,j)=>`<tr><td>${p.n}<div class="meta">${SRC[p.s]}${p.s==='recurring'?` · <button type="button" data-testid="calendar-deferral-edit" aria-label="Отсрочка у контрагента ${p.n}: ${p.df?p.df+' '+plural(p.df,'день','дня','дней'):'нет'}. Изменить" style="${LNK}">${p.df?'отсрочка '+p.df+' '+plural(p.df,'день','дня','дней'):'без отсрочки'}</button>`:''}</div></td><td class="r down" data-tip="cp${x.k}_${j}">− ${M(p.a)}</td><td class="a ${p.after<0?'down':''}" data-tip="ca${x.k}_${j}">${p.after<0?'не хватит '+M(-p.after):'останется '+M(p.after)}</td></tr>`).join('')}
+   ${x.pays.length?'':'<tr><td colspan="3" class="faint">Платежей нет, ждём только выручку.</td></tr>'}
+   <tr><td>Выручка, прогноз по средним за 12 недель</td><td class="r up" data-tip="ci${x.k}">+ ${M(x.p)}</td><td class="a"></td></tr>
+   <tr class="tot"><td>Остаток на вечер</td><td class="r ${b?'down':''}" data-tip="c${x.k}">${Mn(x.end)}</td><td class="a"></td></tr>
   </tbody></table>
-  ${b?`<p class="warnline">Ниже безопасного запаса на ${M(SAFE-x.end)}. Перенос оплаты «Зоовет» с 10-го на 13-е закрывает разрыв.</p>`:`<p class="note">Запас соблюдён: остаток выше ${M(SAFE)}.</p>`}</div>`;
+  ${b?`<p class="warnline">${dayNote(x)}</p>`:`<p class="note">${dayNote(x)}</p>`}</div>`;
 }
 function calList(){
- const min=Math.min(...DAYS.map(x=>x.end)), max=Math.max(...DAYS.map(x=>x.end));
- const w=880,h=180,pad=18, lo=Math.min(0,min);
- const X=i=>pad+i*((w-pad*2)/(DAYS.length-1));
+ const pts=DAYS, vals=pts.map(x=>x.end), min=Math.min(...vals), max=Math.max(...vals);
+ const w=880,h=180,pad=18, lo=Math.min(0,min,SAFE);
+ const X=i=>pad+i*((w-pad*2)/(pts.length-1));
  const Y=v=>h-pad-((v-lo)/(max-lo))*(h-pad*2);
- const line=DAYS.map((x,i)=>`${X(i)},${Y(x.end)}`).join(' L');
- return `<div class="flow"><div class="klabel">Как будет меняться остаток</div>
-  <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Остаток на 22 дня вперёд, самый низкий ${M(min)}">
+ const line=pts.map((x,i)=>`${X(i)},${Y(x.end)}`).join(' L');
+ const low=DAYS.reduce((a,x)=>x.end<a.end?x:a,DAYS[0]);
+ return `<div class="flow" data-testid="calendar-chart"><div class="klabel">Как будет меняться остаток</div>
+  <svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Остаток на 22 дня: утром ${dl(T0)} ${M(D.total)}, вечером ${dl(DAYS[WIN-1].dt)} ${Mn(DAYS[WIN-1].end)}, самый низкий ${Mn(low.end)} ${low.lbl}${isBad(low)?', ниже запаса':''}">
    <defs><linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B8174F" stop-opacity=".16"/><stop offset="1" stop-color="#B8174F" stop-opacity="0"/></linearGradient></defs>
-   <line x1="${pad}" y1="${Y(SAFE)}" x2="${w-pad}" y2="${Y(SAFE)}" stroke="#C23A22" stroke-width="1.4" stroke-dasharray="5 5" opacity=".7"/>
-   <path d="M${line} L${X(DAYS.length-1)},${h-pad} L${X(0)},${h-pad} Z" fill="url(#gc)"/>
+   <line x1="${pad}" y1="${Y(SAFE)}" x2="${w-pad}" y2="${Y(SAFE)}" stroke="#C23A22" stroke-width="1.4" stroke-dasharray="5 5"/>
+   <path d="M${line} L${X(pts.length-1)},${h-pad} L${X(0)},${h-pad} Z" fill="url(#gc)"/>
    <path d="M${line}" fill="none" stroke="#B8174F" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
-   ${DAYS.map((x,i)=>x.end<SAFE?`<circle cx="${X(i)}" cy="${Y(x.end)}" r="6" fill="#C23A22"/>`:'').join('')}
+   <circle cx="${X(0)}" cy="${Y(pts[0].end)}" r="5" fill="#B8174F" stroke="#fff" stroke-width="2"/>
+   ${pts.map((x,i)=>i>0&&isBad(x)?`<circle cx="${X(i)}" cy="${Y(x.end)}" r="6" fill="#C23A22"/>`:'').join('')}
   </svg>
-  <div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--ink-soft);margin-top:6px"><span>9 сентября</span><span>пунктир: безопасный запас ${M(SAFE)}; красная точка: ниже запаса</span><span>30 сентября</span></div></div>
+  <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);margin-top:6px"><span>${dl(T0)}, сегодня</span><span>пунктир: безопасный запас <b data-tip="cal_safe">${M(SAFE)}</b>; красная точка: ниже запаса</span><span>${dl(DAYS[WIN-1].dt)}</span></div></div>
   <div class="card"><div class="klabel">По дням</div><div class="daylist">
-   ${DAYS.map(x=>`<div class="d ${x.end<SAFE?'bad':''}" data-tip="c${x.d}">
-    <div class="dt">${x.d} сентября<em>${x.w}</em></div>
-    <div><div class="faint">Выручка, прогноз</div>${x.pays.map(p=>`<div>${p[0]}</div>`).join('')}</div>
-    <div class="amt"><span class="up">+ ${M(x.p)}</span>${x.pays.map(p=>`<br><span class="down">− ${M(p[1])}</span>`).join('')}</div>
-    <div class="rest ${x.end<SAFE?'down':''}">${M(x.end)}${x.end<SAFE?'<span class="badt">ниже запаса</span>':''}</div></div>`).join('')}
+   ${DAYS.map(x=>`<div class="d ${isBad(x)?'bad':''}" data-tip="c${x.k}" data-testid="calendar-row" data-date="${x.k}">
+    <div class="dt">${x.lbl}<em>${x.w}</em></div>
+    <div>${x.pays.map(p=>`<div>${p.n}<span class="meta" style="display:block;margin-top:0">${SRC[p.s]} · ${p.after<0?'<span class="down" style="font-weight:600">не хватит '+M(-p.after)+'</span>':'останется '+M(p.after)}</span></div>`).join('')}<div class="faint">Выручка, прогноз</div></div>
+    <div class="amt">${x.pays.map(p=>`<span class="down">− ${M(p.a)}</span><br><br>`).join('')}<span class="up">+ ${M(x.p)}</span></div>
+    <div class="rest ${isBad(x)?'down':''}">${Mn(x.end)}${isBad(x)?'<span class="badt">ниже запаса</span>':''}</div></div>`).join('')}
   </div><p class="note">Наведите на день, чтобы увидеть, из чего он складывается. Дни ниже безопасного запаса отмечены красным и подписью «ниже запаса».</p></div>`;
 }
 function vCal(){
  const tin=DAYS.reduce((a,x)=>a+x.p,0), tout=DAYS.reduce((a,x)=>a+x.m,0), cnt=DAYS.reduce((a,x)=>a+x.pays.length,0);
  const low=DAYS.reduce((a,x)=>x.end<a.end?x:a,DAYS[0]);
- const sw=`<div class="seg" style="margin:0" role="tablist"><button type="button" role="tab" aria-selected="${calMode==='month'}" class="${calMode==='month'?'on':''}" data-cm="month">Календарь</button><button type="button" role="tab" aria-selected="${calMode==='list'}" class="${calMode==='list'?'on':''}" data-cm="list">Список</button></div>`;
- return head('Платёжный календарь','Платежи и остаток на каждый день на 22 дня вперёд · 9–30 сентября',sw)
+ const sw=`<div class="seg" style="margin:0" role="tablist"><button type="button" role="tab" aria-selected="${calMode==='month'}" class="${calMode==='month'?'on':''}" data-cm="month" data-testid="calendar-mode-month">Календарь</button><button type="button" role="tab" aria-selected="${calMode==='list'}" class="${calMode==='list'?'on':''}" data-cm="list" data-testid="calendar-mode-list">Список</button></div>`;
+ return `<div data-testid="calendar">` + head('Платёжный календарь','Платежи и остаток на каждый день на 22 дня вперёд · '+WIN_LBL,sw)
  + `<div class="mrow" style="margin-bottom:16px">
-  <div class="mcard"><div class="em" aria-hidden="true">📥</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_in"><span class="t">Поступит за 22 дня</span><span class="v cv">${M(tin)}</span></button><span class="s">прогноз выручки</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">📤</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_out"><span class="t">Спишется</span><span class="v cv">${M(tout)}</span></button><span class="s">${cnt} платежей</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">📉</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_low"><span class="t">Самый низкий остаток</span><span class="v cv ${low.end<SAFE?'down':''}">${M(low.end)}</span></button><span class="s ${low.end<SAFE?'bad':''}">${low.d} сентября${low.end<SAFE?' · ниже запаса':''}</span></div></div></div>`
+  <div class="mcard"><div class="em" aria-hidden="true">📥</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_in" data-testid="calendar-income"><span class="t">Поступит за 22 дня</span><span class="v cv">${M(tin)}</span></button><span class="s">прогноз выручки</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">📤</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_out" data-testid="calendar-expense"><span class="t">Спишется</span><span class="v cv">${M(tout)}</span></button><span class="s" data-testid="calendar-payments-count">${cnt} ${plural(cnt,'платёж','платежа','платежей')}</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">📉</div><div class="mc-body"><button type="button" class="tb" data-tip="cal_low" data-testid="calendar-lowest"><span class="t">Самый низкий остаток</span><span class="v cv ${isBad(low)?'down':''}">${Mn(low.end)}</span></button><span class="s ${isBad(low)?'bad':''}">${low.lbl}${isBad(low)?' · ниже запаса':''}</span></div></div></div>`
  + calAlert()
- + (calMode==='month'?calMonth():calList());
+ + (calMode==='month'?calMonth():calList())
+ + `<button type="button" class="act" style="margin-top:16px" data-testid="calendar-add-payment">Добавить платёж</button></div>`;
 }
+const PROG=(pct,lbl,tip)=>`<div class="track" style="width:150px" role="img" aria-label="Выплачено ${lbl}"><div class="fill" style="width:${pct}%"></div></div><div class="meta"><b data-tip="${tip}" style="font-weight:600">${lbl}</b> выплачено</div>`;
+const CHEAD=(t,btn)=>`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px"><div class="klabel" style="margin:0">${t}</div><button type="button" class="act">${btn}</button></div>`;
 const vOblig=()=>head('Обязательства','Кредиты, лизинг и амортизация оборудования')
  + `<div class="mrow" style="margin-bottom:16px">
-  <div class="mcard"><div class="em" aria-hidden="true">🏦</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_debt"><span class="t">Всего долг</span><span class="v">840 000 ₽</span></button><span class="s">2 обязательства</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">📆</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_pay"><span class="t">Платёж в месяц</span><span class="v">38 500 ₽</span></button><span class="s">3,1% выручки</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">🔧</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_am"><span class="t">Амортизация</span><span class="v">21 400 ₽/мес</span></button><span class="s">неденежный расход</span></div></div></div>
- <div class="card"><div class="klabel">Обязательства</div><table><thead><tr><th>Что</th><th>Прогресс</th><th class="r">Осталось</th><th class="r">Платёж</th></tr></thead><tbody>
-  <tr><td><b style="font-weight:600">Кредит на аппарат УЗИ</b><div class="meta">Сбербанк · до августа 2028</div></td>
-   <td><div class="track" style="width:150px"><div class="fill" style="width:34%"></div></div><div class="meta">34% выплачено</div></td>
-   <td class="r">620 000 ₽</td><td class="r">26 500 ₽</td></tr>
-  <tr><td><b style="font-weight:600">Лизинг рентген-аппарата</b><div class="meta">до марта 2027</div></td>
-   <td><div class="track" style="width:150px"><div class="fill g" style="width:71%"></div></div><div class="meta">71% выплачено</div></td>
-   <td class="r">220 000 ₽</td><td class="r">12 000 ₽</td></tr>
- </tbody></table></div>
- <div class="card" style="margin-top:16px"><div class="klabel">Амортизация оборудования</div><table><tbody>
-  <tr><td>Аппарат УЗИ<div class="meta">940 000 ₽ · срок службы 7 лет</div></td><td class="r">11 200 ₽/мес</td></tr>
-  <tr><td>Рентген<div class="meta">760 000 ₽ · срок службы 10 лет</div></td><td class="r">6 300 ₽/мес</td></tr>
-  <tr><td>Анализатор крови<div class="meta">234 000 ₽ · срок службы 5 лет</div></td><td class="r">3 900 ₽/мес</td></tr>
- </tbody></table><p class="note">Амортизация не списывает деньги со счёта, но показывает реальную стоимость работы оборудования. Без неё прибыль выглядит выше, чем есть. В отчёте «Прибыль и убытки» она идёт одной строкой с процентами по кредиту и лизингу: 21 400 + 12 000 = 33 400 ₽ в месяц.</p></div>`;
+  <div class="mcard"><div class="em" aria-hidden="true">🏦</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_debt"><span class="t">Всего долг</span><span class="v">836 000 ₽</span></button><span class="s">2 обязательства</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">📆</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_pay"><span class="t">Платёж в месяц</span><span class="v">38 500 ₽</span></button><span class="s" data-tip="ob_share">3,1% выручки</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">🔧</div><div class="mc-body"><button type="button" class="tb" data-tip="ob_am"><span class="t">Амортизация</span><span class="v">15 200 ₽/мес</span></button><span class="s">неденежный расход</span></div></div></div>
+ <p class="note" style="margin:0 0 16px;font-size:13px">В «Прибыли и убытках» за сентябрь: <b data-tip="ob_pnl" style="color:var(--ink)">33 400 ₽</b> — проценты, лизинг и амортизация. <button type="button" data-go="opiu" style="${LNK}">Открыть отчёт</button></p>
+ <div class="card">${CHEAD('Кредиты и лизинг','Добавить кредит или лизинг')}<table class="obtbl"><thead><tr><th>Что</th><th>Прогресс</th><th class="r">Осталось</th><th class="r">Платёж</th><th><span class="sr-only">Действие</span></th></tr></thead><tbody>
+  <tr><td><b style="font-weight:600">Кредит на аппарат УЗИ</b><div class="meta">Сбербанк · 12% · 10-го · до ноября 2028</div></td>
+   <td class="pr">${PROG(34,'34,0%','ob_p1')}</td><td class="r" data-l="Осталось" data-tip="ob_r1">620 000 ₽</td><td class="r" data-l="Платёж" data-tip="ob_m1">26 500 ₽</td><td class="r"><button type="button" class="why" aria-label="Изменить: Кредит на аппарат УЗИ">Изменить</button></td></tr>
+  <tr><td><b style="font-weight:600">Лизинг рентген-аппарата</b><div class="meta">лизинг · 10-го · до февраля 2028</div></td>
+   <td class="pr">${PROG(70,'70,0%','ob_p2')}</td><td class="r" data-l="Осталось" data-tip="ob_r2">216 000 ₽</td><td class="r" data-l="Платёж" data-tip="ob_m2">12 000 ₽</td><td class="r"><button type="button" class="why" aria-label="Изменить: Лизинг рентген-аппарата">Изменить</button></td></tr>
+ </tbody></table><p class="note">Платежи стоят в платёжном календаре в свой день.</p></div>
+ <div class="card" style="margin-top:16px">${CHEAD('Амортизация оборудования','Добавить оборудование')}<table class="obtbl"><tbody>
+  <tr><td>Аппарат УЗИ<div class="meta"><span data-tip="ob_c1">940 800 ₽</span> · 7 лет · сентябрь 2025 – август 2032</div></td><td class="r" data-tip="ob_e1">11 200 ₽/мес</td><td class="r"><button type="button" class="why" aria-label="Изменить: Аппарат УЗИ">Изменить</button></td></tr>
+  <tr><td>Анализатор крови<div class="meta"><span data-tip="ob_c2">240 000 ₽</span> · 5 лет · март 2024 – февраль 2029</div></td><td class="r" data-tip="ob_e2">4 000 ₽/мес</td><td class="r"><button type="button" class="why" aria-label="Изменить: Анализатор крови">Изменить</button></td></tr>
+ </tbody></table><p class="note">Амортизация не списывает деньги со счёта, но показывает реальную стоимость работы оборудования. Без неё прибыль выглядит выше, чем есть. Оборудование в лизинге не амортизируется: платёж по лизингу уже в расходах. В отчёте «Прибыль и убытки» амортизация идёт одной строкой с процентами по кредиту и платежом по лизингу: 15 200 + 6 200 + 12 000 = 33 400 ₽ в месяц.</p></div>`;
 
 /* ================= АНАЛИТИКА ================= */
 function vAnal(){
@@ -1226,7 +1303,7 @@ function draw(keep){
  m.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{setTab=b.dataset.set;draw(true);});
  m.querySelectorAll('[data-cm]').forEach(b=>b.onclick=()=>{calMode=b.dataset.cm;draw(true);});
  m.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{STATE=b.dataset.st;draw(true);});
- m.querySelectorAll('[data-cd]').forEach(b=>{const go=()=>{calSel=+b.dataset.cd;draw(true);};
+ m.querySelectorAll('[data-cd]').forEach(b=>{const go=()=>{calSel=b.dataset.cd;draw(true);};
   b.onclick=go;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
  m.querySelectorAll('[data-tip]').forEach(el=>{if(!/^(BUTTON|A)$/.test(el.tagName)&&!el.hasAttribute('tabindex'))el.tabIndex=0;});
  const pts=m.querySelectorAll('.cpt');

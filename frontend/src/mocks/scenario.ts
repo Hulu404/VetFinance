@@ -32,6 +32,17 @@ export type MockScenario =
   | 'reportempty' // no data in any report
   | 'reportcalm' // stock: nothing expires, nothing idle
   | 'exportfail' // export answers 501 (backend step 1)
+  // Stage 4 (planning)
+  | 'cashgap' // the dashboard has the `cash_gap` advice made from the calendar alert
+  | 'calnogap' // the calendar has no red days and no alerts
+  | 'calpartialgap' // the suggestion only reduces the gap (closes_gap: false)
+  | 'calnosuggest' // no move helps: suggestion is null
+  | 'calpartial' // all partial reasons, 34 days of history
+  | 'calempty' // no statements: the calendar cannot be built
+  | 'calnosafe' // the safe balance is not set
+  | 'calerror' // calendar endpoints answer 500
+  | 'oblempty' // no obligations at all
+  | 'oblerror' // obligations endpoints answer 500
 
 const SCENARIOS: readonly string[] = [
   'default',
@@ -63,6 +74,16 @@ const SCENARIOS: readonly string[] = [
   'reportempty',
   'reportcalm',
   'exportfail',
+  'cashgap',
+  'calnogap',
+  'calpartialgap',
+  'calnosuggest',
+  'calpartial',
+  'calempty',
+  'calnosafe',
+  'calerror',
+  'oblempty',
+  'oblerror',
 ]
 const STORAGE_KEY = 'vf-mock-scenario'
 

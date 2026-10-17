@@ -38,6 +38,10 @@ class TransactionInput:
     source: str  # "bank" | "vetmanager" | "bot" | "manual"
     kind: str = ""  # "in" | "out" | "transfer"; empty when the caller does not need it
     category: str | None = None  # category name, None: no category
+    counterparty_inn: str = (
+        ""  # from the bank statement; empty when unknown (regular payments, stage 4)
+    )
+    counterparty_name: str = ""
 
 
 @dataclass(frozen=True)

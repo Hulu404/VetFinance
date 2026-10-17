@@ -1,6 +1,7 @@
 """API models of GET /v1/dashboard (stage 2). Money is int kopecks, percents are numbers with one decimal."""
 
 from datetime import date, datetime
+from datetime import date as Day
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field
@@ -32,6 +33,11 @@ class WhyOut(BaseModel):
     sources: list[str]
 
 
+class AdviceLinkOut(BaseModel):
+    path: str
+    date: Day | None = None
+
+
 class AdviceOut(BaseModel):
     id: str
     severity: Literal["alert", "warning", "good"]
@@ -39,6 +45,7 @@ class AdviceOut(BaseModel):
     title: str
     text: str
     why: WhyOut
+    link: AdviceLinkOut | None = Field(default=None, exclude_if=_is_none)  # only `cash_gap`
 
 
 class DashboardBalanceOut(BaseModel):

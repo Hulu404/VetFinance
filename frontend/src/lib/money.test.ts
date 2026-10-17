@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseAmount } from './money'
+import { formatAmountInput, parseAmount } from './money'
 
 const NBSP = String.fromCharCode(160)
 
@@ -35,5 +35,23 @@ describe('parseAmount', () => {
     expect(parseAmount('0,07')).toEqual({ ok: true, kopecks: 7 })
     expect(parseAmount('1,15')).toEqual({ ok: true, kopecks: 115 })
     expect(parseAmount('19,99')).toEqual({ ok: true, kopecks: 1999 })
+  })
+})
+
+describe('parseAmount with allowZero', () => {
+  it('reads zero as zero kopecks only when asked', () => {
+    expect(parseAmount('0')).toEqual({ ok: false, error: 'zero' })
+    expect(parseAmount('0', { allowZero: true })).toEqual({ ok: true, kopecks: 0 })
+  })
+})
+
+describe('formatAmountInput', () => {
+  it.each([
+    [94000000, '940000'],
+    [94000050, '940000,50'],
+    [5, '0,05'],
+    [0, '0'],
+  ])('writes %d kopecks as "%s"', (kopecks, text) => {
+    expect(formatAmountInput(kopecks)).toBe(text)
   })
 })

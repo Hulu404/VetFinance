@@ -14,15 +14,17 @@ interface BannerProps {
   children: ReactNode
   action?: BannerAction
   testId?: string
+  /** Extra `data-*` attributes (e2e: the reasons of a partial answer). */
+  attributes?: Record<`data-${string}`, string>
 }
 
 /**
  * Message strip above a screen (design/components.md, section 12). It disappears when its cause is gone.
  * `info` is for the open month of "Норма" (design/screens/norm.md): neutral colours, nothing to fear.
  */
-export function Banner({ variant, children, action, testId }: BannerProps) {
+export function Banner({ variant, children, action, testId, attributes }: BannerProps) {
   return (
-    <div className={`banner banner--${variant}`} role={variant === 'danger' ? 'alert' : 'status'} data-testid={testId}>
+    <div className={`banner banner--${variant}`} role={variant === 'danger' ? 'alert' : 'status'} data-testid={testId} {...attributes}>
       <span className="banner__text">{children}</span>
       {action &&
         (action.to ? (

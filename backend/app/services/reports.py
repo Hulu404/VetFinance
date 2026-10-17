@@ -15,6 +15,7 @@ from app.reports_out import idle_item_out, norm_out, pnl_out, stock_out
 from app.rows import CategoryRow
 from app.schemas import figure_out
 from app.schemas_reports import IdleItemOut, NormOut, PnlOut, StockIdleOut, StockOut
+from app.services import planning
 from engine.acquiring import CardPayment
 from engine.balance import TransactionInput
 from engine.dashboard_inputs import SaleInput
@@ -88,7 +89,7 @@ async def _load(repo: Repository, window: Window) -> ReportData:
         transactions=await repo.list_transactions(window.as_of),
         sales=await repo.list_sales(EARLIEST, window.as_of),
         card_payments=[CardPayment(r.date, r.amount) for r in await repo.list_card_payments()],
-        charges=await repo.list_obligation_charges(),
+        charges=await planning.charges_for_report(repo, window.month),
         benchmarks=await repo.list_benchmarks(),
         acquiring_rate_bp=await repo.get_acquiring_rate_bp(),
         bank_covered_to=await repo.bank_covered_to(),

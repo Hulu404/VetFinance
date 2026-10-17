@@ -28,6 +28,14 @@ interface KpiCardProps {
   valueText?: string
   /** Sub-line chosen by the screen; wins over the zero and negative hints. */
   subText?: string
+  /** The number and its sub-line in the colour of "bad" (a day below the safe balance); the sub-line carries the words. */
+  bad?: boolean
+  /** `data-testid` of the element with the number only (e2e reads the amount from it). */
+  valueTestId?: string
+  /** Extra `data-*` attributes of the element with the number (e2e: the status of the day). */
+  valueData?: Record<`data-${string}`, string>
+  /** `data-testid` of the sub-line. */
+  subTestId?: string
 }
 
 function subline(state: KpiState, figure: Figure | undefined, zeroText?: string, emptyText?: string) {
@@ -53,9 +61,14 @@ export function KpiCard({
   tipTitle,
   valueText: valueOverride,
   subText,
+  bad = false,
+  valueTestId,
+  valueData,
+  subTestId,
 }: KpiCardProps) {
   const className = `kpi kpi--${variant} kpi--${state}${extra ? ' kpi--with-extra' : ''}`
-  const hint = subText && state === 'ready' ? { text: subText, tone: 'soft' as const } : subline(state, figure, zeroText, emptyText)
+  const hint =
+    subText && state === 'ready' ? { text: subText, tone: bad ? ('bad' as const) : ('soft' as const) } : subline(state, figure, zeroText, emptyText)
 
   // The test id is only on a card with data, so e2e waits for the number instead of reading a placeholder.
   if (state === 'loading') {
@@ -98,8 +111,14 @@ export function KpiCard({
             <span className="kpi__emoji" aria-hidden="true">{emoji}</span>
             <span className="kpi__body">
               <span className="kpi__label">{label}</span>
-              <span className="kpi__value">{valueText}</span>
-              {hint && <span className={`kpi__sub kpi__sub--${hint.tone}`}>{hint.text}</span>}
+              <span className={bad ? 'kpi__value kpi__value--bad' : 'kpi__value'} data-testid={valueTestId} {...valueData}>
+                {valueText}
+              </span>
+              {hint && (
+                <span className={`kpi__sub kpi__sub--${hint.tone}`} data-testid={subTestId}>
+                  {hint.text}
+                </span>
+              )}
             </span>
           </button>
         )}

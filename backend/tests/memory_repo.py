@@ -26,6 +26,7 @@ from app.rows import (
 from engine.balance import AccountInput, TransactionInput
 from engine.dashboard_inputs import NormsInput, SaleInput, SaleLineInput, VisitInput
 from engine.dedup import TxRef
+from engine.planning_inputs import CounterpartyTermsInput, ObligationInput, PlannedPaymentInput
 from engine.reports_inputs import (
     BenchmarkInput,
     ConsumptionInput,
@@ -68,6 +69,9 @@ class MemoryRepo:
         self.payments: dict[str, tuple[Payment, str | None]] = {}
         self.reviews: dict[date, str | None] = {}
         self.charges: list[ObligationChargeInput] = []
+        self.obligations: list[ObligationInput] = []
+        self.planned: list[PlannedPaymentInput] = []
+        self.terms: dict[str, CounterpartyTermsInput] = {}
         self.benchmarks: list[BenchmarkInput] = []
         self.stock_items: list[StockItemInput] = []
         self.stock_batches: list[StockBatchInput] = []
@@ -152,6 +156,7 @@ class MemoryRepo:
         kind: str | None = None,
         description: str = "",
         inn: str = "",
+        counterparty_name: str = "",
     ) -> TxRow:
         new_id = self.new_id()
         row = TxRow(
@@ -159,7 +164,7 @@ class MemoryRepo:
             kind=kind or ("in" if amount > 0 else "out"), source=source, status=status,
             account_id=account_id, account_name=self._account(account_id).name,
             category_id=category_id, category_name=self._category_name(category_id),
-            category_source=None, rule_id=None, counterparty_inn=inn, counterparty_name="",
+            category_source=None, rule_id=None, counterparty_inn=inn, counterparty_name=counterparty_name,
             duplicate_of=None, duplicate_state=None, duplicate_dismissed=False,
             created_at=BASE_TIME + timedelta(seconds=self._seq),
         )  # fmt: skip
@@ -207,7 +212,15 @@ class MemoryRepo:
     async def list_transactions(self, as_of: date) -> list[TransactionInput]:
         return [
             TransactionInput(
-                t.account_id, t.date, t.amount, t.status, t.source, t.kind, t.category_name
+                t.account_id,
+                t.date,
+                t.amount,
+                t.status,
+                t.source,
+                t.kind,
+                t.category_name,
+                t.counterparty_inn,
+                t.counterparty_name,
             )
             for t in self.txs
             if t.date <= as_of and t.status != "duplicate"
@@ -556,3 +569,56 @@ class MemoryRepo:
         if known is None:
             return "new"
         return "same" if known[0] == payment else "updated"
+
+    # ------------------------------------------------------------ stage 4: obligations, planned payments, terms
+    async def list_obligation_inputs(self) -> list[ObligationInput]:
+        return sorted(self.obligations, key=lambda o: (o.name, o.id))
+
+    async def create_obligation(self, ob: ObligationInput) -> ObligationInput:
+        row = dataclasses.replace(ob, id=self.new_id())
+        self.obligations.append(row)
+        return row
+
+    async def update_obligation(
+        self, obligation_id: str, changes: dict[str, Any]
+    ) -> ObligationInput | None:
+        for i, o in enumerate(self.obligations):
+            if o.id == obligation_id and o.closed_from is None:
+                self.obligations[i] = dataclasses.replace(o, **changes)
+                return self.obligations[i]
+        return None
+
+    async def close_obligation(self, obligation_id: str, month: date) -> bool:
+        for i, o in enumerate(self.obligations):
+            if o.id == obligation_id and o.closed_from is None:
+                self.obligations[i] = dataclasses.replace(o, closed_from=month)
+                return True
+        return False
+
+    async def insert_charges(self, rows: Sequence[ObligationChargeInput]) -> None:
+        have = {(c.obligation_id, c.month, c.kind) for c in self.charges}
+        for r in rows:
+            if (r.obligation_id, r.month, r.kind) not in have:
+                self.charges.append(r)
+
+    async def list_planned_payments(self) -> list[PlannedPaymentInput]:
+        return sorted(self.planned, key=lambda p: (p.date, p.name, p.id))
+
+    async def add_planned_payment(
+        self, day: date, name: str, amount: int, category_id: str | None, max_deferral_days: int
+    ) -> PlannedPaymentInput:
+        category = next((c.name for c in self.categories if c.id == category_id), None)
+        row = PlannedPaymentInput(self.new_id(), day, name, amount, max_deferral_days, category)
+        self.planned.append(row)
+        return row
+
+    async def delete_planned_payment(self, payment_id: str) -> bool:
+        before = len(self.planned)
+        self.planned = [p for p in self.planned if p.id != payment_id]
+        return len(self.planned) < before
+
+    async def list_counterparty_terms(self) -> list[CounterpartyTermsInput]:
+        return sorted(self.terms.values(), key=lambda t: t.inn)
+
+    async def set_counterparty_terms(self, key: str, name: str, days: int) -> None:
+        self.terms[key] = CounterpartyTermsInput(key, name, days)

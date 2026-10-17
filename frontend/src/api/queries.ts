@@ -8,11 +8,13 @@ import type {
   AccountList,
   AcquiringDayDetails,
   AcquiringReconciliation,
+  CalendarReport,
   CategoryList,
   CategoryRuleList,
   Clinic,
   ConnectionList,
   Dashboard,
+  ObligationsReport,
   NormReport,
   PnlReport,
   PnlView,
@@ -48,6 +50,8 @@ export const queryKeys = {
   norm: ['norm'] as const,
   stock: ['stock'] as const,
   stockIdle: ['stock-idle'] as const,
+  calendar: ['calendar'] as const,
+  obligations: ['obligations'] as const,
 }
 
 /** Shared by the dashboard and the header balance. `?as_of=` in the address is passed through (golden-data checks). */
@@ -203,6 +207,21 @@ export function useStockIdle(bucket: StockIdleKey, asOf: string | null) {
   })
 }
 
+/** The calendar of the next 22 days; `asOf` is passed through from the address (golden-data checks). */
+export function useCalendar(asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.calendar, asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<CalendarReport>(reportQuery('/v1/calendar', { days: '22', as_of: asOf }), signal),
+  })
+}
+
+export function useObligations(asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.obligations, asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<ObligationsReport>(reportQuery('/v1/obligations', { as_of: asOf }), signal),
+  })
+}
+
 /** After anything that changes operations: lists, counters, month totals, balance in the header, reconciliation. */
 export function invalidateAfterOperationChange(queryClient: QueryClient): Promise<unknown> {
   return Promise.all([
@@ -213,5 +232,25 @@ export function invalidateAfterOperationChange(queryClient: QueryClient): Promis
     queryClient.invalidateQueries({ queryKey: queryKeys.norm }),
     queryClient.invalidateQueries({ queryKey: queryKeys.categoryRules }),
     queryClient.invalidateQueries({ queryKey: queryKeys.connections }),
+  ])
+}
+
+/** After a payment, a deferral or the safe balance: the calendar, the dashboard (the `cash_gap` advice, the balance) and the clinic. */
+export function invalidateAfterCalendarChange(queryClient: QueryClient): Promise<unknown> {
+  return Promise.all([
+    queryClient.invalidateQueries({ queryKey: queryKeys.calendar }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.clinic }),
+  ])
+}
+
+/** After obligations change: they move the profit (reports), the calendar and the dashboard. */
+export function invalidateAfterObligationChange(queryClient: QueryClient): Promise<unknown> {
+  return Promise.all([
+    queryClient.invalidateQueries({ queryKey: queryKeys.obligations }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.calendar }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.dashboard }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.pnl }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.norm }),
   ])
 }

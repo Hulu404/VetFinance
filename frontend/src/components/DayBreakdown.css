@@ -1,0 +1,74 @@
+/* DayBreakdown (design/components.md, section 25; v7 .dayp). */
+.dayp {
+  margin-top: var(--section-gap);
+  padding: 22px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.dayp--bad { border-left: 3px solid var(--color-bad); }
+.dayp__label {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+.dayp__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.dayp__heading { font-size: var(--fs-xl); font-weight: var(--fw-bold); }
+.dayp__heading:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+
+.dayp__table { width: 100%; border-collapse: collapse; font-size: var(--fs-base); }
+.dayp__row > * { padding: 9px 2px; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+.dayp__row--total > * { border-bottom: 0; font-weight: var(--fw-bold); }
+.dayp__name { text-align: left; font-weight: var(--fw-regular); }
+.dayp__name--soft { color: var(--color-ink-soft); }
+.dayp__title { display: block; overflow-wrap: anywhere; }
+.dayp__meta { display: block; font-size: var(--fs-xs); color: var(--color-ink-soft); }
+.dayp__link {
+  min-height: 40px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  color: var(--color-accent-dark);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.dayp__sum { text-align: right; font-weight: var(--fw-semibold); white-space: nowrap; }
+.dayp__sum--out { color: var(--color-bad); }
+.dayp__sum--in { color: var(--color-ok-ink); }
+.dayp__sum--bad { color: var(--color-bad); }
+.dayp__after { text-align: right; font-size: var(--fs-sm); color: var(--color-ink-soft); white-space: nowrap; }
+.dayp__after--short { font-weight: var(--fw-semibold); color: var(--color-bad); }
+
+.dayp__note { margin-top: var(--space-3); font-size: var(--fs-sm); color: var(--color-ink-soft); }
+.dayp__note--bad {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-bad-soft);
+  color: var(--color-bad);
+  font-size: 13.5px;
+  font-weight: var(--fw-semibold);
+}
+
+@media (max-width: 820px) {
+  .dayp__link { min-height: var(--touch-min); }
+}
+/* Phone: the name and the source on the first line, the sum and the balance after on the second, to the right. */
+@media (max-width: 560px) {
+  .dayp { padding: 18px 16px; }
+  .dayp__table, .dayp__table tbody { display: block; }
+  .dayp__row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; border-bottom: 1px solid var(--color-border); }
+  .dayp__row--total { border-bottom: 0; }
+  .dayp__row > * { border-bottom: 0; }
+  .dayp__row > .dayp__name { grid-column: 1; }
+  .dayp__row > .dayp__name[colspan] { grid-column: 1 / -1; }
+  .dayp__row > .dayp__sum[colspan] { grid-column: 2 / -1; }
+  .dayp__row--pay > .dayp__name { grid-column: 1 / -1; padding-bottom: 0; }
+  .dayp__row--pay > .dayp__sum { grid-column: 2; grid-row: 2; }
+  .dayp__row--pay > .dayp__after { grid-column: 3; grid-row: 2; padding-left: var(--space-3); }
+}

@@ -57,11 +57,7 @@ begin
   if n <> 1 then raise exception 'user A does not see own benchmark'; end if;
 
   -- 3. API roles do not write into the new tables
-  begin
-    insert into public.obligations (clinic_id, code, name, kind) values (clinic_a, 'hack', 'hack', 'loan');
-    raise exception 'user A inserted an obligation';
-  exception when insufficient_privilege then null;
-  end;
+  -- obligations are written by API roles since stage 4 (see rls_isolation_stage4.sql)
   begin
     insert into public.stock_items (clinic_id, external_id, name) values (clinic_a, 'hack', 'hack');
     raise exception 'user A inserted a stock item';

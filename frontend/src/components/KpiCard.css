@@ -66,6 +66,7 @@
 
 .kpi__sub { margin-top: 4px; font-size: var(--fs-xs); font-weight: var(--fw-semibold); }
 .kpi__sub--bad { color: var(--color-bad); }
+.kpi__value--bad { color: var(--color-bad); }
 .kpi__sub--soft { color: var(--color-ink-soft); }
 /* On the accent card the number and the hint stay white: red on the gradient fails contrast. */
 .kpi--accent .kpi__sub { color: var(--color-on-accent-soft); }
@@ -109,4 +110,10 @@
 .kpi-grid > li > .kpi { flex: 1; }
 @media (max-width: 560px) {
   .kpi-grid { grid-template-columns: 1fr; }
+}
+
+/* Three cards over a planning screen (calendar, obligations): one column up to 720px */
+.kpi-grid.kpi-grid--plan { grid-template-columns: repeat(3, 1fr); margin-bottom: var(--section-gap); }
+@media (max-width: 720px) {
+  .kpi-grid.kpi-grid--plan { grid-template-columns: 1fr; }
 }
