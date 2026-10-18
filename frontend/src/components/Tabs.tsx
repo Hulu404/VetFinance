@@ -103,6 +103,8 @@ interface SegmentedOption<Id extends string> {
   id: Id
   label: string
   testId?: string
+  /** Extra `data-*` attributes of the button (e2e: the count of the list behind the option). */
+  data?: Record<`data-${string}`, string>
 }
 
 interface SegmentedProps<Id extends string> {
@@ -144,6 +146,7 @@ export function Segmented<Id extends string>({ label, options, value, onChange, 
             type="button"
             role="radio"
             data-testid={option.testId}
+            {...option.data}
             aria-checked={selected}
             tabIndex={selected ? 0 : -1}
             disabled={disabled}

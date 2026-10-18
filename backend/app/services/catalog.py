@@ -41,6 +41,8 @@ async def list_categories(repo: Repository) -> CategoriesOut:
                 norm_key=c.norm_key,
                 direction=c.direction,
                 payroll=c.payroll,
+                in_service_recipes=c.in_service_recipes,
+                doctor_percent=c.doctor_percent,
             )
             for c in await repo.list_categories()
         ]

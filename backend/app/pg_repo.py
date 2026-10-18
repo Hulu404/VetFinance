@@ -17,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.errors import forbidden
 from app.pg_planning import PgPlanning
+from app.pg_pricing import PgPricing
 from app.rows import (
     AccountRow,
     CardPaymentRow,
@@ -41,7 +42,7 @@ from engine.reports_inputs import (
     StockItemInput,
     WriteoffInput,
 )
-from engine.vetmanager import Payment, Sale, Visit
+from engine.vetmanager import Payment, Sale, SaleLine, Service, Visit
 
 _CLINIC_COLS = "id::text, name, legal_entity, tax_regime, timezone, safe_balance"
 _EDITABLE_CLINIC = ("name", "legal_entity", "tax_regime", "timezone", "safe_balance")
@@ -89,7 +90,17 @@ def _opt_uuid(value: str | None) -> uuid.UUID | None:
     return uuid.UUID(value) if value else None
 
 
-class PgRepository(PgPlanning):
+def _line_json(line: SaleLine) -> dict[str, Any]:
+    """A line of an invoice as stored in sales.lines; stage 5 fields only for service lines."""
+    out: dict[str, Any] = {"kind": line.kind, "amount": line.amount}
+    if line.service_external_id:
+        out.update(
+            service_id=line.service_external_id, name=line.name, qty=str(line.qty), price=line.price
+        )
+    return out
+
+
+class PgRepository(PgPlanning, PgPricing):
     """`clinic_id=None`: the clinic is the user's first membership (user request, RLS applies).
     With `clinic_id` and `service=True` the connection is a trusted background job of that clinic."""
 
@@ -227,7 +238,7 @@ class PgRepository(PgPlanning):
         cid = await self._clinic()
         res = await self._conn.execute(
             text(
-                "select v.date, coalesce(d.name, '') from visits v "
+                "select v.date, coalesce(d.name, ''), v.doctor_id::text from visits v "
                 "left join doctors d on d.id = v.doctor_id and d.clinic_id = v.clinic_id "
                 "where v.clinic_id = :cid and v.date between :first and :last"
             ),
@@ -241,7 +252,7 @@ class PgRepository(PgPlanning):
         res = await self._conn.execute(
             text(
                 "select id::text, name, type, norm_min_pct::float8, norm_max_pct::float8, "
-                "norm_key, direction, payroll from categories where clinic_id = :cid "
+                "norm_key, direction, payroll, in_service_recipes, doctor_percent from categories where clinic_id = :cid "
                 "order by case type when 'income' then 0 when 'variable' then 1 when 'fixed' then 2 "
                 "when 'tax' then 3 when 'obligation' then 4 when 'capex' then 5 "
                 "when 'owner_draw' then 6 else 7 end, name"
@@ -855,7 +866,7 @@ class PgRepository(PgPlanning):
         )
 
     async def upsert_sale(self, sale: Sale) -> str:
-        lines = json.dumps([{"kind": line.kind, "amount": line.amount} for line in sale.lines])
+        lines = json.dumps([_line_json(line) for line in sale.lines])
         return await self._classify(
             "insert into sales (clinic_id, external_id, date, status, amount, lines) "
             "values (:cid, :ext, :date, :status, :amount, cast(:lines as jsonb)) "
@@ -871,6 +882,17 @@ class PgRepository(PgPlanning):
                 "amount": sale.amount,
                 "lines": lines,
             },
+        )
+
+    async def upsert_service(self, service: Service) -> str:
+        return await self._classify(
+            "insert into services (clinic_id, source, external_id, name, group_name) "
+            "values (:cid, 'vetmanager', :ext, left(:name, 300), left(:grp, 80)) "
+            "on conflict (clinic_id, external_id) where external_id is not null do update set "
+            "name = excluded.name, group_name = excluded.group_name "
+            "where (services.name, services.group_name) is distinct from (excluded.name, excluded.group_name) "
+            "returning (xmax = 0)",
+            {"ext": service.external_id, "name": service.name, "grp": service.group},
         )
 
     async def upsert_payment(self, payment: Payment, transaction_id: str | None) -> str:

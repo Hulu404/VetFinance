@@ -1,0 +1,2814 @@
+{
+ "as_of": "2026-10-01",
+ "month": "2026-09",
+ "item_costs": {
+  "i01": {
+   "basis": "average",
+   "unit_cost": "2920/1"
+  },
+  "i02": {
+   "basis": "average",
+   "unit_cost": "450/1"
+  },
+  "i03": {
+   "basis": "average",
+   "unit_cost": "39200/1"
+  },
+  "i04": {
+   "basis": "average",
+   "unit_cost": "99/8"
+  },
+  "i05": {
+   "basis": "average",
+   "unit_cost": "90001/1"
+  },
+  "i06": {
+   "basis": "average",
+   "unit_cost": "25300/1"
+  },
+  "i07": {
+   "basis": "average",
+   "unit_cost": "4900/1"
+  },
+  "i08": {
+   "basis": "average",
+   "unit_cost": "21500/1"
+  },
+  "i09": {
+   "basis": "average",
+   "unit_cost": "7800/1"
+  },
+  "i10": {
+   "basis": "average",
+   "unit_cost": "5900/1"
+  },
+  "i11": {
+   "basis": "average",
+   "unit_cost": "7540/1"
+  },
+  "i12": {
+   "basis": "average",
+   "unit_cost": "11000/1"
+  },
+  "i13": {
+   "basis": "average",
+   "unit_cost": "150/1"
+  },
+  "i14": {
+   "basis": "last_batch",
+   "unit_cost": "64500/1"
+  },
+  "i15": {
+   "basis": "average",
+   "unit_cost": "1950/1"
+  },
+  "i16": {
+   "basis": "none",
+   "unit_cost": null
+  }
+ },
+ "cases": {
+  "main": {
+   "mode": "rooms",
+   "hour_cost": 46145,
+   "efficiency": {
+    "revenue": 50330000,
+    "visits": 254,
+    "visits_by_doctor": {
+     "D1": 34,
+     "D2": 172,
+     "D3": 43
+    },
+    "visits_without_doctor": 5,
+    "avg_check": 198150,
+    "pool": {
+     "fixed": 28500000,
+     "obligations": 3340000,
+     "total": 31840000
+    },
+    "marginal_profit": 24930000,
+    "mode": "rooms",
+    "load_by": "rooms",
+    "partial_reasons": [],
+    "rooms": [
+     {
+      "id": "R1",
+      "name": "Кабинет терапии",
+      "available_hours": 192,
+      "busy_hours": 78,
+      "free_hours": 114,
+      "load_pct": 40.6
+     },
+     {
+      "id": "R2",
+      "name": "Операционная",
+      "available_hours": 138,
+      "busy_hours": 32,
+      "free_hours": 106,
+      "load_pct": 23.2
+     },
+     {
+      "id": "R3",
+      "name": "Стационар",
+      "available_hours": 360,
+      "busy_hours": 36,
+      "free_hours": 324,
+      "load_pct": 10.0
+     }
+    ],
+    "doctors": [],
+    "available_hours": 690,
+    "busy_hours": 146,
+    "free_hours": 544,
+    "load_pct": 21.2,
+    "hour_cost": 46145,
+    "hour_cost_lines": {
+     "fixed": 41304,
+     "obligations": 4841
+    },
+    "hour_margin": 170753,
+    "status": "ok"
+   },
+   "services": [
+    {
+     "id": "S6",
+     "name": "Стационар, сутки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 180,
+     "group": "Стационар",
+     "price": 240000,
+     "visits_month": 12,
+     "parts": {
+      "doctor_pay": 48000,
+      "acquiring": 4530,
+      "taxes": 10014,
+      "drugs": 15080,
+      "anesthesia": 0,
+      "supplies": 38900,
+      "fixed": 138435
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i10",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 5900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i11",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 15080,
+       "no_cost": false
+      },
+      {
+       "item_id": "i12",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 33000,
+       "no_cost": false
+      }
+     ],
+     "net_profit": -14959,
+     "net_margin_pct": -6.3,
+     "monthly_profit": -179508,
+     "shares": {
+      "doctor_pay": 20.0,
+      "drugs": 6.3,
+      "anesthesia": 0.0,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "fixed": 57.7,
+      "taxes": 4.2
+     },
+     "cost_total": 254959
+    },
+    {
+     "id": "S4",
+     "name": "Кастрация кота",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 60,
+     "group": "Хирургия",
+     "price": 450000,
+     "visits_month": 18,
+     "parts": {
+      "doctor_pay": 135000,
+      "acquiring": 8494,
+      "taxes": 18776,
+      "drugs": 23500,
+      "anesthesia": 52591,
+      "supplies": 72840,
+      "fixed": 46145
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i05",
+       "qty": "0.5",
+       "part": "anesthesia",
+       "cost": 45001,
+       "no_cost": false
+      },
+      {
+       "item_id": "i06",
+       "qty": "0.3",
+       "part": "anesthesia",
+       "cost": 7590,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "4",
+       "part": "drugs",
+       "cost": 19600,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 3900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i08",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 43000,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 23400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 600,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 92654,
+     "net_margin_pct": 20.6,
+     "monthly_profit": 1667772,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 5.2,
+      "anesthesia": 11.7,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "fixed": 10.2,
+      "taxes": 4.2
+     },
+     "cost_total": 357346
+    },
+    {
+     "id": "S5",
+     "name": "Стоматология под наркозом",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 120,
+     "group": "Хирургия",
+     "price": 980000,
+     "visits_month": 6,
+     "parts": {
+      "doctor_pay": 343000,
+      "acquiring": 18498,
+      "taxes": 40890,
+      "drugs": 39150,
+      "anesthesia": 193500,
+      "supplies": 37940,
+      "fixed": 92290
+     },
+     "status": "partial",
+     "missing": [
+      "item_no_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i14",
+       "qty": "3",
+       "part": "anesthesia",
+       "cost": 193500,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "5",
+       "part": "drugs",
+       "cost": 9750,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "6",
+       "part": "drugs",
+       "cost": 29400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 31200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "6",
+       "part": "supplies",
+       "cost": 900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i16",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 0,
+       "no_cost": true
+      }
+     ],
+     "net_profit": 214732,
+     "net_margin_pct": 21.9,
+     "monthly_profit": 1288392,
+     "shares": {
+      "doctor_pay": 35.0,
+      "drugs": 4.0,
+      "anesthesia": 19.7,
+      "supplies": 3.9,
+      "acquiring": 1.9,
+      "fixed": 9.4,
+      "taxes": 4.2
+     },
+     "cost_total": 765268
+    },
+    {
+     "id": "S2",
+     "name": "Вакцинация комплексная",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 122741,
+     "visits_month": 50,
+     "parts": {
+      "doctor_pay": 33156,
+      "acquiring": 2317,
+      "taxes": 5121,
+      "drugs": 39200,
+      "anesthesia": 0,
+      "supplies": 450,
+      "fixed": 11536
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i03",
+       "qty": "1",
+       "part": "drugs",
+       "cost": 39200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 30961,
+     "net_margin_pct": 25.2,
+     "monthly_profit": 1548050,
+     "shares": {
+      "doctor_pay": 27.0,
+      "drugs": 31.9,
+      "anesthesia": 0.0,
+      "supplies": 0.4,
+      "acquiring": 1.9,
+      "fixed": 9.4,
+      "taxes": 4.2
+     },
+     "cost_total": 91780
+    },
+    {
+     "id": "S1",
+     "name": "Первичный приём терапевта",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Терапия",
+     "price": 180000,
+     "visits_month": 80,
+     "parts": {
+      "doctor_pay": 54000,
+      "acquiring": 3398,
+      "taxes": 7510,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3820,
+      "fixed": 23073
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 88199,
+     "net_margin_pct": 49.0,
+     "monthly_profit": 7055920,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 2.1,
+      "acquiring": 1.9,
+      "fixed": 12.8,
+      "taxes": 4.2
+     },
+     "cost_total": 91801
+    },
+    {
+     "id": "M1",
+     "name": "Консультация ортопеда",
+     "source": "manual",
+     "price_basis": "manual",
+     "minutes_source": "own",
+     "minutes": 40,
+     "group": "Ортопедия",
+     "price": 250000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 75000,
+      "acquiring": 4719,
+      "taxes": 10431,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": 30763
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [],
+     "net_profit": 129087,
+     "net_margin_pct": 51.6,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "fixed": 12.3,
+      "taxes": 4.2
+     },
+     "cost_total": 120913
+    },
+    {
+     "id": "S3",
+     "name": "УЗИ брюшной полости",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Диагностика",
+     "price": 208482,
+     "visits_month": 30,
+     "parts": {
+      "doctor_pay": 62545,
+      "acquiring": 3935,
+      "taxes": 8699,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 548,
+      "fixed": 23073
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i04",
+       "qty": "20",
+       "part": "supplies",
+       "cost": 248,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 109682,
+     "net_margin_pct": 52.6,
+     "monthly_profit": 3290460,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.2,
+      "acquiring": 1.9,
+      "fixed": 11.1,
+      "taxes": 4.2
+     },
+     "cost_total": 98800
+    },
+    {
+     "id": "S11",
+     "name": "Осмотр без материалов",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Терапия",
+     "price": 150000,
+     "visits_month": 10,
+     "parts": {
+      "doctor_pay": 45000,
+      "acquiring": 2831,
+      "taxes": 6259,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": 15382
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [],
+     "net_profit": 80528,
+     "net_margin_pct": 53.7,
+     "monthly_profit": 805280,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "fixed": 10.2,
+      "taxes": 4.2
+     },
+     "cost_total": 69472
+    },
+    {
+     "id": "S8",
+     "name": "Рентген грудной клетки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Диагностика",
+     "price": 190000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 47500,
+      "acquiring": 3586,
+      "taxes": 7928,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3220,
+      "fixed": 15382
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 112384,
+     "net_margin_pct": 59.1,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 25.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 1.7,
+      "acquiring": 1.9,
+      "fixed": 8.1,
+      "taxes": 4.2
+     },
+     "cost_total": 77616
+    },
+    {
+     "id": "S10",
+     "name": "Выдача справки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "clinic_average",
+     "minutes": 30,
+     "group": null,
+     "price": 30000,
+     "visits_month": 25,
+     "parts": {
+      "doctor_pay": 8104,
+      "acquiring": 566,
+      "taxes": 1252,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": 23073
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    },
+    {
+     "id": "S7",
+     "name": "Чистка ушей",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 60000,
+     "visits_month": 16,
+     "parts": {
+      "doctor_pay": 16208,
+      "acquiring": 1133,
+      "taxes": 2503,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": 11536
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    }
+   ],
+   "order_by_profit": [
+    "S6",
+    "M1",
+    "S8",
+    "S11",
+    "S5",
+    "S2",
+    "S4",
+    "S3",
+    "S1",
+    "S10",
+    "S7"
+   ],
+   "counts": {
+    "all": 11,
+    "loss": 1,
+    "no_recipe": 2
+   }
+  },
+  "ward_no_schedule": {
+   "mode": "doctors",
+   "hour_cost": 76172,
+   "efficiency": {
+    "revenue": 50330000,
+    "visits": 254,
+    "visits_by_doctor": {
+     "D1": 34,
+     "D2": 172,
+     "D3": 43
+    },
+    "visits_without_doctor": 5,
+    "avg_check": 198150,
+    "pool": {
+     "fixed": 28500000,
+     "obligations": 3340000,
+     "total": 31840000
+    },
+    "marginal_profit": 24930000,
+    "mode": "doctors",
+    "load_by": "doctors",
+    "status": "ok",
+    "partial_reasons": [],
+    "rooms": [],
+    "doctors": [
+     {
+      "id": "D1",
+      "name": "Иванова А.",
+      "visits": 34,
+      "available_hours": 154,
+      "busy_hours": 17,
+      "free_hours": 137,
+      "load_pct": 11.0
+     },
+     {
+      "id": "D2",
+      "name": "Петров В.",
+      "visits": 172,
+      "available_hours": 161,
+      "busy_hours": 86,
+      "free_hours": 75,
+      "load_pct": 53.4
+     },
+     {
+      "id": "D3",
+      "name": "Сидорова Н.",
+      "visits": 43,
+      "available_hours": 103,
+      "busy_hours": 22,
+      "free_hours": 81,
+      "load_pct": 21.4
+     }
+    ],
+    "available_hours": 418,
+    "busy_hours": 125,
+    "free_hours": 293,
+    "load_pct": 29.9,
+    "hour_cost": 76172,
+    "hour_cost_lines": {
+     "fixed": 68182,
+     "obligations": 7990
+    },
+    "hour_margin": 199440
+   },
+   "services": [
+    {
+     "id": "S6",
+     "name": "Стационар, сутки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 180,
+     "group": "Стационар",
+     "price": 240000,
+     "visits_month": 12,
+     "parts": {
+      "doctor_pay": 48000,
+      "acquiring": 4530,
+      "taxes": 10014,
+      "drugs": 15080,
+      "anesthesia": 0,
+      "supplies": 38900,
+      "fixed": 228516
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i10",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 5900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i11",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 15080,
+       "no_cost": false
+      },
+      {
+       "item_id": "i12",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 33000,
+       "no_cost": false
+      }
+     ],
+     "net_profit": -105040,
+     "net_margin_pct": -43.8,
+     "monthly_profit": -1260480,
+     "shares": {
+      "doctor_pay": 20.0,
+      "drugs": 6.3,
+      "anesthesia": 0.0,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "fixed": 95.2,
+      "taxes": 4.2
+     },
+     "cost_total": 345040
+    },
+    {
+     "id": "S4",
+     "name": "Кастрация кота",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 60,
+     "group": "Хирургия",
+     "price": 450000,
+     "visits_month": 18,
+     "parts": {
+      "doctor_pay": 135000,
+      "acquiring": 8494,
+      "taxes": 18776,
+      "drugs": 23500,
+      "anesthesia": 52591,
+      "supplies": 72840,
+      "fixed": 76172
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i05",
+       "qty": "0.5",
+       "part": "anesthesia",
+       "cost": 45001,
+       "no_cost": false
+      },
+      {
+       "item_id": "i06",
+       "qty": "0.3",
+       "part": "anesthesia",
+       "cost": 7590,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "4",
+       "part": "drugs",
+       "cost": 19600,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 3900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i08",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 43000,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 23400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 600,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 62627,
+     "net_margin_pct": 13.9,
+     "monthly_profit": 1127286,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 5.2,
+      "anesthesia": 11.7,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "fixed": 16.9,
+      "taxes": 4.2
+     },
+     "cost_total": 387373
+    },
+    {
+     "id": "S5",
+     "name": "Стоматология под наркозом",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 120,
+     "group": "Хирургия",
+     "price": 980000,
+     "visits_month": 6,
+     "parts": {
+      "doctor_pay": 343000,
+      "acquiring": 18498,
+      "taxes": 40890,
+      "drugs": 39150,
+      "anesthesia": 193500,
+      "supplies": 37940,
+      "fixed": 152344
+     },
+     "status": "partial",
+     "missing": [
+      "item_no_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i14",
+       "qty": "3",
+       "part": "anesthesia",
+       "cost": 193500,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "5",
+       "part": "drugs",
+       "cost": 9750,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "6",
+       "part": "drugs",
+       "cost": 29400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 31200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "6",
+       "part": "supplies",
+       "cost": 900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i16",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 0,
+       "no_cost": true
+      }
+     ],
+     "net_profit": 154678,
+     "net_margin_pct": 15.8,
+     "monthly_profit": 928068,
+     "shares": {
+      "doctor_pay": 35.0,
+      "drugs": 4.0,
+      "anesthesia": 19.7,
+      "supplies": 3.9,
+      "acquiring": 1.9,
+      "fixed": 15.5,
+      "taxes": 4.2
+     },
+     "cost_total": 825322
+    },
+    {
+     "id": "S2",
+     "name": "Вакцинация комплексная",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 122741,
+     "visits_month": 50,
+     "parts": {
+      "doctor_pay": 33156,
+      "acquiring": 2317,
+      "taxes": 5121,
+      "drugs": 39200,
+      "anesthesia": 0,
+      "supplies": 450,
+      "fixed": 19043
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i03",
+       "qty": "1",
+       "part": "drugs",
+       "cost": 39200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 23454,
+     "net_margin_pct": 19.1,
+     "monthly_profit": 1172700,
+     "shares": {
+      "doctor_pay": 27.0,
+      "drugs": 31.9,
+      "anesthesia": 0.0,
+      "supplies": 0.4,
+      "acquiring": 1.9,
+      "fixed": 15.5,
+      "taxes": 4.2
+     },
+     "cost_total": 99287
+    },
+    {
+     "id": "S1",
+     "name": "Первичный приём терапевта",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Терапия",
+     "price": 180000,
+     "visits_month": 80,
+     "parts": {
+      "doctor_pay": 54000,
+      "acquiring": 3398,
+      "taxes": 7510,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3820,
+      "fixed": 38086
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 73186,
+     "net_margin_pct": 40.6,
+     "monthly_profit": 5854880,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 2.1,
+      "acquiring": 1.9,
+      "fixed": 21.2,
+      "taxes": 4.2
+     },
+     "cost_total": 106814
+    },
+    {
+     "id": "M1",
+     "name": "Консультация ортопеда",
+     "source": "manual",
+     "price_basis": "manual",
+     "minutes_source": "own",
+     "minutes": 40,
+     "group": "Ортопедия",
+     "price": 250000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 75000,
+      "acquiring": 4719,
+      "taxes": 10431,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": 50781
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [],
+     "net_profit": 109069,
+     "net_margin_pct": 43.6,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "fixed": 20.3,
+      "taxes": 4.2
+     },
+     "cost_total": 140931
+    },
+    {
+     "id": "S3",
+     "name": "УЗИ брюшной полости",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Диагностика",
+     "price": 208482,
+     "visits_month": 30,
+     "parts": {
+      "doctor_pay": 62545,
+      "acquiring": 3935,
+      "taxes": 8699,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 548,
+      "fixed": 38086
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i04",
+       "qty": "20",
+       "part": "supplies",
+       "cost": 248,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 94669,
+     "net_margin_pct": 45.4,
+     "monthly_profit": 2840070,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.2,
+      "acquiring": 1.9,
+      "fixed": 18.3,
+      "taxes": 4.2
+     },
+     "cost_total": 113813
+    },
+    {
+     "id": "S11",
+     "name": "Осмотр без материалов",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Терапия",
+     "price": 150000,
+     "visits_month": 10,
+     "parts": {
+      "doctor_pay": 45000,
+      "acquiring": 2831,
+      "taxes": 6259,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": 25391
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [],
+     "net_profit": 70519,
+     "net_margin_pct": 47.0,
+     "monthly_profit": 705190,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "fixed": 16.9,
+      "taxes": 4.2
+     },
+     "cost_total": 79481
+    },
+    {
+     "id": "S8",
+     "name": "Рентген грудной клетки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Диагностика",
+     "price": 190000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 47500,
+      "acquiring": 3586,
+      "taxes": 7928,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3220,
+      "fixed": 25391
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 102375,
+     "net_margin_pct": 53.9,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 25.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 1.7,
+      "acquiring": 1.9,
+      "fixed": 13.3,
+      "taxes": 4.2
+     },
+     "cost_total": 87625
+    },
+    {
+     "id": "S10",
+     "name": "Выдача справки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "clinic_average",
+     "minutes": 30,
+     "group": null,
+     "price": 30000,
+     "visits_month": 25,
+     "parts": {
+      "doctor_pay": 8104,
+      "acquiring": 566,
+      "taxes": 1252,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": 38086
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    },
+    {
+     "id": "S7",
+     "name": "Чистка ушей",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 60000,
+     "visits_month": 16,
+     "parts": {
+      "doctor_pay": 16208,
+      "acquiring": 1133,
+      "taxes": 2503,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": 19043
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    }
+   ],
+   "order_by_profit": [
+    "S6",
+    "M1",
+    "S8",
+    "S11",
+    "S5",
+    "S4",
+    "S2",
+    "S3",
+    "S1",
+    "S10",
+    "S7"
+   ],
+   "counts": {
+    "all": 11,
+    "loss": 1,
+    "no_recipe": 2
+   }
+  },
+  "doctor_no_hours": {
+   "mode": "doctors",
+   "hour_cost": 101079,
+   "efficiency": {
+    "revenue": 50330000,
+    "visits": 254,
+    "visits_by_doctor": {
+     "D1": 34,
+     "D2": 172,
+     "D3": 43
+    },
+    "visits_without_doctor": 5,
+    "avg_check": 198150,
+    "pool": {
+     "fixed": 28500000,
+     "obligations": 3340000,
+     "total": 31840000
+    },
+    "marginal_profit": 24930000,
+    "mode": "doctors",
+    "load_by": "doctors",
+    "status": "ok",
+    "partial_reasons": [],
+    "rooms": [],
+    "doctors": [
+     {
+      "id": "D1",
+      "name": "Иванова А.",
+      "visits": 34,
+      "available_hours": 154,
+      "busy_hours": 17,
+      "free_hours": 137,
+      "load_pct": 11.0
+     },
+     {
+      "id": "D2",
+      "name": "Петров В.",
+      "visits": 172,
+      "available_hours": 161,
+      "busy_hours": 86,
+      "free_hours": 75,
+      "load_pct": 53.4
+     },
+     {
+      "id": "D3",
+      "name": "Сидорова Н.",
+      "visits": 43,
+      "available_hours": null,
+      "busy_hours": 22,
+      "free_hours": null,
+      "load_pct": null
+     }
+    ],
+    "available_hours": 315,
+    "busy_hours": 103,
+    "free_hours": 212,
+    "load_pct": 32.7,
+    "hour_cost": 101079,
+    "hour_cost_lines": {
+     "fixed": 90476,
+     "obligations": 10603
+    },
+    "hour_margin": 242039
+   },
+   "services": [
+    {
+     "id": "S6",
+     "name": "Стационар, сутки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 180,
+     "group": "Стационар",
+     "price": 240000,
+     "visits_month": 12,
+     "parts": {
+      "doctor_pay": 48000,
+      "acquiring": 4530,
+      "taxes": 10014,
+      "drugs": 15080,
+      "anesthesia": 0,
+      "supplies": 38900,
+      "fixed": 303237
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i10",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 5900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i11",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 15080,
+       "no_cost": false
+      },
+      {
+       "item_id": "i12",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 33000,
+       "no_cost": false
+      }
+     ],
+     "net_profit": -179761,
+     "net_margin_pct": -74.9,
+     "monthly_profit": -2157132,
+     "shares": {
+      "doctor_pay": 20.0,
+      "drugs": 6.3,
+      "anesthesia": 0.0,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "fixed": 126.3,
+      "taxes": 4.2
+     },
+     "cost_total": 419761
+    },
+    {
+     "id": "S4",
+     "name": "Кастрация кота",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 60,
+     "group": "Хирургия",
+     "price": 450000,
+     "visits_month": 18,
+     "parts": {
+      "doctor_pay": 135000,
+      "acquiring": 8494,
+      "taxes": 18776,
+      "drugs": 23500,
+      "anesthesia": 52591,
+      "supplies": 72840,
+      "fixed": 101079
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i05",
+       "qty": "0.5",
+       "part": "anesthesia",
+       "cost": 45001,
+       "no_cost": false
+      },
+      {
+       "item_id": "i06",
+       "qty": "0.3",
+       "part": "anesthesia",
+       "cost": 7590,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "4",
+       "part": "drugs",
+       "cost": 19600,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 3900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i08",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 43000,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 23400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 600,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 37720,
+     "net_margin_pct": 8.4,
+     "monthly_profit": 678960,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 5.2,
+      "anesthesia": 11.7,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "fixed": 22.4,
+      "taxes": 4.2
+     },
+     "cost_total": 412280
+    },
+    {
+     "id": "S5",
+     "name": "Стоматология под наркозом",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 120,
+     "group": "Хирургия",
+     "price": 980000,
+     "visits_month": 6,
+     "parts": {
+      "doctor_pay": 343000,
+      "acquiring": 18498,
+      "taxes": 40890,
+      "drugs": 39150,
+      "anesthesia": 193500,
+      "supplies": 37940,
+      "fixed": 202158
+     },
+     "status": "partial",
+     "missing": [
+      "item_no_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i14",
+       "qty": "3",
+       "part": "anesthesia",
+       "cost": 193500,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "5",
+       "part": "drugs",
+       "cost": 9750,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "6",
+       "part": "drugs",
+       "cost": 29400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 31200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "6",
+       "part": "supplies",
+       "cost": 900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i16",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 0,
+       "no_cost": true
+      }
+     ],
+     "net_profit": 104864,
+     "net_margin_pct": 10.7,
+     "monthly_profit": 629184,
+     "shares": {
+      "doctor_pay": 35.0,
+      "drugs": 4.0,
+      "anesthesia": 19.7,
+      "supplies": 3.9,
+      "acquiring": 1.9,
+      "fixed": 20.6,
+      "taxes": 4.2
+     },
+     "cost_total": 875136
+    },
+    {
+     "id": "S2",
+     "name": "Вакцинация комплексная",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 122741,
+     "visits_month": 50,
+     "parts": {
+      "doctor_pay": 33156,
+      "acquiring": 2317,
+      "taxes": 5121,
+      "drugs": 39200,
+      "anesthesia": 0,
+      "supplies": 450,
+      "fixed": 25270
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i03",
+       "qty": "1",
+       "part": "drugs",
+       "cost": 39200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 17227,
+     "net_margin_pct": 14.0,
+     "monthly_profit": 861350,
+     "shares": {
+      "doctor_pay": 27.0,
+      "drugs": 31.9,
+      "anesthesia": 0.0,
+      "supplies": 0.4,
+      "acquiring": 1.9,
+      "fixed": 20.6,
+      "taxes": 4.2
+     },
+     "cost_total": 105514
+    },
+    {
+     "id": "S1",
+     "name": "Первичный приём терапевта",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Терапия",
+     "price": 180000,
+     "visits_month": 80,
+     "parts": {
+      "doctor_pay": 54000,
+      "acquiring": 3398,
+      "taxes": 7510,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3820,
+      "fixed": 50540
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 60732,
+     "net_margin_pct": 33.7,
+     "monthly_profit": 4858560,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 2.1,
+      "acquiring": 1.9,
+      "fixed": 28.1,
+      "taxes": 4.2
+     },
+     "cost_total": 119268
+    },
+    {
+     "id": "M1",
+     "name": "Консультация ортопеда",
+     "source": "manual",
+     "price_basis": "manual",
+     "minutes_source": "own",
+     "minutes": 40,
+     "group": "Ортопедия",
+     "price": 250000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 75000,
+      "acquiring": 4719,
+      "taxes": 10431,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": 67386
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [],
+     "net_profit": 92464,
+     "net_margin_pct": 37.0,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "fixed": 26.9,
+      "taxes": 4.2
+     },
+     "cost_total": 157536
+    },
+    {
+     "id": "S3",
+     "name": "УЗИ брюшной полости",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Диагностика",
+     "price": 208482,
+     "visits_month": 30,
+     "parts": {
+      "doctor_pay": 62545,
+      "acquiring": 3935,
+      "taxes": 8699,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 548,
+      "fixed": 50540
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i04",
+       "qty": "20",
+       "part": "supplies",
+       "cost": 248,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 82215,
+     "net_margin_pct": 39.4,
+     "monthly_profit": 2466450,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.3,
+      "acquiring": 1.9,
+      "fixed": 24.2,
+      "taxes": 4.2
+     },
+     "cost_total": 126267
+    },
+    {
+     "id": "S11",
+     "name": "Осмотр без материалов",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Терапия",
+     "price": 150000,
+     "visits_month": 10,
+     "parts": {
+      "doctor_pay": 45000,
+      "acquiring": 2831,
+      "taxes": 6259,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": 33693
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [],
+     "net_profit": 62217,
+     "net_margin_pct": 41.5,
+     "monthly_profit": 622170,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "fixed": 22.4,
+      "taxes": 4.2
+     },
+     "cost_total": 87783
+    },
+    {
+     "id": "S8",
+     "name": "Рентген грудной клетки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Диагностика",
+     "price": 190000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 47500,
+      "acquiring": 3586,
+      "taxes": 7928,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3220,
+      "fixed": 33693
+     },
+     "status": "ok",
+     "missing": [],
+     "techcard_lines": [
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 94073,
+     "net_margin_pct": 49.5,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 25.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 1.7,
+      "acquiring": 1.9,
+      "fixed": 17.7,
+      "taxes": 4.2
+     },
+     "cost_total": 95927
+    },
+    {
+     "id": "S10",
+     "name": "Выдача справки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "clinic_average",
+     "minutes": 30,
+     "group": null,
+     "price": 30000,
+     "visits_month": 25,
+     "parts": {
+      "doctor_pay": 8104,
+      "acquiring": 566,
+      "taxes": 1252,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": 50540
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    },
+    {
+     "id": "S7",
+     "name": "Чистка ушей",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 60000,
+     "visits_month": 16,
+     "parts": {
+      "doctor_pay": 16208,
+      "acquiring": 1133,
+      "taxes": 2503,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": 25270
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    }
+   ],
+   "order_by_profit": [
+    "S6",
+    "M1",
+    "S8",
+    "S11",
+    "S5",
+    "S4",
+    "S2",
+    "S3",
+    "S1",
+    "S10",
+    "S7"
+   ],
+   "counts": {
+    "all": 11,
+    "loss": 1,
+    "no_recipe": 2
+   }
+  },
+  "no_hours": {
+   "mode": "doctors",
+   "hour_cost": null,
+   "efficiency": {
+    "revenue": 50330000,
+    "visits": 254,
+    "visits_by_doctor": {
+     "D1": 34,
+     "D2": 172,
+     "D3": 43
+    },
+    "visits_without_doctor": 5,
+    "avg_check": 198150,
+    "pool": {
+     "fixed": 28500000,
+     "obligations": 3340000,
+     "total": 31840000
+    },
+    "marginal_profit": 24930000,
+    "mode": "doctors",
+    "load_by": "doctors",
+    "status": "partial",
+    "partial_reasons": [
+     "no_doctor_hours"
+    ],
+    "rooms": [],
+    "doctors": [
+     {
+      "id": "D1",
+      "name": "Иванова А.",
+      "visits": 34,
+      "available_hours": null,
+      "busy_hours": 17,
+      "free_hours": null,
+      "load_pct": null
+     },
+     {
+      "id": "D2",
+      "name": "Петров В.",
+      "visits": 172,
+      "available_hours": null,
+      "busy_hours": 86,
+      "free_hours": null,
+      "load_pct": null
+     },
+     {
+      "id": "D3",
+      "name": "Сидорова Н.",
+      "visits": 43,
+      "available_hours": null,
+      "busy_hours": 22,
+      "free_hours": null,
+      "load_pct": null
+     }
+    ],
+    "available_hours": 0,
+    "busy_hours": 0,
+    "free_hours": null,
+    "load_pct": null,
+    "hour_cost": null,
+    "hour_cost_lines": null,
+    "hour_margin": null
+   },
+   "services": [
+    {
+     "id": "S4",
+     "name": "Кастрация кота",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 60,
+     "group": "Хирургия",
+     "price": 450000,
+     "visits_month": 18,
+     "parts": {
+      "doctor_pay": 135000,
+      "acquiring": 8494,
+      "taxes": 18776,
+      "drugs": 23500,
+      "anesthesia": 52591,
+      "supplies": 72840,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i05",
+       "qty": "0.5",
+       "part": "anesthesia",
+       "cost": 45001,
+       "no_cost": false
+      },
+      {
+       "item_id": "i06",
+       "qty": "0.3",
+       "part": "anesthesia",
+       "cost": 7590,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "4",
+       "part": "drugs",
+       "cost": 19600,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 3900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i08",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 43000,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 23400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 600,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 138799,
+     "net_margin_pct": 30.8,
+     "monthly_profit": 2498382,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 5.2,
+      "anesthesia": 11.7,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 311201
+    },
+    {
+     "id": "S5",
+     "name": "Стоматология под наркозом",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 120,
+     "group": "Хирургия",
+     "price": 980000,
+     "visits_month": 6,
+     "parts": {
+      "doctor_pay": 343000,
+      "acquiring": 18498,
+      "taxes": 40890,
+      "drugs": 39150,
+      "anesthesia": 193500,
+      "supplies": 37940,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost",
+      "item_no_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i14",
+       "qty": "3",
+       "part": "anesthesia",
+       "cost": 193500,
+       "no_cost": false
+      },
+      {
+       "item_id": "i15",
+       "qty": "5",
+       "part": "drugs",
+       "cost": 9750,
+       "no_cost": false
+      },
+      {
+       "item_id": "i07",
+       "qty": "6",
+       "part": "drugs",
+       "cost": 29400,
+       "no_cost": false
+      },
+      {
+       "item_id": "i09",
+       "qty": "4",
+       "part": "supplies",
+       "cost": 31200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 5840,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "6",
+       "part": "supplies",
+       "cost": 900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i16",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 0,
+       "no_cost": true
+      }
+     ],
+     "net_profit": 307022,
+     "net_margin_pct": 31.3,
+     "monthly_profit": 1842132,
+     "shares": {
+      "doctor_pay": 35.0,
+      "drugs": 4.0,
+      "anesthesia": 19.7,
+      "supplies": 3.9,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 672978
+    },
+    {
+     "id": "S2",
+     "name": "Вакцинация комплексная",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 122741,
+     "visits_month": 50,
+     "parts": {
+      "doctor_pay": 33156,
+      "acquiring": 2317,
+      "taxes": 5121,
+      "drugs": 39200,
+      "anesthesia": 0,
+      "supplies": 450,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i03",
+       "qty": "1",
+       "part": "drugs",
+       "cost": 39200,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 42497,
+     "net_margin_pct": 34.6,
+     "monthly_profit": 2124850,
+     "shares": {
+      "doctor_pay": 27.0,
+      "drugs": 31.9,
+      "anesthesia": 0.0,
+      "supplies": 0.4,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 80244
+    },
+    {
+     "id": "S6",
+     "name": "Стационар, сутки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 180,
+     "group": "Стационар",
+     "price": 240000,
+     "visits_month": 12,
+     "parts": {
+      "doctor_pay": 48000,
+      "acquiring": 4530,
+      "taxes": 10014,
+      "drugs": 15080,
+      "anesthesia": 0,
+      "supplies": 38900,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i10",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 5900,
+       "no_cost": false
+      },
+      {
+       "item_id": "i11",
+       "qty": "2",
+       "part": "drugs",
+       "cost": 15080,
+       "no_cost": false
+      },
+      {
+       "item_id": "i12",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 33000,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 123476,
+     "net_margin_pct": 51.4,
+     "monthly_profit": 1481712,
+     "shares": {
+      "doctor_pay": 20.0,
+      "drugs": 6.3,
+      "anesthesia": 0.0,
+      "supplies": 16.2,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 116524
+    },
+    {
+     "id": "S1",
+     "name": "Первичный приём терапевта",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Терапия",
+     "price": 180000,
+     "visits_month": 80,
+     "parts": {
+      "doctor_pay": 54000,
+      "acquiring": 3398,
+      "taxes": 7510,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3820,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "3",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      },
+      {
+       "item_id": "i02",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 450,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 111272,
+     "net_margin_pct": 61.8,
+     "monthly_profit": 8901760,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 2.1,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 68728
+    },
+    {
+     "id": "S3",
+     "name": "УЗИ брюшной полости",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 30,
+     "group": "Диагностика",
+     "price": 208482,
+     "visits_month": 30,
+     "parts": {
+      "doctor_pay": 62545,
+      "acquiring": 3935,
+      "taxes": 8699,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 548,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i04",
+       "qty": "20",
+       "part": "supplies",
+       "cost": 248,
+       "no_cost": false
+      },
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 132755,
+     "net_margin_pct": 63.7,
+     "monthly_profit": 3982650,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.2,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 75727
+    },
+    {
+     "id": "M1",
+     "name": "Консультация ортопеда",
+     "source": "manual",
+     "price_basis": "manual",
+     "minutes_source": "own",
+     "minutes": 40,
+     "group": "Ортопедия",
+     "price": 250000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 75000,
+      "acquiring": 4719,
+      "taxes": 10431,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [],
+     "net_profit": 159850,
+     "net_margin_pct": 63.9,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 90150
+    },
+    {
+     "id": "S11",
+     "name": "Осмотр без материалов",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Терапия",
+     "price": 150000,
+     "visits_month": 10,
+     "parts": {
+      "doctor_pay": 45000,
+      "acquiring": 2831,
+      "taxes": 6259,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 0,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [],
+     "net_profit": 95910,
+     "net_margin_pct": 63.9,
+     "monthly_profit": 959100,
+     "shares": {
+      "doctor_pay": 30.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 0.0,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 54090
+    },
+    {
+     "id": "S8",
+     "name": "Рентген грудной клетки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 20,
+     "group": "Диагностика",
+     "price": 190000,
+     "visits_month": 0,
+     "parts": {
+      "doctor_pay": 47500,
+      "acquiring": 3586,
+      "taxes": 7928,
+      "drugs": 0,
+      "anesthesia": 0,
+      "supplies": 3220,
+      "fixed": null
+     },
+     "status": "partial",
+     "missing": [
+      "hour_cost"
+     ],
+     "techcard_lines": [
+      {
+       "item_id": "i13",
+       "qty": "2",
+       "part": "supplies",
+       "cost": 300,
+       "no_cost": false
+      },
+      {
+       "item_id": "i01",
+       "qty": "1",
+       "part": "supplies",
+       "cost": 2920,
+       "no_cost": false
+      }
+     ],
+     "net_profit": 127766,
+     "net_margin_pct": 67.2,
+     "monthly_profit": 0,
+     "shares": {
+      "doctor_pay": 25.0,
+      "drugs": 0.0,
+      "anesthesia": 0.0,
+      "supplies": 1.7,
+      "acquiring": 1.9,
+      "taxes": 4.2
+     },
+     "cost_total": 62234
+    },
+    {
+     "id": "S10",
+     "name": "Выдача справки",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "clinic_average",
+     "minutes": 30,
+     "group": null,
+     "price": 30000,
+     "visits_month": 25,
+     "parts": {
+      "doctor_pay": 8104,
+      "acquiring": 566,
+      "taxes": 1252,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": null
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe",
+      "hour_cost"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    },
+    {
+     "id": "S7",
+     "name": "Чистка ушей",
+     "source": "vetmanager",
+     "price_basis": "sales",
+     "minutes_source": "own",
+     "minutes": 15,
+     "group": "Терапия",
+     "price": 60000,
+     "visits_month": 16,
+     "parts": {
+      "doctor_pay": 16208,
+      "acquiring": 1133,
+      "taxes": 2503,
+      "drugs": null,
+      "anesthesia": null,
+      "supplies": null,
+      "fixed": null
+     },
+     "status": "no_recipe",
+     "missing": [
+      "recipe",
+      "hour_cost"
+     ],
+     "techcard_lines": [],
+     "net_profit": null,
+     "net_margin_pct": null,
+     "monthly_profit": null,
+     "shares": null,
+     "cost_total": null
+    }
+   ],
+   "order_by_profit": [
+    "M1",
+    "S8",
+    "S11",
+    "S6",
+    "S5",
+    "S2",
+    "S4",
+    "S3",
+    "S1",
+    "S10",
+    "S7"
+   ],
+   "counts": {
+    "all": 11,
+    "loss": 0,
+    "no_recipe": 2
+   }
+  },
+  "no_expenses": {
+   "mode": "rooms",
+   "hour_cost": null,
+   "efficiency": {
+    "revenue": 50330000,
+    "visits": 254,
+    "visits_by_doctor": {
+     "D1": 34,
+     "D2": 172,
+     "D3": 43
+    },
+    "visits_without_doctor": 5,
+    "avg_check": 198150,
+    "pool": {
+     "fixed": 0,
+     "obligations": 0,
+     "total": 0
+    },
+    "marginal_profit": 24930000,
+    "mode": "rooms",
+    "load_by": "rooms",
+    "partial_reasons": [
+     "no_expenses"
+    ],
+    "rooms": [
+     {
+      "id": "R1",
+      "name": "Кабинет терапии",
+      "available_hours": 192,
+      "busy_hours": 78,
+      "free_hours": 114,
+      "load_pct": 40.6
+     },
+     {
+      "id": "R2",
+      "name": "Операционная",
+      "available_hours": 138,
+      "busy_hours": 32,
+      "free_hours": 106,
+      "load_pct": 23.2
+     },
+     {
+      "id": "R3",
+      "name": "Стационар",
+      "available_hours": 360,
+      "busy_hours": 36,
+      "free_hours": 324,
+      "load_pct": 10.0
+     }
+    ],
+    "doctors": [],
+    "available_hours": 690,
+    "busy_hours": 146,
+    "free_hours": 544,
+    "load_pct": 21.2,
+    "hour_cost": null,
+    "hour_cost_lines": null,
+    "hour_margin": null,
+    "status": "partial"
+   },
+   "efficiency_only": true
+  }
+ },
+ "alternatives": {
+  "materials_s4_last_batch_price": 150091,
+  "materials_s4_average": 148931,
+  "fixed_s1_from_unrounded_hour_cost": 23072,
+  "fixed_s1_from_rounded_hour_cost": 23073
+ }
+}

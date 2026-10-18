@@ -74,9 +74,9 @@ describe('App: login and shell', () => {
     const nav = screen.getByRole('navigation', { name: 'Основное меню' })
     expect(within(nav).getByRole('link', { name: 'Рабочий стол' })).toHaveAttribute('aria-current', 'page')
     expect(within(nav).getByRole('link', { name: 'Транзакции' })).toHaveAttribute('href', '/transactions')
-    expect(within(nav).getByRole('button', { name: /Прайс услуг/ })).toBeDisabled()
+    expect(within(nav).getByRole('link', { name: 'Прайс услуг' })).toHaveAttribute('href', '/price')
     expect(within(nav).getByRole('button', { name: /Планирование/ })).toBeEnabled()
-    expect(within(nav).getByRole('button', { name: /Аналитика/ })).toBeDisabled()
+    expect(within(nav).getByRole('button', { name: /Аналитика/ })).toBeEnabled()
     expect(within(nav).getByRole('button', { name: /Отчёты/ })).toBeEnabled()
     expect(within(nav).queryByText('Врачи')).not.toBeInTheDocument()
   })
@@ -121,10 +121,10 @@ describe('App: login and shell', () => {
 
   it('shows a stub for a section that is not ready when its address is typed', async () => {
     const user = userEvent.setup()
-    renderWithAuth(<App />, '/price')
+    renderWithAuth(<App />, '/analytics/forecast')
     await signIn(user)
 
-    expect(await screen.findByRole('heading', { name: 'Прайс услуг' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Финмодель и прогноз' })).toBeInTheDocument()
     expect(screen.getByText('Этот раздел откроем позже. Сейчас доступен Рабочий стол.')).toBeInTheDocument()
   })
 

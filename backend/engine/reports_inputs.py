@@ -39,6 +39,8 @@ class CategoryInput:
     )
     norm_max_pct: Decimal | None = None
     payroll: bool = False  # salaries of employees: the "ФОТ (оклады)" child of the fixed costs
+    in_service_recipes: bool = False  # stage 5: already inside the techcards, not in the hour cost
+    doctor_percent: bool = False  # stage 5: "Проценты врачам"
 
 
 @dataclass(frozen=True)

@@ -417,7 +417,7 @@ const ICONS={
 };
 const ic=(n,s)=>`<svg class="i" aria-hidden="true" viewBox="0 0 24 24"${s?` style="font-size:${s}"`:''}>${ICONS[n]||''}</svg>`;
 
-let view='dash', open1=null, opiuMode='all', stkTab='all', txTab='all', setTab='main', scen='base', calMode=(window.matchMedia&&matchMedia('(max-width:560px)').matches)?'list':'month', calSel=null;
+let view='dash', open1=null, opiuMode='all', stkTab='all', txTab='all', setTab='main', scen='base', calMode=(window.matchMedia&&matchMedia('(max-width:560px)').matches)?'list':'month', calSel=null, effMode='rooms';
 
 const NAV=[
  ['dash','ic-home','Рабочий стол'],
@@ -647,17 +647,39 @@ const T={
  ob_c2:tipH('Анализатор крови · стоимость','240 000 ₽',[['Стоимость при покупке','240 000 ₽']],'Внесено вручную.',['Внесено вручную']),
  ob_e1:tipH('Аппарат УЗИ · амортизация','11 200 ₽ в месяц',[['Аппарат УЗИ','11 200 ₽'],'-',['Стоимость','940 800 ₽'],['Срок службы, месяцев','84']],'940 800 ÷ 84 = 11 200 ₽ в месяц, с сентября 2025 по август 2032.',['Расчёт']),
  ob_e2:tipH('Анализатор крови · амортизация','4 000 ₽ в месяц',[['Анализатор крови','4 000 ₽'],'-',['Стоимость','240 000 ₽'],['Срок службы, месяцев','60']],'240 000 ÷ 60 = 4 000 ₽ в месяц, с марта 2024 по февраль 2029.',['Расчёт']),
- p_zp:`<h4>ЗП врача · 1 350 ₽</h4><div class="r"><span>Доля в цене</span><b>30%</b></div><div class="r"><span>Норма</span><b>22–28%</b></div>
-  <div class="f">Процент выше нормы, но операция сложная — оправдано.</div>`,
- p_med:`<h4>Препараты · 630 ₽</h4><div class="r"><span>Доля в цене</span><b>14%</b></div><div class="r"><span>Позиций в техкарте</span><b>6</b></div>
-  <div class="f">Подтягивается из списаний в Ветменеджере по факту приёма.</div>`,
- p_an:`<h4>Анестезия · 360 ₽</h4><div class="r"><span>Доля в цене</span><b>8%</b></div><div class="f">Пропофол и премедикация. Цена зависит от веса животного.</div>`,
- p_rash:`<h4>Расходники · 495 ₽</h4><div class="r"><span>Доля в цене</span><b>11%</b></div><div class="f">Шовный материал, перчатки, салфетки, шприцы.</div>`,
- p_acq:`<h4>Эквайринг · 90 ₽</h4><div class="r"><span>Доля в цене</span><b>2%</b></div><div class="f">Средняя ставка банка по клинике.</div>`,
- p_fix:`<h4>Постоянные · 378 ₽</h4><div class="r"><span>Доля в цене</span><b>8,4%</b></div><div class="f">Аренда, оклады и коммуналка на один приём.</div>`,
- p_net:`<h4 class="good">Чистая прибыль · 1 197 ₽</h4><div class="r"><span>Доля в цене</span><b>26,6%</b></div>
-  <div class="r"><span>Приёмов в месяц</span><b>18</b></div><div class="r"><span>Приносит клинике</span><b>21 546 ₽</b></div>
-  <div class="f">Если поднять цену до 4 900 ₽, прибыль вырастет до 32%.</div>`
+ /* Прайс услуг (этап 5): кастрация кота, 4 500 ₽. 1 350 + 630 + 360 + 495 + 90 + 240 + 166,94 + 1 168,06 = 4 500 */
+ p_price:tipH('Цена · Кастрация кота','4 500 ₽',[['ЗП врача','1 350 ₽'],['Препараты','630 ₽'],['Анестезия','360 ₽'],['Расходники','495 ₽'],['Эквайринг','90 ₽'],['Постоянные','240 ₽'],['Налоги и взносы','166,94 ₽'],['Чистая прибыль','1 168,06 ₽','good']],'1 350 + 630 + 360 + 495 + 90 + 240 + 166,94 + 1 168,06 = 4 500 ₽. Цена — средняя по счетам за 90 дней, с учётом скидок.',[SVM]),
+ p_zp:tipH('ЗП врача','🩺 1 350 ₽ · 30,0%',[['Процент врачу от цены','1 350 ₽'],'-',['Процент','30,0%']],'4 500 × 30%. Процент задан для этой услуги. Оклады врачей уже в стоимости часа.',[SHAND,SCALC]),
+ p_med:tipH('Препараты','💊 630 ₽ · 14,0%',[['Цефтриаксон, 1 фл. × 140 ₽','140 ₽'],['Мелоксикам, 1 доза × 90 ₽','90 ₽'],['Хлоргексидин, 100 мл × 60 ₽','60 ₽'],['Физраствор, 200 мл × 120 ₽','120 ₽'],['Дексаметазон, 1 амп. × 80 ₽','80 ₽'],['Лидокаин, 1 амп. × 140 ₽','140 ₽']],'Количество из техкарты × закупочная цена со склада. Если на складе несколько партий, берём среднюю по остатку.',[SHAND,SVM]),
+ p_an:tipH('Анестезия','💉 360 ₽ · 8,0%',[['Пропофол, 2 мл','240 ₽'],['Премедикация, 1 доза','120 ₽']],'Берём средний расход из техкарты. Вес животного не учитывается.',[SHAND,SVM]),
+ p_rash:tipH('Расходники','🧤 495 ₽ · 11,0%',[['Шовный материал','180 ₽'],['Перчатки стерильные, пара','90 ₽'],['Салфетки, упаковка','75 ₽'],['Шприцы, 3 шт.','60 ₽'],['Бельё одноразовое','90 ₽']],'Количество из техкарты × закупочная цена со склада.',[SHAND,SVM]),
+ p_acq:tipH('Эквайринг','💳 90 ₽ · 2,0%',[['Комиссия','90 ₽'],'-',['Комиссия клиники за август','2,0%']],'4 500 × 2,0%. Средняя комиссия клиники: 24 800 ÷ 1 240 000 за август.',[SBANK,SCALC]),
+ p_fix:tipH('Постоянные','🏠 240 ₽ · 5,3%',[['Время в кабинете','240 ₽'],'-',['Стоимость часа','800 ₽'],['Время услуги, мин','18']],'800 × 18 ÷ 60. Аренда, оклады, коммуналка и платежи по обязательствам, разделённые на часы работы клиники. Свободные часы на цену услуг не ложатся.',[SCALC,SHAND]),
+ p_tax:tipH('Налоги и взносы','🧾 166,94 ₽ · 3,7%',[['Налоги и взносы','166,94 ₽'],'-',['Доля налогов в выручке за август','3,7%']],'4 500 × 46 000 ÷ 1 240 000. Берём долю из отчёта «Прибыль и убытки» за последний закрытый месяц.',[SBANK,SCALC]),
+ p_net:tipH('Чистая прибыль','1 168,06 ₽ · 26,0%',[['Цена','+4 500 ₽','good'],['ЗП врача','−1 350 ₽','bad'],['Препараты','−630 ₽','bad'],['Анестезия','−360 ₽','bad'],['Расходники','−495 ₽','bad'],['Эквайринг','−90 ₽','bad'],['Постоянные','−240 ₽','bad'],['Налоги и взносы','−166,94 ₽','bad']],'Столько остаётся с одной услуги после всех расходов и налогов. 1 168,06 ÷ 4 500 = 26,0%.',[SCALC],'good'),
+ p_month:tipH('Приносит клинике в месяц','21 025,08 ₽',[['Чистая прибыль одной услуги','1 168,06 ₽'],['Оказана за месяц','18']],'1 168,06 × 18.',[SCALC]),
+ /* Эффективность (этап 5): кабинеты 130 + 120 + 68 + 80 = 398 ч; занято 104 + 84 + 34 + 28 = 250 ч */
+ ef_vis:tipH('Приёмов в августе','🐾 614',[['Смирнова Е. В.','260'],['Козлов Д. А.','230'],['Орлова М. П.','124']],'Приёмы по дате визита за август.',[SVM]),
+ ef_load:tipH('Загрузка','⏱️ 62,8%',[['Занято, ч','250'],['Доступно, ч','398']],'250 ÷ 398. Считаем часы, а не среднее по кабинетам: большой кабинет весит больше.',[SVM,SCALC]),
+ ef_chk:tipH('Средний чек','🧾 2 019,54 ₽',[['Выручка за август','1 240 000 ₽'],['Приёмов','614']],'1 240 000 ÷ 614. Выручка по закрытым счетам.',[SVM]),
+ ef_r0:tipH('Кабинет терапии 1','80,0%',[['Занято, ч','104'],['Доступно, ч','130'],'-',['Свободно, ч','26']],'104 ÷ 130.',[SVM,SCALC]),
+ ef_r1:tipH('Кабинет терапии 2','70,0%',[['Занято, ч','84'],['Доступно, ч','120'],'-',['Свободно, ч','36']],'84 ÷ 120.',[SVM,SCALC]),
+ ef_r2:tipH('Операционная','50,0%',[['Занято, ч','34'],['Доступно, ч','68'],'-',['Свободно, ч','34']],'34 ÷ 68.',[SVM,SCALC]),
+ ef_r3:tipH('Стационар','35,0%',[['Занято, ч','28'],['Доступно, ч','80'],'-',['Свободно, ч','52']],'28 ÷ 80.',[SVM,SCALC]),
+ ef_d0:tipH('Смирнова Е. В.','81,8%',[['Занято, ч','130'],['Доступно, ч','159'],'-',['Свободно, ч','29'],['Приёмов','260'],['Часов в неделю','36']],'260 приёмов × 30 мин = 130 ч. Доступно: 36 ч в неделю × 31 день ÷ 7 = 159 ч.',[SVM,SHAND,SCALC]),
+ ef_d1:tipH('Козлов Д. А.','72,3%',[['Занято, ч','115'],['Доступно, ч','159'],'-',['Свободно, ч','44'],['Приёмов','230'],['Часов в неделю','36']],'230 приёмов × 30 мин = 115 ч. Доступно: 36 ч в неделю × 31 день ÷ 7 = 159 ч.',[SVM,SHAND,SCALC]),
+ ef_d2:tipH('Орлова М. П.','58,5%',[['Занято, ч','62'],['Доступно, ч','106'],'-',['Свободно, ч','44'],['Приёмов','124'],['Часов в неделю','24']],'124 приёма × 30 мин = 62 ч. Доступно: 24 ч в неделю × 31 день ÷ 7 = 106 ч.',[SVM,SHAND,SCALC]),
+ ef_ld:tipH('Загрузка','⏱️ 72,4%',[['Занято, ч','307'],['Доступно, ч','424']],'307 ÷ 424. Считаем часы приёма врачей, которые вы указали.',[SVM,SHAND,SCALC]),
+ ef_cost:tipH('Стоимость часа','800 ₽',[['Постоянные расходы','716,08 ₽'],['Обязательства и амортизация','83,92 ₽']],'318 400 ÷ 398. Постоянные без расходных материалов и обязательства, разделённые на рабочие часы клиники. Свободные часы остаются в расходах клиники: на цену услуг они не ложатся.',[SCALC]),
+ ef_costd:tipH('Стоимость часа приёма','750,94 ₽',[['Постоянные расходы','672,17 ₽'],['Обязательства и амортизация','78,77 ₽']],'318 400 ÷ 424. Постоянные без расходных материалов и обязательства, разделённые на часы приёма врачей.',[SCALC]),
+ ef_hours:tipH('Рабочих часов в месяц','398',[['Кабинет терапии 1','130'],['Кабинет терапии 2','120'],['Операционная','68'],['Стационар','80']],'Часы работы кабинетов по расписанию за август.',[SVM]),
+ ef_hoursd:tipH('Часов приёма в месяц','424',[['Смирнова Е. В.','159'],['Козлов Д. А.','159'],['Орлова М. П.','106']],'Часов в неделю × 31 день ÷ 7 по каждому врачу. Часы вы указали сами.',[SHAND,SCALC]),
+ ef_busy:tipH('Занято часов','250',[['Кабинет терапии 1','104'],['Кабинет терапии 2','84'],['Операционная','34'],['Стационар','28']],'Часы приёмов по расписанию за август.',[SVM]),
+ ef_busyd:tipH('Занято часов','307',[['Смирнова Е. В.','130'],['Козлов Д. А.','115'],['Орлова М. П.','62']],'Приёмов × средняя длительность 30 мин.',[SVM,SHAND,SCALC]),
+ ef_fixed:tipH('Постоянные расходы','285 000 ₽',[['ФОТ (оклады)','137 000 ₽'],['Аренда и коммуналка','85 000 ₽'],['Маркетинг','26 000 ₽'],['Связь и прочее','37 000 ₽']],'Постоянные расходы за август 376 000 ₽ без расходных материалов 91 000 ₽: они уже в техкартах услуг.',[SBANK,SHAND]),
+ ef_obl:tipH('Обязательства и амортизация','33 400 ₽',[['Амортизация оборудования','15 200 ₽'],['Лизинг (платёж целиком)','12 000 ₽'],['Проценты по кредиту','6 200 ₽']],'То же число, что в строке «Обязательства и амортизация» отчёта «Прибыль и убытки».',[SCALC]),
+ ef_marg:tipH('Занятый час приносит','2 432 ₽',[['Маржинальная прибыль','608 000 ₽'],['Занятых часов','250']],'608 000 ÷ 250. После лекарств, процентов врачам и комиссий, до постоянных расходов и налогов.',[SCALC]),
+ ef_margd:tipH('Занятый час приносит','1 980,46 ₽',[['Маржинальная прибыль','608 000 ₽'],['Занятых часов','307']],'608 000 ÷ 307. После лекарств, процентов врачам и комиссий, до постоянных расходов и налогов.',[SCALC])
 };
 
 /* --- Рабочий стол: подсказки (разбивки сходятся с итогами) --- */
@@ -1139,55 +1161,74 @@ function vAnal(){
    <p class="note">Доли статей берутся из вашего факта за последние 90 дней и сверяются с нормой отрасли; обязательства идут по графику платежей. Прибыль считается как выручка − переменные − постоянные − налоги и взносы − обязательства, поэтому строки таблицы всегда сходятся с итогом.</p></div>
   <ul class="advl">${adviceCard(gA,'an1',{plain:true})}</ul>`;
 }
-const vEff=()=>head('Эффективность клиники','Загрузка, стоимость часа и средний чек')
- + `<div class="mrow" style="margin-bottom:16px">
-  <div class="mcard"><div class="em" aria-hidden="true">🐾</div><div class="mc-body"><span class="t">Приёмов в августе</span><span class="v">614</span><span class="s">из них 87 первичных</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">⏱️</div><div class="mc-body"><span class="t">Загрузка врачей</span><span class="v">58%</span><span class="s">от максимума по графику</span></div></div>
-  <div class="mcard"><div class="em" aria-hidden="true">🧾</div><div class="mc-body"><span class="t">Средний чек</span><span class="v">2 020 ₽</span><span class="s up">+6% к июлю</span></div></div></div>
- <div class="g2"><div class="card"><div class="klabel">Загрузка по кабинетам</div><div class="bars">
-  <div class="brow"><div class="b-top"><b>Кабинет терапии 1</b><span>74%</span></div><div class="track"><div class="fill" style="width:74%"></div></div></div>
-  <div class="brow"><div class="b-top"><b>Кабинет терапии 2</b><span>61%</span></div><div class="track"><div class="fill" style="width:61%"></div></div></div>
-  <div class="brow"><div class="b-top"><b>Операционная</b><span>58%</span></div><div class="track"><div class="fill l" style="width:58%"></div></div></div>
-  <div class="brow"><div class="b-top"><b>Стационар</b><span>28%</span></div><div class="track"><div class="fill n" style="width:28%"></div></div></div>
-  </div><p class="note">Операционная и стационар — главный резерв роста без найма.</p></div>
-  <div class="card"><div class="klabel">Стоимость часа работы клиники</div>
-   <div style="font-size:32px;font-weight:800;letter-spacing:-.03em">1 176 ₽</div>
-   <p class="note" style="margin-top:6px">Столько стоит один час работы с учётом аренды, окладов и амортизации: (376 000 + 21 400) ÷ 338. Любая услуга, которая приносит меньше, работает в минус.</p>
+/* Эффективность (этап 5, screens/efficiency.md). Режим кабинетов и запасной режим «по врачам»: переключатель только для показа в прототипе */
+const EFF_ROOMS=[['Кабинет терапии 1','80,0',80,104,130,26],['Кабинет терапии 2','70,0',70,84,120,36],['Операционная','50,0',50,34,68,34],['Стационар','35,0',35,28,80,52]];
+const EFF_DOCS=[['Смирнова Е. В.','81,8',81.8,130,159,29],['Козлов Д. А.','72,3',72.3,115,159,44],['Орлова М. П.','58,5',58.5,62,106,44]];
+const effRows=(rows,k)=>rows.map((r,i)=>`<div class="brow" data-tip="ef_${k}${i}"><div class="b-top"><b>${r[0]}</b><span>${r[1]}%</span></div><div class="track" role="img" aria-label="Загрузка ${r[1]}%, занято ${r[3]} из ${r[4]} часов"><div class="fill" style="width:${r[2]}%"></div></div><div class="meta">${r[3]} из ${r[4]} ч · свободно ${r[5]} ч</div></div>`).join('');
+const vEff=()=>{
+ const rm=effMode==='rooms';
+ const sw=`<div class="seg" style="margin:0" role="tablist"><button type="button" role="tab" aria-selected="${rm}" class="${rm?'on':''}" data-em="rooms">Есть расписание кабинетов</button><button type="button" role="tab" aria-selected="${!rm}" class="${!rm?'on':''}" data-em="doctors">Расписания нет</button></div>`;
+ return head('Эффективность клиники','Загрузка, стоимость часа и средний чек',sw)
+ + `<p class="note" style="margin:0 0 16px;font-size:13px;color:var(--ink);font-weight:600">${rm?'Клиника загружена на 62,8%: свободно 148 часов, час работы стоит 800 ₽.':'Клиника загружена на 72,4%: врачи принимали 307 из 424 часов, час приёма стоит 750,94 ₽.'}</p>
+ <div class="mrow" style="margin-bottom:16px">
+  <div class="mcard"><div class="em" aria-hidden="true">🐾</div><div class="mc-body"><button type="button" class="tb" data-tip="ef_vis"><span class="t">Приёмов в августе</span><span class="v">614</span></button><span class="s">за месяц</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">⏱️</div><div class="mc-body"><button type="button" class="tb" data-tip="${rm?'ef_load':'ef_ld'}"><span class="t">Загрузка</span><span class="v">${rm?'62,8%':'72,4%'}</span></button><span class="s">${rm?'по кабинетам':'по часам врачей'}</span></div></div>
+  <div class="mcard"><div class="em" aria-hidden="true">🧾</div><div class="mc-body"><button type="button" class="tb" data-tip="ef_chk"><span class="t">Средний чек</span><span class="v">2 019,54 ₽</span></button><span class="s">за август</span></div></div></div>
+ <div class="g2"><div class="card"><div class="klabel">${rm?'Загрузка по кабинетам':'Загрузка по врачам'}</div><div class="bars">${rm?effRows(EFF_ROOMS,'r'):effRows(EFF_DOCS,'d')}</div>
+  ${rm?'':`<p class="note">Расписания кабинетов нет, поэтому считаем по часам приёма врачей. Часы вы указали сами.</p><div style="margin-top:12px"><button type="button" class="act">Изменить часы приёма</button></div>`}</div>
+  <div class="card"><div class="klabel">${rm?'Стоимость часа работы клиники':'Стоимость часа приёма'}</div>
+   <button type="button" class="tb" data-tip="${rm?'ef_cost':'ef_costd'}" style="font-size:32px;font-weight:800;letter-spacing:-.03em">${rm?'800 ₽':'750,94 ₽'}</button>
+   <p class="note" style="margin-top:6px">Столько стоит один ${rm?'рабочий час':'час приёма врача'}: аренда, оклады, коммуналка и платежи по обязательствам, разделённые на часы работы.</p>
    <table style="margin-top:14px"><tbody>
-    <tr><td>Рабочих часов в месяц</td><td class="r">338</td></tr>
-    <tr><td>Постоянные расходы</td><td class="r">376 000 ₽</td></tr>
-    <tr><td>Амортизация</td><td class="r">21 400 ₽</td></tr>
-    <tr><td>Приёмов в час</td><td class="r">1,8</td></tr>
+    <tr data-tip="${rm?'ef_hours':'ef_hoursd'}"><td>${rm?'Рабочих часов в месяц':'Часов приёма в месяц'}</td><td class="r">${rm?'398':'424'}</td></tr>
+    <tr data-tip="${rm?'ef_busy':'ef_busyd'}"><td>Занято</td><td class="r">${rm?'250':'307'}</td></tr>
+    <tr data-tip="ef_fixed"><td>Постоянные расходы</td><td class="r">285 000 ₽</td></tr>
+    <tr data-tip="ef_obl"><td>Обязательства и амортизация</td><td class="r">33 400 ₽</td></tr>
+    <tr data-tip="${rm?'ef_marg':'ef_margd'}"><td>Занятый час приносит<div class="meta">после лекарств, процентов врачам и комиссий</div></td><td class="r">${rm?'2 432 ₽':'1 980,46 ₽'}</td></tr>
    </tbody></table></div></div>`;
+};
 
 /* ================= ПРАЙС ================= */
-const vPrice=()=>head('Прайс услуг','148 услуг · разбор позиции до чистой прибыли',`<button type="button" class="act">Все услуги</button>`)
- + `<div class="card" style="margin-bottom:16px">
+/* Прайс услуг (этап 5, screens/price.md). Строки списка: [название, группа, цена, единица, раз, чистая прибыль услуги, маржа %, прибыль за месяц]. null вместо маржи: нет техкарты */
+const PRICE_ROWS=[
+ ['Стационар, сутки','Стационар','1 308 ₽','52 суток','52','−274,68 ₽','−21,0%','−14 283,36 ₽'],
+ ['Купание и стрижка','Груминг','1 800 ₽','36 раз','36','−144 ₽','−8,0%','−5 184 ₽'],
+ ['Стоматология под наркозом','Хирургия','9 800 ₽','6 раз','6','1 372 ₽','14,0%','8 232 ₽'],
+ ['Кастрация кота, всё включено','Хирургия','4 500 ₽','18 раз','18','1 168,06 ₽','26,0%','21 025,08 ₽'],
+ ['УЗИ брюшной полости','Диагностика','2 100 ₽','41 раз','41','777 ₽','37,0%','31 857 ₽'],
+ ['Вакцинация комплексная','Терапия','1 200 ₽','84 раза','84','492 ₽','41,0%','41 328 ₽'],
+ ['Осмотр нового пациента','Терапия','1 500 ₽','30 раз','30',null,null,null]
+];
+PRICE_ROWS.forEach((r,i)=>{
+ T['pr_p'+i]=tipH('Цена · '+r[0],r[2],[['Средняя цена по счетам за 90 дней',r[2]]],'Берём то, за сколько услугу продали, с учётом скидок.',[SVM]);
+ T['pr_v'+i]=tipH('Оказана за август',r[3],[['Оказана за август',r[4]]],'Последний закрытый месяц.',[SVM]);
+ if(r[5]){
+  T['pr_m'+i]=tipH('Маржа · '+r[0],r[6],[['Чистая прибыль услуги',r[5]],['Цена',r[2]]],r[5]+' ÷ '+r[2]+'.',[SCALC],r[6][0]==='−'?'bad':'');
+  T['pr_f'+i]=tipH('Прибыль за месяц · '+r[0],r[7],[['Чистая прибыль одной услуги',r[5]],['Оказана за месяц',r[4]]],r[5]+' × '+r[4]+'.',[SCALC]);
+ }
+});
+const PRICE_SEG=[['p_zp',30,'var(--sidebar)','#fff','30,0%'],['p_med',14,'var(--accent)','#fff','14,0%'],['p_an',8,'var(--accent-mid)','var(--ink)','8,0%'],['p_rash',11,'var(--accent-light)','var(--ink)','11,0%'],['p_acq',2,'#D8D3E2','var(--ink)',''],['p_fix',5.3,'#BDB7CC','var(--ink)',''],['p_tax',3.7,'var(--accent-dark)','#fff',''],['p_net',26,'var(--ok)','#fff','26,0%']];
+const PRICE_LEG=[['p_zp','var(--sidebar)','ЗП врача 1 350 ₽'],['p_med','var(--accent)','Препараты 630 ₽'],['p_an','var(--accent-mid)','Анестезия 360 ₽'],['p_rash','var(--accent-light)','Расходники 495 ₽'],['p_acq','#D8D3E2','Эквайринг 90 ₽'],['p_fix','#BDB7CC','Постоянные 240 ₽'],['p_tax','var(--accent-dark)','Налоги и взносы 166,94 ₽'],['p_net','var(--ok)','Прибыль 1 168,06 ₽']];
+const vPrice=()=>head('Прайс услуг','148 услуг · разбор позиции до чистой прибыли')
+ + `<p class="note" style="margin:0 0 16px;font-size:13px;color:var(--ink);font-weight:600">2 услуги из 148 стоят клинике больше, чем приносят. Сильнее всего «Стационар, сутки»: −21,0%. У 31 услуги нет техкарты, поэтому их маржу мы не считаем.</p>
+ <div class="card" style="margin-bottom:16px">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px">
    <div><div class="klabel" style="margin:0 0 4px">Хирургия / Кастрация кота, всё включено</div>
-   <div style="font-size:26px;font-weight:800;letter-spacing:-.025em">4 500 ₽ <span style="font-size:14px;font-weight:600;color:var(--ink-soft)">цена для клиента</span></div></div>
-   <div style="text-align:right"><div style="font-size:26px;font-weight:800;color:var(--ok);letter-spacing:-.025em">1 197 ₽</div>
-   <div class="klabel" style="margin:2px 0 0">чистая прибыль · 26,6%</div></div></div>
-  <div class="stack">
-   <div style="width:30%;background:var(--sidebar)" data-tip="p_zp">30%</div>
-   <div style="width:14%;background:var(--accent)" data-tip="p_med">14%</div>
-   <div style="width:8%;background:#D6567F" data-tip="p_an">8%</div>
-   <div style="width:11%;background:#E9A3BB;color:var(--ink)" data-tip="p_rash">11%</div>
-   <div style="width:2%;background:#D8D3E2" data-tip="p_acq" aria-label="Эквайринг 2%"></div>
-   <div style="width:8.4%;background:#BDB7CC;color:var(--ink)" data-tip="p_fix">8%</div>
-   <div style="width:26.6%;background:var(--ok)" data-tip="p_net">26,6%</div></div>
-  <div class="legend"><span><i style="background:var(--sidebar)"></i>ЗП врача 1 350 ₽</span><span><i style="background:var(--accent)"></i>Препараты 630 ₽</span>
-   <span><i style="background:#D6567F"></i>Анестезия 360 ₽</span><span><i style="background:#E9A3BB"></i>Расходники 495 ₽</span>
-   <span><i style="background:#D8D3E2"></i>Эквайринг 90 ₽</span><span><i style="background:#BDB7CC"></i>Постоянные 378 ₽</span>
-   <span><i style="background:var(--ok)"></i>Прибыль 1 197 ₽</span></div>
-  <p class="note">Наведите на любой сегмент полосы — покажется, из чего он собран. Сумма сегментов равна цене: 1 350 + 630 + 360 + 495 + 90 + 378 + 1 197 = 4 500 ₽.</p></div>
- <div class="card"><div class="klabel">Самые и наименее выгодные услуги</div><table><tbody>
-  <tr><td>Вакцинация комплексная<div class="meta">1 200 ₽ · 84 приёма в месяц</div></td><td class="r up">41%</td></tr>
-  <tr><td>УЗИ брюшной полости<div class="meta">2 100 ₽ · 41 приём</div></td><td class="r up">37%</td></tr>
-  <tr><td>Кастрация кота<div class="meta">4 500 ₽ · 18 приёмов</div></td><td class="r">26,6%</td></tr>
-  <tr><td>Стоматология под наркозом<div class="meta">9 800 ₽ · 6 приёмов</div></td><td class="r">14%</td></tr>
-  <tr><td>Стационар, сутки<div class="meta">1 308 ₽ в среднем · 52 суток</div></td><td class="r down">−21%</td></tr>
- </tbody></table></div>`;
+   <div style="font-size:26px;font-weight:800;letter-spacing:-.025em"><button type="button" class="tb" data-tip="p_price" style="font:inherit">4 500 ₽</button> <span style="font-size:14px;font-weight:600;color:var(--ink-soft)">цена для клиента</span></div></div>
+   <div style="text-align:right"><div style="font-size:26px;font-weight:800;color:var(--ok);letter-spacing:-.025em"><button type="button" class="tb" data-tip="p_net" style="font:inherit;color:inherit">1 168,06 ₽</button></div>
+   <div class="klabel" style="margin:2px 0 0">чистая прибыль · 26,0%</div></div></div>
+  <div class="klabel">Из чего состоит цена</div>
+  <div class="stack" role="img" aria-label="Из чего состоит цена 4 500 ₽: ЗП врача 30,0%, препараты 14,0%, анестезия 8,0%, расходники 11,0%, эквайринг 2,0%, постоянные 5,3%, налоги и взносы 3,7%, чистая прибыль 26,0%" style="height:38px;gap:2px;background:#fff">
+   ${PRICE_SEG.map(s=>`<div style="width:${s[1]}%;background:${s[2]};color:${s[3]};${s[2]==='#D8D3E2'||s[2]==='#BDB7CC'?'box-shadow:inset 0 0 0 1px var(--control-border);':''}" data-tip="${s[0]}" tabindex="-1">${s[4]}</div>`).join('')}</div>
+  <div class="legend">${PRICE_LEG.map(l=>`<span><button type="button" class="tb" data-tip="${l[0]}" style="display:inline-flex;align-items:center;min-height:32px;font-size:12px"><i style="background:${l[1]}"></i>${l[2]}</button></span>`).join('')}</div>
+  <p class="note" style="margin-top:12px"><button type="button" class="tb" data-tip="p_month" style="font:inherit;font-weight:600;color:var(--ink)">Приносит клинике 21 025,08 ₽ в месяц</button>: 18 раз по 1 168,06 ₽. Налоги, эквайринг и стоимость часа за август 2026.</p>
+  <div style="margin-top:12px"><button type="button" class="act">Техкарта и параметры</button></div></div>
+ <div class="seg" style="margin:0 0 12px" role="tablist"><button type="button" role="tab" aria-selected="true" class="on">Все 148</button><button type="button" role="tab" aria-selected="false">В минус 2</button><button type="button" role="tab" aria-selected="false">Нет техкарты 31</button></div>
+ <div class="card"><div class="klabel">Услуги · сначала невыгодные</div><table><thead><tr><th>Услуга</th><th class="r">Цена</th><th class="r">Оказана</th><th class="r" aria-sort="ascending">Маржа ▲</th><th class="r">Прибыль за месяц</th></tr></thead><tbody>
+  ${PRICE_ROWS.map((r,i)=>`<tr><td>${r[0]}<div class="meta">${r[1]}</div></td><td class="r" data-tip="pr_p${i}">${r[2]}</td><td class="r" data-tip="pr_v${i}">${r[3]}</td>
+   <td class="r">${r[5]?`<span data-tip="pr_m${i}" class="${r[6][0]==='−'?'down':''}">${r[6]}</span>${r[6][0]==='−'?' <span class="pill red">в минус</span>':''}`:'<span class="pill gr">нет техкарты</span>'}</td>
+   <td class="r">${r[5]?`<span data-tip="pr_f${i}" class="${r[7][0]==='−'?'down':''}">${r[7]}</span>`:'<span class="faint">—</span>'}</td></tr>`).join('')}
+ </tbody></table><p class="note">Остальные услуги загружаются кнопкой «Показать ещё». Маржа — чистая прибыль одной услуги к её цене; без техкарты её не считаем, потому что прибыль была бы завышена.</p></div>`;
 
 /* ================= НАСТРОЙКИ ================= */
 const SETNAV=[['h','Клиника'],['main','Основное'],['acc','Счета'],
@@ -1302,6 +1343,7 @@ function draw(keep){
  m.querySelectorAll('[data-sc]').forEach(b=>b.onclick=()=>{scen=b.dataset.sc;open1=null;draw(true);});
  m.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{setTab=b.dataset.set;draw(true);});
  m.querySelectorAll('[data-cm]').forEach(b=>b.onclick=()=>{calMode=b.dataset.cm;draw(true);});
+ m.querySelectorAll('[data-em]').forEach(b=>b.onclick=()=>{effMode=b.dataset.em;draw(true);});
  m.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{STATE=b.dataset.st;draw(true);});
  m.querySelectorAll('[data-cd]').forEach(b=>{const go=()=>{calSel=b.dataset.cd;draw(true);};
   b.onclick=go;b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});

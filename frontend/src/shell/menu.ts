@@ -18,7 +18,7 @@ export interface MenuItem {
 export const MENU: MenuItem[] = [
   { id: 'dashboard', label: 'Рабочий стол', icon: 'ic-home', path: '/', status: 'ready' },
   { id: 'transactions', label: 'Транзакции', icon: 'ic-tx', path: '/transactions', status: 'ready' },
-  { id: 'price', label: 'Прайс услуг', icon: 'ic-price', path: '/price', status: 'soon' },
+  { id: 'price', label: 'Прайс услуг', icon: 'ic-price', path: '/price', status: 'ready' },
   {
     id: 'reports',
     label: 'Отчёты',
@@ -45,10 +45,10 @@ export const MENU: MenuItem[] = [
     id: 'analytics',
     label: 'Аналитика',
     icon: 'ic-anal',
-    status: 'soon',
+    status: 'ready',
     children: [
       { id: 'forecast', label: 'Финмодель и прогноз', path: '/analytics/forecast', status: 'soon' },
-      { id: 'efficiency', label: 'Эффективность клиники', path: '/analytics/efficiency', status: 'soon' },
+      { id: 'efficiency', label: 'Эффективность клиники', path: '/analytics/efficiency', status: 'ready' },
     ],
   },
   { id: 'settings', label: 'Настройки', icon: 'ic-set', path: '/settings', status: 'ready', dividerBefore: true },

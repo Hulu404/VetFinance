@@ -121,6 +121,8 @@ async def store_normalized(
     for visit in normalized.visits:
         doctor = doctor_ids.get(visit.doctor_external_id) if visit.doctor_external_id else None
         tally.add(await repo.upsert_visit(visit, doctor))
+    for found in normalized.services:
+        await repo.upsert_service(found)  # not counted: the counters tell about operations
     for sale in normalized.sales:
         tally.add(await repo.upsert_sale(sale))
     complete = await _store_payments(repo, normalized.payments, tally)

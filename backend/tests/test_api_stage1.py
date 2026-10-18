@@ -324,6 +324,8 @@ def test_categories_list(client: TestClient, ids: dict[str, str]) -> None:
         "norm_key",
         "direction",
         "payroll",
+        "in_service_recipes",
+        "doctor_percent",
     }
 
 

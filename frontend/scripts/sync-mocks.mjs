@@ -43,3 +43,24 @@ const planning = {
 if (planning.cash_gap_advice.id !== 'cash_gap') throw new Error('AdviceOut.example must be the cash_gap advice')
 writeFileSync(resolve(root, 'src/mocks/data/planning_set05.json'), JSON.stringify(planning, null, 2) + '\n')
 process.stdout.write('../backend/openapi.json -> src/mocks/data/planning_set05.json\n')
+
+// Stage 5: price list and efficiency (golden set 6). The file is made by backend/scripts/make_pricing_examples.py:
+// cards and recipes of all services and the named states of the efficiency screen (x-examples of the contract).
+const pricingFrom = resolve(root, '../backend/app/examples/pricing_set06.json')
+const pricing = JSON.parse(readFileSync(pricingFrom, 'utf8'))
+for (const key of ['services', 'cards', 'card_variants', 'recipes', 'stock_items', 'created_service', 'efficiency', 'efficiency_settings']) {
+  if (!pricing[key]) throw new Error(`Missing ${key} in ${pricingFrom}`)
+}
+const pricingMock = {
+  as_of: pricing.as_of,
+  month: pricing.month,
+  services: pricing.services,
+  cards: pricing.cards,
+  card_variants: pricing.card_variants,
+  recipes: pricing.recipes,
+  stock_items: pricing.stock_items,
+  efficiency: pricing.efficiency,
+  efficiency_settings: pricing.efficiency_settings,
+}
+writeFileSync(resolve(root, 'src/mocks/data/pricing_set06.json'), JSON.stringify(pricingMock) + '\n')
+process.stdout.write('../backend/app/examples/pricing_set06.json -> src/mocks/data/pricing_set06.json\n')

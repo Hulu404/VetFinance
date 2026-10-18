@@ -8,6 +8,7 @@ import json
 import uuid
 from collections.abc import Collection, Mapping, Sequence
 from datetime import UTC, date, datetime, timedelta
+from decimal import Decimal
 from typing import Any
 
 from app.rows import (
@@ -26,6 +27,7 @@ from app.rows import (
 from engine.balance import AccountInput, TransactionInput
 from engine.dashboard_inputs import NormsInput, SaleInput, SaleLineInput, VisitInput
 from engine.dedup import TxRef
+from engine.efficiency_inputs import DoctorInput
 from engine.planning_inputs import CounterpartyTermsInput, ObligationInput, PlannedPaymentInput
 from engine.reports_inputs import (
     BenchmarkInput,
@@ -36,6 +38,7 @@ from engine.reports_inputs import (
     WriteoffInput,
 )
 from engine.vetmanager import Payment, Sale, Visit
+from tests.memory_pricing import MemoryPricing
 
 BASE_TIME = datetime(2026, 9, 1, 0, 0, tzinfo=UTC)
 EDITABLE = {
@@ -49,7 +52,7 @@ EDITABLE = {
 }
 
 
-class MemoryRepo:
+class MemoryRepo(MemoryPricing):
     def __init__(self, clinic: ClinicRow | None = None) -> None:
         self.clinic = clinic or ClinicRow("c1", "Клиника", None, None, "Europe/Moscow", 0)
         self.acquiring_rate_bp = 190
@@ -77,6 +80,7 @@ class MemoryRepo:
         self.stock_batches: list[StockBatchInput] = []
         self.writeoffs: list[WriteoffInput] = []
         self.consumption: list[ConsumptionInput] = []
+        self.init_pricing()
         self.now = BASE_TIME  # "current" time of the data layer (run start, event time)
         self._seq = 0
 
@@ -116,10 +120,13 @@ class MemoryRepo:
         norm_key: str | None = None,
         direction: str | None = None,
         payroll: bool = False,
+        in_service_recipes: bool = False,
+        doctor_percent: bool = False,
     ) -> CategoryRow:
         row = CategoryRow(
-            self.new_id(), name, type_, norm_min_pct, norm_max_pct, norm_key, direction, payroll
-        )
+            self.new_id(), name, type_, norm_min_pct, norm_max_pct, norm_key, direction, payroll,
+            in_service_recipes, doctor_percent,
+        )  # fmt: skip
         self.categories.append(row)
         return row
 
@@ -245,7 +252,7 @@ class MemoryRepo:
     async def list_visits(self, first: date, last: date) -> list[VisitInput]:
         names = {d[0]: d[2] for d in self.doctors.values()}
         return [
-            VisitInput(day, names.get(doctor_id or "", ""))
+            VisitInput(day, names.get(doctor_id or "", ""), doctor_id)
             for day, doctor_id in self.visits.values()
             if first <= day <= last
         ]
@@ -561,6 +568,15 @@ class MemoryRepo:
         known = self.sales.get(sale.external_id)
         self.sales[sale.external_id] = sale
         return "new" if known is None else ("same" if known == sale else "updated")
+
+    async def list_doctor_inputs(self) -> list[DoctorInput]:
+        return [
+            DoctorInput(d[0], d[1], d[2], self.hours.get(d[0]))
+            for d in sorted(self.doctors.values(), key=lambda d: (d[1], d[0]))
+        ]
+
+    async def set_doctor_hours(self, hours: dict[str, Decimal | None]) -> None:
+        self.hours.update(hours)
 
     async def upsert_payment(self, payment: Payment, transaction_id: str | None) -> str:
         known = self.payments.get(payment.external_id)

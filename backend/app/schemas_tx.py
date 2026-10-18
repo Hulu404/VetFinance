@@ -113,6 +113,12 @@ class CategoryOut(BaseModel):
     )
     direction: Literal["services", "goods"] | None  # direct costs of a direction (function 18)
     payroll: bool  # salaries of employees: the "ФОТ (оклады)" part of the fixed costs
+    in_service_recipes: bool = (
+        False  # stage 5: the article is already inside the techcards, it is not in the hour cost
+    )
+    doctor_percent: bool = (
+        False  # stage 5: "Проценты врачам", for the clinic-average percent of the doctor's pay
+    )
 
 
 class CategoriesOut(BaseModel):

@@ -1,18 +1,25 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiDelete, apiGet, apiPatch, apiPost, apiPut } from './client'
-import { invalidateAfterCalendarChange, invalidateAfterObligationChange, invalidateAfterOperationChange, queryKeys } from './queries'
+import { invalidateAfterCalendarChange, invalidateAfterEfficiencyChange, invalidateAfterServiceChange, invalidateAfterObligationChange, invalidateAfterOperationChange, queryKeys } from './queries'
 import type {
   AcquiringDay,
   Clinic,
   ClinicPatch,
   Connection,
   Counterparty,
+  EfficiencySettings,
+  EfficiencySettingsBody,
   Equipment,
   Loan,
   ManualPayment,
   ManualPaymentBody,
   ObligationBody,
   ObligationPatchBody,
+  RecipeBody,
+  ServiceBody,
+  ServiceItem,
+  ServicePatchBody,
+  ServiceRecipe,
   CreateTransactionBody,
   ResolveDuplicateResult,
   RulePreview,
@@ -156,5 +163,45 @@ export function useCloseObligation() {
   return useMutation({
     mutationFn: (id: string) => apiDelete(`/v1/obligations/${encodeURIComponent(id)}`),
     onSuccess: () => invalidateAfterObligationChange(queryClient),
+  })
+}
+
+export function useCreateService() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (body: ServiceBody) => apiPost<ServiceItem>('/v1/services', body),
+    onSuccess: () => invalidateAfterServiceChange(queryClient),
+  })
+}
+
+export function usePatchService() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, body }: { id: string; body: ServicePatchBody }) => apiPatch<void>(`/v1/services/${encodeURIComponent(id)}`, body),
+    onSuccess: () => invalidateAfterServiceChange(queryClient),
+  })
+}
+
+export function useDeleteService() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => apiDelete(`/v1/services/${encodeURIComponent(id)}`),
+    onSuccess: () => invalidateAfterServiceChange(queryClient),
+  })
+}
+
+export function useSaveRecipe() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, body }: { id: string; body: RecipeBody }) => apiPut<ServiceRecipe>(`/v1/services/${encodeURIComponent(id)}/recipe`, body),
+    onSuccess: () => invalidateAfterServiceChange(queryClient),
+  })
+}
+
+export function useSaveEfficiencySettings() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (body: EfficiencySettingsBody) => apiPut<EfficiencySettings>('/v1/efficiency/settings', body),
+    onSuccess: () => invalidateAfterEfficiencyChange(queryClient),
   })
 }

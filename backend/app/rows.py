@@ -36,6 +36,22 @@ class CategoryRow:
     norm_key: str | None = None  # row of the norm report the article belongs to
     direction: str | None = None  # services | goods: direct costs of a direction
     payroll: bool = False  # salaries of employees
+    in_service_recipes: bool = (
+        False  # already counted in the techcards of services (step 2: a column)
+    )
+    doctor_percent: bool = False  # percent to doctors: the sum is `doctor_percent_payouts` of the price (step 2: a column)
+
+
+@dataclass(frozen=True)
+class ServiceRecord:
+    """A row of `services`: from Vetmanager (`external_id`) or entered by the owner (`manual_price`)."""
+
+    id: str
+    source: str  # vetmanager | manual
+    external_id: str | None
+    name: str
+    group: str | None
+    manual_price: int | None  # kopecks
 
 
 @dataclass(frozen=True)

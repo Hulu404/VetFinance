@@ -88,3 +88,17 @@ backend/.venv/Scripts/python.exe -m pytest tests/contract/test_stage4_contract.p
 
 e2e: `npm test -- calendar.spec.ts --workers=1` из `tests/e2e` (30 сценариев на каждую ширину 1280, 820, 390);
 `VF_E2E_SET05=1` для клиники F, `VF_E2E_WRITE=1` для форм (создают, закрывают и восстанавливают данные).
+
+## Этап 5: прайс и себестоимость, эффективность (эталон №6)
+
+Эталон `tests/golden/set06` (клиника G «Ясень», `as_of = 2026-10-01`, закрытый месяц сентябрь 2026), правила расчёта и форма входа движка в `set06/README.md`.
+Пересчёт ожиданий: `backend/.venv/Scripts/python.exe tests/golden/tools/compute_expected_set06.py` (данные: `tools/gen_set06.py`).
+Самопроверка эталона без движка: `tests/golden/test_expected_set06_selfcheck.py` (30 проверок: числа, набранные вручную, второй расчёт другим кодом).
+Тесты движка: `tests/golden/test_pricing_set06.py` (173 сценария по пяти случаям: режим кабинетов, запасной режим, врач без часов, нет часов, месяц без выписки); они
+пропускаются, пока нет `engine.pricing` и `engine.efficiency` (интерфейс в `set06_support.py` и в `docs/handoff.md`). Проверить сами тесты без движка можно
+подставив заглушку: `VF_ENGINE_OVERRIDE=<папка с пакетом engine>` ставит её перед `backend/` (заглушка в репозитории не хранится).
+
+Контрактные тесты: `tests/contract/test_stage5_contract.py` (`GET /v1/services`, `/v1/services/{id}/cost`, `/v1/services/{id}/recipe`, `/v1/efficiency`,
+`/v1/efficiency/settings`; имена полей по `design/screens/price.md` и `efficiency.md`, поля «запрос» проверяются, когда сервер их отдаёт). Запуск как у этапа 4:
+`eval "$(python tests/contract/get_tokens.py)"` (теперь выдаёт и `VF_TOKEN_G`, пользователь `test-g@vetfinance.test`, `VF_TEST_EMAIL_G` в `backend/.env`),
+`VF_SEEDED_SET06=1` для сверки клиники G с эталоном (сид из `set06/data.json` пишет backend), `VF_CONTRACT_WRITES=1` для форм техкарты и часов.

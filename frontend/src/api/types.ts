@@ -99,6 +99,42 @@ export type ObligationPatchBody = NonNullable<
   paths['/v1/obligations/{obligation_id}']['patch']['requestBody']
 >['content']['application/json']
 
+// Stage 5: price list and efficiency
+export type ServiceList = Schemas['ServicesOut']
+export type ServiceItem = Schemas['ServiceItemOut']
+export type ServiceCost = Schemas['ServiceCostOut']
+export type ServiceRef = Schemas['ServiceRefOut']
+export type ServiceStatus = ServiceItem['status']
+export type ServiceSource = ServiceItem['source']
+export type ServiceMissing = ServiceCost['missing'][number]
+export type PricePart = Schemas['PartOut']
+export type PricePartKey = PricePart['key']
+export type ServiceRecipe = Schemas['RecipeOut']
+export type RecipeItem = Schemas['RecipeItemOut']
+export type RecipeGroup = RecipeItem['group']
+export type StockItemList = Schemas['StockItemsOut']
+export type StockItem = Schemas['StockItemOut']
+export type ServiceFilter = 'all' | 'loss' | 'no_recipe'
+export type ServiceSort = 'margin' | 'profit'
+export type SortOrder = 'asc' | 'desc'
+export type ServiceBody = NonNullable<paths['/v1/services']['post']['requestBody']>['content']['application/json']
+export type ServicePatchBody = NonNullable<
+  paths['/v1/services/{service_id}']['patch']['requestBody']
+>['content']['application/json']
+export type RecipeBody = NonNullable<
+  paths['/v1/services/{service_id}/recipe']['put']['requestBody']
+>['content']['application/json']
+export type EfficiencyReport = Schemas['EfficiencyOut']
+export type EfficiencyStatus = EfficiencyReport['status']
+export type EfficiencyReason = EfficiencyReport['partial_reasons'][number]
+export type RoomLoad = Schemas['RoomLoadOut']
+export type DoctorLoad = Schemas['DoctorLoadOut']
+export type HourPart = Schemas['HourPartOut']
+export type EfficiencySettings = Schemas['EfficiencySettingsOut']
+export type EfficiencySettingsBody = NonNullable<
+  paths['/v1/efficiency/settings']['put']['requestBody']
+>['content']['application/json']
+
 /** Error codes from docs/api-contract.md. */
 export type ApiErrorCode =
   | 'unauthorized'

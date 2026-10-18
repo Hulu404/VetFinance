@@ -43,9 +43,23 @@ class Visit:
 
 
 @dataclass(frozen=True)
+class Service:
+    """A service of the clinic: a `good` of Vetmanager with `is_service = 1` (name and group, no personal data)."""
+
+    external_id: str
+    name: str
+    group: str | None
+
+
+@dataclass(frozen=True)
 class SaleLine:
     kind: str  # "service" | "good"
-    amount: int
+    amount: int  # kopecks, quantity x price
+    # stage 5: what the line sold. Old rows have none of it.
+    service_external_id: str | None = None  # `Service.external_id` of a "service" line
+    name: str = ""  # the title of the service
+    qty: Decimal = Decimal(1)
+    price: int = 0  # kopecks per unit
 
 
 @dataclass(frozen=True)
@@ -73,6 +87,7 @@ class NormalizedVetmanager:
     sales: tuple[Sale, ...]
     payments: tuple[Payment, ...]
     skipped: int  # records that could not be read or whose cash desk is unknown
+    services: tuple[Service, ...] = ()  # stage 5: the services that appear in the sales
 
 
 def _items(raw: Mapping[str, Any], entity: str) -> list[Mapping[str, Any]]:
@@ -144,17 +159,45 @@ def _visits(admissions: Sequence[Mapping[str, Any]]) -> tuple[list[Visit], int]:
     return visits, skipped
 
 
+def _decimal(value: Any) -> Decimal | None:
+    try:
+        return Decimal(_text(value))
+    except InvalidOperation:
+        return None
+
+
 def _lines_by_invoice(
-    documents: Sequence[Mapping[str, Any]], goods: Mapping[str, bool]
+    documents: Sequence[Mapping[str, Any]], goods: Mapping[str, bool], titles: Mapping[str, str]
 ) -> dict[str, list[SaleLine]]:
     lines: dict[str, list[SaleLine]] = {}
     for item in documents:
         amount = _line_amount(item.get("quantity"), item.get("price"))
         if amount is None:
             continue
-        kind = KIND_SERVICE if goods.get(_text(item.get("good_id")), False) else KIND_GOOD
-        lines.setdefault(_text(item.get("invoice_id")), []).append(SaleLine(kind, amount))
+        good_id = _text(item.get("good_id"))
+        qty, price = _decimal(item.get("quantity")), _kopecks(item.get("price"))
+        if goods.get(good_id, False):
+            line = SaleLine(
+                KIND_SERVICE, amount, f"{PREFIX}:good:{good_id}", titles.get(good_id, ""),
+                qty if qty is not None and qty > 0 else Decimal(1), price or 0,
+            )  # fmt: skip
+        else:
+            line = SaleLine(KIND_GOOD, amount)
+        lines.setdefault(_text(item.get("invoice_id")), []).append(line)
     return lines
+
+
+def _services(
+    goods: Sequence[Mapping[str, Any]], groups: Mapping[str, str], used: set[str]
+) -> tuple[Service, ...]:
+    """Services that are sold (appear in invoice lines) and have a title."""
+    found = []
+    for g in goods:
+        ext = f"{PREFIX}:good:{_text(g.get('id'))}"
+        title = _text(g.get("title")) or _text(g.get("name"))
+        if _text(g.get("is_service")) == "1" and ext in used and title:
+            found.append(Service(ext, title, groups.get(_text(g.get("group_id"))) or None))
+    return tuple(sorted(found, key=lambda x: x.external_id))
 
 
 def _sales(
@@ -218,7 +261,11 @@ def normalize_vetmanager(raw: Mapping[str, Mapping[str, Any]]) -> NormalizedVetm
         if _text(c.get("type")).casefold() in (METHOD_CASH, METHOD_CARD)
     }
     visits, skipped_visits = _visits(_items(raw, "admission"))
-    lines = _lines_by_invoice(_items(raw, "invoiceDocument"), goods)
+    good_items = _items(raw, "good")
+    titles = {_text(g.get("id")): _text(g.get("title")) or _text(g.get("name")) for g in good_items}
+    lines = _lines_by_invoice(_items(raw, "invoiceDocument"), goods, titles)
+    groups = {_text(g.get("id")): _text(g.get("title")) for g in _items(raw, "goodGroup")}
+    used = {x.service_external_id for ls in lines.values() for x in ls if x.service_external_id}
     sales, skipped_sales = _sales(_items(raw, "invoice"), lines)
     payments, skipped_payments = _payments(_items(raw, "payment"), cash_desks)
     return NormalizedVetmanager(
@@ -227,4 +274,5 @@ def normalize_vetmanager(raw: Mapping[str, Mapping[str, Any]]) -> NormalizedVetm
         sales=tuple(sales),
         payments=tuple(payments),
         skipped=skipped_visits + skipped_sales + skipped_payments,
+        services=_services(good_items, groups, {u for u in used if u}),
     )

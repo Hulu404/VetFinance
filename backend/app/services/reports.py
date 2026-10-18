@@ -22,7 +22,16 @@ from engine.dashboard_inputs import SaleInput
 from engine.money import TURNOVER_WINDOW_DAYS
 from engine.norm import compute_norm
 from engine.pnl import PnlResult, compute_direction_view, compute_pnl
-from engine.report_facts import last_closed_month, month_bounds, month_key
+from engine.pricing_inputs import PnlMonthInput
+from engine.pricing_pnl import pnl_month_input
+from engine.report_facts import (
+    MonthFacts,
+    collect_facts,
+    compute_totals,
+    last_closed_month,
+    month_bounds,
+    month_key,
+)
 from engine.reports_inputs import (
     BenchmarkInput,
     CategoryInput,
@@ -62,6 +71,8 @@ def category_inputs(rows: list[CategoryRow]) -> list[CategoryInput]:
             norm_min_pct=None if c.norm_min_pct is None else Decimal(str(c.norm_min_pct)),
             norm_max_pct=None if c.norm_max_pct is None else Decimal(str(c.norm_max_pct)),
             payroll=c.payroll,
+            in_service_recipes=c.in_service_recipes,
+            doctor_percent=c.doctor_percent,
         )
         for c in rows
     ]
@@ -94,6 +105,16 @@ async def _load(repo: Repository, window: Window) -> ReportData:
         acquiring_rate_bp=await repo.get_acquiring_rate_bp(),
         bank_covered_to=await repo.bank_covered_to(),
     )
+
+
+async def pnl_month_data(repo: Repository, window: Window) -> tuple[PnlMonthInput, MonthFacts]:
+    """The totals of the P&L of the month of `window` for the price and efficiency engines."""
+    data = await _load(repo, window)
+    facts = collect_facts(
+        data.categories, data.transactions, data.sales, data.card_payments, data.charges,
+        window.month, data.acquiring_rate_bp, data.bank_covered_to, window.as_of,
+    )  # fmt: skip
+    return pnl_month_input(month_key(window.month), facts, compute_totals(facts)), facts
 
 
 async def _pnl_result(repo: Repository, window: Window, *, directions: bool) -> PnlResult:

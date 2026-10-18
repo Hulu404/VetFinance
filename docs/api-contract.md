@@ -1,4 +1,4 @@
-# Контракт API VetFinance, версия 1 (этапы 1–4)
+# Контракт API VetFinance, версия 1 (этапы 1–5)
 
 Владелец: backend-developer. Frontend строит mock-сервер из примеров этого файла. Изменение контракта: правка здесь, затем `backend/openapi.json`, затем запись в `docs/handoff.md`, если изменение ломающее.
 
@@ -8,7 +8,7 @@
 - Деньги: целое число **копеек**. Проценты: число с одним знаком после запятой в долях процента, поле называется `*_pct` (`15.0` значит 15,0%). Даты: `YYYY-MM-DD`, время: ISO 8601 с часовым поясом.
 - Часовой пояс клиники хранится в `clinic.timezone`. «Сегодня» считает backend и отдаёт в `as_of`.
 - Ошибки: `{ "error": { "code": "string", "message": "по-русски", "details": {} } }`. Коды: `unauthorized`, `forbidden`, `not_found`, `validation`, `conflict`, `rate_limited` (HTTP 429, заголовок `Retry-After` в секундах), `sync_failed`.
-- Ошибка `validation` (HTTP 422): `details.fields` это объект `{ "имя_поля": "причина" }`, причины: `required`, `invalid`, `must_be_positive`, `too_many_decimals`, `too_large`, `in_future`, `before_opening`, `too_long`, `unknown_field`, `out_of_range`, `out_of_window`, `remaining_gt_principal`, `payment_below_interest` (этап 4), а для подключений `unreachable` (адрес) и `invalid` (ключ). Если ошибка относится не к полю, а к целому запросу (файл выписки), причина лежит в `details.reason`. Тексты ошибок пользователю показывает клиент по этим кодам, `error.message` предназначен для логов и отладки.
+- Ошибка `validation` (HTTP 422): `details.fields` это объект `{ "имя_поля": "причина" }`, причины: `required`, `invalid`, `must_be_positive`, `too_many_decimals`, `too_large`, `in_future`, `before_opening`, `too_long`, `unknown_field`, `out_of_range`, `out_of_window`, `remaining_gt_principal`, `payment_below_interest` (этап 4), `duplicate_name`, `unknown_item`, `duplicate_item` (этап 5), а для подключений `unreachable` (адрес) и `invalid` (ключ). Если ошибка относится не к полю, а к целому запросу (файл выписки), причина лежит в `details.reason`. Тексты ошибок пользователю показывает клиент по этим кодам, `error.message` предназначен для логов и отладки.
 - Списки: `?limit=50&cursor=...`, ответ `{ "items": [], "next_cursor": null }`.
 
 ## Объект Figure
@@ -399,10 +399,71 @@ Transaction = {
 
 `type` расширяется значениями `tax`, `obligation`, `capex`, `owner_draw`; добавляются поля `norm_key` (`payroll|drugs|rent|lab|writeoff|acquiring|marketing|null`: строка «Нормы», в которую входит статья; совпадает с `key` из `GET /v1/reports/norm`), `direction` (`services|goods|null`: прямые расходы направления) и `payroll` (bool: оклады сотрудников). Порядок: доходы, переменные, постоянные, налоги, обязательства, оборудование, вывод владельца. Правка этих полей из интерфейса позже; на этапе 3 их задаёт команда.
 
-### Прайс услуг (функции 11, 12, 18) · Этап 5
+### Прайс услуг (функции 11, 12) · Этап 5
 
-- `GET /v1/services?sort=margin` → список услуг `{ "id", "name", "direction", "price": Figure, "visits_month": Figure, "margin_pct": Figure }`.
-- `GET /v1/services/{id}/cost` → `{ "price": Figure, "net_profit": Figure, "net_margin_pct": Figure, "parts": [{ "key": "doctor_pay|drugs|anesthesia|supplies|acquiring|fixed", "label", "amount": Figure, "share_pct": Figure }], "monthly_profit": Figure }`.
+**Состояние (шаг 2):** маршруты работают на данных клиники: движок `backend/engine/pricing.py` и `backend/engine/efficiency.py`, слой данных `app/services/pricing.py`, `app/pg_pricing.py`, миграция `supabase/migrations/20261018100000_stage5_pricing.sql` (услуги, настройки, техкарты, часы врачей, кабинеты, признаки статей), сид клиники G `supabase/seed_set06.sql`. Формы ответов шага 1 не менялись. В `backend/openapi.json` у `ServicesOut`, `ServiceCostOut`, `ServiceItemOut`, `RecipeOut`, `StockItemsOut`, `EfficiencyOut`, `EfficiencySettingsOut` есть `example` (пример эталона №6, его строит `backend/scripts/make_pricing_examples.py` из `tests/golden/set06/expected.json`), а у `ServiceCostOut` и `EfficiencyOut` ещё `x-examples` с именованными состояниями (карточка: `loss`, `partial_item_no_cost`, `no_recipe`, `empty_recipe`, `manual_no_sales`, `no_hour_cost`; эффективность: `main`, `ward_no_schedule`, `doctor_no_hours`, `no_hours`, `no_expenses`). Локальный стенд для контрактных тестов и e2e (данные в памяти, клиники A и G это эталон №6, B пустая): `backend/tests/pricing_server.py`.
+
+Общее: деньги целые копейки, каждая сумма это `Figure` с разбивкой, `note` и `source`. Операнды формулы у `Figure` в рублях лежат в `details`, а `breakdown` это одна строка или слагаемые, дающие `value` до копейки (так у прибыли за месяц, среднего чека, «занятый час приносит»); у `pct` операнды в `breakdown` в рублях и часах. Числа, которые вводит владелец (минуты, процент врачу, количество в техкарте, часы приёма), обычные числа, не `Figure` (как `rate_pct` обязательства). `as_of` необязателен на всех маршрутах (для сверки с эталоном), неверный: `422`, `fields.as_of = "invalid"`.
+
+Новые причины `validation` (`details.fields`): `duplicate_name`, `unknown_item`, `duplicate_item`. Ключи полей вложенных объектов через точку: `items.0.qty`, `doctors.1.hours_per_week`. Порядок проверок: доступ (`401`), существование (`404`), право (`403`), тело (`422`).
+
+#### `GET /v1/services?sort=margin|profit&order=asc|desc&filter=all|loss|no_recipe&q=&limit=50&cursor=&as_of=`
+
+```json
+{ "basis_month": "2026-09", "headline": "1 услуга из 11 стоит клинике больше, чем приносит. Сильнее всего «Стационар, сутки»: −6,3%. У 2 услуг нет техкарты, поэтому их маржу мы не считаем.",
+  "counts": { "all": 11, "loss": 1, "no_recipe": 2 },
+  "items": [ { "id": "…", "name": "Стационар, сутки", "group": "Стационар", "unit_label": "сутки", "source": "vetmanager",
+               "price": Figure, "visits_month": Figure, "margin_pct": Figure | null, "monthly_profit": Figure | null,
+               "status": "ok|no_recipe|partial" } ],
+  "next_cursor": null }
+```
+
+- Услуги двух источников (`source`): из строк счетов Ветменеджера (есть хотя бы одна строка вида «услуга» в окне цены) и ручные (`POST /v1/services`). Ручная услуга, чьё название совпало с проданной (без учёта регистра, лишних пробелов, `ё = е`), становится услугой Ветменеджера с ценой из продаж. Услуги Ветменеджера без продаж за 90 дней в списке нет.
+- `price`: средняя фактическая цена за окно `as_of − 90 … as_of − 1` (`Σ сумм ÷ Σ количества`, со скидками), `breakdown` одна строка «Средняя цена по счетам за 90 дней»; у ручной услуги без продаж введённая цена («Цена, введённая вручную», `source = ["manual"]`, `visits_month = 0`). `visits_month` (`count`): сколько раз услуга оказана за `basis_month` (последний закрытый месяц). `margin_pct` равна `net_margin_pct` карточки. Без техкарты (`status = no_recipe`) `margin_pct` и `monthly_profit` равны `null` (ключи есть). `monthly_profit` услуги с пустой техкартой и нулём продаж равна 0. `unit_label`: «раз» или «сутки».
+- Порядок: `sort=margin` по марже, `sort=profit` по `monthly_profit`; `order=asc` (по умолчанию) от меньшего, `desc` от большего; услуги без значения всегда в конце по названию, при равенстве значений по названию. `filter=loss`: маржа меньше нуля; `no_recipe`: без техкарты; `q`: подстрока названия без учёта регистра. `counts` считается по всему списку, а не по фильтру.
+- `headline` по шаблону движка, без рекомендаций: предложение об убыточных («N услуг из M стоят клинике больше, чем приносят. Сильнее всего «X»: −21,0%.») либо «Все услуги с техкартой приносят прибыль. Меньше всего у «X»: 14,0%.», затем при `no_recipe > 0` «У K услуг нет техкарты, поэтому их маржу мы не считаем.»; без единой техкарты «Техкарт пока нет, поэтому маржу мы не считаем. Начните с самых частых услуг: для каждой нужен список материалов и время.» Без услуг ключа `headline` нет, `items = []`, `counts` нули.
+- `limit` 1–200; неверные `sort`, `order`, `filter`, `cursor`: `422 invalid`; `limit`: `must_be_positive` или `too_large`.
+
+#### `POST /v1/services`, `PATCH /v1/services/{id}`, `DELETE /v1/services/{id}` (ручные услуги)
+
+`POST` тело `{ "name": "Груминг: стрижка", "group": "Груминг", "price": 180000 }` (`group` необязателен) → `201` и элемент списка (`status = no_recipe`, `source = manual`, `visits_month = 0`, `margin_pct = null`). `PATCH` любое подмножество `name`, `group`, `price` → `204` без тела. `DELETE` → `204`: услуга и её техкарта исчезают из прайса, продажи в Ветменеджере не меняются. Менять и удалять можно только `source = manual`: услуга из Ветменеджера даёт `403 forbidden`, чужая или неизвестная `404 not_found`. Ошибки `422 validation`: `name` (`required`, `too_long` > 120, `duplicate_name`: такое название уже есть без учёта регистра, пробелов и `ё`), `group` (`too_long` > 80), `price` в копейках (`required`, `invalid` не целое, `must_be_positive`, `too_large` > 100 000 000 ₽), `unknown_field`. Цена ручной услуги правится, пока по ней нет продаж; когда продажи появляются, цена берётся из них. Изменения видны в списке сразу.
+
+#### `GET /v1/services/{id}/cost?as_of=`
+
+```json
+{ "service": { "id": "…", "name": "Кастрация кота", "group": "Хирургия", "unit_label": "раз", "source": "vetmanager", "price_source": "sales|manual" },
+  "status": "ok|no_recipe|partial", "missing": [ "recipe|hour_cost|item_no_cost" ], "basis_month": "2026-09",
+  "minutes": 60, "minutes_source": "own|clinic_average",
+  "price": Figure, "net_profit": Figure | null, "net_margin_pct": Figure | null,
+  "parts": [ { "key": "doctor_pay|drugs|anesthesia|supplies|acquiring|fixed|taxes", "label": "ЗП врача", "amount": Figure | null, "share_pct": Figure | null } ],
+  "visits_month": Figure, "monthly_profit": Figure | null }
+```
+
+- `parts` всегда семь, в порядке `doctor_pay, drugs, anesthesia, supplies, acquiring, fixed, taxes`. **Тождество:** `price = Σ parts.amount + net_profit` до копейки (пустая часть считается нулём, `net_profit` считается на известных частях); `Σ parts.share_pct + net_margin_pct = 100,0` (доли методом наибольшего остатка, при равенстве более ранняя часть). `price.breakdown` это те же строки (части с ненулевой суммой и «Чистая прибыль»), `note` пишет тождество словами. `net_profit.breakdown`: «Цена» и части со знаком «−». У убыточной услуги прибыль и доля отрицательные, `net_profit.note` называет, сколько не хватает до нуля.
+- Расходы услуги не зависят от месяца оказания: техкарта, цены склада, доли и стоимость часа последнего закрытого месяца (`basis_month`).
+- `doctor_pay`: процент услуги, иначе средний по клинике (проценты врачам ÷ выручка услуг месяца), `note` называет, откуда процент. `drugs`, `anesthesia`, `supplies`: `breakdown` строка на позицию техкарты («Цефтриаксон, 1 фл. × 140 ₽»), `round(количество × цена позиции)`; цена позиции берётся точная (дробные копейки), `details` называет позиции без цены закупки. `acquiring`, `taxes`: доли выручки закрытого месяца (комиссия и налоги ОПиУ ÷ выручка). `fixed`: `round(стоимость часа × minutes ÷ 60)` от стоимости часа, как она показана (округлённой); `details`: «Стоимость часа», «Время услуги, мин».
+- `minutes`: время, использованное в `fixed`: своё из техкарты (`minutes_source = own`) или средняя длительность приёма клиники (`clinic_average`; `note` части `fixed` говорит «Длительность средняя по клинике: 30 мин»).
+- `status`: `no_recipe` (техкарты нет; пустая техкарта это `ok` с нулевыми материалами); `partial` (`missing` не пуст); иначе `ok`. `missing` в порядке `recipe`, `hour_cost` (нет стоимости часа: нет часов приёма или расходов месяца, `fixed = null`), `item_no_cost` (у позиции техкарты нет цены закупки, позиция не входит в сумму), `no_expenses` (в ОПиУ базового месяца нет расходов: нет выписки банка и начислений; решение владельца 14: прайс не считаем). При `no_expenses` (рядом всегда и `hour_cost`): `acquiring`, `taxes`, `fixed` и `doctor_pay` по среднему проценту равны `null` (пустой ОПиУ не подставляется нулями), `net_profit`, `net_margin_pct`, `monthly_profit` равны `null`, `status = partial` (или `no_recipe`, если нет техкарты), `price.breakdown` одна строка источника цены; известные части (материалы техкарты, `doctor_pay` с процентом услуги) отдаются, их `share_pct` простая доля цены. В списке у всех услуг `margin_pct` и `monthly_profit` равны `null`, `counts.loss = 0`, `headline` «Нет данных о расходах за сентябрь: прибыль услуг не считаем. Загрузите выписку банка.» При `no_recipe`: `drugs`, `anesthesia`, `supplies` равны `null`; `net_profit`, `net_margin_pct`, `monthly_profit` равны `null` (прибыль без материалов завышена); `price.breakdown` одна строка источника цены; части с известной суммой (`doctor_pay`, `acquiring`, `fixed`, `taxes`) отдаются, их `share_pct` это просто доля цены, сумма 100 не требуется.
+- `monthly_profit = net_profit × visits_month` (`details`: «Чистая прибыль одной услуги», «Оказана за сентябрь»).
+- Неизвестная или чужая услуга: `404 not_found`.
+
+#### `GET /v1/services/{id}/recipe`, `PUT /v1/services/{id}/recipe` (техкарта)
+
+```json
+{ "service": { "id": "…", "name": "Кастрация кота" }, "has_recipe": true, "minutes": 60, "doctor_pct": 30.0,
+  "items": [ { "item_id": "…", "name": "Пропофол", "unit": "мл", "group": "anesthesia", "qty": 0.5, "unit_cost": Figure | null } ],
+  "defaults": { "minutes": Figure, "doctor_pct": Figure | null } }
+```
+
+`PUT` тело `{ "minutes": 60 | null, "doctor_pct": 30 | null, "items": [ { "item_id": "…", "group": "drugs|anesthesia|supplies", "qty": 0.5 } ] }` → `200` и тот же объект, что у `GET` (после записи карточка, список и стоимость часа услуги пересчитываются сразу, кэша нет). `minutes` целое 1–1440, `null` значит «средняя длительность приёма клиники»; `doctor_pct` число 0–100 до двух знаков, `null` значит «средний по клинике»; `items` до 30 позиций, пустой список допустим и сохраняется как «услуга без материалов» (`has_recipe = true`); `qty` больше 0, до трёх знаков. `GET` услуги без техкарты: `has_recipe = false`, `items = []`. В `items` ответа дополнительно `name`, `unit`, `unit_cost` (только чтение, в `PUT` не отправляются). `defaults.minutes` (`count`): средняя длительность приёма клиники; `defaults.doctor_pct` (`pct`): проценты врачам ÷ выручка услуг последнего закрытого месяца, `null`, если в ОПиУ нет процентов врачам. Ошибки `422` (`details.fields`): `minutes` (`invalid`, `out_of_range`), `doctor_pct` (`invalid`, `out_of_range`, `too_many_decimals`), `items` (`required`, `invalid`, `out_of_range` больше 30), `items.N.item_id` (`required`, `invalid`, `unknown_item` нет такой позиции склада клиники, `duplicate_item`), `items.N.group` (`required`, `invalid`), `items.N.qty` (`required`, `invalid`, `must_be_positive`, `too_many_decimals`, `too_large`), `unknown_field` (на любом уровне, ключ с путём). Чужая или неизвестная услуга: `404` (раньше проверки тела).
+
+#### `GET /v1/stock/items?q=&limit=50&cursor=`
+
+`{ "items": [ { "id": "…", "name": "Пропофол", "unit": "мл", "unit_cost": Figure | null } ], "next_cursor": null }` для выбора позиции в техкарте. `unit_cost` (`rub`): закупочная цена единицы, средняя взвешенная по партиям с остатком и неистёкшим сроком; если годного остатка нет, цена последней партии (`note` говорит об этом); `null`, если партий не было (позиция не учитывается, услуге ставится `item_no_cost`). Показывается округлённой до копейки, в расчёте услуг берётся точная цена (в `note`). `q` подстрока названия без учёта регистра, `limit` 1–200.
+
+#### Признаки статей для расчёта цены (изменение `GET /v1/categories`)
+
+К статье добавлены `in_service_recipes: bool` (расходы статьи уже внутри техкарт услуг, например «Расходные материалы»: статья не входит в постоянные расходы стоимости часа) и `doctor_percent: bool` («Проценты врачам»: сумма по статьям с признаком это `doctor_percent_payouts` для среднего процента врачу). Признаки задаёт команда (правка из интерфейса позже). На шаге 1 в ответе оба `false` у всех статей (колонки появятся в миграции шага 2).
 
 ### Планирование (функции 21–23, 43) · Этап 4
 
@@ -472,13 +533,40 @@ Transaction = {
 
 В `advice[]` добавляется совет `id = "cash_gap"`, `icon = "📅"`, `severity` (как у `alerts[0]`), `title` и `why` те же, что у `alerts[0]` календаря с тем же `as_of`, `text` = `alerts[0].text` + пробел + `alerts[0].suggestion.text` (если предложение есть), и новое необязательное поле `link: { "path": "/planning/calendar", "date": "2026-10-09" }` (`date` = `alerts[0].date`; `link` есть только у этого совета). Порядок: первым среди `alert`; предел 5 советов сохраняется; без разрыва совета нет. Пример совета лежит в `backend/app/examples/planning_set05.json` (`dashboard_advice_cash_gap`); в `DashboardOut.example` на шаге 1 его нет (дашборд эталона №3 календаря не имеет).
 
-### Аналитика (функции 24–28, 31, 33, 34) · Этап 6 (`/v1/efficiency` — этап 5)
+### Аналитика (функции 24–28, 31, 33, 34) · Этап 6 (`/v1/efficiency` и настройки — этап 5)
 
 - `GET /v1/forecast?scenario=base|growth|cautious` → `{ "scenario": { "key", "name", "description" }, "confidence": "high|medium|low", "history_months": 18, "actual": [{ "period": "2025-Q4", "revenue": Figure }], "plan": [{ "period": "2026-Q4", "revenue": Figure, "growth_pct": Figure, "lines": [{ "key", "label", "norm_pct": { "min", "max" }, "amount": Figure }], "net_profit": Figure, "margin_pct": Figure }] }`. Рост считается к предыдущему кварталу.
 - `GET /v1/forecast/assumptions` и `PUT /v1/forecast/assumptions` тело: доли статей, индексация, допущения сценария. Ответ `PUT` содержит пересчитанный прогноз.
 - `GET /v1/forecast/levers?scenario=growth` → список рычагов `{ "key", "title", "effect_month": Figure, "constraint": "string" }`. В MVP набор рычагов фиксирован в коде.
 - `GET /v1/forecast/plan-vs-fact?month=` → отклонение по строкам и по рычагам, текст по шаблону.
-- `GET /v1/efficiency` → `{ "visits": Figure, "load_pct": Figure, "avg_check": Figure, "rooms": [{ "name", "load_pct": Figure }], "hour_cost": Figure, "hour_cost_parts": [Figure] }`. Если расписание с кабинетами недоступно, `rooms` пуст, а `load_by` равно `"doctors"`.
+- **Эффективность (функции 33, 34) · Этап 5.** Заглушка шага 1 отвечает примером эталона №6, случай `main` (остальные состояния в `x-examples` схемы `EfficiencyOut`).
+
+#### `GET /v1/efficiency?month=YYYY-MM&as_of=`
+
+```json
+{ "month": "2026-09", "as_of": "2026-10-01", "data_as_of": "2026-10-01T04:12:00+03:00",
+  "period": { "month": "2026-09", "status": "closed", "from": "2026-09-01", "to": null, "first_month": "2026-06" },
+  "status": "ok|partial|empty", "partial_reasons": [ "no_doctor_hours|no_expenses" ],
+  "headline": "Клиника загружена на 21,2%: свободно 544 часа, час работы стоит 461,45 ₽.",
+  "load_by": "rooms|doctors",
+  "visits": Figure, "load_pct": Figure | null, "avg_check": Figure | null,
+  "rooms": [ { "id": "…", "name": "Кабинет терапии", "load_pct": Figure, "busy_hours": Figure, "available_hours": Figure, "free_hours": Figure } ],
+  "doctors": [ { "id": "…", "name": "Иванова А.", "visits": Figure, "load_pct": Figure | null, "busy_hours": Figure | null, "available_hours": Figure | null, "free_hours": Figure | null } ],
+  "hour_cost": Figure | null, "hour_margin": Figure | null,
+  "hour_cost_parts": [ { "key": "hours|busy_hours|fixed|obligations", "label": "Рабочих часов в месяц", "figure": Figure } ] }
+```
+
+- `month` необязателен, по умолчанию последний закрытый месяц; формат неверный: `422 fields.month = "invalid"`, месяц позже последнего закрытого: `422 fields.month = "in_future"` (клиент заменяет его на последний закрытый). Часы это `count`; `headline` собирает backend по шаблону (без оценок и рекомендаций); при `status = empty` его нет. Ключи `visits`, `load_pct`, `avg_check`, `rooms`, `doctors`, `hour_cost`, `hour_margin`, `hour_cost_parts` есть всегда (`null` или пустой список, если нет данных).
+- **Режим.** `load_by = rooms`, если у каждого кабинета есть расписание и в месяце есть приёмы, привязанные к кабинетам (из Ветменеджера); тогда `doctors = []`. Иначе `load_by = doctors` (запасной режим, основной на старте): `rooms = []`, `doctors[]` заполнен. Один кабинет без расписания переводит весь экран в запасной режим. Ручного ввода кабинетов нет.
+- **Часы.** Кабинет: доступно = минуты расписания за месяц ÷ 60 (по календарю, без праздников), занято = сумма длительности его приёмов ÷ 60, оба до целого часа. Врач (запасной режим): доступно = `часов в неделю × дней в месяце ÷ 7`, занято = `приёмов × средняя длительность ÷ 60`, оба до целого часа. `load_pct = Σ занято ÷ Σ доступно` (часы, не среднее процентов). Врач без часов: `load_pct`, `available_hours`, `free_hours` равны `null`, `busy_hours` показан, в итоги не входит (в `load_pct.note`: «Врачей без указанных часов: 1. Они в расчёт не вошли.»); его приёмы входят в `visits`. Нет часов ни у одного врача: `status = partial`, `partial_reasons = ["no_doctor_hours"]`, `load_pct`, `hour_cost`, `hour_margin = null`, `hour_cost_parts = []`.
+- `visits` (`count`): приёмы месяца, `breakdown` по врачам и строка «Без врача». `avg_check` (`rub`): выручка месяца ÷ приёмы, `details`: «Выручка за …», «Приёмов». `load_pct` (`pct`): `breakdown` «Занято, ч», «Доступно, ч».
+- **`hour_cost`** (`rub`) = (постоянные расходы ОПиУ месяца без статей с признаком `in_service_recipes` + обязательства и амортизация) ÷ доступные часы, одно число на клинику (по кабинетам стоимость не делится). `breakdown` две строки: «Постоянные расходы» и «Обязательства и амортизация» (деньги на час; значение округляется один раз, остаток округления в последней строке). Нет расходов в месяце (нет выписки): `status = partial`, `partial_reasons` содержит `no_expenses`, `hour_cost = null`, загрузка при этом есть. Причины могут идти вместе, в порядке `no_doctor_hours`, `no_expenses`. `status = empty`, если за месяц нет ни приёмов, ни выручки.
+- **`hour_margin`** (`rub`) = маржинальная прибыль ОПиУ того же месяца ÷ занятые часы; `details`: «Маржинальная прибыль», «Занятых часов»; `null`, если нет занятых часов или стоимости часа.
+- `hour_cost_parts`: четыре строки в порядке `hours` (рабочих часов, в запасном режиме «Часов приёма в месяц»; `breakdown` по кабинетам или врачам), `busy_hours` («Занято»), `fixed` («Постоянные расходы» без статей `in_service_recipes`, `breakdown` по статьям), `obligations` («Обязательства и амортизация», `breakdown` по начислениям). Пуст, пока нет стоимости часа.
+
+#### `GET /v1/efficiency/settings`, `PUT /v1/efficiency/settings`
+
+`{ "avg_visit_minutes": 30, "doctors": [ { "id": "…", "name": "Иванова А.", "hours_per_week": 36.0 | null } ] }` (числа ввода владельца, не `Figure`). `PUT` тело в том же виде (`doctors[].name` не отправляется) → `200` и сохранённое: `avg_visit_minutes` целое 5–240 (обязательно: `required`, `invalid`, `out_of_range`); `doctors` необязателен, врач, которого нет в списке, не меняется; `hours_per_week` число 0–80 с шагом 0,5 или `null` (`out_of_range`, `too_many_decimals` больше одного знака, `invalid` не кратно 0,5); неизвестный или повторный врач: `doctors.N.id = invalid`; врачей клиент не добавляет и не удаляет (они приходят из Ветменеджера). После `PUT` `GET /v1/efficiency` и часть `fixed` и `minutes` услуг без своей длительности пересчитываются сразу.
 
 ### Настройки и подключения (функции 36–41) · Этапы 0, 1 и 7
 
@@ -533,7 +621,7 @@ SyncRun = {
 
 #### Что загружается из Ветменеджера
 
-Врачи (код `D1`, `D2`… и имя; имя не уходит в ИИ-слой), приёмы (дата, врач), счета (дата, статус, сумма, строки «услуга/товар»), платежи. Черновики счетов в выручку не входят, удалённые счета и приёмы отбрасываются. Платежи наличными становятся операциями кассы (`source = vetmanager`, статья «Выручка»); платежи картой операциями не становятся, они идут в сверку эквайринга. ФИО клиентов, телефоны, адреса и свободный текст приёмов не загружаются.
+Врачи (код `D1`, `D2`… и имя; имя не уходит в ИИ-слой), приёмы (дата, врач), счета (дата, статус, сумма, строки «услуга/товар»; у строки услуги с этапа 5 ещё название, количество и цена единицы, а услуга попадает в справочник `services` с группой), платежи. Кабинеты, расписание и привязка приёмов к кабинетам не загружаются: в REST API Ветменеджера они не подтверждены, поэтому «Эффективность» работает в режиме `doctors`; таблицы `rooms`, `room_schedule_slots`, `room_bookings` и движок готовы к режиму `rooms`. Черновики счетов в выручку не входят, удалённые счета и приёмы отбрасываются. Платежи наличными становятся операциями кассы (`source = vetmanager`, статья «Выручка»); платежи картой операциями не становятся, они идут в сверку эквайринга. ФИО клиентов, телефоны, адреса и свободный текст приёмов не загружаются.
 
 ## Вне контракта первой очереди
 

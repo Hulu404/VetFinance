@@ -16,6 +16,7 @@ import { connectionHandlers } from './connectionHandlers'
 import { errorResponse, guard } from './guard'
 import { clinicNow, planningHandlers } from './planningHandlers'
 import { buildCalendar, cashGapAdvice, cashGapFromCalendar } from './planningStore'
+import { pricingHandlers } from './pricingHandlers'
 import { reportsHandlers } from './reportsHandlers'
 import { getMockScenario, type MockScenario } from './scenario'
 import { transactionHandlers } from './transactionHandlers'
@@ -68,4 +69,5 @@ export const handlers = [
   ...acquiringHandlers,
   ...reportsHandlers,
   ...planningHandlers,
+  ...pricingHandlers,
 ]

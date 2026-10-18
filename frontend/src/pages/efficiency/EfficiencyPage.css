@@ -1,0 +1,48 @@
+/* Efficiency screen (design/screens/efficiency.md). */
+.eff-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--section-gap); margin-top: var(--section-gap); }
+.eff-card {
+  min-width: 0;
+  padding: 22px 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.eff-card__title { margin-bottom: var(--space-3); font-size: var(--fs-2xs); font-weight: var(--fw-bold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--color-ink-soft); }
+.eff-load { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.eff-load__item { min-width: 0; }
+.eff-load__visits { font-size: var(--fs-xs); }
+.eff-fallback { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); margin-top: var(--space-4); }
+.eff-fallback__note { font-size: var(--fs-xs); color: var(--color-ink-soft); }
+
+.eff-cost__value { font-size: var(--fs-display); font-weight: var(--fw-extrabold); line-height: 1.1; }
+.eff-cost__value .figbtn { font: inherit; }
+.eff-cost__text { margin-top: var(--space-1); font-size: var(--fs-xs); color: var(--color-ink-soft); }
+.eff-cost__link { display: inline-flex; align-items: center; min-height: 40px; margin-top: var(--space-3); font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--color-accent-dark); }
+.eff-parts { margin: var(--space-4) 0 0; }
+.eff-parts__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); padding: 8px 0; border-bottom: 1px solid var(--color-border); font-size: var(--fs-base); }
+.eff-parts__row dd { margin: 0; font-weight: var(--fw-semibold); white-space: nowrap; }
+.eff-margin { margin-top: var(--space-3); }
+.eff-margin__row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); font-size: var(--fs-md); font-weight: var(--fw-bold); }
+
+.eff-sk { display: block; border-radius: 6px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+.eff-sk--value { width: 120px; height: 32px; margin-bottom: var(--space-3); }
+.eff-sk--row { width: 100%; height: 14px; margin-top: var(--space-3); }
+
+.hours__doctors { display: grid; grid-template-columns: 1fr 1fr; gap: 0 var(--space-4); }
+.hours__doctors .input { padding-right: 104px; }
+
+@media (max-width: 1100px) {
+  .eff-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 820px) {
+  .eff-card { padding: 18px; }
+  .eff-cost__link { min-height: var(--touch-min); }
+}
+@media (max-width: 560px) {
+  .hours__doctors { grid-template-columns: 1fr; }
+  .eff-fallback .btn { width: 100%; min-height: var(--touch-min); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eff-sk { animation: none; }
+}

@@ -328,7 +328,8 @@ def _summary(model: StockOut) -> Table:
 def _expiry_table(title: str, rows: list[Any]) -> Table:
     # a number never stands right before an amount: the text of a PDF is checked by squeezing spaces
     body = tuple(
-        Row((r.item, r.qty, r.expires_on, Days(r.days_left), Rub(int(r.amount.value)))) for r in rows
+        Row((r.item, r.qty, r.expires_on, Days(r.days_left), Rub(int(r.amount.value))))
+        for r in rows
     )
     columns = ("Позиция", "Количество", "Срок годности", "Осталось дней", "Сумма, ₽")
     return Table(title, columns, body, (6, 3, 3, 3, 3))
@@ -349,7 +350,14 @@ def _idle_table(items: list[IdleItemOut]) -> Table:
         )
         for i in items
     )
-    columns = ("Позиция", "Количество", "Последнее движение", "Дней без движения", "Сумма, ₽", "Интервал")
+    columns = (
+        "Позиция",
+        "Количество",
+        "Последнее движение",
+        "Дней без движения",
+        "Сумма, ₽",
+        "Интервал",
+    )
     return Table("Без движения", columns, body, (6, 3, 3, 3, 3, 3))
 
 

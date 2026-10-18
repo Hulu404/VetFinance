@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "gen:api": "openapi-typescript ../backend/openapi.json -o src/api/schema.gen.ts",
+    "gen:api": "node scripts/gen-api.mjs",
     "sync:design": "node scripts/sync-design.mjs",
     "sync:mocks": "node scripts/sync-mocks.mjs"
   },

@@ -5,6 +5,8 @@ import { IconSprite } from './components/Icon'
 import { DashboardPage } from './pages/DashboardPage'
 import { LoginPage } from './pages/LoginPage'
 import { CalendarPage } from './pages/calendar/CalendarPage'
+import { EfficiencyPage } from './pages/efficiency/EfficiencyPage'
+import { PricePage } from './pages/price/PricePage'
 import { ObligationsPage } from './pages/obligations/ObligationsPage'
 import { BankSection } from './pages/settings/BankSection'
 import { MainSection } from './pages/settings/MainSection'
@@ -54,6 +56,8 @@ export function App() {
             <Route path="reports/pnl" element={<PnlPage />} />
             <Route path="reports/norm" element={<NormPage />} />
             <Route path="reports/stock" element={<StockPage />} />
+            <Route path="price" element={<PricePage />} />
+            <Route path="analytics/efficiency" element={<EfficiencyPage />} />
             <Route path="planning/calendar" element={<CalendarPage />} />
             <Route path="planning/obligations" element={<ObligationsPage />} />
             <Route path="settings" element={<SettingsLayout />}>

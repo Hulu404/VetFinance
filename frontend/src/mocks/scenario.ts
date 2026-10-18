@@ -43,6 +43,18 @@ export type MockScenario =
   | 'calerror' // calendar endpoints answer 500
   | 'oblempty' // no obligations at all
   | 'oblerror' // obligations endpoints answer 500
+  // Stage 5 (price list and efficiency)
+  | 'priceempty' // no services at all
+  | 'pricenorecipes' // every service is without a recipe
+  | 'priceerror' // the list endpoints answer 500
+  | 'pricecarderror' // the card endpoint answers 500
+  | 'pricenohourcost' // the card of the cat castration lacks the cost of an hour
+  | 'effward' // efficiency by doctors (no room schedule)
+  | 'effnohours' // efficiency by doctors, no hours of reception set
+  | 'effdoctornohours' // one doctor without hours
+  | 'effnoexpenses' // no bank statement for the month
+  | 'effempty' // no visits in the month
+  | 'efferror' // efficiency endpoints answer 500
 
 const SCENARIOS: readonly string[] = [
   'default',
@@ -84,6 +96,17 @@ const SCENARIOS: readonly string[] = [
   'calerror',
   'oblempty',
   'oblerror',
+  'priceempty',
+  'pricenorecipes',
+  'priceerror',
+  'pricecarderror',
+  'pricenohourcost',
+  'effward',
+  'effnohours',
+  'effdoctornohours',
+  'effnoexpenses',
+  'effempty',
+  'efferror',
 ]
 const STORAGE_KEY = 'vf-mock-scenario'
 

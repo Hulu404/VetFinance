@@ -11,10 +11,19 @@ import type {
   CalendarReport,
   CategoryList,
   CategoryRuleList,
+  EfficiencyReport,
+  EfficiencySettings,
   Clinic,
   ConnectionList,
   Dashboard,
   ObligationsReport,
+  ServiceCost,
+  ServiceFilter,
+  ServiceList,
+  ServiceRecipe,
+  ServiceSort,
+  SortOrder,
+  StockItemList,
   NormReport,
   PnlReport,
   PnlView,
@@ -52,6 +61,12 @@ export const queryKeys = {
   stockIdle: ['stock-idle'] as const,
   calendar: ['calendar'] as const,
   obligations: ['obligations'] as const,
+  services: ['services'] as const,
+  serviceCost: ['service-cost'] as const,
+  serviceRecipe: ['service-recipe'] as const,
+  stockItems: ['stock-items'] as const,
+  efficiency: ['efficiency'] as const,
+  efficiencySettings: ['efficiency-settings'] as const,
 }
 
 /** Shared by the dashboard and the header balance. `?as_of=` in the address is passed through (golden-data checks). */
@@ -252,5 +267,95 @@ export function invalidateAfterObligationChange(queryClient: QueryClient): Promi
     queryClient.invalidateQueries({ queryKey: queryKeys.dashboard }),
     queryClient.invalidateQueries({ queryKey: queryKeys.pnl }),
     queryClient.invalidateQueries({ queryKey: queryKeys.norm }),
+  ])
+}
+
+export const SERVICES_PAGE_SIZE = 50
+const STOCK_ITEMS_LIMIT = 200
+
+export interface ServiceListParams {
+  filter: ServiceFilter
+  sort: ServiceSort
+  order: SortOrder
+  q: string
+  asOf: string | null
+}
+
+/** The price list; the server filters, sorts and cuts it into pages. The previous rows stay while a new filter loads. */
+export function useServices(params: ServiceListParams) {
+  const { filter, sort, order, q, asOf } = params
+  return useInfiniteQuery({
+    queryKey: [...queryKeys.services, filter, sort, order, q, asOf ?? 'today'],
+    initialPageParam: null as string | null,
+    queryFn: ({ pageParam, signal }) =>
+      apiGet<ServiceList>(
+        reportQuery('/v1/services', { sort, order, filter, q: q || null, limit: String(SERVICES_PAGE_SIZE), cursor: pageParam, as_of: asOf }),
+        signal,
+      ),
+    getNextPageParam: (last) => last.next_cursor,
+    placeholderData: keepPreviousData,
+  })
+}
+
+export function useServiceCost(id: string | null, asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.serviceCost, id, asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<ServiceCost>(reportQuery(`/v1/services/${encodeURIComponent(id ?? '')}/cost`, { as_of: asOf }), signal),
+    enabled: id !== null,
+  })
+}
+
+export function useServiceRecipe(id: string | null, enabled = true) {
+  return useQuery({
+    queryKey: [...queryKeys.serviceRecipe, id],
+    queryFn: ({ signal }) => apiGet<ServiceRecipe>(`/v1/services/${encodeURIComponent(id ?? '')}/recipe`, signal),
+    enabled: id !== null && enabled,
+    gcTime: 0,
+  })
+}
+
+/** Warehouse items for the recipe form; the form filters them by the typed text. */
+export function useStockItems(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.stockItems,
+    queryFn: ({ signal }) => apiGet<StockItemList>(reportQuery('/v1/stock/items', { limit: String(STOCK_ITEMS_LIMIT) }), signal),
+    enabled,
+    staleTime: 5 * 60 * 1000,
+  })
+}
+
+/** Efficiency of a month; `month` null asks for the last closed one. */
+export function useEfficiency(month: string | null, asOf: string | null) {
+  return useQuery({
+    queryKey: [...queryKeys.efficiency, month ?? 'default', asOf ?? 'today'],
+    queryFn: ({ signal }) => apiGet<EfficiencyReport>(reportQuery('/v1/efficiency', { month, as_of: asOf }), signal),
+    placeholderData: keepPreviousData,
+  })
+}
+
+export function useEfficiencySettings(enabled = true) {
+  return useQuery({
+    queryKey: queryKeys.efficiencySettings,
+    queryFn: ({ signal }) => apiGet<EfficiencySettings>('/v1/efficiency/settings', signal),
+    enabled,
+    gcTime: 0,
+  })
+}
+
+/** After a service or a recipe changes: the list, the cards and the recipes. */
+export function invalidateAfterServiceChange(queryClient: QueryClient): Promise<unknown> {
+  return Promise.all([
+    queryClient.invalidateQueries({ queryKey: queryKeys.services }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.serviceCost }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.serviceRecipe }),
+  ])
+}
+
+/** The hours of doctors and the average length of a visit move the cost of an hour, which is a part of every price. */
+export function invalidateAfterEfficiencyChange(queryClient: QueryClient): Promise<unknown> {
+  return Promise.all([
+    queryClient.invalidateQueries({ queryKey: queryKeys.efficiency }),
+    queryClient.invalidateQueries({ queryKey: queryKeys.efficiencySettings }),
+    invalidateAfterServiceChange(queryClient),
   ])
 }

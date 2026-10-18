@@ -1,0 +1,57 @@
+/* The bar of the price structure (design/components.md, section 28). */
+.pbar { margin-top: var(--space-4); }
+.pbar__caption {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+}
+.pbar__row { display: flex; align-items: center; gap: var(--space-3); }
+.pbar__bar {
+  display: flex;
+  flex: 1;
+  gap: var(--structure-gap, 2px);
+  height: var(--price-bar-height);
+  border-radius: var(--price-bar-radius);
+  background: var(--color-track);
+  overflow: hidden;
+}
+.pbar__bar--skeleton { animation: vf-skeleton 1.4s ease-in-out infinite; }
+.pbar__rest { flex: none; font-size: var(--fs-xs); color: var(--color-ink-soft); }
+.pbar__seg { display: flex; align-items: center; justify-content: center; min-width: 0; color: #fff; font-style: normal; }
+.pbar__seg-text { font-size: var(--fs-xs); font-weight: var(--fw-bold); white-space: nowrap; }
+
+.pbar__seg--doctor { background: var(--color-price-doctor); }
+.pbar__seg--drugs { background: var(--color-price-drugs); }
+.pbar__seg--anesthesia { background: var(--color-price-anesthesia); color: var(--color-ink); }
+.pbar__seg--supplies { background: var(--color-price-supplies); color: var(--color-ink); }
+.pbar__seg--acquiring { background: var(--color-price-acquiring); color: var(--color-ink); }
+.pbar__seg--fixed { background: var(--color-price-fixed); color: var(--color-ink); }
+.pbar__seg--taxes { background: var(--color-price-taxes); }
+.pbar__seg--net { background: var(--color-price-net); }
+.pbar__seg--light { box-shadow: inset 0 0 0 1px var(--color-control-border); }
+
+.plegend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-1) var(--space-6); margin: var(--space-3) 0 0; padding: 0; list-style: none; font-size: var(--fs-sm); }
+.plegend__item { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); min-height: 40px; }
+.plegend__dot { flex: none; width: 10px; height: 10px; border-radius: 3px; }
+.plegend__name { font-weight: var(--fw-semibold); }
+.plegend__sum, .plegend__share { display: inline-flex; align-items: center; gap: var(--space-2); white-space: nowrap; }
+.plegend__share { color: var(--color-ink-soft); }
+.plegend__share .figbtn { color: inherit; }
+.plegend__none { color: var(--color-ink-soft); }
+.plegend__extra { flex-basis: 100%; padding-left: 18px; font-size: var(--fs-xs); color: var(--color-ink-soft); }
+.plegend__skeleton { height: 13px; width: 120px; border-radius: 6px; background: var(--color-track); animation: vf-skeleton 1.4s ease-in-out infinite; }
+
+@media (max-width: 820px) {
+  .plegend__item { min-height: var(--touch-min); }
+}
+@media (max-width: 560px) {
+  .plegend { grid-template-columns: 1fr; }
+  .pbar__seg-text { display: none; }
+  .pbar__row { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pbar__bar--skeleton, .plegend__skeleton { animation: none; }
+}

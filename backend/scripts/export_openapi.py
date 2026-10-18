@@ -11,6 +11,7 @@ import json
 import sys
 from datetime import UTC, date, datetime, timedelta, timezone
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "backend"))
@@ -139,6 +140,13 @@ def example_planning() -> dict[str, dict[str, object]]:
     return asyncio.run(build())
 
 
+def example_pricing() -> dict[str, Any]:
+    """Stage 5 stub answers (golden set 6), built by scripts/make_pricing_examples.py into app/examples."""
+    path = ROOT / "backend" / "app" / "examples" / "pricing_set06.json"
+    data: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
+    return data
+
+
 def main() -> None:
     schema = create_app().openapi()
     schema["info"]["description"] = "Generated from the code. Contract: docs/api-contract.md"
@@ -154,6 +162,19 @@ def main() -> None:
     schemas["ManualPaymentOut"]["example"] = planning["manual_payment"]
     schemas["CounterpartyOut"]["example"] = planning["counterparty"]
     schemas["AdviceOut"]["example"] = planning["cash_gap"]
+    # Stage 5: the stubs answer with golden set 6 (tests/golden/set06), as_of 2026-10-01; named states go to x-examples
+    pricing = example_pricing()
+    first_card = next(iter(pricing["cards"].values()))
+    schemas["ServicesOut"]["example"] = pricing["services"]
+    schemas["ServicesOut"]["x-examples"] = {"no_expenses": pricing["services_no_expenses"]}
+    schemas["ServiceCostOut"]["example"] = first_card
+    schemas["ServiceCostOut"]["x-examples"] = pricing["card_variants"]
+    schemas["ServiceItemOut"]["example"] = pricing["created_service"]
+    schemas["RecipeOut"]["example"] = next(iter(pricing["recipes"].values()))
+    schemas["StockItemsOut"]["example"] = pricing["stock_items"]
+    schemas["EfficiencyOut"]["example"] = pricing["efficiency"]["main"]
+    schemas["EfficiencyOut"]["x-examples"] = pricing["efficiency"]
+    schemas["EfficiencySettingsOut"]["example"] = pricing["efficiency_settings"]
     OUT.write_text(json.dumps(schema, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {OUT} ({len(schema['paths'])} paths)")
 

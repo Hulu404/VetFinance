@@ -3,8 +3,8 @@
 import type { Category, CategoryRule, NamedRef, Transaction, TransactionBrief, TxKind, TxSource, TxStatus } from '../api/types'
 import { countFigure, rubFigure } from './figures'
 
-const REPORT_DEFAULTS: Pick<Category, 'norm_key' | 'direction' | 'payroll'> = {
-  norm_key: null, direction: null, payroll: false,
+const REPORT_DEFAULTS: Pick<Category, 'norm_key' | 'direction' | 'payroll' | 'in_service_recipes' | 'doctor_percent'> = {
+  norm_key: null, direction: null, payroll: false, in_service_recipes: false, doctor_percent: false,
 }
 
 export const CATEGORIES: Category[] = [

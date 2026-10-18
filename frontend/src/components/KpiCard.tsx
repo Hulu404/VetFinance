@@ -36,6 +36,8 @@ interface KpiCardProps {
   valueData?: Record<`data-${string}`, string>
   /** `data-testid` of the sub-line. */
   subTestId?: string
+  /** `data-testid` of the dash shown instead of the number when there is none. */
+  dashTestId?: string
 }
 
 function subline(state: KpiState, figure: Figure | undefined, zeroText?: string, emptyText?: string) {
@@ -65,6 +67,7 @@ export function KpiCard({
   valueTestId,
   valueData,
   subTestId,
+  dashTestId,
 }: KpiCardProps) {
   const className = `kpi kpi--${variant} kpi--${state}${extra ? ' kpi--with-extra' : ''}`
   const hint =
@@ -89,7 +92,7 @@ export function KpiCard({
         <span className="kpi__emoji" aria-hidden="true">{emoji}</span>
         <div className="kpi__body">
           <span className="kpi__label">{label}</span>
-          <span className="kpi__value">—</span>
+          <span className="kpi__value" data-testid={dashTestId}>—</span>
           {hint && <span className={`kpi__sub kpi__sub--${hint.tone}`}>{hint.text}</span>}
         </div>
       </div>

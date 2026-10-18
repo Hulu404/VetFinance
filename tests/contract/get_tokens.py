@@ -1,4 +1,4 @@
-"""Prints shell lines that export VF_API_URL / VF_TOKEN_A / VF_TOKEN_B (and VF_TOKEN_C … VF_TOKEN_F when VF_TEST_EMAIL_C … VF_TEST_EMAIL_F are set).
+"""Prints shell lines that export VF_API_URL / VF_TOKEN_A / VF_TOKEN_B (and VF_TOKEN_C … VF_TOKEN_G when VF_TEST_EMAIL_C … VF_TEST_EMAIL_G are set).
 
 Reads backend/.env (VF_TEST_EMAIL_*, VF_TEST_PASSWORD, SUPABASE_URL) and the anon key from frontend/.env at run time.
 Nothing is written to disk; the password never appears in tests/. Usage (bash):
@@ -36,7 +36,7 @@ def main():
     be, fe = load_env(ROOT / "backend" / ".env"), load_env(ROOT / "frontend" / ".env")
     base, anon, pwd = be["SUPABASE_URL"].rstrip("/"), fe["VITE_SUPABASE_ANON_KEY"], be["VF_TEST_PASSWORD"]
     print(f"export VF_API_URL='{API}'")
-    for letter in "ABCDEF":
+    for letter in "ABCDEFG":
         email = be.get(f"VF_TEST_EMAIL_{letter}")
         if email:
             print(f"export VF_TOKEN_{letter}='{sign_in(base, anon, email, pwd)}'")
