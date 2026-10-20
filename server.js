@@ -14,6 +14,13 @@ const PORT = process.env.PORT || 3000;
 const ROOT = path.join(__dirname, 'public');
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID || '';
+/* Сводка по сайту в боте: номер счётчика Метрики, OAuth-токен с правом чтения
+   статистики, секрет вебхука и публичный адрес сайта для регистрации вебхука. */
+const METRIKA_ID = /^\d+$/.test(process.env.METRIKA_COUNTER_ID || '') ? process.env.METRIKA_COUNTER_ID : '';
+const METRIKA_TOKEN = process.env.METRIKA_TOKEN || '';
+const WEBHOOK_SECRET = /^[A-Za-z0-9_-]{16,256}$/.test(process.env.TELEGRAM_WEBHOOK_SECRET || '')
+  ? process.env.TELEGRAM_WEBHOOK_SECRET : '';
+const PUBLIC_URL = (process.env.PUBLIC_URL || '').replace(/\/+$/, '');
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -41,7 +48,11 @@ function loadDir(dir, prefix) {
     const url = prefix + '/' + entry.name;
     if (entry.isDirectory()) { loadDir(full, url); continue; }
 
-    const body = fs.readFileSync(full);
+    let body = fs.readFileSync(full);
+    /* Номер счётчика Метрики берём из METRIKA_COUNTER_ID, чтобы не держать его в двух местах. */
+    if (url === '/assets/site.js' && METRIKA_ID) {
+      body = Buffer.from(body.toString('utf8').replace("var METRIKA_ID = '';", "var METRIKA_ID = '" + METRIKA_ID + "';"));
+    }
     const type = TYPES[path.extname(entry.name).toLowerCase()] || 'application/octet-stream';
     const asset = {
       body: body,
@@ -174,20 +185,25 @@ async function toTelegram(lead) {
     (lead.ref ? '<b>Пришёл с:</b> ' + escapeHtml(lead.ref) + '\n' : '') +
     '\n' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' МСК';
 
-  const r = await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+  await tg('sendMessage', {
+    chat_id: CHAT_ID,
+    text: text,
+    parse_mode: 'HTML',
+    disable_web_page_preview: true
+  });
+}
+
+async function tg(method, payload) {
+  const r = await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/' + method, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: CHAT_ID,
-      text: text,
-      parse_mode: 'HTML',
-      disable_web_page_preview: true
-    })
+    body: JSON.stringify(payload)
   });
   if (!r.ok) {
     const detail = await r.text();
     throw new Error('Telegram ответил ' + r.status + ': ' + detail.slice(0, 300));
   }
+  return r.json();
 }
 
 async function handleLead(req, res) {
@@ -222,6 +238,207 @@ async function handleLead(req, res) {
   }
 }
 
+/* ---------- сводка по сайту в боте ----------
+   Бот отвечает на /stats только в чате заявок (TELEGRAM_CHAT_ID). Цифры берутся
+   из API Яндекс Метрики, поэтому учитываются посетители, согласившиеся на cookie. */
+
+const PERIODS = {
+  today: { label: 'сегодня', date1: 'today', date2: 'today' },
+  yesterday: { label: 'вчера', date1: 'yesterday', date2: 'yesterday' },
+  week: { label: '7 дней', date1: '6daysAgo', date2: 'today' },
+  month: { label: '30 дней', date1: '29daysAgo', date2: 'today' }
+};
+
+const PERIOD_BUTTONS = {
+  inline_keyboard: [
+    [
+      { text: 'Сегодня', callback_data: 'stats:today' },
+      { text: 'Вчера', callback_data: 'stats:yesterday' }
+    ],
+    [
+      { text: '7 дней', callback_data: 'stats:week' },
+      { text: '30 дней', callback_data: 'stats:month' }
+    ]
+  ]
+};
+
+const SOURCE_NAMES = {
+  organic: 'Поиск',
+  direct: 'Прямые заходы',
+  referral: 'Ссылки на сайтах',
+  social: 'Соцсети',
+  ad: 'Реклама',
+  messenger: 'Мессенджеры',
+  internal: 'Внутренние переходы',
+  email: 'Почта',
+  recommend: 'Рекомендации',
+  saved: 'Сохранённые страницы',
+  undefined: 'Не определено'
+};
+
+const DEVICE_NAMES = { desktop: 'Компьютеры', mobile: 'Смартфоны', tablet: 'Планшеты', tv: 'ТВ' };
+
+async function metrika(params) {
+  const q = new URLSearchParams(Object.assign({ ids: METRIKA_ID, accuracy: 'full' }, params));
+  const r = await fetch('https://api-metrika.yandex.net/stat/v1/data?' + q, {
+    headers: { Authorization: 'OAuth ' + METRIKA_TOKEN }
+  });
+  if (!r.ok) {
+    const detail = await r.text();
+    throw new Error('Метрика ответила ' + r.status + ': ' + detail.slice(0, 300));
+  }
+  return r.json();
+}
+
+function num(v) {
+  return Math.round(v).toLocaleString('ru-RU');
+}
+
+function pct(v) {
+  return (Math.round(v * 10) / 10).toLocaleString('ru-RU') + '%';
+}
+
+function duration(sec) {
+  const s = Math.round(sec);
+  return Math.floor(s / 60) + ' мин ' + String(s % 60).padStart(2, '0') + ' с';
+}
+
+function shortDate(iso) {
+  const p = iso.split('-');
+  return p[2] + '.' + p[1];
+}
+
+/* Строки вида «Поиск — 12 (40%)» для топа по визитам. */
+function breakdown(report, names, total) {
+  return report.data.slice(0, 5).map(function (row) {
+    const key = row.dimensions[0].id || row.dimensions[0].name || 'undefined';
+    const name = names[key] || row.dimensions[0].name || 'Не определено';
+    const visits = row.metrics[0];
+    return '• ' + escapeHtml(String(name)) + ' — ' + num(visits) +
+      (total ? ' (' + pct(visits / total * 100) + ')' : '');
+  }).join('\n');
+}
+
+async function siteSummary(periodKey) {
+  const p = PERIODS[periodKey] || PERIODS.today;
+  const range = { date1: p.date1, date2: p.date2 };
+
+  const results = await Promise.all([
+    metrika(Object.assign({
+      metrics: 'ym:s:users,ym:s:visits,ym:s:pageviews,ym:s:percentNewVisitors,' +
+        'ym:s:bounceRate,ym:s:avgVisitDurationSeconds,ym:s:sumGoalReachesAny'
+    }, range)),
+    metrika(Object.assign({
+      metrics: 'ym:s:visits', dimensions: 'ym:s:lastTrafficSource', sort: '-ym:s:visits', limit: '5'
+    }, range)),
+    metrika(Object.assign({
+      metrics: 'ym:s:visits', dimensions: 'ym:s:deviceCategory', sort: '-ym:s:visits', limit: '5'
+    }, range))
+  ]);
+  const totals = results[0].totals;
+  const users = totals[0], visits = totals[1], pageviews = totals[2];
+  const newShare = totals[3], bounce = totals[4], avgTime = totals[5], leads = totals[6];
+
+  const q = results[0].query;
+  const dates = q.date1 === q.date2 ? shortDate(q.date1) : shortDate(q.date1) + '–' + shortDate(q.date2);
+
+  let text = '<b>Сайт за ' + p.label + '</b> (' + dates + ')\n\n';
+  if (!visits) {
+    return text + 'Заходов пока нет. Метрика обновляет данные с задержкой в несколько минут.';
+  }
+  text +=
+    '<b>Посетители:</b> ' + num(users) + ' (новых ' + pct(newShare) + ')\n' +
+    '<b>Визиты:</b> ' + num(visits) + '\n' +
+    '<b>Просмотры страниц:</b> ' + num(pageviews) + '\n' +
+    '<b>Отказы:</b> ' + pct(bounce) + '\n' +
+    '<b>Время на сайте:</b> ' + duration(avgTime) + '\n' +
+    '<b>Заявки:</b> ' + num(leads) + ' (' + pct(leads / visits * 100) + ' визитов)\n\n' +
+    '<b>Откуда пришли</b>\n' + breakdown(results[1], SOURCE_NAMES, visits) + '\n\n' +
+    '<b>Устройства</b>\n' + breakdown(results[2], DEVICE_NAMES, visits) + '\n\n' +
+    '<i>Только посетители, принявшие cookie.</i>';
+  return text;
+}
+
+async function statsText(periodKey) {
+  if (!METRIKA_ID || !METRIKA_TOKEN) {
+    return 'Сводка по сайту не настроена: на сервере не заданы METRIKA_COUNTER_ID и METRIKA_TOKEN.';
+  }
+  try {
+    return await siteSummary(periodKey);
+  } catch (e) {
+    console.error('Не удалось получить сводку из Метрики:', e.message);
+    return 'Не получилось забрать данные из Метрики. Подробности в логах сервера.';
+  }
+}
+
+async function handleUpdate(update) {
+  if (update.message && update.message.text) {
+    const msg = update.message;
+    if (String(msg.chat.id) !== CHAT_ID) return;
+    const cmd = msg.text.trim().split(/[\s@]/)[0].toLowerCase();
+    if (cmd !== '/stats' && cmd !== '/start') return;
+    await tg('sendMessage', {
+      chat_id: msg.chat.id,
+      text: await statsText('today'),
+      parse_mode: 'HTML',
+      reply_markup: PERIOD_BUTTONS
+    });
+    return;
+  }
+
+  const cb = update.callback_query;
+  if (cb && cb.message && /^stats:/.test(cb.data || '')) {
+    if (String(cb.message.chat.id) !== CHAT_ID) return;
+    const text = await statsText(cb.data.slice(6));
+    await tg('answerCallbackQuery', { callback_query_id: cb.id });
+    try {
+      await tg('editMessageText', {
+        chat_id: cb.message.chat.id,
+        message_id: cb.message.message_id,
+        text: text,
+        parse_mode: 'HTML',
+        reply_markup: PERIOD_BUTTONS
+      });
+    } catch (e) {
+      /* Та же сводка повторно: Telegram отвечает «message is not modified», это не ошибка. */
+      if (!/not modified/.test(e.message)) throw e;
+    }
+  }
+}
+
+async function handleWebhook(req, res) {
+  if (req.headers['x-telegram-bot-api-secret-token'] !== WEBHOOK_SECRET) {
+    res.writeHead(403);
+    return res.end();
+  }
+  let update;
+  try {
+    update = JSON.parse(await readBody(req, 256 * 1024));
+  } catch (e) {
+    res.writeHead(400);
+    return res.end();
+  }
+  /* Отвечаем Telegram сразу, иначе он повторит запрос, пока мы ждём Метрику. */
+  res.writeHead(200);
+  res.end();
+  handleUpdate(update).catch(function (e) {
+    console.error('Не удалось ответить в боте:', e.message);
+  });
+}
+
+async function setupBot() {
+  if (!BOT_TOKEN || !CHAT_ID || !WEBHOOK_SECRET || !PUBLIC_URL) return false;
+  await tg('setWebhook', {
+    url: PUBLIC_URL + '/api/telegram/' + WEBHOOK_SECRET,
+    secret_token: WEBHOOK_SECRET,
+    allowed_updates: ['message', 'callback_query']
+  });
+  await tg('setMyCommands', {
+    commands: [{ command: 'stats', description: 'Сводка по сайту' }]
+  });
+  return true;
+}
+
 /* ---------- маршруты ---------- */
 
 const server = http.createServer(async function (req, res) {
@@ -235,6 +452,11 @@ const server = http.createServer(async function (req, res) {
   if (pathname === '/api/lead') {
     if (req.method !== 'POST') { res.writeHead(405, { Allow: 'POST' }); return res.end(); }
     return handleLead(req, res);
+  }
+
+  if (WEBHOOK_SECRET && pathname === '/api/telegram/' + WEBHOOK_SECRET) {
+    if (req.method !== 'POST') { res.writeHead(405, { Allow: 'POST' }); return res.end(); }
+    return handleWebhook(req, res);
   }
 
   if (pathname === '/healthz') return sendJson(res, 200, { ok: true });
@@ -279,4 +501,11 @@ server.listen(PORT, function () {
   }
   console.log('  Остановить: Ctrl+C');
   console.log('');
+
+  setupBot().then(function (ok) {
+    if (ok) console.log('  Бот: вебхук ' + PUBLIC_URL + '/api/telegram/…, команда /stats.' +
+      (METRIKA_ID && METRIKA_TOKEN ? '' : ' Метрика не настроена.'));
+  }).catch(function (e) {
+    console.error('Не удалось подключить вебхук бота:', e.message);
+  });
 });
