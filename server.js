@@ -156,7 +156,24 @@ function escapeHtml(v) {
   return v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+/* Заявка на демо: только имя и контакт — телефон или ник в Telegram. */
+function validateDemo(data) {
+  const lead = {
+    type: 'demo',
+    name: clean(data.name, 120),
+    contact: clean(data.contact, 80),
+    page: clean(data.page, 300),
+    ref: clean(data.ref, 300)
+  };
+  if (!lead.name || !lead.contact) return { error: 'Заполните все поля.' };
+  const isPhone = lead.contact.replace(/\D/g, '').length >= 10;
+  const isTelegram = /^(@|https?:\/\/t\.me\/|t\.me\/)?[A-Za-z][A-Za-z0-9_]{4,31}$/.test(lead.contact);
+  if (!isPhone && !isTelegram) return { error: 'Укажите телефон или ник в Telegram.' };
+  return { lead: lead };
+}
+
 function validate(data) {
+  if (data && data.type === 'demo') return validateDemo(data);
   const lead = {
     name: clean(data.name, 120),
     phone: clean(data.phone, 40),
@@ -174,7 +191,25 @@ function validate(data) {
   return { lead: lead };
 }
 
+function telegramLink(contact) {
+  const nick = contact.replace(/^(@|https?:\/\/t\.me\/|t\.me\/)/, '');
+  if (contact.replace(/\D/g, '').length >= 10 || !/^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(nick)) return escapeHtml(contact);
+  return '<a href="https://t.me/' + nick + '">@' + nick + '</a>';
+}
+
 async function toTelegram(lead) {
+  const when = '\n' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' МСК';
+  if (lead.type === 'demo') {
+    return tg('sendMessage', {
+      chat_id: CHAT_ID,
+      text: '<b>Заявка на демо</b>\n\n' +
+        '<b>Имя:</b> ' + escapeHtml(lead.name) + '\n' +
+        '<b>Контакт:</b> ' + telegramLink(lead.contact) + '\n' +
+        (lead.ref ? '<b>Пришёл с:</b> ' + escapeHtml(lead.ref) + '\n' : '') + when,
+      parse_mode: 'HTML',
+      disable_web_page_preview: true
+    });
+  }
   const text =
     '<b>Заявка с сайта ВетФинанс</b>\n\n' +
     '<b>Имя:</b> ' + escapeHtml(lead.name) + '\n' +
@@ -182,8 +217,7 @@ async function toTelegram(lead) {
     '<b>Клиника:</b> ' + escapeHtml(lead.clinic) + '\n' +
     '<b>Программа учёта:</b> ' + escapeHtml(lead.mis) + '\n' +
     '<b>Банки:</b> ' + escapeHtml(lead.banks.join(', ')) + '\n' +
-    (lead.ref ? '<b>Пришёл с:</b> ' + escapeHtml(lead.ref) + '\n' : '') +
-    '\n' + new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' }) + ' МСК';
+    (lead.ref ? '<b>Пришёл с:</b> ' + escapeHtml(lead.ref) + '\n' : '') + when;
 
   await tg('sendMessage', {
     chat_id: CHAT_ID,
@@ -290,6 +324,26 @@ async function metrika(params) {
   return r.json();
 }
 
+/* Номера целей «lead» и «demo». Считаем только их: автоматические цели Метрики
+   (клики по телефону, почте и т. п.) заявками не являются. Список кешируем на час. */
+let goalsCache = { at: 0, ids: null };
+
+async function goalIds() {
+  if (goalsCache.ids && Date.now() - goalsCache.at < 60 * 60 * 1000) return goalsCache.ids;
+  const r = await fetch('https://api-metrika.yandex.net/management/v1/counter/' + METRIKA_ID + '/goals', {
+    headers: { Authorization: 'OAuth ' + METRIKA_TOKEN }
+  });
+  if (!r.ok) throw new Error('Метрика (цели) ответила ' + r.status + ': ' + (await r.text()).slice(0, 300));
+  const ids = {};
+  for (const goal of (await r.json()).goals || []) {
+    for (const c of goal.conditions || []) {
+      if ((c.url === 'lead' || c.url === 'demo') && !ids[c.url]) ids[c.url] = goal.id;
+    }
+  }
+  goalsCache = { at: Date.now(), ids: ids };
+  return ids;
+}
+
 function num(v) {
   return Math.round(v).toLocaleString('ru-RU');
 }
@@ -322,11 +376,14 @@ function breakdown(report, names, total) {
 async function siteSummary(periodKey) {
   const p = PERIODS[periodKey] || PERIODS.today;
   const range = { date1: p.date1, date2: p.date2 };
+  const goals = await goalIds();
+  const goalMetrics = ['lead', 'demo'].filter(function (k) { return goals[k]; });
 
   const results = await Promise.all([
     metrika(Object.assign({
       metrics: 'ym:s:users,ym:s:visits,ym:s:pageviews,ym:s:percentNewVisitors,' +
-        'ym:s:bounceRate,ym:s:avgVisitDurationSeconds,ym:s:sumGoalReachesAny'
+        'ym:s:bounceRate,ym:s:avgVisitDurationSeconds' +
+        goalMetrics.map(function (k) { return ',ym:s:goal' + goals[k] + 'reaches'; }).join('')
     }, range)),
     metrika(Object.assign({
       metrics: 'ym:s:visits', dimensions: 'ym:s:lastTrafficSource', sort: '-ym:s:visits', limit: '5'
@@ -337,7 +394,14 @@ async function siteSummary(periodKey) {
   ]);
   const totals = results[0].totals;
   const users = totals[0], visits = totals[1], pageviews = totals[2];
-  const newShare = totals[3], bounce = totals[4], avgTime = totals[5], leads = totals[6];
+  const newShare = totals[3], bounce = totals[4], avgTime = totals[5];
+  const reached = {};
+  goalMetrics.forEach(function (k, i) { reached[k] = totals[6 + i]; });
+
+  function goalLine(label, k) {
+    if (!(k in reached)) return '<b>' + label + ':</b> цель «' + k + '» не создана в Метрике\n';
+    return '<b>' + label + ':</b> ' + num(reached[k]) + ' (' + pct(reached[k] / visits * 100) + ' визитов)\n';
+  }
 
   const q = results[0].query;
   const dates = q.date1 === q.date2 ? shortDate(q.date1) : shortDate(q.date1) + '–' + shortDate(q.date2);
@@ -352,7 +416,8 @@ async function siteSummary(periodKey) {
     '<b>Просмотры страниц:</b> ' + num(pageviews) + '\n' +
     '<b>Отказы:</b> ' + pct(bounce) + '\n' +
     '<b>Время на сайте:</b> ' + duration(avgTime) + '\n' +
-    '<b>Заявки:</b> ' + num(leads) + ' (' + pct(leads / visits * 100) + ' визитов)\n\n' +
+    goalLine('Заявки на подключение', 'lead') +
+    goalLine('Заявки на демо', 'demo') + '\n' +
     '<b>Откуда пришли</b>\n' + breakdown(results[1], SOURCE_NAMES, visits) + '\n\n' +
     '<b>Устройства</b>\n' + breakdown(results[2], DEVICE_NAMES, visits) + '\n\n' +
     '<i>Только посетители, принявшие cookie.</i>';
