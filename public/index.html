@@ -372,6 +372,11 @@ section{padding-block:56px}
   .s-hero>.btn{grid-area:b;max-width:280px}
   .s-hero>.note{grid-area:n;align-self:start}
   .s-hero>.hero-pic{grid-area:i;width:100%;max-width:100%;margin:0;align-self:end}
+  /* первый экран во всю высоту окна под шапкой: текст по центру, картинка стоит на нижнем крае */
+  .hero{min-height:calc(100svh - 72px);display:flex;flex-direction:column}
+  .s-hero{flex:1;width:100%;grid-template-rows:1fr auto auto auto auto 1fr;grid-template-areas:"t i" "h i" "p i" "b i" "n i" "e i"}
+  .s-hero>.note{padding-bottom:8px}
+  .s-hero>.hero-pic{width:auto;max-height:calc(100svh - 72px - 64px);justify-self:center;object-fit:contain}
   .hero h1 .script{display:inline}
   /* для кого */
   .s-who{display:grid;grid-template-columns:1fr 1fr;column-gap:64px;grid-template-areas:"h pic" "l pic" "s1 pic" "s2 pic"}
