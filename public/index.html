@@ -153,6 +153,16 @@ section{padding-block:56px}
 .orbit{position:relative;height:430px;margin-top:10px}
 .tglogo{position:absolute;left:50%;top:50%;width:128px;height:128px;margin:-64px 0 0 -64px;border-radius:50%;box-shadow:0 24px 50px rgba(20,60,110,.35);transform:scale(calc(.8 + var(--e,1) * .2))}
 .tglogo svg{width:100%;height:100%;display:block}
+/* объёмная монета Telegram: покачивается под небольшим углом */
+.tglogo{perspective:620px}
+.coin{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:tgspin 5.5s ease-in-out infinite alternate}
+.coin>*{position:absolute;inset:0;border-radius:50%}
+.coin .face{transform:translateZ(9px)}
+.coin .edge{background:#167FB6;transform:translateZ(calc(var(--z) * 1px))}
+.coin .back{background:#1C93CF;transform:translateZ(-9px) rotateY(180deg)}
+.coin .gloss{transform:translateZ(9.5px);opacity:.55;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.5),rgba(255,255,255,0) 45%) 0 0/220% 220% no-repeat;mix-blend-mode:soft-light;animation:tggloss 5.5s ease-in-out infinite alternate}
+@keyframes tgspin{from{transform:rotateX(12deg) rotateY(-30deg)}to{transform:rotateX(-10deg) rotateY(30deg)}}
+@keyframes tggloss{from{background-position:0 0}to{background-position:100% 100%}}
 .chip{position:absolute;left:50%;top:50%;white-space:nowrap;padding:9px 14px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 10px 26px rgba(90,8,35,.25);
   transform:translate(-50%,-50%) translate(calc(var(--x) * 1px + var(--dx) * (1 - var(--e,1)) * 1px), calc(var(--y) * 1px + var(--dy) * (1 - var(--e,1)) * 1px)) scale(calc(1 + (1 - var(--e,1)) * .25))}
 .chip.out{background:var(--white);color:var(--ink)}
@@ -258,7 +268,8 @@ section{padding-block:56px}
 .setup{margin-top:12px;border-radius:20px;background:var(--card);padding:18px;display:flex;justify-content:space-between;gap:12px;align-items:center}
 .setup b{font-size:20px;letter-spacing:-.03em;white-space:nowrap}
 .setup span{font-size:14px;color:var(--ink-2)}
-.incl summary{cursor:pointer;font-weight:600;list-style:none;padding:14px 0 6px}
+.incl summary,.incl-h{cursor:pointer;font-weight:600;list-style:none;padding:14px 0 6px}
+.incl-h{cursor:default;margin:0}
 .incl summary::-webkit-details-marker{display:none}
 .incl ul{margin:0;padding-left:18px;color:var(--ink-2);font-size:15px;line-height:1.8}
 
@@ -426,7 +437,7 @@ section{padding-block:56px}
   .fx-legal{margin-top:52px}
 }
 
-@media (prefers-reduced-motion:reduce){ .fx .grain,.mqt,.feed.pan,.feed.swap{animation:none!important} [data-rise],[data-par]{transform:none!important} *{transition:none!important} html{scroll-behavior:auto} }
+@media (prefers-reduced-motion:reduce){ .coin,.coin .gloss{animation:none!important} .fx .grain,.mqt,.feed.pan,.feed.swap{animation:none!important} [data-rise],[data-par]{transform:none!important} *{transition:none!important} html{scroll-behavior:auto} }
 </style>
 </head>
 <body>
@@ -545,7 +556,7 @@ section{padding-block:56px}
     <h2 class="h2">Не нужно заходить в ещё один сервис. <span class="script">Всё в Telegram</span></h2>
     <p class="lead">Разборы и предупреждения мы присылаем в бота. Наличные и расходы из кассы вы вносите туда же, без входа в кабинет.</p>
     <div class="orbit" id="orbit" data-asm>
-      <div class="tglogo"><svg role="img" aria-label="Telegram"><use href="#tglogo"/></svg></div>
+      <div class="tglogo"><div class="coin"><i class="back"></i><i class="edge" style="--z:-8"></i><i class="edge" style="--z:-6.4"></i><i class="edge" style="--z:-4.8"></i><i class="edge" style="--z:-3.2"></i><i class="edge" style="--z:-1.6"></i><i class="edge" style="--z:0"></i><i class="edge" style="--z:1.6"></i><i class="edge" style="--z:3.2"></i><i class="edge" style="--z:4.8"></i><i class="edge" style="--z:6.4"></i><i class="edge" style="--z:8"></i><svg class="face" role="img" aria-label="Telegram"><use href="#tglogo"/></svg><i class="gloss"></i></div></div>
       <span class="chip out" style="--x:-50;--y:-186;--dx:-90;--dy:-90"><i>↓</i>Утренний разбор</span>
       <span class="chip out" style="--x:62;--y:-139;--dx:120;--dy:-60"><i>↓</i>Предупреждения</span>
       <span class="chip out" style="--x:-58;--y:-92;--dx:-130;--dy:-30"><i>↓</i>Ответы на вопросы</span>
@@ -679,9 +690,9 @@ section{padding-block:56px}
       <a class="btn cream wide" href="#form">Начать бесплатный месяц</a>
     </div>
     <div class="setup"><span>Подключение, один раз. Зависит от числа источников данных.</span><b>от 10 000 ₽</b></div>
-    <details class="incl"><summary>Что входит в подписку ⌄</summary>
-      <ul><li>Ежедневный разбор в Telegram</li><li>Веб-кабинет с отчётами</li><li>Экономика врачей и услуг</li><li>Склад, сроки, прогноз денег</li><li>Финмодель на четыре квартала</li></ul>
-    </details>
+    <div class="incl"><p class="incl-h">Что входит в подписку</p>
+      <ul><li>Ежедневный разбор в Telegram</li><li>Веб-кабинет с отчётами</li><li>Экономика врачей и услуг</li><li>Склад, сроки, прогноз денег</li><li>Финмодель на четыре квартала</li><li>Техобслуживание</li><li>Техподдержка</li></ul>
+    </div>
   </div>
 </section>
 
