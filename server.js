@@ -156,7 +156,7 @@ function escapeHtml(v) {
   return v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-/* Заявка на демо: только имя и контакт — телефон или ник в Telegram. */
+/* Заявка на демо: только имя и контакт — телефон, ник в Telegram или почта. */
 function validateDemo(data) {
   const lead = {
     type: 'demo',
@@ -168,7 +168,8 @@ function validateDemo(data) {
   if (!lead.name || !lead.contact) return { error: 'Заполните все поля.' };
   const isPhone = lead.contact.replace(/\D/g, '').length >= 10;
   const isTelegram = /^(@|https?:\/\/t\.me\/|t\.me\/)?[A-Za-z][A-Za-z0-9_]{4,31}$/.test(lead.contact);
-  if (!isPhone && !isTelegram) return { error: 'Укажите телефон или ник в Telegram.' };
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(lead.contact);
+  if (!isPhone && !isTelegram && !isEmail) return { error: 'Укажите телефон, ник в Telegram или почту.' };
   return { lead: lead };
 }
 
